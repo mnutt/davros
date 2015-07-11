@@ -40,6 +40,7 @@
     "morgan": "^1.6.1"
   },
   "dependencies": {
-    "jsDAV": "git://github.com/mnutt/jsDAV.git"
+    "jsDAV": "git://github.com/mnutt/jsDAV.git",
+    "sqlite3": "^3.0.8"
   }
 }
