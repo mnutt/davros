@@ -34,6 +34,12 @@
     "ember-cli-uglify": "^1.0.1",
     "ember-data": "1.13.5",
     "ember-disable-proxy-controllers": "^1.0.0",
-    "ember-export-application-global": "^1.0.2"
+    "ember-export-application-global": "^1.0.2",
+    "express": "^4.13.1",
+    "glob": "^4.5.3",
+    "morgan": "^1.6.1"
+  },
+  "dependencies": {
+    "jsDAV": "git://github.com/mnutt/jsDAV.git"
   }
 }
