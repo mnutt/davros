@@ -10,32 +10,40 @@
 var path = require('path');
 var jsDAV = require("jsdav/lib/jsdav");
 var Tree = require("jsdav/lib/DAV/backends/fsext/tree");
-jsDAV.debugMode = true;
+//jsDAV.debugMode = true;
 var jsDAV_Locks_Backend_FS = require("jsdav/lib/DAV/plugins/locks/fs");
+
+var auth = require('./auth');
+
+var jsDAV_Auth_Plugin = require("jsdav/lib/DAV/plugins/auth");
 
 module.exports = function(app) {
   var root = path.resolve(__dirname + "/../data");
 
   console.log("Mounting webdav from data dir " + root);
 
-  var server = jsDAV.mount({
-    node: root,
-    tree: Tree.new(root),
-    locksBackend: jsDAV_Locks_Backend_FS.new(root)
-  });
-
-  server.baseUri = '/remote.php/webdav';
-
-  app.use(function(req, res, next) {
-    if(req.url.indexOf(server.baseUri) === 0) {
-      server.emit('request', req, res);
-    } else {
-      next();
-    }
-  });
-
   // Log proxy requests
   var morgan  = require('morgan');
   app.use(morgan('dev'));
+
+  auth.setup(function(db) {
+    var server = jsDAV.mount({
+      node: root,
+      tree: Tree.new(root),
+      backend: auth.backend(db),
+      locksBackend: jsDAV_Locks_Backend_FS.new(root)
+    });
+
+    server.baseUri = '/remote.php/webdav/';
+
+    app.use(function(req, res, next) {
+      if(req.url.indexOf(server.baseUri) === 0) {
+        server.emit('request', req, res);
+      } else {
+        next();
+      }
+    });
+
+  });
 
 };
