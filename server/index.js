@@ -12,6 +12,7 @@ var jsDAV = require("jsdav/lib/jsdav");
 var Tree = require("jsdav/lib/DAV/backends/fsext/tree");
 jsDAV.debugMode = true;
 var jsDAV_Locks_Backend_FS = require("jsdav/lib/DAV/plugins/locks/fs");
+var authDir = require('./auth')
 
 module.exports = function(app) {
   var root = path.resolve(__dirname + "/../data");
@@ -21,7 +22,9 @@ module.exports = function(app) {
   var server = jsDAV.mount({
     node: root,
     tree: Tree.new(root),
-    locksBackend: jsDAV_Locks_Backend_FS.new(root)
+    sandboxed: true,
+    locksBackend: jsDAV_Locks_Backend_FS.new(root),
+    plugins: [authDir]
   });
 
   server.baseUri = '/remote.php/webdav';
