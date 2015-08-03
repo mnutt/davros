@@ -40,7 +40,10 @@
     "morgan": "^1.6.1"
   },
   "dependencies": {
+    "dirStat": "0.0.2",
     "jsDAV": "git://github.com/mnutt/jsDAV.git",
-    "sqlite3": "^3.0.8"
+    "jsonapi-serializer": "^1.0.4",
+    "sqlite3": "^3.0.8",
+    "walker": "^1.0.7"
   }
 }

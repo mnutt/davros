@@ -12,7 +12,8 @@ var jsDAV = require("jsdav/lib/jsdav");
 var Tree = require("jsdav/lib/DAV/backends/fsext/tree");
 jsDAV.debugMode = true;
 var jsDAV_Locks_Backend_FS = require("jsdav/lib/DAV/plugins/locks/fs");
-var authDir = require('./auth')
+var authDir = require('./auth');
+var api = require('./api');
 
 module.exports = function(app) {
   var root = path.resolve(__dirname + "/../data");
@@ -36,6 +37,9 @@ module.exports = function(app) {
       next();
     }
   });
+
+  var apiServer = new api(root);
+  app.use('/api/files', apiServer);
 
   // Log proxy requests
   var morgan  = require('morgan');
