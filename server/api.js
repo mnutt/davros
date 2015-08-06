@@ -25,10 +25,9 @@ module.exports = function(root) {
     fs.stat(fullPath, function(err, stat) {
       if(err) {
         res.writeHead(500, {});
-        res.send(JSON.stringify(err));
+        res.end(JSON.stringify(err));
         return;
       }
-      console.log(stat);
 
       var data = stat;
       data.path = relativePath.slice(1);

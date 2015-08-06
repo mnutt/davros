@@ -8,11 +8,7 @@ export default DS.Model.extend({
   files: DS.hasMany('files', {async: true}),
 
   parent: function() {
-    var parentDir = this.get('path').replace(/[^\/]*\/?$/, '');
-    if(parentDir === "") {
-      return "/";
-    }
-    return parentDir;
+    return this.get('path').replace(/\/?[^\/]*\/?$/, '');
   }.property('path'),
 
   isDirectory: function() {

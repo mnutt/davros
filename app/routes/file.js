@@ -2,7 +2,9 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   model: function(params) {
-    return this.store.find('file', params.path);
+    var id = params.path;
+    if(!id) { id = '/'; }
+    return this.store.find('file', id);
   },
 
   setupController: function(controller, model) {
