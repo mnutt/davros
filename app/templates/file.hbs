@@ -1,16 +1,22 @@
-Browsing {{model.path}}:
-{{log model}}
-{{#each model.files as |file|}}
+{{#if model.isDirectory}}
+  Browsing {{model.path}}:
+
   <div class="file">
-    {{#link-to 'file' file.path}}
-      {{file.path}}
+    {{#link-to 'file' model.parent}}
+      ..
     {{/link-to}}
   </div>
-{{/each}}
 
-{{#link-to 'file' model.parent}}
-  {{log model.parent}}
-  {{model.parent}}
-{{/link-to}}
+  {{#each model.files as |file|}}
+    <div class="file">
+      {{#link-to 'file' file.path}}
+        {{file.name}}
+      {{/link-to}}
+    </div>
+  {{/each}}
+
+{{else}}
+  File {{model.path}}
+{{/if}}
 
 {{outlet}}
