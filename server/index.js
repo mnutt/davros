@@ -14,6 +14,10 @@ jsDAV.debugMode = true;
 var jsDAV_Locks_Backend_FS = require("jsdav/lib/DAV/plugins/locks/fs");
 var api = require('./api');
 
+var statvfs = require('statvfs');
+fs = require('fs');
+fs.statvfs = statvfs;
+
 module.exports = function(app) {
   var root = path.resolve(__dirname + "/../data");
 

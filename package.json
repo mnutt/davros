@@ -44,6 +44,7 @@
     "jsDAV": "git://github.com/mnutt/jsDAV.git",
     "jsonapi-serializer": "^1.0.4",
     "sqlite3": "^3.0.8",
+    "statvfs": "^2.1.0",
     "walker": "^1.0.7"
   }
 }
