@@ -30,10 +30,11 @@ module.exports = function(app) {
     locksBackend: jsDAV_Locks_Backend_FS.new(root)
   });
 
-  server.baseUri = '/remote.php/webdav';
+  server.baseUri = '/remote.php/webdav/';
+  var baseUri = server.baseUri.slice(0, -1);
 
   app.use(function(req, res, next) {
-    if(req.url.indexOf(server.baseUri) === 0) {
+    if(req.url.indexOf(baseUri) === 0) {
       server.emit('request', req, res);
     } else {
       next();
