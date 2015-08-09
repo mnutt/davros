@@ -44,6 +44,16 @@ module.exports = function(app) {
   var apiServer = new api(root);
   app.use('/api/files', apiServer);
 
+  app.use('/status.php', function(req, res, next) {
+    res.writeHead(200, {});
+    res.end('{"installed":"true","version":"5.0.17","versionstring":"5.0.10","edition":""}');
+  });
+
+  app.use('/ocs/v1.php/cloud/capabilities', function(req, res, next) {
+    res.writeHead(200, {});
+    res.end('{"ocs":{"meta":{"status":"ok","statuscode":100,"message":null},"data":{"capabilities":{"files":{"versioning":true,"bigfilechunking":true,"undelete":true},"core":{"pollinterval":60}},"version":{"major":5,"minor":0,"micro":17,"string":"5.0.10","edition":""}}}}');
+  });
+
   // Log proxy requests
   var morgan  = require('morgan');
   app.use(morgan('dev'));
