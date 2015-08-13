@@ -9,6 +9,7 @@ Router.map(function() {
   this.resource('file', {path: '/files/*path'});
   this.route('files', {path: '/'});
   this.route('files', {path: '/files'});
+  this.route('clients');
 });
 
 export default Router;

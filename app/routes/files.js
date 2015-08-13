@@ -6,6 +6,6 @@ export default Ember.Route.extend({
   },
 
   renderTemplate: function() {
-    this.render('file');
+    this.render('directory');
   }
 });

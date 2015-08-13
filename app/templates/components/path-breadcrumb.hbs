@@ -1,0 +1,4 @@
+{{#each parts as |part|}}
+  <span class="separator">/</span>
+  {{#link-to 'file' part.path}}{{part.name}}{{/link-to}}
+{{/each}}

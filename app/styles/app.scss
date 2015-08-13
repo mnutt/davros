@@ -1,0 +1,46 @@
+$primary: "blue" !default;
+
+@import 'ember-paper';
+
+body {
+  background-color: #f3f3f3;
+}
+
+.breadcrumb {
+  padding: 0 0.5em;
+
+  a {
+    text-decoration: underline;
+  }
+}
+
+.iframe-container {
+  position: absolute;
+  top: 100px;
+  left: 1em;
+  right: 1em;
+  bottom: 1em;
+}
+
+.iframe-container iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+md-content p.content {
+  padding: 2em 1em;
+}
+
+md-sidenav {
+  min-height: 100vh;
+  text-align: left;
+}
+
+.material-icons {
+  line-height: 0.8
+}
+
+md-list.file-list md-list-item:nth-child(even) {
+  background-color: #F5F5F5;
+}

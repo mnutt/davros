@@ -1,22 +1,14 @@
-{{#if model.isDirectory}}
-  Browsing {{model.path}}:
-
-  <div class="file">
-    {{#link-to 'file' model.parent}}
-      ..
-    {{/link-to}}
+{{#paper-toolbar}}
+  <div class="md-toolbar-tools">
+    Viewing
+    {{path-breadcrumb path=model.path}}
+    / {{model.name}}
   </div>
+{{/paper-toolbar}}
 
-  {{#each model.files as |file|}}
-    <div class="file">
-      {{#link-to 'file' file.path}}
-        {{file.name}}
-      {{/link-to}}
-    </div>
-  {{/each}}
-
-{{else}}
-  File {{model.path}}
-{{/if}}
+<div class="iframe-container">
+  <iframe sandbox class="file-content" src="{{model.rawPath}}">
+  </iframe>
+</div>
 
 {{outlet}}

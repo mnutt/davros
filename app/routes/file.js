@@ -11,5 +11,13 @@ export default Ember.Route.extend({
     this._super(controller, model);
 
     model.reload();
+  },
+
+  renderTemplate: function() {
+    if(this.get('controller.model.isDirectory')) {
+      this.render('directory');
+    } else {
+      this.render('file');
+    }
   }
 });
