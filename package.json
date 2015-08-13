@@ -46,7 +46,7 @@
     "jsDAV": "git://github.com/mnutt/jsDAV.git",
     "jsonapi-serializer": "^1.0.4",
     "morgan": "^1.6.1",
-    "statvfs": "^2.1.0",
+    "statvfs": "git://github.com/briankereszturi/node-statvfs.git#77643044210c4",
     "walker": "^1.0.7"
   }
 }
