@@ -41,11 +41,14 @@
     "liquid-fire": "0.21.0"
   },
   "dependencies": {
+    "async": "1.4.2",
     "dirStat": "0.0.2",
     "express": "^4.13.1",
     "jsDAV": "git://github.com/mnutt/jsDAV.git",
     "jsonapi-serializer": "^1.0.4",
+    "mkdirp": "0.5.1",
     "morgan": "^1.6.1",
+    "multiparty": "4.1.2",
     "statvfs": "git://github.com/briankereszturi/node-statvfs.git#77643044210c4",
     "walker": "^1.0.7"
   }

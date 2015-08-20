@@ -1,10 +1,58 @@
 var JSONAPISerializer = require('jsonapi-serializer');
-var path = require('path');
-var fs = require('fs');
-var dirStat = require('dirStat').dirStat;
-var url = require('url');
+var path              = require('path');
+var fs                = require('fs');
+var dirStat           = require('dirStat').dirStat;
+var url               = require('url');
+var multiparty        = require('multiparty');
+var mkdirp            = require('mkdirp');
+var async             = require('async');
 
-module.exports = function(root) {
+exports.upload = function(root) {
+  return function(req, res, next) {
+    var form = new multiparty.Form();
+
+    form.parse(req, function(err, fields, files) {
+      files = files.file;
+
+      // Files and fields are separated for some reason; zip them together
+      files.forEach(function(file, i) {
+        file.uploadLocation = fields.location[i];
+        file.relativePath = fields.relativePath[i];
+      });
+
+      async.forEach(files, function(file, callback) {
+        var uploadDirectory = [root, file.uploadLocation].join('/');
+        var relativeDirectory = path.dirname(file.relativePath).replace(/^\//, '');
+        var relativeUpload = path.resolve(uploadDirectory,
+                                          relativeDirectory);
+
+        if(relativeUpload.indexOf(root) < 0) {
+          callback("Invalid path");
+          return;
+        }
+
+        mkdirp(relativeUpload, function(err) {
+          if(err) {
+            callback(err);
+          } else {
+            var newFile = [relativeUpload, file.originalFilename].join('/');
+            fs.rename(file.path, newFile, callback);
+          }
+        });
+      }, function(err) {
+        if(err) {
+          res.writeHead(500, {});
+          res.end(err);
+        } else {
+          res.writeHead(200, {});
+          res.end('ok');
+        }
+      });
+    });
+  };
+};
+
+exports.files = function(root) {
   // All paths should look relative, to help ember out. So
   // the root path should include a trailing slash
   root += "/";
