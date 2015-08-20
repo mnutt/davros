@@ -37,6 +37,7 @@
     "ember-disable-proxy-controllers": "^1.0.0",
     "ember-export-application-global": "^1.0.2",
     "ember-paper": "0.2.6",
+    "ember-plupload": "1.13.6",
     "glob": "^4.5.3",
     "liquid-fire": "0.21.0"
   },

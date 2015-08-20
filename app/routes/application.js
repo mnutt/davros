@@ -8,6 +8,17 @@ export default Ember.Route.extend({
       } else if(route === 'clients') {
         this.transitionTo('clients');
       }
+    },
+
+    uploadFile: function (file) {
+      console.log("UPLOAD");
+      var source = file.file.getSource();
+      file.upload('/api/upload', {
+        data: {
+          relativePath: source.relativePath,
+          location: document.location.pathname.replace(/^\/files\//, '')
+        }
+      });
     }
   }
 });

@@ -1,3 +1,7 @@
+{{#pl-uploader onfileadd="uploadFile" for="upload-file" for-dropzone="content" as |queue dropzone|}}
+
+{{/pl-uploader}}
+
 {{#paper-nav-container open=drawerOpen classNames="ember-app"}}
 
   {{#paper-sidenav classNames="md-sidenav-left md-whiteframe-z2" flex-layout="column" flex=true}}
@@ -26,7 +30,7 @@
 
   {{/paper-sidenav}}
 
-  {{#paper-content flex-layout="column" flex=true}}
+  {{#paper-content flex-layout="column" flex=true id="content"}}
     {{outlet}}
   {{/paper-content}}
 
