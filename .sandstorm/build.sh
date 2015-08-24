@@ -9,6 +9,9 @@ echo "prefix=${HOME}/.npm-packages" >> ~/.npmrc
 export NODE_PATH="$NPM_PACKAGES/lib/node_modules:$NODE_PATH"
 export PATH="$NPM_PACKAGES/bin:$PATH"
 
+# ensure data storage directory exists
+mkdir -p /var/davros/data
+
 # install app dependencies
 npm install
 

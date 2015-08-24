@@ -29,4 +29,4 @@
 # appropriate for your application.
 cd /opt/app
 
-PORT=8000 node app.js
+PORT=8000 STORAGE_PATH=/var/davros/data /usr/bin/node app.js

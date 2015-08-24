@@ -13,7 +13,7 @@ var dav    = require('./dav');
 var morgan = require('morgan');
 
 module.exports = function(app) {
-  var root = path.resolve(__dirname + "/../data");
+  var root = path.resolve(process.env.STORAGE_PATH || (__dirname + "/../data"));
 
   app.use(dav.server(root));
   app.use('/status.php', dav.status);
