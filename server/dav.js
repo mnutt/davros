@@ -12,7 +12,6 @@ exports.server = function(root) {
   console.log("Mounting webdav from data dir " + root);
 
   var server = jsDAV.mount({
-    node: root,
     tree: Tree.new(root),
     sandboxed: true,
     locksBackend: jsDAV_Locks_Backend_FS.new(root)
