@@ -19,7 +19,8 @@ export default DS.Model.extend({
   }.property('path'),
 
   isDirectory: function() {
-    return this.get('mode') === 16877;
+    // "0040000" in octal is the bitmask for a directory
+    return (this.get('mode') & parseInt("0040000", 8)) > 0;
   }.property('mode'),
 
   extension: function() {
