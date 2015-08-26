@@ -11,21 +11,33 @@
   </div>
 {{/paper-toolbar}}
 
-{{#paper-list class="file-list"}}
-  {{#each model.sortedFiles as |file|}}
-    {{#paper-item}}
-      {{#if file.isDirectory}}
-        {{paper-icon icon="folder"}}
-      {{else}}
-        {{paper-icon icon=file.type}}
-      {{/if}}
+<table class="file-list">
+  <thead>
+    <tr>
+      <th class="name">Name</th>
+      <th class="size">Size</th>
+    </tr>
+  </thead>
 
-      <p>
-        {{#link-to 'file' file.path}}
-          {{file.name}}
-        {{/link-to}}
-      </p>
-    {{/paper-item}}
-  {{/each}}
+  <tbody>
+    {{#each model.sortedFiles as |file|}}
+      <tr>
+        <td class="name">
+          {{#if file.isDirectory}}
+            {{paper-icon icon="folder"}}
+          {{else}}
+            {{paper-icon icon=file.type}}
+          {{/if}}
 
-{{/paper-list}}
+          {{#link-to 'file' file.path}}
+            {{file.name}}
+          {{/link-to}}
+        </td>
+
+        <td class="size">
+          {{filesize file.size}}
+        </td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>
