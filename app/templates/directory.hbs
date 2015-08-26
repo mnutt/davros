@@ -12,16 +12,6 @@
 {{/paper-toolbar}}
 
 {{#paper-list class="file-list"}}
-  {{#paper-item}}
-    {{paper-icon icon="folder"}}
-
-    <p>
-      {{#link-to 'file' model.parent}}
-        ..
-      {{/link-to}}
-    </p>
-  {{/paper-item}}
-
   {{#each model.sortedFiles as |file|}}
     {{#paper-item}}
       {{#if file.isDirectory}}
