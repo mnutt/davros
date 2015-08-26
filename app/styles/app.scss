@@ -41,7 +41,11 @@ md-sidenav {
   line-height: 0.8
 }
 
-md-list.file-list md-list-item:nth-child(even) {
+.file-list {
+  background-color: #f3f3f3;
+}
+
+.file-list md-list-item:nth-child(even) {
   background-color: #F5F5F5;
 }
 
