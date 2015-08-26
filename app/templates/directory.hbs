@@ -23,17 +23,15 @@
   <tbody>
     {{#each model.sortedFiles as |file|}}
       <tr>
-        <td class="name">
+        {{#link-to 'file' file.path class="name" tagName="td"}}
           {{#if file.isDirectory}}
             {{paper-icon icon="folder"}}
           {{else}}
             {{paper-icon icon=file.type}}
           {{/if}}
 
-          {{#link-to 'file' file.path}}
-            {{file.name}}
-          {{/link-to}}
-        </td>
+          {{file.name}}
+        {{/link-to}}
 
         <td class="updated" title="{{file.mtime}}">
           {{moment-from-now file.mtime interval=5000 hideSuffix=true}}

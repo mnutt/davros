@@ -48,6 +48,10 @@ md-sidenav {
 
   tbody {
     display: block;
+
+    tr:nth-child(odd) {
+      background-color: #F7F7F7;
+    }
   }
 
   td,th {
@@ -61,6 +65,7 @@ md-sidenav {
     &.name {
       width: 100%;
       padding-left: 35px !important;
+      cursor: pointer;
     }
 
     &.updated {
@@ -72,10 +77,6 @@ md-sidenav {
       padding-right: 35px !important;
       text-align: right;
     }
-  }
-
-  tr:nth-child(even) {
-    background-color: #F7F7F7;
   }
 }
 
