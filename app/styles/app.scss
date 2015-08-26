@@ -66,6 +66,15 @@ md-sidenav {
       width: 100%;
       padding-left: 35px !important;
       cursor: pointer;
+
+      .paper-icon {
+        color: #999;
+        padding-right: 0.3em;
+      }
+
+      .folder {
+        color: #9CF;
+      }
     }
 
     &.updated {
