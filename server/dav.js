@@ -1,4 +1,6 @@
 var jsDAV = require("jsdav/lib/jsdav");
+var jsDAV_Server = require("jsdav/lib/DAV/server");
+var jsDAV_Util = require("jsdav/lib/shared/util");
 var Tree = require("jsdav/lib/DAV/backends/fsext/tree");
 jsDAV.debugMode = true;
 var jsDAV_Locks_Backend_FS = require("jsdav/lib/DAV/plugins/locks/fs");
@@ -14,7 +16,10 @@ exports.server = function(root) {
   var server = jsDAV.mount({
     tree: Tree.new(root),
     sandboxed: true,
-    locksBackend: jsDAV_Locks_Backend_FS.new(root)
+    locksBackend: jsDAV_Locks_Backend_FS.new(root),
+    plugins: jsDAV_Util.extend(jsDAV_Server.DEFAULT_PLUGINS, {
+      "ws-notify": require("./dav-notify")
+    })
   });
 
   server.baseUri = '/remote.php/webdav/';

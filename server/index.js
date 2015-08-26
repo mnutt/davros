@@ -9,11 +9,15 @@
 
 var path   = require('path');
 var api    = require('./api');
+var apiWs  = require('./api-ws');
 var dav    = require('./dav');
 var morgan = require('morgan');
 
-module.exports = function(app) {
+
+module.exports = function(app, options) {
   var root = path.resolve(process.env.STORAGE_PATH || (__dirname + "/../data"));
+
+  apiWs.serve(options.httpServer);
 
   app.use(dav.server(root));
   app.use('/status.php', dav.status);

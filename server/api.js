@@ -6,6 +6,7 @@ var url               = require('url');
 var multiparty        = require('multiparty');
 var mkdirp            = require('mkdirp');
 var async             = require('async');
+var apiWs             = require('./api-ws');
 
 exports.upload = function(root) {
   return function(req, res, next) {
@@ -36,7 +37,12 @@ exports.upload = function(root) {
             callback(err);
           } else {
             var newFile = [relativeUpload, file.originalFilename].join('/');
-            fs.rename(file.path, newFile, callback);
+            fs.rename(file.path, newFile, function(err) {
+              var locationUpdate = file.uploadLocation;
+              if(locationUpdate === "") { locationUpdate = "/"; }
+              apiWs.notify(locationUpdate);
+              callback(err);
+            });
           }
         });
       }, function(err) {

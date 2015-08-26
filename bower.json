@@ -14,6 +14,7 @@
     "loader.js": "ember-cli/loader.js#3.2.0",
     "qunit": "~1.17.1",
     "hammerjs": "~2.0.4",
-    "plupload": "v2.1.8"
+    "plupload": "v2.1.8",
+    "uri.js": "~1.16.0"
   }
 }
