@@ -2,6 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
 
+  socketUrl: "ws://" + document.location.host,
   socketService: Ember.inject.service('websockets'),
 
   init: function() {
@@ -23,20 +24,10 @@ export default Ember.Route.extend({
     }
   },
 
-  socketUrl: function() {
-    return "ws://" + document.location.host;
-  }.property(),
-
   model: function(params) {
     var id = params.path;
     if(!id) { id = '/'; }
     return this.store.find('file', id);
-  },
-
-  setupController: function(controller, model) {
-    this._super(controller, model);
-
-    model.reload();
   },
 
   renderTemplate: function() {
@@ -46,4 +37,5 @@ export default Ember.Route.extend({
       this.render('file');
     }
   }
+
 });
