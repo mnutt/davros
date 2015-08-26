@@ -58,6 +58,8 @@ exports.upload = function(root) {
   };
 };
 
+var jsonAttrs = ["ctime", "mode", "mtime", "name", "path", "size"];
+
 exports.files = function(root) {
   // All paths should look relative, to help ember out. So
   // the root path should include a trailing slash
@@ -105,12 +107,12 @@ exports.files = function(root) {
           JSONAPISerializer('file', data, {
             topLevelLinks: { self: 'http://localhost:4214/api/files' },
             id: 'path',
-            attributes: ['path', 'files', 'name', 'size', 'mode', 'ctime', 'atime'],
+            attributes: jsonAttrs.concat("files"),
             files: {
               ref: function(collection, field) {
                 return field.path;
               },
-              attributes: ['size', 'ctime', 'path', 'atime', 'mode', 'name']
+              attributes: jsonAttrs
             }
           }).then(function(files) {
             res.writeHead(200, {'Content-Type': 'application/json'});
@@ -123,7 +125,7 @@ exports.files = function(root) {
         JSONAPISerializer('file', data, {
           topLevelLinks: { self: 'http://localhost:4214/api/files' },
           id: 'path',
-          attributes: ['size', 'ctime', 'path', 'atime', 'mode', 'name', 'is_directory']
+          attributes: jsonAttrs
         }).then(function(file) {
           res.writeHead(200, {'Content-Type': 'application/json'});
           res.end(JSON.stringify(file, null, 2));

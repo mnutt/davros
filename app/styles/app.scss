@@ -43,8 +43,8 @@ md-sidenav {
 
 .file-list {
   background-color: #f3f3f3;
-  display: block;
   border-collapse: collapse;
+  display: block;
 
   tbody {
     display: block;
@@ -63,14 +63,15 @@ md-sidenav {
       padding-left: 35px !important;
     }
 
+    &.updated {
+      min-width: 110px;
+    }
+
     &.size {
       min-width: 50px;
       padding-right: 35px !important;
+      text-align: right;
     }
-  }
-
-  td.size {
-    text-align: right;
   }
 
   tr:nth-child(even) {

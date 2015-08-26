@@ -15,6 +15,7 @@
   <thead>
     <tr>
       <th class="name">Name</th>
+      <th class="updated">Updated</th>
       <th class="size">Size</th>
     </tr>
   </thead>
@@ -32,6 +33,10 @@
           {{#link-to 'file' file.path}}
             {{file.name}}
           {{/link-to}}
+        </td>
+
+        <td class="updated">
+          {{moment-from-now file.mtime interval=5000}}
         </td>
 
         <td class="size">

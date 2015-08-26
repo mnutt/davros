@@ -6,6 +6,8 @@ export default DS.Model.extend({
   path: DS.attr('string'),
   size: DS.attr('number'),
   name: DS.attr('string'),
+  ctime: DS.attr('date'),
+  mtime: DS.attr('date'),
   files: DS.hasMany('files', {async: true}),
 
   sortedFiles: function() {
