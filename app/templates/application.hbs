@@ -1,5 +1,9 @@
 {{#pl-uploader onfileadd="uploadFile" for="upload-file" for-dropzone="content" as |queue dropzone|}}
-
+  {{#if queue.length}}
+    <div class="upload-progress">
+      {{paper-progress-linear warn=true value=queue.progress}}
+    </div>
+  {{/if}}
 {{/pl-uploader}}
 
 {{#paper-nav-container open=drawerOpen classNames="ember-app"}}

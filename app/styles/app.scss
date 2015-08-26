@@ -87,3 +87,19 @@ md-sidenav {
 #upload-file {
   margin-left: auto;
 }
+
+.upload-progress {
+  position: absolute;
+  top: -5px;
+  left: 0;
+  right: 0;
+  z-index: 100;
+
+  .md-container {
+    background-color: #173 !important;
+  }
+
+  .md-bar1, .md-bar2 {
+    background-color: #2C8 !important;
+  }
+}
