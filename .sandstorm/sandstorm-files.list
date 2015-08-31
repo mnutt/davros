@@ -35,8 +35,10 @@ opt/app/.sandstorm/launcher.sh
 opt/app/app.js
 opt/app/dist/assets/davros.css
 opt/app/dist/assets/davros.js
+opt/app/dist/assets/davros.map
 opt/app/dist/assets/vendor.css
 opt/app/dist/assets/vendor.js
+opt/app/dist/assets/vendor.map
 opt/app/dist/index.html
 opt/app/node_modules/async/lib/async.js
 opt/app/node_modules/async/package.json
@@ -227,6 +229,10 @@ opt/app/node_modules/jsdav/node_modules/formidable/lib/querystring_parser.js
 opt/app/node_modules/jsdav/node_modules/formidable/package.json
 opt/app/node_modules/jsdav/node_modules/gnu-tools/gnu-tools.js
 opt/app/node_modules/jsdav/node_modules/gnu-tools/package.json
+opt/app/node_modules/jsdav/node_modules/xmldom/dom-parser.js
+opt/app/node_modules/jsdav/node_modules/xmldom/dom.js
+opt/app/node_modules/jsdav/node_modules/xmldom/package.json
+opt/app/node_modules/jsdav/node_modules/xmldom/sax.js
 opt/app/node_modules/jsdav/package.json
 opt/app/node_modules/jsonapi-serializer/index.js
 opt/app/node_modules/jsonapi-serializer/lib/collection-serializer.js
