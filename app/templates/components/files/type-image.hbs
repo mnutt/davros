@@ -1,0 +1,25 @@
+<div layout="row" class="file-component image-component">
+  <div class="meta">
+    <div class="filename">
+      <a href="{{model.rawPath}}">
+        {{model.name}}
+      </a>
+    </div>
+
+    <div title="{{model.mtime}}" class="fsinfo">
+      <span class="updated">Updated {{moment-from-now model.mtime interval=5000}}</span>
+      &middot;
+      <span class="size">{{filesize model.size}}</span>
+    </div>
+
+    <a class="download" href="{{model.rawPath}}">
+      Download Original {{paper-icon icon="cloud-download"}}
+    </a>
+  </div>
+
+  <div class="preview">
+    <div class="thumbnail-container">
+      <img src="{{model.rawPath}}">
+    </div>
+  </div>
+</div>

@@ -8,9 +8,8 @@
   </div>
 {{/paper-toolbar}}
 
-<div class="iframe-container">
-  <iframe sandbox class="file-content" src="{{model.rawPath}}">
-  </iframe>
+<div class="file">
+  {{component model.typeComponent model=model}}
 </div>
 
 {{outlet}}

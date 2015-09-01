@@ -112,3 +112,77 @@ md-sidenav {
     background-color: #2C8 !important;
   }
 }
+
+.file-component {
+  display: flex;
+  flex-direction: row;
+
+  margin-top: 5%;
+
+  .meta {
+    flex: 40;
+    margin-left: 10%;
+    margin-right: 2em;
+    margin-top: 10%;
+    text-align: right;
+
+    .filename {
+      a {
+        color: #222;
+        text-decoration: none;
+      }
+
+      font-size: 1.8em;
+      line-height: 1.8;
+      font-weight: bold;
+      word-wrap: break-word;
+    }
+
+    .fsinfo {
+      font-size: 1.1em;
+      line-height: 1.6;
+    }
+
+    .size {
+      font-weight: bold;
+    }
+
+    .download {
+      color: #000;
+      display: block;
+      margin-top: 2em;
+      font-size: 1.3em;
+
+      .material-icons {
+        font-size: 2em;
+      }
+    }
+  }
+  .preview {
+    flex: 40;
+    margin-right: 10%;
+    margin-left: 2em;
+    min-height: 600px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    audio, .no-preview {
+      width: 100%;
+      font-size: 3em;
+      color: #CCC;
+      font-weight: bold;
+    }
+
+    img {
+      width: 100%;
+      max-height: 100%;
+    }
+
+    video {
+      width: 100%;
+      max-height: 100%;
+    }
+  }
+}

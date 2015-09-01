@@ -1,5 +1,6 @@
 import DS from 'ember-data';
 import filetypes from 'davros/lib/filetypes';
+import filetypeIcons from 'davros/lib/filetype-icons';
 
 export default DS.Model.extend({
   mode: DS.attr('number'),
@@ -31,8 +32,16 @@ export default DS.Model.extend({
   }.property('name'),
 
   type: function() {
-    return filetypes[this.get('extension')] || filetypes.defaultType;
+    return filetypes[this.get('extension').toLowerCase()] || filetypes.defaultType;
   }.property('extension'),
+
+  typeIcon: function() {
+    return filetypeIcons[this.get('type')];
+  }.property('type'),
+
+  typeComponent: function() {
+    return `files/type-${this.get('type')}`;
+  }.property('type'),
 
   rawPath: function() {
     return [this.get('davBase'), this.get('path')].join('/');
