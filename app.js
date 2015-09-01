@@ -2,6 +2,7 @@ var express = require('express');
 var fs      = require('fs');
 var api     = require('./server');
 var path    = require('path');
+var http    = require('http');
 
 var root = __dirname;
 var indexFile = path.resolve(root + '/dist/index.html');
@@ -12,10 +13,11 @@ if(!fs.existsSync(indexFile)) {
 }
 
 var app = express();
+var server = http.createServer(app);
 
 app.use(express.static('dist'));
 
-api(app);
+api(app, {httpServer: server});
 
 app.use('/', function(req, res, next) {
   // send ember's index.html for any unknown route
@@ -26,11 +28,11 @@ var port = process.env.PORT || 8000;
 var socket = process.env.SOCKET;
 
 if(socket) {
-  app.listen(socket, function() {
+  server.listen(socket, function() {
     console.log('Davros listening on %s', socket);
   });
 } else {
-  app.listen(port, function () {
+  server.listen(port, function () {
     console.log('Davros listening on port %s', port);
   });
 }
