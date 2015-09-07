@@ -1,24 +1,30 @@
-var jsDAV = require("jsdav/lib/jsdav");
-var jsDAV_Server = require("jsdav/lib/DAV/server");
-var jsDAV_Util = require("jsdav/lib/shared/util");
-var Tree = require("jsdav/lib/DAV/backends/fsext/tree");
-jsDAV.debugMode = true;
+var fs = require('fs');
+var os = require('os');
+
+var jsDAV                  = require("jsdav/lib/jsdav");
+var jsDAV_Server           = require("jsdav/lib/DAV/server");
+var jsDAV_Util             = require("jsdav/lib/shared/util");
+var Tree                   = require("jsdav/lib/DAV/backends/fsext/tree");
 var jsDAV_Locks_Backend_FS = require("jsdav/lib/DAV/plugins/locks/fs");
 
 // for free disk space reporting
 var statvfs = require('statvfs');
-fs = require('fs');
 fs.statvfs = statvfs;
 
 exports.server = function(root) {
   console.log("Mounting webdav from data dir " + root);
 
+  var tempDir = process.env.TEMP_DIR || os.tmpdir();
+
   var server = jsDAV.mount({
     tree: Tree.new(root),
+    tempDir: tempDir,
     sandboxed: true,
     locksBackend: jsDAV_Locks_Backend_FS.new(root),
     plugins: jsDAV_Util.extend(jsDAV_Server.DEFAULT_PLUGINS, {
-      "ws-notify": require("./dav-notify")
+      "ws-notify": require("./dav-notify"),
+      "root-delete": require("./dav-root-delete"),
+      "chunked-upload": require("./dav-chunked-upload")
     })
   });
 
