@@ -14,7 +14,8 @@ fs.statvfs = statvfs;
 exports.server = function(root) {
   console.log("Mounting webdav from data dir " + root);
 
-  var tempDir = process.env.TEMP_DIR || os.tmpdir();
+  var tempDir = os.tmpdir();
+  console.log("Storing temporary files in " + tempDir);
 
   var server = jsDAV.mount({
     tree: Tree.new(root),
