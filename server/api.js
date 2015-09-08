@@ -48,7 +48,7 @@ exports.upload = function(root) {
       }, function(err) {
         if(err) {
           res.writeHead(500, {});
-          res.end(err);
+          res.end(err.message);
         } else {
           res.writeHead(200, {});
           res.end('ok');
