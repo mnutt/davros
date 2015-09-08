@@ -29,4 +29,12 @@
 # appropriate for your application.
 cd /opt/app
 
-PORT=8000 STORAGE_PATH=/var/davros/data /usr/bin/node app.js
+export PORT=8000
+export STORAGE_PATH=/var/davros/data
+export TEMP_STORAGE_PATH=/var/davros/tmp
+export TMPDIR=$TEMP_STORAGE_PATH # for express's temporary files
+
+mkdir -p $STORAGE_PATH
+mkdir -p $TEMP_STORAGE_PATH
+
+TMPDIR=/var/davros/tmp /usr/bin/node app.js

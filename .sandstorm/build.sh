@@ -3,7 +3,7 @@
 cd /opt/app
 
 # allow npm to install global packages
-mkdir "${HOME}/.npm-packages"
+mkdir -p "${HOME}/.npm-packages"
 export NPM_PACKAGES="${HOME}/.npm-packages"
 echo "prefix=${HOME}/.npm-packages" >> ~/.npmrc
 export NODE_PATH="$NPM_PACKAGES/lib/node_modules:$NODE_PATH"

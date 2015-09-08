@@ -20,5 +20,5 @@
 # appropriate for your application.
 
 export DEBIAN_FRONTEND=noninteractive
-curl -sL https://deb.nodesource.com/setup_0.10 | bash -
-apt-get install -y nodejs git-core g++
+curl -sL https://deb.nodesource.com/setup_iojs_2.x | bash -
+apt-get install -y iojs git-core g++

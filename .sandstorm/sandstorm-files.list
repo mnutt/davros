@@ -3,7 +3,7 @@
 # the app runs in dev mode. You may manually add or remove files, but don't
 # expect comments or ordering to be retained.
 bin/bash
-etc/alternatives/node
+bin/mkdir
 etc/ld.so.cache
 etc/localtime
 lib/x86_64-linux-gnu/ld-2.19.so
@@ -24,10 +24,13 @@ lib/x86_64-linux-gnu/libnss_files-2.19.so
 lib/x86_64-linux-gnu/libnss_files.so.2
 lib/x86_64-linux-gnu/libnss_nis-2.19.so
 lib/x86_64-linux-gnu/libnss_nis.so.2
+lib/x86_64-linux-gnu/libpcre.so.3
+lib/x86_64-linux-gnu/libpcre.so.3.13.1
 lib/x86_64-linux-gnu/libpthread-2.19.so
 lib/x86_64-linux-gnu/libpthread.so.0
 lib/x86_64-linux-gnu/librt-2.19.so
 lib/x86_64-linux-gnu/librt.so.1
+lib/x86_64-linux-gnu/libselinux.so.1
 lib/x86_64-linux-gnu/libtinfo.so.5
 lib/x86_64-linux-gnu/libtinfo.so.5.9
 lib64/ld-linux-x86-64.so.2
@@ -42,6 +45,8 @@ opt/app/dist/assets/vendor.map
 opt/app/dist/index.html
 opt/app/node_modules/async/lib/async.js
 opt/app/node_modules/async/package.json
+opt/app/node_modules/concat-files/index.js
+opt/app/node_modules/concat-files/package.json
 opt/app/node_modules/dirStat/index.js
 opt/app/node_modules/dirStat/node_modules/async/index.js
 opt/app/node_modules/dirStat/node_modules/async/lib/async.js
@@ -326,6 +331,7 @@ opt/app/node_modules/ws/lib/Validation.js
 opt/app/node_modules/ws/lib/WebSocket.js
 opt/app/node_modules/ws/lib/WebSocketServer.js
 opt/app/node_modules/ws/node_modules/bufferutil/build/Release/bufferutil.node
+opt/app/node_modules/ws/node_modules/bufferutil/fallback.js
 opt/app/node_modules/ws/node_modules/bufferutil/index.js
 opt/app/node_modules/ws/node_modules/bufferutil/node_modules/bindings/bindings.js
 opt/app/node_modules/ws/node_modules/bufferutil/node_modules/bindings/package.json
@@ -335,6 +341,7 @@ opt/app/node_modules/ws/node_modules/options/package.json
 opt/app/node_modules/ws/node_modules/ultron/index.js
 opt/app/node_modules/ws/node_modules/ultron/package.json
 opt/app/node_modules/ws/node_modules/utf-8-validate/build/Release/validation.node
+opt/app/node_modules/ws/node_modules/utf-8-validate/fallback.js
 opt/app/node_modules/ws/node_modules/utf-8-validate/index.js
 opt/app/node_modules/ws/node_modules/utf-8-validate/node_modules/bindings/bindings.js
 opt/app/node_modules/ws/node_modules/utf-8-validate/node_modules/bindings/package.json
@@ -342,14 +349,16 @@ opt/app/node_modules/ws/node_modules/utf-8-validate/package.json
 opt/app/node_modules/ws/package.json
 opt/app/server/api-ws.js
 opt/app/server/api.js
+opt/app/server/dav-chunked-upload.js
 opt/app/server/dav-notify.js
+opt/app/server/dav-root-delete.js
 opt/app/server/dav.js
 opt/app/server/index.js
 proc/cpuinfo
 sandstorm-http-bridge
 sandstorm-http-bridge-config
 sandstorm-manifest
+usr/bin/iojs
 usr/bin/node
-usr/bin/nodejs
 usr/lib/x86_64-linux-gnu/libstdc++.so.6
 usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.19
