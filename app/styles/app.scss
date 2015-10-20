@@ -113,18 +113,32 @@ md-sidenav {
   }
 }
 
+.file-display {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
 .file-component {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  flex: 1;
 
-  margin-top: 5%;
+  padding: 10px;
+
+  .meta, .preview {
+    flex-grow: 1;
+    flex-basis: 200px;
+  }
 
   .meta {
-    flex: 40;
-    margin-left: 10%;
     margin-right: 2em;
-    margin-top: 10%;
     text-align: right;
+    width: 320px;
 
     .filename {
       a {
@@ -159,14 +173,15 @@ md-sidenav {
     }
   }
   .preview {
-    flex: 40;
-    margin-right: 10%;
-    margin-left: 2em;
+    width: 320px;
+    height: 200px;
+    flex-basis: 200px;
+    flex-grow: 1;
+    flex-shrink: 0;
     min-height: 600px;
 
     display: flex;
     align-items: center;
-    justify-content: center;
 
     audio, .no-preview {
       width: 100%;
