@@ -46,6 +46,8 @@ opt/app/dist/index.html
 opt/app/node_modules/async/lib/async.js
 opt/app/node_modules/async/package.json
 opt/app/node_modules/concat-files/index.js
+opt/app/node_modules/concat-files/node_modules/async/lib/async.js
+opt/app/node_modules/concat-files/node_modules/async/package.json
 opt/app/node_modules/concat-files/package.json
 opt/app/node_modules/dirStat/index.js
 opt/app/node_modules/dirStat/node_modules/async/index.js
