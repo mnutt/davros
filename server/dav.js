@@ -8,7 +8,7 @@ var Tree                   = require("jsdav/lib/DAV/backends/fsext/tree");
 var jsDAV_Locks_Backend_FS = require("jsdav/lib/DAV/plugins/locks/fs");
 
 // for free disk space reporting
-var statvfs = require('statvfs');
+var statvfs = require('./statvfs-shim');
 fs.statvfs = statvfs;
 
 exports.server = function(root) {

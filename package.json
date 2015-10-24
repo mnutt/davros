@@ -54,7 +54,6 @@
     "mkdirp": "0.5.1",
     "morgan": "^1.6.1",
     "multiparty": "4.1.2",
-    "statvfs": "git://github.com/briankereszturi/node-statvfs.git#77643044210c4",
     "walker": "^1.0.7",
     "ws": "^0.8.0"
   }
