@@ -1,11 +1,11 @@
 var fs = require('fs');
 var os = require('os');
 
-var jsDAV                  = require("jsdav/lib/jsdav");
-var jsDAV_Server           = require("jsdav/lib/DAV/server");
-var jsDAV_Util             = require("jsdav/lib/shared/util");
-var Tree                   = require("jsdav/lib/DAV/backends/fsext/tree");
-var jsDAV_Locks_Backend_FS = require("jsdav/lib/DAV/plugins/locks/fs");
+var jsDAV                  = require("jsDAV/lib/jsdav");
+var jsDAV_Server           = require("jsDAV/lib/DAV/server");
+var jsDAV_Util             = require("jsDAV/lib/shared/util");
+var Tree                   = require("jsDAV/lib/DAV/backends/fsext/tree");
+var jsDAV_Locks_Backend_FS = require("jsDAV/lib/DAV/plugins/locks/fs");
 
 // for free disk space reporting
 var statvfs = require('./statvfs-shim');
