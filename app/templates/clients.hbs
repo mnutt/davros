@@ -4,8 +4,45 @@
   </div>
 {{/paper-toolbar}}
 
-{{#paper-content  flex-layout="column" flex=true}}
+{{#paper-content class="clients" flex-layout="column" flex=true}}
   <p class="content">
-    Davros is compatible with the <a href="https://owncloud.org/install/#install-clients" target="_blank">OwnCloud Desktop Client</a>.
+    Synchronize your file storage with your local computer using a desktop client. Davros is compatible with the <a href="https://owncloud.org" target="_blank">ownCloud</a> Desktop Client. Davros is neither affiliated with nor endorsed by ownCloud.
+
+    <h2>Step 1: Download a client from ownCloud</h2>
+
+    <div class="client-download">
+      <div>Choose your platform from the client download page:</div>
+
+      <a href="https://owncloud.org/install/#install-clients" target="_blank">
+        <img src="/images/clients/operating-systems.png">
+      </a>
+    </div>
+
+    <h2>Step 2: Configure the client</h2>
+
+    Start the client. In the <strong>Server Name</strong> field, use this value:
+    <div class="server-url">
+      {{offer-iframe template="$API_PROTO//sandstorm:$API_TOKEN@$API_HOST/#$API_TOKEN"}}
+    </div>
+
+    On the <strong>Enter user credentials</strong> step, use:
+
+    <div class="authentication">
+      <div class="username-field">
+        <label for="username">Username</label>
+        <div class="username"><pre>sandstorm</pre></div>
+      </div>
+
+      <div class="password-field">
+        <label for="password">Password</label>
+        <div class="password">{{offer-iframe template="$API_TOKEN"}}</div>
+      </div>
+    </div>
+
+    <em>
+      Note: credentials generated here expire within 5 minutes if not used, so if
+      you see authentication failures, first try coming back to this page and re-copying.
+    </em>
   </p>
+
 {{/paper-content}}
