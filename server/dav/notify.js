@@ -1,5 +1,5 @@
 var jsDAV_ServerPlugin = require("jsdav/lib/DAV/plugin");
-var apiWs = require('./api-ws');
+var apiWs = require('../api-ws');
 var path = require('path');
 
 var jsDAV_Notify_Plugin = module.exports = jsDAV_ServerPlugin.extend({

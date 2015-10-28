@@ -23,9 +23,9 @@ exports.server = function(root) {
     sandboxed: true,
     locksBackend: jsDAV_Locks_Backend_FS.new(root),
     plugins: jsDAV_Util.extend(jsDAV_Server.DEFAULT_PLUGINS, {
-      "ws-notify": require("./dav-notify"),
-      "root-delete": require("./dav-root-delete"),
-      "chunked-upload": require("./dav-chunked-upload")
+      "ws-notify": require("./notify"),
+      "root-delete": require("./root-delete"),
+      "chunked-upload": require("./chunked-upload")
     })
   });
 
