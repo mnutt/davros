@@ -47,6 +47,7 @@
   },
   "dependencies": {
     "async": "1.4.2",
+    "asyncjs": "git://github.com/fjakobs/async.js.git#bd61b6ae2cd7",
     "concat-files": "^0.1.0",
     "dirStat": "0.0.2",
     "express": "^4.13.1",
