@@ -6,6 +6,7 @@ var jsDAV_FS_Directory = require("jsDAV/lib/DAV/backends/fs/directory");
 var jsDAV_FS_Node = require("jsDAV/lib/DAV/backends/fs/node");
 var jsDAV_Chunked_File = require("./file");
 var Util = require("jsDAV/lib/shared/util");
+var Exc = require("jsDAV/lib/shared/exceptions");
 var Etag = require("./etag");
 
 var jsDAV_Chunked_Directory = module.exports = jsDAV_FS_Directory.extend(jsDAV_FS_Node, {
@@ -59,6 +60,28 @@ var jsDAV_Chunked_Directory = module.exports = jsDAV_FS_Directory.extend(jsDAV_F
   },
 
   /**
+   * Creates a new file in the directory
+   *
+   * data is a Buffer resource
+   *
+   * @param {String} name Name of the file
+   * @param {Buffer} data Initial payload
+   * @param {String} [enc]
+   * @param {Function} cbfscreatefile
+   * @return void
+   */
+  createFile: function(name, data, enc, cbfscreatefile) {
+    var self = this;
+    jsDAV_FS_Directory.createFile.call(this, name, data, enc,
+                                       function() {
+                                         if (err)
+                                           return cbfscreatefile(err);
+
+                                         Etag(self.path, cbfscreatefile);
+                                       });
+  },
+
+  /**
    * Creates a new file in the directory whilst writing to a stream instead of
    * from Buffer objects that reside in memory.
    *
@@ -73,11 +96,17 @@ var jsDAV_Chunked_Directory = module.exports = jsDAV_FS_Directory.extend(jsDAV_F
       handler.httpRequest.headers["oc-file-name"] = name;
       this.writeFileChunk(handler, enc, cbfscreatefile);
     } else {
+      var self = this;
       var newPath = Path.join(this.path, name);
       var stream = Fs.createWriteStream(newPath, {
         encoding: enc
       });
-      handler.getRequestBody(enc, stream, false, cbfscreatefile);
+      handler.getRequestBody(enc, stream, false, function(err) {
+        if(err)
+          return cbfscreatefile(err);
+
+        Etag(self.path, cbfscreatefile);
+      });
     }
   },
 
@@ -98,7 +127,7 @@ var jsDAV_Chunked_Directory = module.exports = jsDAV_FS_Directory.extend(jsDAV_F
 
     console.log(filename);
 
-    var startPosition = myChunk * chunkSize
+    var startPosition = myChunk * chunkSize;
 
     var track = handler.server.chunkedUploads[uid];
     if (!track) {
