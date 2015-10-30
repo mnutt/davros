@@ -96,16 +96,9 @@ var jsDAV_Chunked_Directory = module.exports = jsDAV_FS_Directory.extend(jsDAV_F
       handler.httpRequest.headers["oc-file-name"] = name;
       this.writeFileChunk(handler, enc, cbfscreatefile);
     } else {
-      var self = this;
-      var newPath = Path.join(this.path, name);
-      var stream = Fs.createWriteStream(newPath, {
-        encoding: enc
-      });
-      handler.getRequestBody(enc, stream, false, function(err) {
-        if(err)
-          return cbfscreatefile(err);
-
-        Etag(self.path, cbfscreatefile);
+      var path = Path.join(this.path, name);
+      jsDAV_FS_Directory.createFileStream.call(this, handler, name, enc, function() {
+        Etag(path, cbfscreatefile);
       });
     }
   },
@@ -124,8 +117,6 @@ var jsDAV_Chunked_Directory = module.exports = jsDAV_FS_Directory.extend(jsDAV_F
     var uid = parts[2];
     var totalChunks = parseInt(parts[3]);
     var myChunk = parseInt(parts[4]);
-
-    console.log(filename);
 
     var startPosition = myChunk * chunkSize;
 
