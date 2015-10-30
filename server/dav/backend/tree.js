@@ -25,9 +25,10 @@ var jsDAV_Chunked_Tree = module.exports = jsDAV_FS_Tree.extend({
     Fs.stat(realPath, function(err, stat) {
       if (!Util.empty(err))
         return cbfstree(new Exc.FileNotFound("File at location " + nicePath + " not found"));
+
       cbfstree(null, stat.isDirectory()
                ? jsDAV_Chunked_Directory.new(realPath)
-               : jsDAV_Chunked_File.new(realPath))
+               : jsDAV_Chunked_File.new(realPath));
     });
-  },
+  }
 });

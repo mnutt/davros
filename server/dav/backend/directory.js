@@ -34,7 +34,7 @@ var jsDAV_Chunked_Directory = module.exports = jsDAV_FS_Directory.extend(jsDAV_F
       }
       cbfsgetchild(null, stat.isDirectory()
                    ? jsDAV_Chunked_Directory.new(path)
-                   : jsDAV_Chunked_File.new(path))
+                   : jsDAV_Chunked_File.new(path));
     });
   },
 
@@ -54,9 +54,9 @@ var jsDAV_Chunked_Directory = module.exports = jsDAV_FS_Directory.extend(jsDAV_F
                   );
         cbnextdirch();
       })
-        .end(function() {
-          cbfsgetchildren(null, nodes);
-        });
+      .end(function() {
+        cbfsgetchildren(null, nodes);
+      });
   },
 
   /**
