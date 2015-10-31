@@ -90,7 +90,6 @@ opt/app/app/adapters
 opt/app/app/adapters/application.js
 opt/app/app/app.js
 opt/app/app/components
-opt/app/app/components/.
 opt/app/app/components/.gitkeep
 opt/app/app/components/offer-iframe.js
 opt/app/app/components/path-breadcrumb.js
@@ -116,10 +115,8 @@ opt/app/app/routes/home.js
 opt/app/app/serializers
 opt/app/app/serializers/application.js
 opt/app/app/styles
-opt/app/app/styles/.
 opt/app/app/styles/app.scss
 opt/app/app/templates
-opt/app/app/templates/.
 opt/app/app/templates/application.hbs
 opt/app/app/templates/clients.hbs
 opt/app/app/templates/components
