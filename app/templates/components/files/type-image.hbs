@@ -12,9 +12,13 @@
       <span class="size">{{filesize model.size}}</span>
     </div>
 
-    <a class="download" href="{{model.rawPath}}">
-      Download Original {{paper-icon icon="cloud-download"}}
-    </a>
+    <form action="{{model.rawPath}}" method="GET">
+      <button class="download ember-view md-primary md-raised md-default-theme md-button">
+        <span disabled="false">
+          {{paper-icon icon="cloud-download" raised=true}} Download Original
+        </span>
+      </button>
+    </form>
   </div>
 
   <div class="preview">
