@@ -9,6 +9,7 @@ bin/ls
 bin/mkdir
 bin/sh
 etc/alternatives/awk
+etc/alternatives/node
 etc/bash_completion.d
 etc/bash_completion.d/debconf
 etc/bash_completion.d/dkms
@@ -657,9 +658,9 @@ usr/bin/awk
 usr/bin/curl
 usr/bin/env
 usr/bin/id
-usr/bin/iojs
 usr/bin/mawk
 usr/bin/node
+usr/bin/nodejs
 usr/bin/tail
 usr/bin/whoami
 usr/lib/git-core/git-sh-prompt
