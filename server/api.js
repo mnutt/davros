@@ -86,6 +86,17 @@ exports.files = function(root) {
         return;
       }
 
+      if(req.method === "DELETE") {
+        fs.unlink(fullPath, function(err) {
+          if (err) { throw(err); }
+          res.writeHead(204, {});
+          res.end();
+
+          apiWs.notify(path.dirname(relativePath));
+        });
+        return;
+      }
+
       var data = stat;
       data.path = relativePath.slice(1);
       data.name = path.basename(relativePath);

@@ -35,5 +35,22 @@ export default Ember.Route.extend({
     } else {
       this.render('file');
     }
+  },
+
+  actions: {
+    "delete": function() {
+      var self = this;
+      var model = this.get('controller.model');
+      var parent = model.get('parent');
+
+      if(confirm("Are you sure you want to delete this file?")) {
+        return model.destroyRecord().then(function() {
+          return self.transitionTo('file', parent);
+        });
+      } else {
+        return true;
+      }
+    }
   }
+
 });

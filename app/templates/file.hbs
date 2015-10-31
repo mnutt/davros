@@ -11,3 +11,7 @@
 {{component model.typeComponent model=model class="file-display"}}
 
 {{outlet}}
+
+<div class="file-actions">
+  {{#paper-button action="delete" warn=true}}{{paper-icon icon="delete"}} Delete{{/paper-button}}
+</div>
