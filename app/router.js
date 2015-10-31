@@ -12,4 +12,12 @@ Router.map(function() {
   this.route('not-found', {path: '*path'});
 });
 
+Router.reopen({
+  updateSandstorm: function() {
+    window.parent.postMessage({
+      setPath: this.get('url')
+    }, '*');
+  }.on('didTransition')
+});
+
 export default Router;
