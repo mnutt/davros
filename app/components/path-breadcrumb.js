@@ -4,7 +4,7 @@ export default Ember.Component.extend({
   classNames: ['breadcrumb'],
 
   parts: function() {
-    var pieces = this.get('path').split('/');
+    var pieces = (this.get('path') || '').split('/');
     var p = [];
 
     if(pieces.join('') === '') {

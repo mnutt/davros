@@ -3,8 +3,11 @@ import Ember from 'ember';
 export default Ember.Route.extend({
   beforeModel: function(transition) {
     // Redirect /files to file route
-    if(transition.params['not-found'].path.indexOf("files") === 0) {
+    var path = transition.params['not-found'].path;
+    if(path === "files/" || path === "files") {
       this.transitionTo('file', '');
     }
+
+    return true;
   }
 });

@@ -25,8 +25,7 @@ export default Ember.Route.extend({
   },
 
   model: function(params) {
-    var id = params.path;
-    if(!id) { id = '/'; }
+    var id = params.path || '/';
     return this.store.find('file', id);
   },
 
@@ -37,5 +36,4 @@ export default Ember.Route.extend({
       this.render('file');
     }
   }
-
 });
