@@ -80,7 +80,8 @@ exports.files = function(root) {
 
     fs.stat(fullPath, function(err, stat) {
       if(err) {
-        res.writeHead(500, {});
+        var code = (err.errno === -2) ? 404 : 500;
+        res.writeHead(code, {});
         res.end(JSON.stringify(err));
         return;
       }
