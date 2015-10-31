@@ -10,5 +10,6 @@ export default {
   'avi': 'video',
   'mp3': 'audio',
   'aac': 'audio',
+  'md': 'markdown',
   'defaultType': 'default-type'
 };

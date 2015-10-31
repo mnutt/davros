@@ -4,5 +4,6 @@ export default {
   image: 'image',
   video: 'local-movies',
   audio: 'music-note',
+  markdown: 'code',
   'default-type': 'insert-drive-file'
 };

@@ -1,4 +1,4 @@
-<div layout="row" class="file-component audio-component">
+<div layout="row" class="file-component markdown-component">
   <div class="meta">
     <div class="filename">
       <a href="{{model.rawPath}}">
@@ -22,6 +22,10 @@
   </div>
 
   <div class="preview">
-    <audio src="{{model.rawPath}}" controls="controls"></audio>
+    <div class="markdown">
+      <div class="inner">
+        {{markdown-to-html markdown=rawContent}}
+      </div>
+    </div>
   </div>
 </div>
