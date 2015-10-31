@@ -258,3 +258,19 @@ md-sidenav {
     }
   }
 }
+
+.notfound {
+  .huge {
+    font-weight: bold;
+    color: #BBB;
+    font-size: 5em;
+    text-align: center;
+    justify-content: center;
+    padding-top: 1em;
+    padding-bottom: 0.2em;
+  }
+
+  .description {
+    text-align: center;
+  }
+}

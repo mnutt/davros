@@ -11,7 +11,6 @@ export default Ember.Route.extend({
     },
 
     uploadFile: function (file) {
-      console.log("UPLOAD");
       var source = file.file.getSource();
       file.upload('/api/upload', {
         data: {

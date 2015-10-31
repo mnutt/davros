@@ -6,10 +6,10 @@ var Router = Ember.Router.extend({
 });
 
 Router.map(function() {
-  this.route('file', {path: '/files'});
   this.resource('file', {path: '/files/*path'});
   this.route('home', {path: '/'});
   this.route('clients');
+  this.route('not-found', {path: '*path'});
 });
 
 export default Router;
