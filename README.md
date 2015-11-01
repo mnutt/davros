@@ -1,53 +1,48 @@
-# Davros
+# Davros File Storage
 
-This README outlines the details of collaborating on this Ember application.
-A short introduction of this app could easily go here.
+Davros lets you store all of your files in the cloud and sync them between your devices.
 
 ## Prerequisites
 
-You will need the following things properly installed on your computer.
-
-* [Git](http://git-scm.com/)
-* [Node.js](http://nodejs.org/) (with NPM)
-* [Bower](http://bower.io/)
-* [Ember CLI](http://www.ember-cli.com/)
-* [PhantomJS](http://phantomjs.org/)
+Davros is built to run inside [Sandstorm](https://sandstorm.io), an open source web application platform. You can either [run Sandstorm yourself](https://sandstorm.io/install/) or [let someone else host it for you](https://oasis.sandstorm.io/).
 
 ## Installation
 
-* `git clone <repository-url>` this repository
-* change into the new directory
+* [Set up Sandstorm](https://sandstorm.io/install/)
+* Download the [latest release](https://github.com/mnutt/davros/releases) and upload it to your Sandstorm server.
+
+## Development
+
+Davros is built using Node.js and Ember.js. To run locally, you'll need to install node.js. Then:
+
 * `npm install`
 * `bower install`
+* `PORT=3009 ember serve`
 
-## Running / Development
+At this point you'll have Davros running at `http://localhost:3009`. Substitute `3009` for another port if you want. Note that running Davros this way is not particularly safe; it relies completely on Sandstorm for user management and authentication.
 
-* `ember server`
-* Visit your app at [http://localhost:4200](http://localhost:4200).
+In development, you can connect your desktop client to http://localhost:3009/ with any username and password.
 
-### Code Generators
+## Sandstorm Development
 
-Make use of the many generators for code, try `ember help generate` for more details
+A few parts of Davros are dependent on running within Sandstorm, such as the authentication instructions on the Clients page. To run inside Sandstorm, first get [vagrant-spk](https://github.com/sandstorm-io/vagrant-spk). Then, within the Davros directory, run
 
-### Running Tests
+    vagrant-spk up
+    ember spk
 
-* `ember test`
-* `ember test --server`
+This uses [ember-cli-vagrant-spk](https://github.com/mnutt/ember-cli-vagrant-spk) to automatically inject Davros into your local Sandstorm instance.
 
 ### Building
 
 * `ember build` (development)
-* `ember build --environment production` (production)
+* `ember build --environment production` (production, minified)
+* `vagrant-spk pack build/davros-v0.10.0`
 
-### Deploying
+### Acknowledgements
 
-Specify what it takes to deploy your app.
+* Built on [Ember.js](https://emberjs.com).
+* WebDAV support built with [jsDAV](https://github.com/mikedeboer/jsDAV).
 
-## Further Reading / Useful Links
+### License
 
-* [ember.js](http://emberjs.com/)
-* [ember-cli](http://www.ember-cli.com/)
-* Development Browser Extensions
-  * [ember inspector for chrome](https://chrome.google.com/webstore/detail/ember-inspector/bmdblncegkenkacieihfhpjfppoconhi)
-  * [ember inspector for firefox](https://addons.mozilla.org/en-US/firefox/addon/ember-inspector/)
-
+See LICENSE file.
