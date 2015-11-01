@@ -19,9 +19,9 @@ const pkgdef :Spk.PackageDefinition = (
 
     appTitle = (defaultText = "Davros"),
 
-    appVersion = 103,  # Increment this for every release.
+    appVersion = 104,  # Increment this for every release.
 
-    appMarketingVersion = (defaultText = "0.10.3"),
+    appMarketingVersion = (defaultText = "0.10.4"),
     # Human-readable representation of appVersion. Should match the way you
     # identify versions of your app in documentation and marketing.
 
@@ -34,11 +34,41 @@ const pkgdef :Spk.PackageDefinition = (
       )
     ],
 
-    continueCommand = .myCommand
+    continueCommand = .myCommand,
     # This is the command called to start your app back up after it has been
     # shut down for inactivity. Here we're using the same command as for
     # starting a new instance, but you could use different commands for each
     # case.
+
+    metadata = (
+      icons = (
+        appGrid = (svg = embed "app-graphics/davros-128.svg"),
+        grain = (svg = embed "app-graphics/davros-24.svg"),
+        market = (svg = embed "app-graphics/davros-128.svg"),
+      ),
+
+      website = "https://github.com/mnutt/davros/",
+      codeUrl = "https://github.com/mnutt/davros/",
+      license = (openSource = apache2),
+      categories = [communications],
+
+      author = (
+        contactEmail = "michael@nutt.im",
+        pgpSignature = embed "pgp-signature",
+      ),
+      pgpKeyring = embed "pgp-keyring",
+
+      description = (defaultText = "Davros lets you store all of your files in the cloud and sync them between your devices."),
+      shortDescription = (defaultText = "File storage"),
+
+      screenshots = [
+        (width = 1134, height = 764, png = embed "screenshot-1.png"),
+        (width = 1134, height = 764, jpeg = embed "screenshot-2.jpg"),
+        (width = 1134, height = 764, png = embed "screenshot-3.png"),
+      ],
+
+      changeLog = (defaultText = embed "../CHANGELOG.md"),
+    ),
   ),
 
   sourceMap = (
@@ -63,7 +93,7 @@ const pkgdef :Spk.PackageDefinition = (
   # `spk dev` will write a list of all the files your app uses to this file.
   # You should review it later, before shipping your app.
 
-  alwaysInclude = []
+  alwaysInclude = ["opt/app/dist"]
   # Fill this list with more names of files or directories that should be
   # included in your package, even if not listed in sandstorm-files.list.
   # Use this to force-include stuff that you know you need but which may
