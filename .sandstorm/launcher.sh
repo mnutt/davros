@@ -9,4 +9,7 @@ cd /opt/app
 mkdir -p $STORAGE_PATH
 mkdir -p $TEMP_STORAGE_PATH
 
+# Add some sample files if the grain is empty
+find $STORAGE_PATH -empty -maxdepth 0 -exec cp -r sample-files/* $STORAGE_PATH/ \;
+
 /usr/bin/node app.js
