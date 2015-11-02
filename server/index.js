@@ -13,11 +13,15 @@ var apiWs  = require('./api-ws');
 var dav    = require('./dav');
 var morgan = require('morgan');
 
+var sandstormPermissions = require('./sandstorm_permissions');
+
 
 module.exports = function(app, options) {
   var root = path.resolve(process.env.STORAGE_PATH || (__dirname + "/../data"));
 
   apiWs.serve(options.httpServer);
+
+  app.use(sandstormPermissions);
 
   app.use(dav.server(root));
   app.use('/status.php', dav.status);

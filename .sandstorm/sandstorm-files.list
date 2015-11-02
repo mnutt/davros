@@ -625,6 +625,7 @@ opt/app/server/dav/notify.js
 opt/app/server/dav/root-delete.js
 opt/app/server/dav/statvfs-shim.js
 opt/app/server/index.js
+opt/app/server/sandstorm_permissions.js
 opt/app/tests
 opt/app/tests/.jshintrc
 opt/app/tests/helpers
