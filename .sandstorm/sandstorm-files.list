@@ -265,6 +265,10 @@ opt/app/bower_components/uri.js/src/URI.min.js
 opt/app/config
 opt/app/config/environment.js
 opt/app/dist
+opt/app/dist/assets/davros-b2ce055404972d8c906986e29a874bd8.css
+opt/app/dist/assets/davros-cec90ef808b773da9bc006721804d1be.js
+opt/app/dist/assets/vendor-65fb3868cda15e0d0224047f8809cb47.js
+opt/app/dist/assets/vendor-a0627636d8dcf5219b848008a8c3701c.css
 opt/app/dist/index.html
 opt/app/ember-cli-build.js
 opt/app/node_modules/async/lib/async.js

@@ -1,3 +1,6 @@
+# 0.10.6
+* Add sandstorm sharing permissions (view, edit)
+
 # 0.10.5
 * Support HTTPS Sandstorm installs
 
