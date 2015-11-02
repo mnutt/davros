@@ -659,6 +659,7 @@ sandstorm-http-bridge-config
 sandstorm-manifest
 usr/bin/awk
 usr/bin/curl
+usr/bin/du
 usr/bin/env
 usr/bin/find
 usr/bin/id
