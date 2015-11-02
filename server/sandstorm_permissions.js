@@ -34,8 +34,6 @@ module.exports = function(req, res, next) {
 
     for(var i = 0; i < permissions.length; i++) {
       var permission = permissions[i];
-      console.log(permission);
-      console.log(validate[permissions]);
 
       if(validate[permission] && validate[permission](req)) {
         return next();
