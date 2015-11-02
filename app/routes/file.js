@@ -2,7 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
 
-  socketUrl: ((document.location.protocol === 'https') ? 'wss://' : 'ws://') + document.location.host,
+  socketUrl: ((document.location.protocol === 'https:') ? 'wss://' : 'ws://') + document.location.host,
   socketService: Ember.inject.service('websockets'),
 
   init: function() {
