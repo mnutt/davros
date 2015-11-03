@@ -28,7 +28,7 @@ export default Ember.Component.extend({
     var event = e.originalEvent;
     if (event.data && event.data.rpcId === this.get('elementId')) {
       if (event.data.error) {
-        console.log("Offer template error: " + event.data.error);
+        console.error("Offer template error: " + event.data.error);
       } else {
         this.set('src', event.data.uri);
       }

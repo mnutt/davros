@@ -15,7 +15,6 @@ export default Ember.Route.extend({
 
   messageHandler: function(rawMessage) {
     var message = JSON.parse(rawMessage.data);
-    console.log(message);
 
     if(message.file) {
       if(this.get('controller.model.id') === message.file) {
