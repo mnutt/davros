@@ -22,3 +22,6 @@
 export DEBIAN_FRONTEND=noninteractive
 curl -sL https://deb.nodesource.com/setup_node_4.x | bash -
 apt-get install -y iojs git-core g++
+
+# Compile a small helper to get a publicId
+/opt/app/.sandstorm/compile_helper.sh

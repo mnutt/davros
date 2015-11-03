@@ -612,6 +612,7 @@ opt/app/sample-files
 opt/app/sample-files/Welcome to Davros.md
 opt/app/sample-files/space.jpg
 opt/app/sample-files/voyager.jpg
+opt/app/sandstorm-integration/bin/getPublicId
 opt/app/server
 opt/app/server/api-ws.js
 opt/app/server/api.js
@@ -624,6 +625,7 @@ opt/app/server/dav/notify.js
 opt/app/server/dav/root-delete.js
 opt/app/server/dav/statvfs-shim.js
 opt/app/server/index.js
+opt/app/server/publishing.js
 opt/app/server/sandstorm_permissions.js
 opt/app/tests
 opt/app/tests/.jshintrc

@@ -12,7 +12,7 @@ var api    = require('./api');
 var apiWs  = require('./api-ws');
 var dav    = require('./dav');
 var morgan = require('morgan');
-
+var publishing = require('./publishing');
 var sandstormPermissions = require('./sandstorm_permissions');
 
 
@@ -32,6 +32,10 @@ module.exports = function(app, options) {
 
   var uploadServer = api.upload(root);
   app.use('/api/upload', uploadServer);
+
+  app.get('/api/publish/info', publishing.getInfo);
+  app.post('/api/publish', publishing.publish);
+  app.post('/api/unpublish', publishing.unpublish);
 
   // Log proxy requests
   app.use(morgan('dev'));
