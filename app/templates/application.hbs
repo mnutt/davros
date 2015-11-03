@@ -25,10 +25,12 @@
           Files
         {{/paper-item}}
 
-        {{#paper-item action="transitionTo" param="clients"}}
-          {{paper-icon icon="desktop-mac"}}
-          Clients
-        {{/paper-item}}
+        {{#if canSync}}
+          {{#paper-item action="transitionTo" param="clients"}}
+            {{paper-icon icon="desktop-mac"}}
+            Clients
+          {{/paper-item}}
+        {{/if}}
       {{/paper-list}}
     {{/paper-content}}
 

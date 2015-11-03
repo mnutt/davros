@@ -32,6 +32,12 @@ module.exports = function(req, res, next) {
   if(permissions) {
     permissions = permissions.split(',');
 
+    if(req.url === '/api/permissions') {
+      res.writeHead(200, {'Content-Type': 'application/json'});
+      res.end(JSON.stringify({permissions: permissions}));
+      return;
+    }
+
     for(var i = 0; i < permissions.length; i++) {
       var permission = permissions[i];
 

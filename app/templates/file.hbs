@@ -13,5 +13,7 @@
 {{outlet}}
 
 <div class="file-actions">
-  {{#paper-button action="delete" warn=true}}{{paper-icon icon="delete"}} Delete{{/paper-button}}
+  {{#if canEdit}}
+    {{#paper-button action="delete" warn=true}}{{paper-icon icon="delete"}} Delete{{/paper-button}}
+  {{/if}}
 </div>
