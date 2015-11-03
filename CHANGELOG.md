@@ -1,3 +1,9 @@
+# 0.10.8
+* Hide editing options when viewing shared grain with only 'view' permissions
+
+# 0.10.7
+* Show correct (or at least, more correct) disk usage in desktop client
+
 # 0.10.6
 * Add sandstorm sharing permissions (view, edit)
 
