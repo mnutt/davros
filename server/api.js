@@ -114,7 +114,9 @@ exports.files = function(root) {
             file.name = path.basename(file.filePath);
           });
 
-          data.files = files;
+          data.files = files.filter(function(file) {
+            return file.name != ".jsdav";
+          });
 
           JSONAPISerializer('file', data, {
             topLevelLinks: { self: 'http://localhost:4214/api/files' },
