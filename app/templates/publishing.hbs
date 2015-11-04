@@ -26,21 +26,23 @@
           <h2>Set up your own domain or subdomain:</h2>
 
           <div class="setup">
-            <div class="inner">
               {{paper-input value=domain placeholder="www.example.com"}}
-            </div>
           </div>
 
           <div class="records">
-            <div class="inner">
-              {{#if domainSet}}
-                Add the following DNS records to your domain registrar:
-                <pre>
-      {{domain}}. IN CNAME {{model.host}}
-      sandstorm-{{domain}}. IN TXT {{model.publicId}}
-                </pre>
-              {{/if}}
-            </div>
+            {{#if domainSet}}
+              Add the following DNS records to your domain registrar:
+              <pre>
+    {{domain}}. IN CNAME {{model.host}}
+    sandstorm-www.{{domain}}. IN TXT {{model.publicId}}
+              </pre>
+            {{/if}}
+
+            {{#if domainIsApex}}
+              <div class="note">
+                It looks like you're using an apex domain, so CNAME won't work. You should either use www.{{domain}} or replace <code>IN&nbsp;CNAME&nbsp;{{model.host}}</code> with <code>IN&nbsp;A&nbsp;<i>(IP&nbsp;of&nbsp;{{model.host}})</i></code>. If <b>{{model.host}}</b>'s IP ever changes, you'll need to update the DNS record.
+              </div>
+            {{/if}}
           </div>
         </div>
       </div>

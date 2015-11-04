@@ -302,23 +302,15 @@ md-sidenav {
   }
 
   .dns-setup {
-    .setup, .records {
-      width: 50%;
-      float: left;
-    }
-
-    .setup .inner {
-      padding-right: 10px;
-    }
-
-    .records .inner {
-      padding-left: 10px;
-    }
-
     pre {
       background-color: #FFF;
-      max-width: 800px;
       padding: 20px 0;
+    }
+
+    .note {
+      background-color: #FDE;
+      padding: 20px;
+      margin: 10px 0;
     }
   }
 }
