@@ -19,9 +19,9 @@ const pkgdef :Spk.PackageDefinition = (
 
     appTitle = (defaultText = "Davros"),
 
-    appVersion = 111,  # Increment this for every release.
+    appVersion = 112,  # Increment this for every release.
 
-    appMarketingVersion = (defaultText = "0.11.1"),
+    appMarketingVersion = (defaultText = "0.11.2"),
     # Human-readable representation of appVersion. Should match the way you
     # identify versions of your app in documentation and marketing.
 
@@ -50,7 +50,7 @@ const pkgdef :Spk.PackageDefinition = (
       website = "https://github.com/mnutt/davros/",
       codeUrl = "https://github.com/mnutt/davros/",
       license = (openSource = apache2),
-      categories = [communications],
+      categories = [productivity, media],
 
       author = (
         contactEmail = "michael@nutt.im",

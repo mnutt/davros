@@ -1,3 +1,6 @@
+# 0.11.2
+* Small release to fix some metadata
+
 # 0.11.1
 * Fix a bug where app crashed when client tried to display disk usage in some cases
 * Ensure scrollbar doesn't obscure client server url display
