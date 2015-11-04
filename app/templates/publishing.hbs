@@ -27,7 +27,7 @@
 
           <div class="setup">
             <div class="inner">
-              {{paper-input value=domain placeholder="example.com"}}
+              {{paper-input value=domain placeholder="www.example.com"}}
             </div>
           </div>
 
@@ -37,7 +37,7 @@
                 Add the following DNS records to your domain registrar:
                 <pre>
       {{domain}}. IN CNAME {{model.host}}
-      sandstorm-www.{{domain}}. IN TXT {{model.publicId}}
+      sandstorm-{{domain}}. IN TXT {{model.publicId}}
                 </pre>
               {{/if}}
             </div>
