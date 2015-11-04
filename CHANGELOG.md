@@ -1,3 +1,6 @@
+# 0.11.0
+* Add Web Publishing to expose a shared folder as a website
+
 # 0.10.8
 * Hide editing options when viewing shared grain with only 'view' permissions
 
