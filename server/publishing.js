@@ -1,6 +1,7 @@
 var fs   = require('fs');
 var path = require('path');
 var exec = require('child_process').exec;
+var url  = require('url');
 
 var destination = '/var/www';
 var source = path.relative(path.dirname(destination), process.env.STORAGE_PATH);
@@ -22,10 +23,14 @@ exports.getInfo = function(req, res, next) {
         }
 
         var lines = stdout.split("\n");
+        var publicId = lines[0];
+        var autoUrl = lines[2];
+        var host = url.parse(autoUrl).hostname;
 
         var data = {
-          publicId: lines[0],
-          autoUrl: lines[2]
+          publicId: publicId,
+          autoUrl: autoUrl,
+          host: host
         };
 
         res.json(data);

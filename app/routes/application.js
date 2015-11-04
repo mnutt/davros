@@ -7,6 +7,8 @@ export default Ember.Route.extend({
         this.transitionTo('file', '');
       } else if(route === 'clients') {
         this.transitionTo('clients');
+      } else if(route === 'publishing') {
+        this.transitionTo('publishing');
       }
     },
 

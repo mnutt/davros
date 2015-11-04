@@ -9,6 +9,7 @@ Router.map(function() {
   this.resource('file', {path: '/files/*path'});
   this.route('home', {path: '/'});
   this.route('clients');
+  this.route('publishing');
   this.route('not-found', {path: '*path'});
 });
 

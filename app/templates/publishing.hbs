@@ -1,0 +1,55 @@
+{{#paper-toolbar}}
+  <div class="md-toolbar-tools">
+    Web Publishing
+
+    <div id="upload-file"></div>
+  </div>
+{{/paper-toolbar}}
+
+{{#paper-content class="publishing" flex-layout="column" flex=true}}
+  <p class="content">
+    You can publish this shared directory to the web. Add <code>index.html</code> to the top level to set up your site. All files in the shared directory will be publicly accessible.
+
+    {{#if model.publicId}}
+      <div class="toggle-publishing">
+        {{#paper-button raised=true warn=true action="unpublish"}}Disable{{/paper-button}}
+        <strong>Publishing is Enabled</strong>
+      </div>
+
+      <div class="publish-info">
+        <div class="auto-url">
+          Preview available from:
+          <a target="_blank" href={{model.autoUrl}}>{{model.autoUrl}}</a>
+        </div>
+
+        <div class="dns-setup">
+          <h2>Set up your own domain or subdomain:</h2>
+
+          <div class="setup">
+            <div class="inner">
+              {{paper-input value=domain placeholder="example.com"}}
+            </div>
+          </div>
+
+          <div class="records">
+            <div class="inner">
+              {{#if domainSet}}
+                Add the following DNS records to your domain registrar:
+                <pre>
+      {{domain}}. IN CNAME {{model.host}}
+      sandstorm-www.{{domain}}. IN TXT {{model.publicId}}
+                </pre>
+              {{/if}}
+            </div>
+          </div>
+        </div>
+      </div>
+    {{else}}
+      <div class="toggle-publishing">
+        {{#paper-button raised=true primary=true action="publish"}}Enable{{/paper-button}}
+        <strong>Publishing is Disabled</strong>
+      </div>
+    {{/if}}
+  </p>
+
+{{/paper-content}}

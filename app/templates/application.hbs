@@ -31,6 +31,13 @@
             Clients
           {{/paper-item}}
         {{/if}}
+
+        {{#if canEdit}}
+          {{#paper-item action="transitionTo" param="publishing"}}
+            {{paper-icon icon="web"}}
+            Publishing
+          {{/paper-item}}
+        {{/if}}
       {{/paper-list}}
     {{/paper-content}}
 
