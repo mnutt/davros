@@ -1,3 +1,6 @@
+# 0.11.1
+* Fix a bug where app crashed when client tried to display disk usage in some cases
+
 # 0.11.0
 * Add Web Publishing to expose a shared folder as a website
 

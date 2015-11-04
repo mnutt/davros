@@ -19,9 +19,9 @@ const pkgdef :Spk.PackageDefinition = (
 
     appTitle = (defaultText = "Davros"),
 
-    appVersion = 110,  # Increment this for every release.
+    appVersion = 111,  # Increment this for every release.
 
-    appMarketingVersion = (defaultText = "0.11.0"),
+    appMarketingVersion = (defaultText = "0.11.1"),
     # Human-readable representation of appVersion. Should match the way you
     # identify versions of your app in documentation and marketing.
 
@@ -58,7 +58,7 @@ const pkgdef :Spk.PackageDefinition = (
       ),
       pgpKeyring = embed "pgp-keyring",
 
-      description = (defaultText = "Davros lets you store all of your files in the cloud and sync them between your devices."),
+      description = (defaultText = embed "description.md"),
       shortDescription = (defaultText = "File storage"),
 
       screenshots = [

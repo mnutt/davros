@@ -52,7 +52,7 @@
     "concat-files": "^0.1.0",
     "dirStat": "0.0.2",
     "express": "^4.13.1",
-    "jsDAV": "git://github.com/mnutt/jsDAV.git",
+    "jsDAV": "git://github.com/mnutt/jsDAV.git#a1a7f9f90a17",
     "jsonapi-serializer": "^1.0.4",
     "mkdirp": "0.5.1",
     "morgan": "^1.6.1",
