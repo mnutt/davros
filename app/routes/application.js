@@ -14,11 +14,23 @@ export default Ember.Route.extend({
 
     uploadFile: function (file) {
       var source = file.file.getSource();
+
+      var location = document.location.pathname;
+      if(location.indexOf('/files') === 0) {
+        // if user is in a directory, upload the files there
+        location = location.replace(/^\/files\//, '');
+      } else {
+        // otherwise, upload files in the root directory
+        location = '';
+      }
+
       file.upload('/api/upload', {
         data: {
           relativePath: source.relativePath,
-          location: document.location.pathname.replace(/^\/files\//, '')
+          location: location
         }
+      }).then((response) => {
+        this.transitionTo('file', location);
       });
     }
   }
