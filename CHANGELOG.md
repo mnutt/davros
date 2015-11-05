@@ -1,3 +1,6 @@
+# 0.11.4
+* Correct one more issue with uploading files into the correct directory from the web UI
+
 # 0.11.3
 * Fix publishing instructions and warn about CNAMEing top-level domains
 * Some styling cleanup
