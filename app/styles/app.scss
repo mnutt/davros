@@ -35,6 +35,10 @@ md-content p.content {
 md-sidenav {
   min-height: 100vh;
   text-align: left;
+
+  md-list-item .md-list-item-inner md-icon {
+    flex: 1;
+  }
 }
 
 .material-icons {
