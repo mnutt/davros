@@ -21,6 +21,14 @@ export default DS.Model.extend({
     return this.get('path').replace(/\/?[^\/]*\/?$/, '');
   }.property('path'),
 
+  linkedPath: function() {
+    if(this.get('isDirectory')) {
+      return this.get('path') + "/";
+    } else {
+      return this.get('path');
+    }
+  }.property('path', 'isDirectory'),
+
   isDirectory: function() {
     // "0040000" in octal is the bitmask for a directory
     return (this.get('mode') & parseInt("0040000", 8)) > 0;

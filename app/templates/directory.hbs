@@ -21,7 +21,7 @@
   <tbody>
     {{#each model.sortedFiles as |file|}}
       <tr>
-        {{#link-to 'file' file.path class="name" tagName="td"}}
+        {{#link-to 'file' file.linkedPath class="name" tagName="td"}}
           {{#if file.isDirectory}}
             {{paper-icon icon="folder"}}
           {{else}}
