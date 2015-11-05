@@ -1,3 +1,8 @@
+# 0.11.3
+* Fix publishing instructions and warn about CNAMEing top-level domains
+* Some styling cleanup
+* Fix for upload button breaking when moving between different pages. If upload button is clicked on Clients or Publishing page, upload to the root and redirect there. Eventually it should be hidden on those pages.
+
 # 0.11.2
 * Small release to fix some metadata
 
