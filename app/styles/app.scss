@@ -13,6 +13,14 @@ body, #content {
   background-color: #f3f3f3;
 }
 
+md-toolbar {
+  min-height: 48px;
+
+  .md-toolbar-tools {
+    height: 48px;
+  }
+}
+
 md-toolbar .title {
   display: inline-block;
   margin-right: 100px;
