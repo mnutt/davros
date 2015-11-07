@@ -1,13 +1,3 @@
-{{#pl-uploader onfileadd="uploadFile" for="upload-file" for-dropzone="content" as |queue dropzone|}}
-  {{#if queue.length}}
-    <div class="upload-progress">
-      {{paper-progress-linear warn=true value=queue.progress}}
-    </div>
-  {{/if}}
-
-  {{partial 'file-upload'}}
-{{/pl-uploader}}
-
 {{#paper-nav-container open=drawerOpen classNames="ember-app"}}
 
   {{#paper-sidenav classNames="md-sidenav-left md-whiteframe-z2" flex-layout="column" flex=true locked-open="gt-md"}}

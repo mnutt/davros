@@ -1,3 +1,13 @@
+{{#pl-uploader onfileadd="uploadFile" for="upload-file" for-dropzone="content" as |queue dropzone|}}
+  {{#if queue.length}}
+    <div class="upload-progress">
+      {{paper-progress-linear warn=true value=queue.progress}}
+    </div>
+  {{/if}}
+
+  {{partial 'file-upload'}}
+{{/pl-uploader}}
+
 {{#title-bar}}
   Files in
   {{path-breadcrumb path=model.path}}
