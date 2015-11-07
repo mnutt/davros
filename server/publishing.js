@@ -4,7 +4,7 @@ var exec = require('child_process').exec;
 var url  = require('url');
 
 var destination = '/var/www';
-var source = path.relative(path.dirname(destination), process.env.STORAGE_PATH);
+var source = path.relative(path.dirname(destination), process.env.STORAGE_PATH || (__dirname + "/../data"));
 
 exports.unpublish = function(req, res, next) {
   fs.unlink(destination, function(err) {
