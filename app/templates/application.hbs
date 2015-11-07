@@ -21,26 +21,7 @@
     {{/paper-toolbar}}
 
     {{#paper-content}}
-      {{#paper-list}}
-        {{#paper-item action="transitionTo" param="files"}}
-          {{paper-icon icon="folder"}}
-          Files
-        {{/paper-item}}
-
-        {{#if canSync}}
-          {{#paper-item action="transitionTo" param="clients"}}
-            {{paper-icon icon="desktop-mac"}}
-            Clients
-          {{/paper-item}}
-        {{/if}}
-
-        {{#if canEdit}}
-          {{#paper-item action="transitionTo" param="publishing"}}
-            {{paper-icon icon="web"}}
-            Publishing
-          {{/paper-item}}
-        {{/if}}
-      {{/paper-list}}
+      {{partial 'sidebar'}}
     {{/paper-content}}
 
   {{/paper-sidenav}}

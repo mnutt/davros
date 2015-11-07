@@ -14,7 +14,7 @@ var dav    = require('./dav');
 var morgan = require('morgan');
 var publishing = require('./publishing');
 var sandstormPermissions = require('./sandstorm_permissions');
-
+var changelog = require('./changelog');
 
 module.exports = function(app, options) {
   var root = path.resolve(process.env.STORAGE_PATH || (__dirname + "/../data"));
@@ -36,6 +36,8 @@ module.exports = function(app, options) {
   app.get('/api/publish/info', publishing.getInfo);
   app.post('/api/publish', publishing.publish);
   app.post('/api/unpublish', publishing.unpublish);
+
+  app.get('/changelog', changelog);
 
   // Log proxy requests
   app.use(morgan('dev'));

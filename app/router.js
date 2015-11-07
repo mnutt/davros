@@ -10,6 +10,7 @@ Router.map(function() {
   this.route('home', {path: '/'});
   this.route('clients');
   this.route('publishing');
+  this.route('about');
   this.route('not-found', {path: '*path'});
 });
 
