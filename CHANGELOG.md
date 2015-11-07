@@ -1,3 +1,8 @@
+# 0.12.0
+* Improved mobile web experience. Fixes scrolling issues, tightens up the UI a bit
+* Add about page with (this) changelog
+* Create and delete directories from the web UI
+
 # 0.11.4
 * Correct one more issue with uploading files into the correct directory from the web UI
 
