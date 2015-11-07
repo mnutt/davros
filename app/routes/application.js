@@ -32,7 +32,7 @@ export default Ember.Route.extend({
           relativePath: source.relativePath,
           location: location
         }
-      }).then((response) => {
+      }).then(() => {
         this.transitionTo('file', location);
       });
     }

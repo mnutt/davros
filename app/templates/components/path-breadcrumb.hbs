@@ -1,6 +1,14 @@
-{{#link-to 'file' ''}}home{{/link-to}}
+<div class="full">
+  {{#link-to 'file' ''}}home{{/link-to}}
 
-{{#each parts as |part|}}
-  <span class="separator">/</span>
-  {{#link-to 'file' part.path}}{{part.name}}{{/link-to}}
-{{/each}}
+  {{#each parts as |part|}}
+    <span class="separator">/</span>
+    {{#link-to 'file' part.path}}{{part.name}}{{/link-to}}
+  {{/each}}
+
+  /
+</div>
+
+<div class="parent-only">
+  {{#link-to 'file' parentPath}}{{#if isHome}}home{{else}}...{{/if}}{{/link-to}} /
+</div>

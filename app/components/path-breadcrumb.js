@@ -12,7 +12,7 @@ export default Ember.Component.extend({
     }
 
     // is a directory
-    if(pieces[pieces.length - 1] == "") { pieces.pop(); }
+    if(pieces[pieces.length - 1] === "") { pieces.pop(); }
 
     for(var i = 0; i < pieces.length - 1; i++) {
       var path = pieces.slice(0, i + 1).join('/');
@@ -26,5 +26,13 @@ export default Ember.Component.extend({
     }
 
     return p;
-  }.property('path')
+  }.property('path'),
+
+  isHome: function() {
+    return this.get('path') === '/';
+  }.property('path'),
+
+  parentPath: function() {
+    return this.get('parts.lastObject.path') || '';
+  }.property('parts')
 });

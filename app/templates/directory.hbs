@@ -1,13 +1,11 @@
-{{#paper-toolbar}}
-  <div class="md-toolbar-tools">
-    Files in
-    {{path-breadcrumb path=model.path}}
-    /
-    {{#if model.name}}
-      {{model.name}} /
-    {{/if}}
-  </div>
-{{/paper-toolbar}}
+{{#title-bar}}
+  Files in
+  {{path-breadcrumb path=model.path}}
+
+  {{#if model.name}}
+    {{model.name}} /
+  {{/if}}
+{{/title-bar}}
 
 <table class="file-list">
   <thead>
@@ -22,17 +20,25 @@
     {{#each model.sortedFiles as |file|}}
       <tr>
         {{#link-to 'file' file.linkedPath class="name" tagName="td"}}
-          {{#if file.isDirectory}}
-            {{paper-icon icon="folder"}}
-          {{else}}
-            {{paper-icon icon=file.typeIcon}}
-          {{/if}}
+          <div class="filename">
+            {{#if file.isDirectory}}
+              {{paper-icon icon="folder"}}
+            {{else}}
+              {{paper-icon icon=file.typeIcon}}
+            {{/if}}
 
-          {{file.name}}
+            <div class="truncated">{{file.name}}</div>
+          </div>
         {{/link-to}}
 
         <td class="updated" title="{{file.mtime}}">
-          {{moment-from-now file.mtime interval=5000 hideSuffix=true}}
+          <span class="short">
+            {{moment-from-now file.mtime interval=5000 hideSuffix=true}}
+          </span>
+
+          <span class="long">
+            {{moment-from-now file.mtime interval=5000}}
+          </span>
         </td>
 
         <td class="size">
