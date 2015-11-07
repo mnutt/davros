@@ -1,0 +1,29 @@
+.publishing {
+  background-color: #f3f3f3 !important;
+
+  .toggle-publishing {
+    margin: 20px 0;
+    text-align: center;
+  }
+
+  .auto-url {
+    font-weight: bold;
+    background-color: #FFF;
+    padding: 20px 10px;
+    margin: 20px 0;
+    text-align: center;
+  }
+
+  .dns-setup {
+    pre {
+      background-color: #FFF;
+      padding: 20px 0;
+    }
+
+    .note {
+      background-color: #FDE;
+      padding: 20px;
+      margin: 10px 0;
+    }
+  }
+}

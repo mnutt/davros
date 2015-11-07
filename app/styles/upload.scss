@@ -1,0 +1,49 @@
+.upload {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 10;
+
+  button {
+    background-color: transparent;
+    color: #FFF;
+  }
+
+  .full { display: block; }
+  .mobile { display: none; }
+}
+
+#upload-file {
+  margin-left: auto;
+}
+
+.upload-progress {
+  position: absolute;
+  top: -5px;
+  left: 0;
+  right: 0;
+  z-index: 100;
+
+  .md-container {
+    background-color: #173 !important;
+  }
+
+  .md-bar1, .md-bar2 {
+    background-color: #2C8 !important;
+  }
+}
+
+@media (max-width: 550px) {
+  .upload {
+    .full { display: none !important; }
+    .mobile {
+      display: block !important;
+      md-icon { color: #FFF; }
+    }
+
+    #upload-file {
+      min-width: auto;
+      width: 48px;
+    }
+  }
+}

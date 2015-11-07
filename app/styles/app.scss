@@ -2,6 +2,13 @@ $primary: "blue" !default;
 
 @import 'ember-paper';
 
+@import 'publishing';
+@import 'directory';
+@import 'upload';
+@import 'file';
+@import 'clients';
+@import 'about';
+
 body, #content {
   background-color: #f3f3f3;
 }
@@ -30,20 +37,6 @@ md-toolbar .title {
   }
 }
 
-.iframe-container {
-  position: absolute;
-  top: 100px;
-  left: 1em;
-  right: 1em;
-  bottom: 1em;
-}
-
-.iframe-container iframe {
-  width: 100%;
-  height: 100%;
-  border: 0;
-}
-
 md-content p.content {
   padding: 2em 1em;
 }
@@ -61,72 +54,6 @@ md-sidenav {
   line-height: 0.8
 }
 
-.file-list {
-  background-color: #f3f3f3;
-  border-collapse: collapse;
-  display: block;
-
-  tbody {
-    display: block;
-
-    tr:nth-child(odd) {
-      background-color: #F7F7F7;
-    }
-  }
-
-  td,th {
-    padding: 12px 16px;
-    text-align: left
-  }
-
-  td,th {
-    vertical-align: top;
-
-    &.name {
-      width: 100%;
-      padding-left: 35px !important;
-      cursor: pointer;
-
-      .filename {
-        display: table;
-        table-layout: fixed;
-        width: 100%;
-
-        .truncated {
-          overflow-x: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-        }
-      }
-
-      .paper-icon {
-        color: #999;
-        padding-right: 0.3em;
-        float: left;
-        display: inline-block;
-      }
-
-      .folder {
-        color: #9CF;
-      }
-    }
-
-    &.updated {
-      min-width: 110px;
-
-      .short {
-        display: none;
-      }
-    }
-
-    &.size {
-      min-width: 50px;
-      padding-right: 35px !important;
-      text-align: right;
-    }
-  }
-}
-
 @media (max-width: 550px) {
   .md-toolbar-tools {
     padding: 0 !important;
@@ -136,235 +63,12 @@ md-sidenav {
     margin-right: 55px;
   }
 
-  .upload {
-    .full { display: none !important; }
-    .mobile {
-      display: block !important;
-      md-icon { color: #FFF; }
-    }
-
-    #upload-file {
-      min-width: auto;
-      width: 48px;
-    }
-  }
-
-  .file-list {
-    td,th {
-      &.updated {
-        min-width: 50px;
-
-        .short {
-          display: block;
-        }
-
-        .long {
-          display: none;
-        }
-      }
-
-      padding: 8px 4px;
-
-      &.name {
-        padding-left: 15px !important;
-      }
-    }
-  }
-
   .breadcrumb .full {
     display: none;
   }
 
   .breadcrumb .parent-only {
     display: inline-block;
-  }
-}
-
-.file-list md-list-item:nth-child(even) {
-  background-color: #F5F5F5;
-}
-
-.upload {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  z-index: 10;
-
-  button {
-    background-color: transparent;
-    color: #FFF;
-  }
-
-  .full { display: block; }
-  .mobile { display: none; }
-}
-
-#upload-file {
-  margin-left: auto;
-}
-
-.upload-progress {
-  position: absolute;
-  top: -5px;
-  left: 0;
-  right: 0;
-  z-index: 100;
-
-  .md-container {
-    background-color: #173 !important;
-  }
-
-  .md-bar1, .md-bar2 {
-    background-color: #2C8 !important;
-  }
-}
-
-.file-display {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-}
-
-.file-component {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-content: center;
-  align-items: center;
-  flex: 1;
-
-  padding: 10px;
-
-  .meta {
-    flex-grow: 1;
-    flex-basis: 200px;
-    margin-right: 2em;
-    text-align: right;
-    width: 320px;
-
-    .filename {
-      a {
-        color: #222;
-        text-decoration: none;
-      }
-
-      font-size: 1.8em;
-      line-height: 1.8;
-      font-weight: bold;
-      word-wrap: break-word;
-    }
-
-    .fsinfo {
-      font-size: 1.1em;
-      line-height: 1.6;
-    }
-
-    .size {
-      font-weight: bold;
-    }
-
-    .download {
-      margin-top: 2em;
-    }
-  }
-  .preview {
-    width: 320px;
-    height: 200px;
-    flex-basis: 200px;
-    flex-grow: 3;
-    flex-shrink: 0;
-
-    display: flex;
-    align-items: center;
-
-    audio, .no-preview {
-      width: 100%;
-      font-size: 3em;
-      color: #CCC;
-      font-weight: bold;
-    }
-
-    img {
-      max-width: 100%;
-      max-height: 100%;
-      margin: auto;
-    }
-
-    video {
-      width: 100%;
-      max-height: 100%;
-    }
-
-    .markdown {
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      background-color: #FFF;
-
-      .inner {
-        padding: 10px;
-      }
-    }
-  }
-}
-
-.clients {
-  background-color: #f3f3f3 !important;
-
-  .client-download {
-    text-align: center;
-  }
-
-  .server-url {
-    text-align: center;
-
-    iframe {
-      margin: 20px auto;
-      width: 95%;
-      max-width: 800px;
-      border: 1px solid #000;
-      padding: 3px;
-      height: 2.1em;
-      background-color: #FFF;
-    }
-  }
-
-  .authentication {
-    width: 510px;
-    margin: auto;
-    padding: 20px 0;
-
-    .username-field, .password-field {
-      margin-bottom: 10px;
-      height: 2em;
-    }
-
-    label {
-      width: 90px;
-      text-align: right;
-      float: left;
-      line-height: 1.7em;
-      padding-right: 4px;
-    }
-
-    .username, .password {
-      float: left;
-      width: 400px;
-    }
-
-    .username pre {
-      padding: 0 0 2px 0;
-      margin: 0;
-    }
-
-    .username, .password iframe {
-      border: 1px solid #000;
-      padding: 3px;
-      height: 1.2em;
-      width: 400px;
-      background-color: #FFF;
-    }
   }
 }
 
@@ -381,58 +85,5 @@ md-sidenav {
 
   .description {
     text-align: center;
-  }
-}
-
-.file-actions {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 250px;
-}
-
-.about {
-  background-color: #f3f3f3 !important;
-
-  h2 {
-    margin-top: 1.5em;
-  }
-
-  .changelog {
-    padding: 0 20px;
-
-    h1 {
-      font-size: 1em;
-    }
-  }
-}
-
-.publishing {
-  background-color: #f3f3f3 !important;
-
-  .toggle-publishing {
-    margin: 20px 0;
-    text-align: center;
-  }
-
-  .auto-url {
-    font-weight: bold;
-    background-color: #FFF;
-    padding: 20px 10px;
-    margin: 20px 0;
-    text-align: center;
-  }
-
-  .dns-setup {
-    pre {
-      background-color: #FFF;
-      padding: 20px 0;
-    }
-
-    .note {
-      background-color: #FDE;
-      padding: 20px;
-      margin: 10px 0;
-    }
   }
 }

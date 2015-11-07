@@ -1,0 +1,93 @@
+.file-list {
+  background-color: #f3f3f3;
+  border-collapse: collapse;
+  display: block;
+
+  tbody {
+    display: block;
+
+    tr:nth-child(odd) {
+      background-color: #F7F7F7;
+    }
+  }
+
+  td,th {
+    padding: 12px 16px;
+    text-align: left
+  }
+
+  td,th {
+    vertical-align: top;
+
+    &.name {
+      width: 100%;
+      padding-left: 35px !important;
+      cursor: pointer;
+
+      .filename {
+        display: table;
+        table-layout: fixed;
+        width: 100%;
+
+        .truncated {
+          overflow-x: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+      }
+
+      .paper-icon {
+        color: #999;
+        padding-right: 0.3em;
+        float: left;
+        display: inline-block;
+      }
+
+      .folder {
+        color: #9CF;
+      }
+    }
+
+    &.updated {
+      min-width: 110px;
+
+      .short {
+        display: none;
+      }
+    }
+
+    &.size {
+      min-width: 50px;
+      padding-right: 35px !important;
+      text-align: right;
+    }
+  }
+}
+
+.file-list md-list-item:nth-child(even) {
+  background-color: #F5F5F5;
+}
+
+@media (max-width: 550px) {
+  .file-list {
+    td,th {
+      &.updated {
+        min-width: 50px;
+
+        .short {
+          display: block;
+        }
+
+        .long {
+          display: none;
+        }
+      }
+
+      padding: 8px 4px;
+
+      &.name {
+        padding-left: 15px !important;
+      }
+    }
+  }
+}
