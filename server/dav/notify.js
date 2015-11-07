@@ -16,7 +16,8 @@ var jsDAV_Notify_Plugin = module.exports = jsDAV_ServerPlugin.extend({
     COPY: true,
     MOVE: true,
     DELETE: true,
-    PROPPATCH: true
+    PROPPATCH: true,
+    MKCOL: true
   },
 
   updateHandler: function(e, method, uri) {

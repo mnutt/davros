@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import ajax from 'ic-ajax';
 
 export default Ember.Route.extend({
 
@@ -38,16 +39,35 @@ export default Ember.Route.extend({
 
   actions: {
     "delete": function() {
-      var self = this;
       var model = this.get('controller.model');
       var parent = model.get('parent');
+      var type = model.get('isDirectory') ? 'directory and everything in it' : 'file';
 
-      if(confirm("Are you sure you want to delete this file?")) {
-        return model.destroyRecord().then(function() {
-          return self.transitionTo('file', parent);
+      if(confirm("Are you sure you want to delete this " + type + "? It will also be deleted from any synced clients.")) {
+        return ajax({url: model.get('rawPath'), method: 'DELETE'}).then(() => {
+          return this.transitionTo('file', parent);
         });
       } else {
         return true;
+      }
+    },
+
+    newDirectory: function() {
+      var model = this.get('controller.model');
+
+      var dirname = prompt("Directory name");
+      if(!dirname || !dirname.length) {
+        console.log("New directory cancelled.");
+        return;
+      }
+
+      if(dirname.match(/^[^\\/?%*:|"<>\.]+$/)) {
+        var fullPath = [model.get('rawPath'), dirname].join('/');
+        console.log(fullPath);
+        return ajax({url: fullPath, method: 'MKCOL'});
+      } else {
+        alert("The directory name is not valid.");
+        this.send('newDirectory');
       }
     }
   }

@@ -58,3 +58,15 @@
     {{/each}}
   </tbody>
 </table>
+
+<div class="directory-actions">
+  <div class="right">
+    {{#if canEdit}}
+      {{#paper-button action="newDirectory"}}{{paper-icon icon="add-circle-outline"}} New Directory{{/paper-button}}
+    {{/if}}
+  </div>
+
+  {{#if canEdit}}
+    {{#paper-button action="delete" warn=true}}{{paper-icon icon="delete"}} Delete Directory{{/paper-button}}
+  {{/if}}
+</div>
