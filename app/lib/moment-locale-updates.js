@@ -18,4 +18,22 @@ moment.locale('en', {
   }
 });
 
+moment.locale('en-short', {
+  relativeTime : {
+    future: "in %s",
+    past:   "%s ago",
+    s:  "now",
+    m:  "a min",
+    mm: "%d min",
+    h:  "an hour",
+    hh: "%d h",
+    d:  "a day",
+    dd: "%d d",
+    M:  "a mo",
+    MM: "%d mo",
+    y:  "a y",
+    yy: "%d y"
+  }
+});
+
 export default {};
