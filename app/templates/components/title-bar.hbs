@@ -1,11 +1,11 @@
 {{#paper-toolbar}}
   <div class="md-toolbar-tools">
-    {{#paper-sidenav-toggle as |toggle|}}
-      {{#paper-button target=toggle action="toggleMenu" icon-button=true}}{{paper-icon icon="menu"}}{{/paper-button}}
-    {{/paper-sidenav-toggle}}
+    <div class="title-bar">
+      {{#paper-sidenav-toggle as |toggle|}}
+        {{#paper-button target=toggle action="toggleMenu" icon-button=true}}{{paper-icon icon="menu"}}{{/paper-button}}
+      {{/paper-sidenav-toggle}}
 
-    <span class="title">
       {{yield}}
-    </span>
+    </div>
   </div>
 {{/paper-toolbar}}

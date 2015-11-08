@@ -23,14 +23,44 @@ md-toolbar {
   .md-toolbar-tools {
     height: 48px;
   }
+
+  .title-bar {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+
+    .title {
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      line-height: 2.3;
+    }
+
+    .more {
+      margin-left: auto;
+      width: 50px;
+      text-align: right;
+    }
+  }
 }
 
-md-toolbar .title {
-  display: inline-block;
-  margin-right: 100px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+md-menu-item {
+  p.label {
+    width: 150px;
+  }
+
+  &.danger {
+    color: color($warn);;
+
+    md-icon {
+      color: color($warn);
+    }
+  }
+
+  > .md-button md-icon {
+    margin: 10px 10px auto 0 !important;
+  }
 }
 
 .breadcrumb {
@@ -68,10 +98,6 @@ md-sidenav {
 @media (max-width: 550px) {
   .md-toolbar-tools {
     padding: 0 !important;
-  }
-
-  md-toolbar .title {
-    margin-right: 55px;
   }
 
   .breadcrumb .full {

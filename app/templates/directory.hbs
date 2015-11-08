@@ -1,20 +1,25 @@
-{{#pl-uploader onfileadd="uploadFile" for="upload-file" for-dropzone="content" as |queue dropzone|}}
+{{#pl-uploader onfileadd="uploadFile" for="upload-placeholder" for-dropzone="content" as |queue dropzone|}}
   {{#if queue.length}}
     <div class="upload-progress">
       {{paper-progress-linear warn=true value=queue.progress}}
     </div>
   {{/if}}
+  <div id="upload-placeholder"></div>
 
-  {{partial 'file-upload'}}
+  <div id="nothing"></div>
 {{/pl-uploader}}
 
 {{#title-bar}}
-  Files in
-  {{path-breadcrumb path=model.path}}
+  <div class="title">
+    Files in
+    {{path-breadcrumb path=model.path}}
 
-  {{#if model.name}}
-    {{model.name}} /
-  {{/if}}
+    {{#if model.name}}
+      {{model.name}} /
+    {{/if}}
+  </div>
+
+  {{partial 'directory-menu'}}
 {{/title-bar}}
 
 <table class="file-list">
@@ -58,19 +63,5 @@
     {{/each}}
   </tbody>
 </table>
-
-<div class="directory-actions">
-  <div class="right">
-    {{#if canEdit}}
-      {{#paper-button action="newDirectory"}}{{paper-icon icon="add-circle-outline"}} New Directory{{/paper-button}}
-    {{/if}}
-  </div>
-
-  {{#if canEdit}}
-    {{#paper-button action="delete" warn=true}}{{paper-icon icon="delete"}} Delete Directory{{/paper-button}}
-  {{/if}}
-
-  {{#paper-button action="slideshow"}}{{paper-icon icon="delete"}} Slideshow{{/paper-button}}
-</div>
 
 {{partial 'plugins/gallery'}}

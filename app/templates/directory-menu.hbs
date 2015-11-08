@@ -1,0 +1,35 @@
+<div class="more">
+  {{#paper-menu position="target-right target" as |menu|}}
+
+    {{#paper-button target=menu action="toggleMenu" icon-button=true}}
+        {{paper-icon class="md-menu-origin" icon="more-vert"}}
+    {{/paper-button}}
+
+  {{else}}
+
+    {{#paper-menu-item action="nothing" id="menu-upload-file"}}
+      <p class="label">Upload</p>
+      {{paper-icon icon="file-upload" class="md-menu-align-target"}}
+    {{/paper-menu-item}}
+
+    {{#if canEdit}}
+      {{#paper-menu-item action="newDirectory"}}
+        <p class="label">New Directory</p>
+        {{paper-icon icon="add-circle-outline" class="md-menu-align-target"}}
+      {{/paper-menu-item}}
+    {{/if}}
+
+    {{#paper-menu-item action="slideshow"}}
+      <p class="label">View Slideshow</p>
+      {{paper-icon icon="photo" class="md-menu-align-target"}}
+    {{/paper-menu-item}}
+
+    {{#if canEdit}}
+      {{#paper-menu-item class="danger" action="delete"}}
+        <p class="label">Delete Directory</p>
+        {{paper-icon icon="delete" class="md-menu-align-target"}}
+      {{/paper-menu-item}}
+    {{/if}}
+
+  {{/paper-menu}}
+</div>

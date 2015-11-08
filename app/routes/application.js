@@ -23,7 +23,8 @@ export default Ember.Route.extend({
         // otherwise, upload files in the root directory
         location = '';
       }
-      console.log("upload location is " + location);
+
+      console.log("uploading " + source.relativePath + " into location " + location);
 
       file.upload('/api/upload', {
         data: {

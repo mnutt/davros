@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import ajax from 'ic-ajax';
+import $ from 'jquery';
 
 export default Ember.Route.extend({
 
@@ -63,12 +64,15 @@ export default Ember.Route.extend({
 
       if(dirname.match(/^[^\\/?%*:|"<>\.]+$/)) {
         var fullPath = [model.get('rawPath'), dirname].join('/');
-        console.log(fullPath);
         return ajax({url: fullPath, method: 'MKCOL'});
       } else {
         alert("The directory name is not valid.");
         this.send('newDirectory');
       }
+    },
+
+    chooseUpload: function() {
+      $("#upload-placeholder").click();
     }
   }
 

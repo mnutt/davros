@@ -1,0 +1,17 @@
+<div class="more">
+  {{#paper-menu position="target-right target" as |menu|}}
+
+    {{#paper-button target=menu action="toggleMenu" icon-button=true}}
+        {{paper-icon class="md-menu-origin" icon="more-vert"}}
+    {{/paper-button}}
+
+  {{else}}
+    {{#if canEdit}}
+      {{#paper-menu-item class="danger" action="delete"}}
+        <p class="label">Delete File</p>
+        {{paper-icon icon="delete" class="md-menu-align-target"}}
+      {{/paper-menu-item}}
+    {{/if}}
+
+  {{/paper-menu}}
+</div>
