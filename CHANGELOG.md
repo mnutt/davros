@@ -1,3 +1,8 @@
+# 0.13.0
+* Add gallery support for directories
+* Move file and directory actions to the menu
+* Better file format display
+
 # 0.12.0
 * Improved mobile web experience. Fixes scrolling issues, tightens up the UI a bit
 * Add about page with (this) changelog
