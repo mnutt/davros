@@ -18,7 +18,7 @@
     </div>
 
     <div title="{{model.mtime}}" class="fsinfo">
-      <span class="updated">Updated {{moment-from-now model.mtime interval=5000}}</span>
+      <span class="updated">Updated {{moment-from-now model.mtime locale="en" interval=5000}}</span>
       &middot;
       <span class="size">{{filesize model.size}}</span>
       &middot;
