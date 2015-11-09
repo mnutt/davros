@@ -92,3 +92,8 @@
     }
   }
 }
+
+.pswp__zoom-wrap {
+  will-change: auto !important;
+  -webkit-backface-visibility: visible !important;
+}

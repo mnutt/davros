@@ -1,7 +1,8 @@
 import Ember from 'ember';
 
 export default Ember.Mixin.create({
-  directoryGallery: null,
+  galleryEnabled: false,
+
   directoryGalleryItems: function() {
     return this.get('model.sortedFiles').filter((file) => {
       return file.get('type') === "image";
@@ -13,7 +14,7 @@ export default Ember.Mixin.create({
 
   actions: {
     slideshow: function() {
-      this.get('directoryGallery').init();
+      this.set('galleryEnabled', true);
     }
   }
 });
