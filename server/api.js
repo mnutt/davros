@@ -13,6 +13,12 @@ exports.upload = function(root) {
     var form = new multiparty.Form();
 
     form.parse(req, function(err, fields, files) {
+      if(err || !files) {
+        res.writeHead(500, {});
+        res.end("Missing file to upload");
+        return;
+      }
+
       files = files.file;
 
       // Files and fields are separated for some reason; zip them together
