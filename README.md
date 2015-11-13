@@ -2,6 +2,10 @@
 
 Davros lets you store all of your files in the cloud and sync them between your devices.
 
+![Screenshot of Davros](/public/images/screenshot.png)
+
+[![Try Live Demo](/public/images/try-live.png)](https://oasis.sandstorm.io/appdemo/8aspz4sfjnp8u89000mh2v1xrdyx97ytn8hq71mdzv4p4d8n0n3h)
+
 ## Prerequisites
 
 Davros is built to run inside [Sandstorm](https://sandstorm.io), an open source web application platform. You can either [run Sandstorm yourself](https://sandstorm.io/install/) or [let someone else host it for you](https://oasis.sandstorm.io/).
