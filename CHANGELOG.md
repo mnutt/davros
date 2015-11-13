@@ -1,3 +1,6 @@
+# 0.13.1
+* Bugfix: ensure gallery works when switching between directories
+
 # 0.13.0
 * Add gallery support for directories
 * Move file and directory actions to the menu
