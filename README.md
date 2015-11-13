@@ -4,7 +4,7 @@ Davros lets you store all of your files in the cloud and sync them between your 
 
 ![Screenshot of Davros](/public/images/screenshot.png)
 
-[![Try Live Demo](/public/images/try-live.png)](https://oasis.sandstorm.io/appdemo/8aspz4sfjnp8u89000mh2v1xrdyx97ytn8hq71mdzv4p4d8n0n3h)
+[![Try Live Demo](/public/images/try-live.svg)](https://oasis.sandstorm.io/appdemo/8aspz4sfjnp8u89000mh2v1xrdyx97ytn8hq71mdzv4p4d8n0n3h)
 
 ## Prerequisites
 
