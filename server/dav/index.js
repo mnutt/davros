@@ -26,7 +26,8 @@ exports.server = function(root) {
     locksBackend: jsDAV_Locks_Backend_FS.new(root),
     plugins: jsDAV_Util.extend(jsDAV_Server.DEFAULT_PLUGINS, {
       "ws-notify": require("./notify"),
-      "root-delete": require("./root-delete")
+      "root-delete": require("./root-delete"),
+      "safe-gets": require("./safe-gets")
     })
   });
 
