@@ -30,7 +30,7 @@
     "ember-cli-ic-ajax": "0.2.4",
     "ember-cli-inject-live-reload": "^1.3.1",
     "ember-cli-moment-shim": "0.6.2",
-    "ember-cli-photoswipe": "git://github.com/mnutt/ember-cli-photoswipe.git#f5bfce5",
+    "ember-cli-photoswipe": "git://github.com/mnutt/ember-cli-photoswipe.git#8511dc4",
     "ember-cli-pretender": "0.5.0",
     "ember-cli-qunit": "^1.0.4",
     "ember-cli-release": "0.2.8",
