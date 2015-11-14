@@ -1,13 +1,18 @@
-{{#pl-uploader onfileadd="uploadFile" for="upload-placeholder" for-dropzone="content" as |queue dropzone|}}
+{{#davros-uploader onfileadd="uploadFile" for="upload-placeholder" for-dropzone="content" as |queue dropzone|}}
   {{#if queue.length}}
     <div class="upload-progress">
       {{paper-progress-linear warn=true value=queue.progress}}
     </div>
   {{/if}}
   <div id="upload-placeholder"></div>
-
-  <div id="nothing"></div>
-{{/pl-uploader}}
+{{/davros-uploader}}
+<div id="dropzone-display">
+  <div class="message">
+    {{paper-icon icon="add-circle"}}
+    Drop files or directories to add them to
+    {{path-breadcrumb path=model.path}}
+  </div>
+</div>
 
 {{#title-bar}}
   <div class="title">

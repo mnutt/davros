@@ -33,6 +33,48 @@
   }
 }
 
+#dropzone-display {
+  display: none;
+}
+
+.dropzone-active {
+  #dropzone-display {
+    display: flex;
+    position: fixed;
+    z-index: 200;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.7);
+    align-items: center;
+    justify-content: center;
+
+    .message {
+      font-size: 2em;
+      font-weight: bold;
+      color: #FFF;
+      padding: 30px;
+      background-color: rgba(0,0,0,0.5);
+      border-radius: 5px;
+
+      md-icon {
+        color: color($primary);
+        font-size: 1.5em;
+      }
+
+      .breadcrumb {
+        display: block;
+        font-size: 1.2em;
+
+        a {
+          color: #FFF;
+        }
+      }
+    }
+  }
+}
+
 @media (max-width: 550px) {
   .upload {
     .full { display: none !important; }
