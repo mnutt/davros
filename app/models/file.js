@@ -36,7 +36,11 @@ export default DS.Model.extend({
 
   extension: function() {
     var pieces = this.get('name').split('.');
-    return pieces[pieces.length - 1];
+    if(pieces.length > 1) {
+      return pieces[pieces.length - 1];
+    } else {
+      return '';
+    }
   }.property('name'),
 
   type: function() {
