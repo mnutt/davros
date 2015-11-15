@@ -5,5 +5,6 @@ export default {
   video: 'local-movies',
   audio: 'music-note',
   markdown: 'code',
-  'default-type': 'insert-drive-file'
+  document: 'insert-drive-file',
+  'default-type': 'crop-portrait'
 };

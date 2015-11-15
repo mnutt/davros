@@ -11,5 +11,6 @@ export default {
   'mp3': 'audio',
   'aac': 'audio',
   'md': 'markdown',
+  'html': 'document',
   'defaultType': 'default-type'
 };

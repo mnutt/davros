@@ -1,0 +1,11 @@
+{{log isPdf}}
+{{log model.extension}}
+{{#if isPdf}}
+  <embed width="100%" height="100%" type="application/pdf" src="{{pdfSrc}}"></embed>
+{{else}}
+  {{#if canSandbox}}
+    <iframe srcdoc="{{srcDoc}}" sandbox="allow-scripts"></iframe>
+  {{else}}
+    <p>Your browser doesn't support sandboxing, so we can't show a preview inline.</p>
+  {{/if}}
+{{/if}}
