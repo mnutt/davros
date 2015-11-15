@@ -1,3 +1,9 @@
+# 0.14.0
+* Bugfix: gallery works better in Firefox
+* Display preview of HTML files
+* Added test suite
+* Ensure that malicious HTML files cannot modify other content in the shared directory
+
 # 0.13.1
 * Bugfix: ensure gallery works when switching between directories
 
