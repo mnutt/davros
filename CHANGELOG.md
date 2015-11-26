@@ -1,3 +1,7 @@
+# 0.14.1
+* Fix wording in modified time "a moment ago"
+* Fix upload button
+
 # 0.14.0
 * Bugfix: gallery works better in Firefox
 * Display preview of HTML files
