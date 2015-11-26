@@ -42,7 +42,7 @@
     "ember-disable-proxy-controllers": "^1.0.1",
     "ember-export-application-global": "^1.0.4",
     "ember-moment": "3.6.2",
-    "ember-paper": "git://github.com/mnutt/ember-paper.git#37ccdba",
+    "ember-paper": "git://github.com/mnutt/ember-paper.git#43fabe18411ddd839628",
     "ember-plupload": "1.13.7",
     "ember-websockets": "1.2.3",
     "glob": "^4.5.3"
