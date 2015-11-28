@@ -12,5 +12,9 @@ export default {
   'aac': 'audio',
   'md': 'markdown',
   'html': 'document',
+  'cf': 'document',
+  'conf': 'document',
+  'config': 'document',
+  'txt': 'document',
   'defaultType': 'default-type'
 };
