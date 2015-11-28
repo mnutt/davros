@@ -15,6 +15,7 @@ export default {
   'cf': 'document',
   'conf': 'document',
   'config': 'document',
+  'nfo': 'document',
   'txt': 'document',
   'defaultType': 'default-type'
 };
