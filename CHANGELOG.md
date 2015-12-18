@@ -1,3 +1,6 @@
+# 0.14.2
+* v0.14.1 was accidentally released as a development build; correctly package this one. This fixes file uploading and refreshing issues.
+
 # 0.14.1
 * Fix wording in modified time "a moment ago"
 * Fix upload button
