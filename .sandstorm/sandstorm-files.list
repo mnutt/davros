@@ -484,7 +484,6 @@ usr/lib/x86_64-linux-gnu/libstdc++.so.6
 usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.20
 usr/lib/x86_64-linux-gnu/libtasn1.so.6
 usr/lib/x86_64-linux-gnu/libtasn1.so.6.3.2
-usr/local/bin/watchman
 usr/sbin/grub-bios-setup
 usr/share/bash-completion/bash_completion
 usr/share/locale/locale.alias
