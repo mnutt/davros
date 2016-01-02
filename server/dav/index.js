@@ -27,7 +27,8 @@ exports.server = function(root) {
     plugins: jsDAV_Util.extend(jsDAV_Server.DEFAULT_PLUGINS, {
       "ws-notify": require("./notify"),
       "root-delete": require("./root-delete"),
-      "safe-gets": require("./safe-gets")
+      "safe-gets": require("./safe-gets"),
+      "oc-mtime": require("./oc-mtime")
     })
   });
 
