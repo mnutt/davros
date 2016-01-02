@@ -73,6 +73,33 @@ export default Ember.Route.extend({
 
     chooseUpload: function() {
       $("#upload-placeholder").click();
+    },
+
+    uploadFile: function (file) {
+      var source = file.file.getSource();
+      var location = document.location.pathname;
+
+      if(location.indexOf('/files') === 0) {
+        // if user is in a directory, upload the files there
+        location = location.replace(/^\/files\//, '');
+        // dirname of current path, so if path is /foo/README, use /foo/
+        location = location.replace(/\/[^\/]*$/, '');
+      } else {
+        // otherwise, upload files in the root directory
+        // (this shouldn't happen anymore)
+        location = '';
+      }
+
+      console.log("uploading " + source.relativePath + " into location " + location);
+
+      file.upload('/api/upload', {
+        data: {
+          relativePath: source.relativePath,
+          location: location
+        }
+      }).then(() => {
+        this.get('controller.model').reload();
+      });
     }
   }
 
