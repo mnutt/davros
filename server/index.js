@@ -21,16 +21,17 @@ module.exports = function(app, options) {
 
   apiWs.serve(options.httpServer);
 
+  // Log proxy requests
+  app.use(morgan('dev'));
+
   app.use(sandstormPermissions);
 
-  app.use(dav.server(root));
+  var davServer = dav.server(root);
+  app.use(davServer);
   app.use('/status.php', dav.status);
   app.use('/ocs/v1.php/cloud/capabilities', dav.capabilities);
 
-  var fileServer = api.files(root);
-  app.use('/api/files', fileServer);
-
-  var uploadServer = api.upload(root);
+  var uploadServer = api.upload(davServer);
   app.use('/api/upload', uploadServer);
 
   app.get('/api/publish/info', publishing.getInfo);
@@ -39,6 +40,4 @@ module.exports = function(app, options) {
 
   app.get('/changelog', changelog);
 
-  // Log proxy requests
-  app.use(morgan('dev'));
 };

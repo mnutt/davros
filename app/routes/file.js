@@ -1,6 +1,8 @@
 import Ember from 'ember';
 import ajax from 'ic-ajax';
 import $ from 'jquery';
+import File from 'davros/models/file';
+import ensureCollectionExists from 'davros/lib/ensure-collection-exists';
 
 export default Ember.Route.extend({
 
@@ -20,14 +22,15 @@ export default Ember.Route.extend({
 
     if(message.file) {
       if(this.get('controller.model.id') === message.file) {
-        this.get('controller.model').reload();
+        this.get('controller.model').load();
       }
     }
   },
 
   model: function(params) {
     var id = params.path || '/';
-    return this.store.find('file', id);
+    var file = File.create({path: id});
+    return file.load();
   },
 
   renderTemplate: function() {
@@ -45,7 +48,7 @@ export default Ember.Route.extend({
       var type = model.get('isDirectory') ? 'directory and everything in it' : 'file';
 
       if(confirm("Are you sure you want to delete this " + type + "? It will also be deleted from any synced clients.")) {
-        return ajax({url: model.get('rawPath'), method: 'DELETE'}).then(() => {
+        return model.delete().then(() => {
           return this.transitionTo('file', parent);
         });
       } else {
@@ -90,15 +93,18 @@ export default Ember.Route.extend({
         location = '';
       }
 
+      source.relativeDir = source.relativePath.replace(/\/[^\/]*$/,'');
+
       console.log("uploading " + source.relativePath + " into location " + location);
 
-      file.upload('/api/upload', {
-        data: {
-          relativePath: source.relativePath,
-          location: location
-        }
-      }).then(() => {
-        this.get('controller.model').reload();
+      ensureCollectionExists(source.relativePath).then(() => {
+        file.upload('/api/upload', {
+          data: {
+            destination: [location, source.relativePath].join('')
+          }
+        }).then(() => {
+          this.get('controller.model').load();
+        });
       });
     }
   }

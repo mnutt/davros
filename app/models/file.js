@@ -1,21 +1,22 @@
-import DS from 'ember-data';
+import Ember from 'ember';
 import filetypes from 'davros/lib/filetypes';
 import filetypeIcons from 'davros/lib/filetype-icons';
+import Webdav from 'davros/mixins/webdav';
 
-export default DS.Model.extend({
-  mode: DS.attr('number'),
-  path: DS.attr('string'),
-  size: DS.attr('number'),
-  name: DS.attr('string'),
-  ctime: DS.attr('date'),
-  mtime: DS.attr('date'),
-  files: DS.hasMany('files', {async: true}),
+export default Ember.Object.extend(Webdav, {
+  path: null,  // file's path within the dav server, excluding the dav base
+  size: null,  // in bytes
+  name: null,  // file or directory name
+  mtime: null, // modified time
+  files: null, // if a directory, a list of children
+
+  name: function() {
+    return this.get('path').split(/[\\/]/).pop();
+  }.property('path'),
 
   sortedFiles: function() {
-    return this.get('files').sortBy('mode', 'name');
+    return this.get('files').sortBy('isFile', 'name');
   }.property('files'),
-
-  davBase: '/remote.php/webdav',
 
   parent: function() {
     return this.get('path').replace(/\/?[^\/]*\/?$/, '');
@@ -29,10 +30,11 @@ export default DS.Model.extend({
     }
   }.property('path', 'isDirectory'),
 
-  isDirectory: function() {
-    // "0040000" in octal is the bitmask for a directory
-    return (this.get('mode') & parseInt("0040000", 8)) > 0;
-  }.property('mode'),
+  isDirectory: false,
+
+  isFile: function() {
+    return !this.get('isDirectory');
+  }.property('isDirectory'),
 
   extension: function() {
     var pieces = this.get('name').split('.');
