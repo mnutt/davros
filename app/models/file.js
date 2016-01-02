@@ -18,6 +18,10 @@ export default Ember.Object.extend(Webdav, {
     return this.get('files').sortBy('isFile', 'name');
   }.property('files'),
 
+  lotsOfFiles: function() {
+    return this.get('files.length') > 50;
+  }.property('files.length'),
+
   parent: function() {
     return this.get('path').replace(/\/?[^\/]*\/?$/, '');
   }.property('path'),
