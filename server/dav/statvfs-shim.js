@@ -8,7 +8,7 @@ module.exports = function(p, cb) {
       return cb(err, null);
     }
 
-    exec("df -k " + resolvedPath + " | tail -n 1 | awk '{ print $2\":\"$4 }'", function(err, stdout, stderr) {
+    exec("df -k '" + resolvedPath + "' | tail -n 1 | awk '{ print $2\":\"$4 }'", function(err, stdout, stderr) {
       if(err) {
         return cb(err, null);
       }
@@ -21,7 +21,7 @@ module.exports = function(p, cb) {
       var total = parseInt(match[1], 10) || 1;
       var free = parseInt(match[2], 10) || 0;
 
-      exec("du -k -d 0 " + resolvedPath, function(err, stdout, stderr) {
+      exec("du -k -d 0 '" + resolvedPath + "'", function(err, stdout, stderr) {
         if(err) {
           return cb(err, null);
         }
