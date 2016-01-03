@@ -7,9 +7,9 @@ export default Ember.Component.extend({
   src: '',
 
   replacedTemplate: function() {
-    var template = this.get('template');
+    var template = this.get('content');
     return template.replace('$API_PROTO', document.location.protocol);
-  }.property('template'),
+  }.property('content'),
 
   fillIframe: function() {
     window.parent.postMessage({
