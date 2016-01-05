@@ -37,7 +37,6 @@
     "ember-cli-release": "0.2.8",
     "ember-cli-sass": "4.0.1",
     "ember-cli-showdown": "2.5.0",
-    "ember-cli-sri": "^2.0.0",
     "ember-cli-uglify": "^1.2.0",
     "ember-cli-vagrant-spk": "0.0.1",
     "ember-disable-proxy-controllers": "^1.0.1",
