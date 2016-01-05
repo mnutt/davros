@@ -7,7 +7,7 @@ export default Ember.Mixin.create({
 
   load: function() {
     return Webdav.propfind(this.get('rawPath')).then((xml) => {
-      let responses = [...xml.querySelectorAll('response')];
+      let responses = [...xml.querySelectorAll('d\\:response, response')];
 
       this.loadFromResponse(responses.shift());
 
@@ -25,18 +25,18 @@ export default Ember.Mixin.create({
 
   loadFromResponse: function(response) {
     let doc = jQuery(response);
-    let path = doc.find('href').text();
+    let path = doc.find('d\\:href, href').text();
     path = path.slice(this.get('davBase.length') + 1).replace(/\/$/, '');
-    let isDirectory = doc.find('collection').length > 0;
+    let isDirectory = doc.find('d\\:collection, collection').length > 0;
     this.set('path', decodeURIComponent(path));
     this.set('isDirectory', isDirectory);
-    this.set('mtime', new Date(doc.find('getlastmodified').text()));
+    this.set('mtime', new Date(doc.find('d\\:getlastmodified, getlastmodified').text()));
 
     if(isDirectory) {
-      this.set('size', parseInt(doc.find('quota-used-bytes').text(), 10));
+      this.set('size', parseInt(doc.find('d\\:quota-used-bytes, quota-used-bytes').text(), 10));
       this.set('files', []);
     } else {
-      this.set('size', parseInt(doc.find('getcontentlength').text(), 10) || 0);
+      this.set('size', parseInt(doc.find('d\\:getcontentlength, getcontentlength').text(), 10) || 0);
     }
   },
 
