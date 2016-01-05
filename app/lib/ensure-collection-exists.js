@@ -4,7 +4,7 @@ import Ember from 'ember';
 var pathsCompleted = {};
 
 export default function(path) {
-  return new Promise(function(resolve, reject) {
+  return new Ember.RSVP.Promise(function(resolve) {
     var parts = path.replace(/^\//, '').split('/');
     if(parts.length < 2) {
       return resolve();
@@ -25,4 +25,4 @@ export default function(path) {
       resolve();
     });
   });
-};
+}
