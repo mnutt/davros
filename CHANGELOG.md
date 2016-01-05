@@ -1,3 +1,10 @@
+# 0.15.0
+* Performance improvements to large directories by removing timers
+* All web UI actions go through WebDAV
+* Upgrade dependencies (ember 2.2, moment, photoswipe, ember-paper)
+* Only load slideshow images once
+* Bugfix: only add sample files if storage directory is missing, to prevent the being readded to empty grains
+
 # 0.14.2
 * v0.14.1 was accidentally released as a development build; correctly package this one. This fixes file uploading and refreshing issues.
 
