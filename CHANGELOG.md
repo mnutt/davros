@@ -1,3 +1,6 @@
+# 0.15.1
+* Workaround for old firefox XML parsing behavior
+
 # 0.15.0
 * Performance improvements to large directories by removing timers
 * All web UI actions go through WebDAV
