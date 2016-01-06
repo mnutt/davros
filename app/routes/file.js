@@ -67,7 +67,9 @@ export default Ember.Route.extend({
 
       if(dirname.match(/^[^\\/?%*:|"<>\.]+$/)) {
         var fullPath = [model.get('rawPath'), dirname].join('/');
-        return ajax({url: fullPath, method: 'MKCOL'});
+        return ajax({url: fullPath, method: 'MKCOL'}).then(() => {
+          return this.get('controller.model').load();
+        });
       } else {
         alert("The directory name is not valid.");
         this.send('newDirectory');
