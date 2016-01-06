@@ -7,6 +7,7 @@ export default {
     return ajax({
       method: 'propfind',
       url: path,
+      dataType: 'xml',
       body: this.propFindQuery
     });
   },
