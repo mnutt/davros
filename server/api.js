@@ -15,7 +15,8 @@ exports.upload = function(davServer) {
     form.on('part', function(part) {
       // part is already a readable stream, so make it look like a request and
       // just send it on to the dav server
-      part.url = '/remote.php/webdav/' + destination;
+      if(destination[0] !== '/') { destination = '/' + destination; }
+      part.url = '/remote.php/webdav' + destination;
       part.method = 'PUT';
       davServer(part, res, next);
     });

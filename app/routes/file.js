@@ -83,6 +83,7 @@ export default Ember.Route.extend({
     uploadFile: function (file) {
       var source = file.file.getSource();
       var location = document.location.pathname;
+      var path = source.relativePath || file.get('name');
 
       if(location.indexOf('/files') === 0) {
         // if user is in a directory, upload the files there
@@ -95,14 +96,14 @@ export default Ember.Route.extend({
         location = '';
       }
 
-      source.relativeDir = source.relativePath.replace(/\/[^\/]*$/,'');
+      if(path[0] !== '/') { path = '/' + path; }
 
-      console.log("uploading " + source.relativePath + " into location " + location);
+      console.log("uploading " + path + " into location " + location);
 
-      ensureCollectionExists(source.relativePath).then(() => {
+      ensureCollectionExists(path).then(() => {
         file.upload('/api/upload', {
           data: {
-            destination: [location, source.relativePath].join('')
+            destination: [location, path].join('')
           }
         }).then(() => {
           this.get('controller.model').load();
