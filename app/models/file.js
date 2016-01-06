@@ -6,7 +6,6 @@ import Webdav from 'davros/mixins/webdav';
 export default Ember.Object.extend(Webdav, {
   path: null,  // file's path within the dav server, excluding the dav base
   size: null,  // in bytes
-  name: null,  // file or directory name
   mtime: null, // modified time
   files: null, // if a directory, a list of children
 
