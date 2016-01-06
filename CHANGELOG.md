@@ -1,3 +1,8 @@
+# 0.15.2
+* Bugfix: refresh view after creating directory in web UI
+* Bugfix: web UI uploads used wrong directory root and failed
+* More performance improvements for large directories
+
 # 0.15.1
 * Workaround for old firefox XML parsing behavior
 
