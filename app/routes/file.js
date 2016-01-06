@@ -28,7 +28,7 @@ export default Ember.Route.extend({
   },
 
   model: function(params) {
-    var id = params.path || '/';
+    var id = params.path || '';
     var file = File.create({path: id});
     return file.load();
   },
