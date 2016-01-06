@@ -48,6 +48,11 @@ module.exports = function(req, res, next) {
     res.writeHead(403, {});
     res.end("Access denied.");
   } else {
-    next();
+    if(req.url === '/api/permissions') {
+      res.writeHead(404, {});
+      res.end();
+    } else {
+      next();
+    }
   }
 };
