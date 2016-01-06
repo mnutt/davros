@@ -39,12 +39,12 @@
   <tbody>
     {{#each model.sortedFiles as |file|}}
       <tr>
-        {{#link-to 'file' file.linkedPath class="name" tagName="td"}}
+        {{#link-to 'file' (unbound file.linkedPath) class="name" tagName="td"}}
           <div class="filename">
             {{#if file.isDirectory}}
-              {{paper-icon icon="folder"}}
+              <md-icon class="paper-icon md-font material-icons md-default-theme folder"/>
             {{else}}
-              {{paper-icon icon=file.typeIcon}}
+              <md-icon class="paper-icon md-font material-icons md-default-theme {{file.typeIcon}}"/>
             {{/if}}
 
             <div class="truncated">{{file.name}}</div>
