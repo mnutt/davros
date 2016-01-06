@@ -1,162 +1,23 @@
 import Pretender from 'pretender';
 
-let baseDir = {
-  "data": {
-    "type": "files",
-    "id": "/",
-    "attributes": {
-      "mode": 16888,
-      "size": 4096,
-      "mtime": "2015-11-14T04:13:16.248Z",
-      "ctime": "2015-11-14T04:13:16.248Z",
-      "path": "",
-      "name": ""
-    },
-    "relationships": {
-      "files": {
-        "data": [
-          {
-            "type": "files",
-            "id": "Welcome to Davros.md"
-          },
-          {
-            "type": "files",
-            "id": "myDir"
-          },
-          {
-            "type": "files",
-            "id": "space.jpg"
-          },
-          {
-            "type": "files",
-            "id": "voyager.jpg"
-          }
-        ]
-      }
-    }
-  },
-  "included": [
-    {
-      "type": "files",
-      "id": "Welcome to Davros.md",
-      "attributes": {
-        "ctime": "2015-11-14T04:11:53.060Z",
-        "mode": 33184,
-        "mtime": "2015-11-14T04:11:53.060Z",
-        "name": "Welcome to Davros.md",
-        "path": "Welcome to Davros.md",
-        "size": 1894
-      }
-    },
-    {
-      "type": "files",
-      "id": "myDir",
-      "attributes": {
-        "ctime": "2015-11-14T04:13:32.188Z",
-        "mode": 16872,
-        "mtime": "2015-11-14T04:13:32.188Z",
-        "name": "myDir",
-        "path": "myDir",
-        "size": 4096
-      }
-    },
-    {
-      "type": "files",
-      "id": "space.jpg",
-      "attributes": {
-        "ctime": "2015-11-14T04:11:53.064Z",
-        "mode": 33184,
-        "mtime": "2015-11-14T04:11:53.064Z",
-        "name": "space.jpg",
-        "path": "space.jpg",
-        "size": 378200
-      }
-    },
-    {
-      "type": "files",
-      "id": "voyager.jpg",
-      "attributes": {
-        "ctime": "2015-11-14T04:11:53.064Z",
-        "mode": 33184,
-        "mtime": "2015-11-14T04:11:53.064Z",
-        "name": "voyager.jpg",
-        "path": "voyager.jpg",
-        "size": 600996
-      }
-    }
-  ]
-};
+let root = '<?xml version="1.0" encoding="utf-8"?><d:multistatus xmlns:d="DAV:" xmlns:a="http://ajax.org/2005/aml"><d:response><d:href>/remote.php/webdav/</d:href><d:propstat><d:prop><d:getlastmodified xmlns:b="urn:uuid:c2f41010-65b3-11d1-a29f-00aa00c14882/" b:dt="dateTime.rfc1123">Wed, 06 Jan 2016 06:35:13 +0000</d:getlastmodified><d:resourcetype><d:collection/></d:resourcetype><d:quota-used-bytes>389120</d:quota-used-bytes><d:quota-available-bytes>425099649024</d:quota-available-bytes></d:prop><d:status>HTTP/1.1 200 OK</d:status></d:propstat></d:response><d:response><d:href>/remote.php/webdav/myDir/</d:href><d:propstat><d:prop><d:getlastmodified xmlns:b="urn:uuid:c2f41010-65b3-11d1-a29f-00aa00c14882/" b:dt="dateTime.rfc1123">Wed, 06 Jan 2016 06:35:13 +0000</d:getlastmodified><d:resourcetype><d:collection/></d:resourcetype><d:quota-used-bytes>4096</d:quota-used-bytes><d:quota-available-bytes>425099649024</d:quota-available-bytes></d:prop><d:status>HTTP/1.1 200 OK</d:status></d:propstat></d:response><d:response><d:href>/remote.php/webdav/space.jpg</d:href><d:propstat><d:prop><d:getlastmodified xmlns:b="urn:uuid:c2f41010-65b3-11d1-a29f-00aa00c14882/" b:dt="dateTime.rfc1123">Wed, 06 Jan 2016 06:33:58 +0000</d:getlastmodified><d:getcontentlength>378200</d:getcontentlength><d:resourcetype></d:resourcetype><d:getetag>&#34;f1eef05bd6c8c652476d9d22a94d520c&#34;</d:getetag><d:getcontenttype>image/jpeg</d:getcontenttype></d:prop><d:status>HTTP/1.1 200 OK</d:status></d:propstat></d:response></d:multistatus>';
 
-let myDir = {
-  "data": {
-    "type": "files",
-    "id": "myDir",
-    "attributes": {
-      "mode": 16872,
-      "size": 4096,
-      "mtime": "2015-11-14T04:13:32.188Z",
-      "ctime": "2015-11-14T04:13:32.188Z",
-      "path": "myDir",
-      "name": "myDir"
-    },
-    "relationships": {
-      "files": {
-        "data": [
-          {
-            "type": "files",
-            "id": "myDir/ios-davros.png"
-          }
-        ]
-      }
-    }
-  },
-  "included": [
-    {
-      "type": "files",
-      "id": "myDir/ios-davros.png",
-      "attributes": {
-        "ctime": "2015-11-14T04:13:32.188Z",
-        "mode": 33200,
-        "mtime": "2015-11-14T04:13:32.184Z",
-        "name": "ios-davros.png",
-        "path": "myDir/ios-davros.png",
-        "size": 218233
-      }
-    }
-  ]
-};
+let myDir = '<?xml version="1.0" encoding="utf-8"?><d:multistatus xmlns:d="DAV:" xmlns:a="http://ajax.org/2005/aml"><d:response><d:href>/remote.php/webdav/myDir/</d:href><d:propstat><d:prop><d:getlastmodified xmlns:b="urn:uuid:c2f41010-65b3-11d1-a29f-00aa00c14882/" b:dt="dateTime.rfc1123">Wed, 06 Jan 2016 06:40:54 +0000</d:getlastmodified><d:resourcetype><d:collection/></d:resourcetype><d:quota-used-bytes>225280</d:quota-used-bytes><d:quota-available-bytes>425098493952</d:quota-available-bytes></d:prop><d:status>HTTP/1.1 200 OK</d:status></d:propstat></d:response><d:response><d:href>/remote.php/webdav/myDir/ios-davros.png</d:href><d:propstat><d:prop><d:getlastmodified xmlns:b="urn:uuid:c2f41010-65b3-11d1-a29f-00aa00c14882/" b:dt="dateTime.rfc1123">Wed, 06 Jan 2016 06:40:54 +0000</d:getlastmodified><d:getcontentlength>218233</d:getcontentlength><d:resourcetype></d:resourcetype><d:getetag>&#34;4ec0d937b45f263893d0cfaca5ec90e5&#34;</d:getetag><d:getcontenttype>image/png</d:getcontenttype></d:prop><d:status>HTTP/1.1 200 OK</d:status></d:propstat></d:response></d:multistatus>';
 
-let spaceFile = {
-  "data": {
-    "type": "files",
-    "id": "space.jpg",
-    "attributes": {
-      "mode": 33184,
-      "size": 378200,
-      "mtime": "2015-11-14T04:11:53.064Z",
-      "ctime": "2015-11-14T04:11:53.064Z",
-      "path": "space.jpg",
-      "name": "space.jpg"
-    }
-  }
-};
+let space = '<?xml version="1.0" encoding="utf-8"?><d:multistatus xmlns:d="DAV:" xmlns:a="http://ajax.org/2005/aml"><d:response><d:href>/remote.php/webdav/space.jpg</d:href><d:propstat><d:prop><d:getlastmodified xmlns:b="urn:uuid:c2f41010-65b3-11d1-a29f-00aa00c14882/" b:dt="dateTime.rfc1123">Wed, 06 Jan 2016 06:33:58 +0000</d:getlastmodified><d:getcontentlength>378200</d:getcontentlength><d:resourcetype></d:resourcetype><d:getetag>&#34;f1eef05bd6c8c652476d9d22a94d520c&#34;</d:getetag><d:getcontenttype>image/jpeg</d:getcontenttype></d:prop><d:status>HTTP/1.1 200 OK</d:status></d:propstat></d:response></d:multistatus>';
 
 export default function() {
   return new Pretender(function() {
-    let structure = {
-      '/api/files/%2F': baseDir,
-      '/api/files/myDir%2F': myDir,
-      '/api/files/space.jpg': spaceFile
-    };
+    this.propfind('/remote.php/webdav/', function() {
+      return [200, {}, root];
+    });
 
-    for(var p in structure) {
-      ((path) => {
-        this.get(path, function() {
-          console.log("GET " + path);
-          let data = JSON.stringify(structure[path]);
-          return [200, {}, data];
-        }); // jshint ignore:line
-      })(p);
-    }
+    this.propfind('/remote.php/webdav/myDir/', function() {
+      return [200, {}, myDir];
+    });
+
+    this.propfind('/remote.php/webdav/space.jpg', function() {
+      return [200, {}, space];
+    });
   });
 }
