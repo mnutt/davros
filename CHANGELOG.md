@@ -1,3 +1,7 @@
+# 0.16.0
+* Support for iOS and Android mobile clients
+* Preview PDF documents
+
 # 0.15.3
 * Bugfix: prevent Web UI 404 when using a share link read-only
 

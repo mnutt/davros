@@ -3,8 +3,7 @@ Davros lets you store all of your files in the cloud and sync them between your 
 ## Features
 
 * Upload files through the web UI
-* Preview images, videos, and audio through the web UI
-* Compatible with desktop sync clients for Mac, Linux, and Windows.
+* Preview images, videos, documents, and audio through the web UI
+* Compatible with desktop sync clients for Mac, Linux, and Windows
+* Compatible with mobile clients for iOS and Android
 * Publish shared directories as websites
-
-_Note: syncing with mobile clients is not yet supported._
