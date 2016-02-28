@@ -1,3 +1,6 @@
+# 0.15.3
+* Bugfix: prevent Web UI 404 when using a share link read-only
+
 # 0.15.2
 * Bugfix: refresh view after creating directory in web UI
 * Bugfix: web UI uploads used wrong directory root and failed
