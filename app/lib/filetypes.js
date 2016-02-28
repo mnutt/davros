@@ -10,6 +10,7 @@ export default {
   'avi': 'video',
   'mp3': 'audio',
   'aac': 'audio',
+  'pdf': 'pdf',
   'md': 'markdown',
   'htm': 'document',
   'html': 'document',

@@ -17,6 +17,8 @@ module.exports = function(environment) {
       'default-src': "'none'",
       'script-src': "'self'",
       'font-src': "'self'",
+      'frame-src': "'self'",
+      'object-src': "'self'",
       'connect-src': "'self' ws://localhost:*",
       'img-src': "'self' data:",
       'media-src': "'self'"
