@@ -12,12 +12,18 @@ export default Ember.Component.extend({
   }.property('content'),
 
   fillIframe: function() {
-    window.parent.postMessage({
-      renderTemplate: {
-        rpcId: this.get('elementId'),
-        template: this.get('replacedTemplate')
-      }
-    }, "*");
+    let options = {};
+    options.rpcId = this.get('elementId');
+    options.template = this.get('replacedTemplate');
+
+    if(this.get('clipboardButton')) {
+      options.clipboardButton = this.get('clipboardButton');
+    }
+    if(this.get('unauthenticated')) {
+      options.unauthenticated = this.get('unauthenticated');
+    }
+
+    window.parent.postMessage({ renderTemplate: options }, "*");
   }.on('didInsertElement'),
 
   registerMessageListener: function() {
