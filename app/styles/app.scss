@@ -87,6 +87,10 @@ md-content p.content {
 md-sidenav {
   text-align: left;
 
+  md-content md-list .md-button {
+    background-color: #FFF;
+  }
+
   md-list-item .md-list-item-inner md-icon {
     flex: 1;
   }

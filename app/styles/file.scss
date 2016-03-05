@@ -62,7 +62,8 @@
     img {
       max-width: 100%;
       max-height: 1200px;
-      margin: auto;
+      margin: auto 0;
+      flex: 0 0 auto;
     }
 
     video {
