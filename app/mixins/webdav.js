@@ -7,7 +7,7 @@ export default Ember.Mixin.create({
 
   load: function() {
     return Webdav.propfind(this.get('rawPath')).then((xml) => {
-      let responses = [...xml.querySelectorAll('d\\:response, response')];
+      let responses = jQuery.makeArray(xml.querySelectorAll('d\\:response, response'));
 
       this.loadFromResponse(responses.shift());
 
