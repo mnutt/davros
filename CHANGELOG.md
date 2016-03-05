@@ -1,6 +1,10 @@
+# 0.16.1
+* Fix IE11 404 error and normalize css for IE11
+
 # 0.16.0
 * Support for iOS and Android mobile clients
 * Preview PDF documents
+* Support Sandstorm copy-to-clipboard for client URLs
 
 # 0.15.3
 * Bugfix: prevent Web UI 404 when using a share link read-only
