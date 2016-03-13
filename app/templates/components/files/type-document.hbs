@@ -1,5 +1,9 @@
-{{#if canSandbox}}
-  <iframe srcdoc="{{srcDoc}}" sandbox="allow-scripts"></iframe>
+{{#if showingPreview}}
+  {{#if canSandbox}}
+    <iframe srcdoc="<pre>{{escapeHtml srcDoc}}</pre>" sandbox=""></iframe>
+  {{else}}
+    <p>Your browser doesn't support sandboxing, so we can't show a preview inline.</p>
+  {{/if}}
 {{else}}
-  <p>Your browser doesn't support sandboxing, so we can't show a preview inline.</p>
+  {{#paper-button raised=true action="showPreview"}}Show Preview ({{filesize model.size}}){{/paper-button}}
 {{/if}}

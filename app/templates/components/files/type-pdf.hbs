@@ -1,3 +1,7 @@
-<object data="{{model.rawPath}}" type="application/pdf">
-  <embed src="{{model.rawPath}}" type="application/pdf" />
-</object>
+{{#if src}}
+  <object data="{{src}}" type="application/pdf">
+    <embed src="{{src}}" type="application/pdf" />
+  </object>
+{{else}}
+  <p>Fetching preview...</p>
+{{/if}}

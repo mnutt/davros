@@ -1,0 +1,19 @@
+<div class="view-source">
+  {{#paper-button action="toggleSource"}}
+    {{#if viewingSource}}
+      View Rendered
+    {{else}}
+      View Source
+    {{/if}}
+  {{/paper-button}}
+</div>
+
+{{#if canSandbox}}
+  {{#if viewingSource}}
+    <iframe srcdoc="<pre>{{escapeHtml srcDoc}}</pre>" sandbox="allow-scripts"></iframe>
+  {{else}}
+    <iframe srcdoc="{{srcDoc}}" sandbox="allow-scripts"></iframe>
+  {{/if}}
+{{else}}
+  <p>Your browser doesn't support sandboxing, so we can't show a preview inline.</p>
+{{/if}}

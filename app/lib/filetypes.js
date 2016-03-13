@@ -12,13 +12,15 @@ export default {
   'aac': 'audio',
   'pdf': 'pdf',
   'md': 'markdown',
-  'htm': 'document',
-  'html': 'document',
+  'htm': 'html',
+  'html': 'html',
   'xml': 'document',
   'cf': 'document',
   'conf': 'document',
   'config': 'document',
   'nfo': 'document',
   'txt': 'document',
+  'csv': 'document',
+  'tsv': 'document',
   'defaultType': 'default-type'
 };
