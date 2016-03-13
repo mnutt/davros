@@ -6,6 +6,7 @@ export default {
   audio: 'music-note',
   markdown: 'code',
   pdf: 'insert-drive-file',
+  html: 'insert-drive-file',
   document: 'insert-drive-file',
   'default-type': 'crop-portrait'
 };

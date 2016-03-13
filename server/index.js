@@ -12,6 +12,8 @@ var api    = require('./api');
 var apiWs  = require('./api-ws');
 var dav    = require('./dav');
 var morgan = require('morgan');
+var express = require('express');
+var signature = require('./signature');
 var publishing = require('./publishing');
 var sandstormPermissions = require('./sandstorm_permissions');
 var changelog = require('./changelog');
@@ -33,6 +35,7 @@ module.exports = function(app, options) {
 
   var uploadServer = api.upload(davServer);
   app.use('/api/upload', uploadServer);
+  app.use('/api/signature', signature.get());
 
   app.get('/api/publish/info', publishing.getInfo);
   app.post('/api/publish', publishing.publish);

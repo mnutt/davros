@@ -1,4 +1,5 @@
 var jsDAV_ServerPlugin = require("jsdav/lib/DAV/plugin");
+var signature = require("../signature");
 
 var jsDAV_SafeGets_Plugin = module.exports = jsDAV_ServerPlugin.extend({
   name: "safe-gets",
@@ -21,6 +22,10 @@ var jsDAV_SafeGets_Plugin = module.exports = jsDAV_ServerPlugin.extend({
     return e.next();
   },
 
+  isSigned: function(req) {
+    return req.query.signature && signature.verify(req.query.signature);
+  },
+
   // HTML files should not be displayed inside davros' UI; download them instead
   setContentDisposition: function(req, res) {
     var self = this;
@@ -39,7 +44,7 @@ var jsDAV_SafeGets_Plugin = module.exports = jsDAV_ServerPlugin.extend({
       headers['content-security-policy'] = "script-src 'self'; img-src 'self'; sandbox allow-forms allow-scripts;";
 
       // exception for pdf since we want to display it inline
-      if(!self.safeTypes[headers['content-type']]) {
+      if(!self.isSigned(req)) {
         headers['content-disposition'] = 'attachment; filename=';
       }
 

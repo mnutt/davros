@@ -39,6 +39,10 @@ export default Ember.Object.extend(Webdav, {
     return !this.get('isDirectory');
   }.property('isDirectory'),
 
+  isLarge: function() {
+    return this.get('size') > 2 * 1024 * 1024;
+  }.property('size'),
+
   extension: function() {
     var pieces = this.get('name').split('.');
     if(pieces.length > 1) {
