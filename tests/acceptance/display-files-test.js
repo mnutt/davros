@@ -25,7 +25,7 @@ moduleForAcceptance('Acceptance | display files', {
 test('viewing an image', function(assert) {
   visit('/files/');
 
-  click('div:contains(space)');
+  click('div.filename div:contains(space)');
 
   andThen(function() {
     find('.parent-only').remove(); // not in mobile view

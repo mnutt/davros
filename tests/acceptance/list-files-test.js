@@ -41,7 +41,7 @@ test('listing files', function(assert) {
 
 test('traversing directories', function(assert) {
   visit('/files/');
-  click('div:contains(myDir)');
+  click('div.filename div:contains(myDir)');
 
   andThen(function() {
     find('.parent-only').remove(); // not in mobile view
