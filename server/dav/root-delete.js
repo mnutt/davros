@@ -1,7 +1,7 @@
 var Fs = require('fs');
 
-var jsDAV_ServerPlugin = require("jsdav/lib/DAV/plugin");
-var Util               = require("jsdav/lib/shared/util");
+var jsDAV_ServerPlugin = require("jsDAV/lib/DAV/plugin");
+var Util               = require("jsDAV/lib/shared/util");
 
 var jsDAV_Notify_Plugin = module.exports = jsDAV_ServerPlugin.extend({
   name: "root-delete",
