@@ -1,4 +1,4 @@
-var jsDAV_ServerPlugin = require("jsdav/lib/DAV/plugin");
+var jsDAV_ServerPlugin = require("jsDAV/lib/DAV/plugin");
 
 var jsDAV_SafeGets_Plugin = module.exports = jsDAV_ServerPlugin.extend({
   name: "safe-gets",

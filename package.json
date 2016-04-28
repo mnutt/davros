@@ -19,6 +19,7 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
+    "bower": "^1.7.9",
     "broccoli-asset-rev": "^2.2.0",
     "ember-ajax": "0.7.1",
     "ember-cli": "^2.2.0-beta.3",
@@ -45,15 +46,17 @@
     "ember-paper": "git://github.com/mnutt/ember-paper.git#3a2605c",
     "ember-plupload": "1.13.12",
     "ember-websockets": "1.2.3",
-    "glob": "^4.5.3"
+    "glob": "^4.5.3",
+    "loader.js": "^4.0.3"
   },
   "dependencies": {
+    "archiver": "^1.0.0",
     "async": "1.4.2",
     "asyncjs": "git://github.com/fjakobs/async.js.git#bd61b6ae2cd7",
     "concat-files": "^0.1.0",
     "dirStat": "0.0.2",
-    "express": "^4.13.1",
     "ember-resolver": "^2.0.3",
+    "express": "^4.13.1",
     "jsDAV": "git://github.com/mnutt/jsDAV.git#a1a7f9f90a17",
     "jsonapi-serializer": "^1.0.4",
     "mkdirp": "0.5.1",
