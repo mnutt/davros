@@ -41,6 +41,9 @@ module.exports = function(app, options) {
   app.post('/api/publish', publishing.publish);
   app.post('/api/unpublish', publishing.unpublish);
 
+  app.use('/previewers', signature.check());
+  app.use('/previewers', express.static('previewers'));
+
   app.get('/changelog', changelog);
 
 };

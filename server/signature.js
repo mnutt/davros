@@ -1,50 +1,47 @@
 var crypto = require('crypto');
 var url = require('url');
 
-// Keep up to two secrets, the old and the new one. Rotate them out periodically.
-var secrets = [];
-var currentSecret;
+// Token storage. Key is the token, value is the path.
+var tokens = {};
 
-function generateSecret() {
-  var secret = crypto.randomBytes(64).toString('hex');
-  currentSecret = secret;
-  secrets.unshift(secret);
-  if(secrets.length > 2) { secrets.pop(); }
+function generateToken() {
+  return crypto.randomBytes(64).toString('hex');
 }
 
-setTimeout(generateSecret, 10 * 60 * 1000);
-generateSecret();
+// Generate a random token, store it for 5 minutes, return it
+exports.create = function(path) {
+  var token = generateToken(path);
+  tokens[token] = path;
 
-exports.create = function(d) {
-  var hmac = crypto.createHmac('sha256', currentSecret);
-  hmac.update(d.toString());
-  return [d, hmac.digest('hex')].join('-');
+  // 5-minute token expiration
+  setTimeout(function() { delete tokens[token]; }, 5 * 60 * 1000);
+
+  return token;
 };
 
-exports.verify = function(check) {
-  var parts = check.split("-");
-  var date = parts[0], signature = parts[1];
+// Check that token exists and is being used for the path it was originally
+// generated for. Afterwards, delete it since it is single-use.
+exports.verify = function(token, path) {
+  var tokenPath = tokens[token];
 
-  for(var i = 0; i < secrets.length; i++) {
-    if(check === exports.create(date)) { return true; }
-  }
-  return false;
+  delete tokens[token];
+  return tokenPath && (path.indexOf(tokenPath) === 0);
 };
 
 exports.get = function() {
   return function get(req, res, next) {
-    var signature = exports.create((new Date()).getTime());
+    var query = url.parse(req.url, true).query;
+    var signature = exports.create(query.path);
 
-    console.log(signature);
     res.writeHead(200, {});
-    res.end(JSON.stringify({signature: signature}));
+    res.end(JSON.stringify({path: query.path, signature: signature}));
   };
 };
 
 exports.check = function() {
   return function check(req, res, next) {
     var query = url.parse(req.url, true).query;
-    if(exports.verify(query.signature)) {
+    if(exports.verify(query.signature, req.url)) {
       next();
     } else {
       res.writeHead(400, {});

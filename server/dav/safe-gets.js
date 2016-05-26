@@ -23,7 +23,7 @@ var jsDAV_SafeGets_Plugin = module.exports = jsDAV_ServerPlugin.extend({
   },
 
   isSigned: function(req) {
-    return req.query.signature && signature.verify(req.query.signature);
+    return req.query.signature && signature.verify(req.query.signature, req.url);
   },
 
   // HTML files should not be displayed inside davros' UI; download them instead
