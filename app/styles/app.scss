@@ -39,9 +39,7 @@ md-toolbar {
     }
 
     .more {
-      margin-left: auto;
-      width: 50px;
-      text-align: right;
+      margin-right: -15px;
     }
   }
 }
@@ -85,14 +83,21 @@ md-content p.content {
 }
 
 md-sidenav {
+  background-color: #FFF;
   text-align: left;
 
   md-content md-list .md-button {
     background-color: #FFF;
   }
 
-  md-list-item .md-list-item-inner md-icon {
-    flex: 1;
+  md-list-item {
+    &:hover {
+      background-color: #DDD;
+    }
+
+    .md-list-item-inner md-icon {
+      flex: 1;
+    }
   }
 }
 
@@ -101,8 +106,14 @@ md-sidenav {
 }
 
 @media (max-width: 550px) {
-  .md-toolbar-tools {
-    padding: 0 !important;
+  md-content {
+    .md-toolbar-tools {
+      padding: 0 !important;
+    }
+
+    p.content {
+      padding-top: 0.5em;
+    }
   }
 
   .breadcrumb .full {

@@ -43,9 +43,11 @@
     "ember-export-application-global": "^1.0.5",
     "ember-load-initializers": "^0.5.1",
     "ember-moment": "5.0.1",
-    "ember-paper": "git://github.com/mnutt/ember-paper.git#3a2605c",
     "ember-network": "^0.3.0",
+    "ember-paper": "git://github.com/mnutt/ember-paper.git#a772a6b",
     "ember-plupload": "1.13.12",
+    "ember-route-action-helper": "0.3.1",
+    "ember-transition-helper": "0.0.6",
     "ember-websockets": "1.2.3",
     "glob": "^4.5.3",
     "loader.js": "^4.0.1"

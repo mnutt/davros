@@ -1,15 +1,15 @@
 <div class="more">
   {{#paper-menu position="target-right target" as |menu|}}
 
-    {{#paper-button target=menu action="toggleMenu" icon-button=true}}
-        {{paper-icon class="md-menu-origin" icon="more-vert"}}
+    {{#paper-button onClick=(action "toggleMenu" target=menu) class="more-button" iconButton=true}}
+      {{paper-icon "more-vert" class="md-menu-origin"}}
     {{/paper-button}}
 
   {{else}}
     {{#if canEdit}}
-      {{#paper-menu-item class="danger" action="delete"}}
+      {{#paper-menu-item class="danger" onClick=(route-action "delete")}}
         <p class="label">Delete File</p>
-        {{paper-icon icon="delete" class="md-menu-align-target"}}
+        {{paper-icon "delete" class="md-menu-align-target"}}
       {{/paper-menu-item}}
     {{/if}}
 

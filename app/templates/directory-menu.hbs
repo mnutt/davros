@@ -1,33 +1,33 @@
 <div class="more">
   {{#paper-menu position="target-right target" as |menu|}}
 
-    {{#paper-button target=menu action="toggleMenu" icon-button=true}}
-        {{paper-icon class="md-menu-origin" icon="more-vert"}}
+    {{#paper-button onClick=(action "toggleMenu" target=menu) class="more-button" icon-button=true}}
+        {{paper-icon "more-vert" class="md-menu-origin"}}
     {{/paper-button}}
 
   {{else}}
 
-    {{#paper-menu-item action="chooseUpload" id="menu-upload-file"}}
+    {{#paper-menu-item onClick="chooseUpload" id="menu-upload-file"}}
       <p class="label">Upload</p>
-      {{paper-icon icon="file-upload" class="md-menu-align-target"}}
+      {{paper-icon "file-upload" class="md-menu-align-target"}}
     {{/paper-menu-item}}
 
     {{#if canEdit}}
-      {{#paper-menu-item action="newDirectory"}}
+      {{#paper-menu-item onClick="newDirectory"}}
         <p class="label">New Directory</p>
-        {{paper-icon icon="add-circle-outline" class="md-menu-align-target"}}
+        {{paper-icon "add-circle-outline" class="md-menu-align-target"}}
       {{/paper-menu-item}}
     {{/if}}
 
-    {{#paper-menu-item action="slideshow"}}
+    {{#paper-menu-item onClick="slideshow"}}
       <p class="label">View Slideshow</p>
-      {{paper-icon icon="photo" class="md-menu-align-target"}}
+      {{paper-icon "photo" class="md-menu-align-target"}}
     {{/paper-menu-item}}
 
     {{#if canEdit}}
-      {{#paper-menu-item class="danger" action="delete"}}
+      {{#paper-menu-item class="danger" onClick="delete"}}
         <p class="label">Delete Directory</p>
-        {{paper-icon icon="delete" class="md-menu-align-target"}}
+        {{paper-icon "delete" class="md-menu-align-target"}}
       {{/paper-menu-item}}
     {{/if}}
 

@@ -8,7 +8,7 @@
 
     {{#if model.publicId}}
       <div class="toggle-publishing">
-        {{#paper-button raised=true warn=true action="unpublish"}}Disable{{/paper-button}}
+        {{#paper-button raised=true warn=true onClick=(route-action "unpublish")}}Disable{{/paper-button}}
         <strong>Publishing is Enabled</strong>
       </div>
 
@@ -44,7 +44,7 @@
       </div>
     {{else}}
       <div class="toggle-publishing">
-        {{#paper-button raised=true primary=true action="publish"}}Enable{{/paper-button}}
+        {{#paper-button raised=true primary=true onClick=(route-action "publish")}}Enable{{/paper-button}}
         <strong>Publishing is Disabled</strong>
       </div>
     {{/if}}

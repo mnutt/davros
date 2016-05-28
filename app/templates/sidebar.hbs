@@ -1,25 +1,25 @@
 {{#paper-list}}
-  {{#paper-item action="transitionTo" param="files"}}
-    {{paper-icon icon="folder"}}
+  {{#paper-item onClick=(transition-to "home")}}
+    {{paper-icon "folder"}}
     Files
   {{/paper-item}}
 
   {{#if canSync}}
-    {{#paper-item action="transitionTo" param="clients"}}
-      {{paper-icon icon="desktop-mac"}}
+    {{#paper-item onClick=(transition-to "clients")}}
+      {{paper-icon "desktop-mac"}}
       Clients
     {{/paper-item}}
   {{/if}}
 
   {{#if canEdit}}
-    {{#paper-item action="transitionTo" param="publishing"}}
-      {{paper-icon icon="web"}}
+    {{#paper-item onClick=(transition-to "publishing")}}
+      {{paper-icon "web"}}
       Publishing
     {{/paper-item}}
   {{/if}}
 
-  {{#paper-item action="transitionTo" param="about"}}
-    {{paper-icon icon="info-outline"}}
+  {{#paper-item onClick=(transition-to "about")}}
+    {{paper-icon "info-outline"}}
     About
   {{/paper-item}}
 

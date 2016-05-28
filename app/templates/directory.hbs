@@ -8,7 +8,7 @@
 {{/davros-uploader}}
 <div id="dropzone-display">
   <div class="message">
-    {{paper-icon icon="add-circle"}}
+    {{paper-icon "add-circle"}}
     Drop files or directories to add them to
     {{path-breadcrumb path=model.path}}
   </div>
@@ -42,9 +42,9 @@
         {{#link-to 'file' (unbound file.linkedPath) class="name" tagName="td"}}
           <div class="filename">
             {{#if file.isDirectory}}
-              <md-icon class="paper-icon md-font material-icons md-default-theme folder"/>
+              <md-icon class="paper-icon md-font material-icons md-default-theme">folder</md-icon>
             {{else}}
-              <md-icon class="paper-icon md-font material-icons md-default-theme {{file.typeIcon}}"/>
+              <md-icon class="paper-icon md-font material-icons md-default-theme">{{-paper-underscore file.typeIcon}}</md-icon>
             {{/if}}
 
             <div class="truncated">{{file.name}}</div>
