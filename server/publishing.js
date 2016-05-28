@@ -8,8 +8,12 @@ var source = path.relative(path.dirname(destination), process.env.STORAGE_PATH |
 
 exports.unpublish = function(req, res, next) {
   fs.unlink(destination, function(err) {
-    if(err) { throw(err); }
-    res.json({success: true});
+    if(err) {
+      console.error(err);
+      res.json({success: false});
+    } else {
+      res.json({success: true});
+    }
   });
 };
 
@@ -43,9 +47,13 @@ exports.getInfo = function(req, res, next) {
 
 exports.publish = function(req, res, next) {
   fs.unlink(destination, function(err) {
+    if(err) {
+      console.error(err);
+    }
+
     fs.symlink(source, destination, function(err) {
       if(err) {
-        throw(err);
+        console.error(err);
       }
 
       exports.getInfo(req, res, next);
