@@ -1,20 +1,24 @@
 import Ember from 'ember';
-import ajax from 'ic-ajax';
+import fetch from 'ember-network/fetch';
 
 export default Ember.Route.extend({
   model: function() {
-    return ajax('/api/publish/info');
+    return fetch('/api/publish/info').then((response) => {
+      return response.json();
+    });
   },
 
   actions: {
     publish: function() {
-      ajax({url: '/api/publish', method: 'post'}).then((result) => {
+      fetch('/api/publish', {method: 'POST'}).then((response) => {
+        return response.json();
+      }).then((result) => {
         this.set('controller.model', result);
       });
     },
 
     unpublish: function() {
-      ajax({url: '/api/unpublish', method: 'post'}).then(() => {
+      fetch('/api/unpublish', {method: 'POST'}).then(() => {
         this.set('controller.model', {});
       });
     }

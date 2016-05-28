@@ -1,8 +1,10 @@
 import Ember from 'ember';
-import ajax from 'ic-ajax';
+import fetch from 'ember-network/fetch';
 
 export default Ember.Route.extend({
   model: function() {
-    return ajax('/changelog');
+    return fetch('/changelog').then((response) => {
+      return response.text();
+    });
   }
 });

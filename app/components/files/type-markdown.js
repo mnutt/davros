@@ -1,12 +1,14 @@
 import Ember from 'ember';
-import ajax from 'ic-ajax';
+import fetch from 'ember-network/fetch';
 
 export default Ember.Component.extend({
   rawContent: 'Loading...',
 
   didInsertElement: function() {
-    ajax(this.get('model.rawPath')).then((response) => {
-      this.set('rawContent', response);
+    fetch(this.get('model.rawPath')).then((response) => {
+      return response.text();
+    }).then((result) => {
+      this.set('rawContent', result);
     });
   }
 });

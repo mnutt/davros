@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import ajax from 'ic-ajax';
+import fetch from 'ember-network/fetch';
 import $ from 'jquery';
 import File from 'davros/models/file';
 import ensureCollectionExists from 'davros/lib/ensure-collection-exists';
@@ -67,7 +67,7 @@ export default Ember.Route.extend({
 
       if(dirname.match(/^[^\\/?%*:|"<>\.]+$/)) {
         var fullPath = [model.get('rawPath'), dirname].join('/');
-        return ajax({url: fullPath, method: 'MKCOL'}).then(() => {
+        return fetch(fullPath, {method: 'MKCOL'}).then(() => {
           return this.get('controller.model').load();
         });
       } else {

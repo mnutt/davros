@@ -1,12 +1,14 @@
 import Ember from 'ember';
-import ajax from 'ic-ajax';
+import fetch from 'ember-network/fetch';
 
 export default Ember.Service.extend({
   list: [],
   error: false,
 
   init: function() {
-    ajax("/api/permissions").then((result) => {
+    fetch("/api/permissions").then((response) => {
+      return response.json();
+    }).then((result) => {
       this.set('list', result.permissions);
     }).catch((err) => {
       this.set('error', err);

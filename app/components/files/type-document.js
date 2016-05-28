@@ -1,11 +1,13 @@
 import Ember from 'ember';
-import ajax from 'ic-ajax';
+import fetch from 'ember-network/fetch';
 
 export default Ember.Component.extend({
   didInsertElement(){
     if(!this.get('canSandbox')) { return; }
-    ajax(this.get('model.rawPath')).then((response) => {
-      this.set('srcDoc', response);
+    fetch(this.get('model.rawPath')).then((response) => {
+      return response.text();
+    }).then((result) => {
+      this.set('srcDoc', result);
     });
   },
 
