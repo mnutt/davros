@@ -24,6 +24,11 @@
       {{paper-icon "photo" class="md-menu-align-target"}}
     {{/paper-menu-item}}
 
+    {{#paper-menu-item action="downloadDirectory" id="menu-download-directory"}}
+      <p class="label">Download (zip)</p>
+      {{paper-icon icon="file-download" class="md-menu-align-target"}}
+    {{/paper-menu-item}}
+
     {{#if canEdit}}
       {{#paper-menu-item class="danger" onClick="delete"}}
         <p class="label">Delete Directory</p>

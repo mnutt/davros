@@ -80,6 +80,12 @@ export default Ember.Route.extend({
       $("#upload-placeholder").click();
     },
 
+    downloadDirectory: function() {
+      var path = this.get('controller.model.path');
+      var endpoint = "/api/archive?path=" + encodeURIComponent(path);
+      document.location.href = endpoint;
+    },
+
     uploadFile: function (file) {
       var source = file.file.getSource();
       var location = document.location.pathname;
