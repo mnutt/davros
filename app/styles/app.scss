@@ -16,6 +16,7 @@ body, #content {
 
 #content {
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 md-toolbar {
@@ -85,6 +86,7 @@ md-content p.content {
 md-sidenav {
   background-color: #FFF;
   text-align: left;
+  width: auto !important;
 
   md-content md-list .md-button {
     background-color: #FFF;
@@ -95,8 +97,13 @@ md-sidenav {
       background-color: #DDD;
     }
 
-    .md-list-item-inner md-icon {
-      flex: 1;
+    .md-list-item-inner {
+      md-icon {
+        margin: 14px 12px 14px 0 !important;
+      }
+      flex: off;
+      display: block;
+      justify-content: initial !important;
     }
   }
 }
