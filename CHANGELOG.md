@@ -1,3 +1,10 @@
+# 0.17.0
+* Download directory as zip action (thanks @timbertson)
+* Better Chrome/Android support (upgraded to latest version of ember-paper)
+* Loading indicators
+* Bugfix: Don't throw when trying to publish while not running inside sandstorm
+* Replace ic-ajax with ember-network for possible ember-fastboot support in the future
+
 # 0.16.1
 * Fix IE11 404 error and normalize css for IE11
 
