@@ -8,11 +8,15 @@ export default Ember.Mixin.create({
   load: function() {
     return Webdav.propfind(this.get('rawPath')).then((xml) => {
       let responses = jQuery.makeArray(xml.querySelectorAll('d\\:response, response'));
+      let parsedResponses = responses.map(this.parseResponse.bind(this));
+      parsedResponses.sort((a, b) => {
+        return a.path.length - b.path.length;
+      });
 
-      this.loadFromResponse(responses.shift());
+      this.loadFromResponse(parsedResponses.shift());
 
       if(responses.length > 0) {
-        this.loadChildren(responses);
+        this.loadChildren(parsedResponses);
       }
 
       return this;
@@ -24,27 +28,35 @@ export default Ember.Mixin.create({
   },
 
   loadFromResponse: function(response) {
+    this.setProperties(response);
+  },
+
+  parseResponse: function(response) {
     let doc = jQuery(response);
     let path = doc.find('d\\:href, href').text();
     path = path.slice(this.get('davBase.length') + 1).replace(/\/$/, '');
     let isDirectory = doc.find('d\\:collection, collection').length > 0;
-    this.set('path', decodeURIComponent(path));
-    this.set('isDirectory', isDirectory);
-    this.set('mtime', new Date(doc.find('d\\:getlastmodified, getlastmodified').text()));
+    path = decodeURIComponent(path);
+    let mtime = new Date(doc.find('d\\:getlastmodified, getlastmodified').text());
 
+    let size, files;
     if(isDirectory) {
-      this.set('size', parseInt(doc.find('d\\:quota-used-bytes, quota-used-bytes').text(), 10));
-      this.set('files', []);
+      size = parseInt(doc.find('d\\:quota-used-bytes, quota-used-bytes').text(), 10);
+      files = [];
     } else {
-      this.set('size', parseInt(doc.find('d\\:getcontentlength, getcontentlength').text(), 10) || 0);
+      size = parseInt(doc.find('d\\:getcontentlength, getcontentlength').text(), 10) || 0;
     }
+
+    return {
+      path, isDirectory, mtime, size, files
+    };
   },
 
-  loadChildren: function(responses) {
+  loadChildren: function(parsedResponses) {
     var files = [];
-    for(var i = 0; i < responses.length; i++) {
+    for(var i = 0; i < parsedResponses.length; i++) {
       var file = this.constructor.create();
-      file.loadFromResponse(responses[i]);
+      file.loadFromResponse(parsedResponses[i]);
       files.push(file);
     }
     this.set('files', files);
