@@ -1,13 +1,14 @@
 import Ember from 'ember';
 import fetch from 'ember-network/fetch';
 
-export default {
-  propFindQuery: '<?xml version="1.0" ?>\n<D:propfind xmlns:D="DAV:"><D:allprop/></D:propfind>',
+const propFindQuery = new Blob(['<?xml version="1.0" ?>\n<D:propfind xmlns:D="DAV:"><D:allprop/></D:propfind>'], {type: 'application/xml'});
 
+export default {
   propfind: function(path) {
     return fetch(path, {
       method: 'PROPFIND',
-      body: this.propFindQuery
+      contentType: 'application/xml',
+      body: propFindQuery
     }).then(function(response) {
       return response.text();
     }).then(function(raw) {
