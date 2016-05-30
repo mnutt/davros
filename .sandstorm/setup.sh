@@ -20,7 +20,7 @@
 # appropriate for your application.
 
 export DEBIAN_FRONTEND=noninteractive
-curl -sL https://deb.nodesource.com/setup_4.x | bash -
+curl -sL https://deb.nodesource.com/setup_6.x | bash -
 apt-get install -y nodejs git-core g++
 
 # Compile a small helper to get a publicId
