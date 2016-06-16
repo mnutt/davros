@@ -1,3 +1,6 @@
+# 0.17.1
+* Repackaged to take advantage of Sandstorm v0.166 flow control fixes for large file downloads
+
 # 0.17.0
 * Download directory as zip action (thanks @timbertson)
 * Better Chrome/Android support (upgraded to latest version of ember-paper)
