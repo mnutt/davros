@@ -84,7 +84,7 @@ opt/app/CHANGELOG.md
 opt/app/app.js
 opt/app/dist
 opt/app/dist/assets/davros-1e916d63f1f54f28d36419bd26baf67a.css
-opt/app/dist/assets/davros-2f102797475fb1ce9283fc49d2f17ed6.js
+opt/app/dist/assets/davros-b1e502d45d593e21bb966ed798771efb.js
 opt/app/dist/assets/vendor-04b18c0b8f358029a600bc13de7d8a59.js
 opt/app/dist/assets/vendor-bced1d99d8e2f66834eaa78bae817a82.css
 opt/app/dist/fonts/materialicons/v16/2fcrYFNaTjcS6g4U3t-Y5UEw0lE80llgEseQY3FEmqw.woff2
@@ -94,6 +94,10 @@ opt/app/node_modules/accepts/index.js
 opt/app/node_modules/accepts/package.json
 opt/app/node_modules/archiver-utils/file.js
 opt/app/node_modules/archiver-utils/index.js
+opt/app/node_modules/archiver-utils/node_modules/glob/common.js
+opt/app/node_modules/archiver-utils/node_modules/glob/glob.js
+opt/app/node_modules/archiver-utils/node_modules/glob/package.json
+opt/app/node_modules/archiver-utils/node_modules/glob/sync.js
 opt/app/node_modules/archiver-utils/package.json
 opt/app/node_modules/archiver/index.js
 opt/app/node_modules/archiver/lib/core.js
@@ -102,6 +106,10 @@ opt/app/node_modules/archiver/lib/plugins/tar.js
 opt/app/node_modules/archiver/lib/plugins/zip.js
 opt/app/node_modules/archiver/node_modules/async/lib/async.js
 opt/app/node_modules/archiver/node_modules/async/package.json
+opt/app/node_modules/archiver/node_modules/glob/common.js
+opt/app/node_modules/archiver/node_modules/glob/glob.js
+opt/app/node_modules/archiver/node_modules/glob/package.json
+opt/app/node_modules/archiver/node_modules/glob/sync.js
 opt/app/node_modules/archiver/package.json
 opt/app/node_modules/array-flatten/array-flatten.js
 opt/app/node_modules/array-flatten/package.json
@@ -216,6 +224,9 @@ opt/app/node_modules/forwarded/index.js
 opt/app/node_modules/forwarded/package.json
 opt/app/node_modules/fresh/index.js
 opt/app/node_modules/fresh/package.json
+opt/app/node_modules/fs.realpath/index.js
+opt/app/node_modules/fs.realpath/old.js
+opt/app/node_modules/fs.realpath/package.json
 opt/app/node_modules/glob/common.js
 opt/app/node_modules/glob/glob.js
 opt/app/node_modules/glob/node_modules/minimatch/minimatch.js
@@ -292,6 +303,14 @@ opt/app/node_modules/jsDAV/lib/shared/exceptions.js
 opt/app/node_modules/jsDAV/lib/shared/util.js
 opt/app/node_modules/jsDAV/lib/shared/xml.js
 opt/app/node_modules/jsDAV/package.json
+opt/app/node_modules/jsDav/lib/DAV/backends/fs/node.js
+opt/app/node_modules/jsDav/lib/DAV/backends/fsext/node.js
+opt/app/node_modules/jsDav/lib/DAV/interfaces/iNode.js
+opt/app/node_modules/jsDav/lib/DAV/interfaces/iProperties.js
+opt/app/node_modules/jsDav/lib/jsdav.js
+opt/app/node_modules/jsDav/lib/shared/base.js
+opt/app/node_modules/jsDav/lib/shared/exceptions.js
+opt/app/node_modules/jsDav/lib/shared/util.js
 opt/app/node_modules/jsdav/lib/DAV/plugin.js
 opt/app/node_modules/jsdav/lib/DAV/plugins
 opt/app/node_modules/jsdav/lib/jsdav.js
@@ -324,6 +343,8 @@ opt/app/node_modules/mime-types/package.json
 opt/app/node_modules/mime/mime.js
 opt/app/node_modules/mime/package.json
 opt/app/node_modules/mime/types.json
+opt/app/node_modules/minimatch/minimatch.js
+opt/app/node_modules/minimatch/package.json
 opt/app/node_modules/mkdirp
 opt/app/node_modules/mkdirp/bin
 opt/app/node_modules/mkdirp/examples
@@ -361,6 +382,8 @@ opt/app/node_modules/options/lib/options.js
 opt/app/node_modules/options/package.json
 opt/app/node_modules/parseurl/index.js
 opt/app/node_modules/parseurl/package.json
+opt/app/node_modules/path-is-absolute/index.js
+opt/app/node_modules/path-is-absolute/package.json
 opt/app/node_modules/path-to-regexp/index.js
 opt/app/node_modules/path-to-regexp/package.json
 opt/app/node_modules/pend/index.js
@@ -448,6 +471,7 @@ opt/app/server
 opt/app/server/api-ws.js
 opt/app/server/api.js
 opt/app/server/changelog.js
+opt/app/server/dav/backend/cached-properties.js
 opt/app/server/dav/backend/directory.js
 opt/app/server/dav/backend/etag.js
 opt/app/server/dav/backend/file.js
