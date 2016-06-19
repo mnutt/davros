@@ -9,6 +9,7 @@ var Util                  = require("jsDAV/lib/shared/util");
 var Exc                   = require("jsDAV/lib/shared/exceptions");
 var Etag                  = require("./etag");
 var CachedProperties      = require("./cached-properties");
+var ChildProcess          = require("child_process");
 
 var Directory = module.exports = jsDAV_FSExt_Directory.extend(jsDAV_iFile, Etag, CachedProperties, {
 
@@ -169,5 +170,16 @@ var Directory = module.exports = jsDAV_FSExt_Directory.extend(jsDAV_iFile, Etag,
     });
 
     handler.getRequestBody(type, stream, false, function() {});
+  },
+
+  // We redefine fsext's `delete` because it uses asyncjs rmtree, which causes
+  // stack overflows on very large directories.
+  "delete": function(cbfsdel) {
+    var self = this;
+    ChildProcess.spawn("rm", ["-rf", this.path]).on("exit", function(err) {
+      if (err)
+        return cbfsdel(err);
+      self.deleteResourceData(cbfsdel);
+    });
   }
 });
