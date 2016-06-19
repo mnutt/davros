@@ -19,8 +19,10 @@ exports.server = function(root) {
   var tempDir = os.tmpdir();
   console.log("Storing temporary files in " + tempDir);
 
+  var tree = Tree.new(root);
+
   var server = jsDAV.mount({
-    tree: Tree.new(root),
+    tree: tree,
     tmpDir: tempDir,
     sandboxed: true,
     locksBackend: jsDAV_Locks_Backend_FS.new(root),
@@ -30,6 +32,9 @@ exports.server = function(root) {
       "safe-gets": require("./safe-gets")
     })
   });
+
+  tree.setSandbox(tree.basePath);
+  require('./backend/etag').tree = tree;
 
   server.baseUri = '/remote.php/webdav/';
   var baseUri = server.baseUri.slice(0, -1);
@@ -45,7 +50,7 @@ exports.server = function(root) {
 
 exports.status = function(req, res, next) {
   res.writeHead(200, {});
-  res.end('{"installed":"true","version":"5.0.17","versionstring":"5.0.10","edition":""}');
+  res.end('{"installed":"true","version":"8.2.5","versionstring":"8.2.5","edition":""}');
 };
 
 exports.capabilities = function(req, res, next) {

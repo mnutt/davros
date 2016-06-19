@@ -2,14 +2,15 @@ var Fs = require('fs');
 var Async = require("asyncjs");
 var Path = require("path");
 
-var jsDAV_FS_Directory = require("jsDAV/lib/DAV/backends/fs/directory");
-var jsDAV_FS_Node = require("jsDAV/lib/DAV/backends/fs/node");
-var jsDAV_Chunked_File = require("./file");
-var Util = require("jsDAV/lib/shared/util");
-var Exc = require("jsDAV/lib/shared/exceptions");
-var Etag = require("./etag");
+var jsDAV_FSExt_Directory = require("jsDAV/lib/DAV/backends/fsext/directory");
+var jsDAV_iFile           = require("jsDAV/lib/DAV/interfaces/iFile");
+var File                  = require("./file");
+var Util                  = require("jsDAV/lib/shared/util");
+var Exc                   = require("jsDAV/lib/shared/exceptions");
+var Etag                  = require("./etag");
+var CachedProperties      = require("./cached-properties");
 
-var jsDAV_Chunked_Directory = module.exports = jsDAV_FS_Directory.extend(jsDAV_FS_Node, {
+var Directory = module.exports = jsDAV_FSExt_Directory.extend(jsDAV_iFile, Etag, CachedProperties, {
 
   chunkMatch: /(.*?)-chunking-(\d+)-(\d+)-(\d+)(-done)?$/,
 
@@ -33,8 +34,8 @@ var jsDAV_Chunked_Directory = module.exports = jsDAV_FS_Directory.extend(jsDAV_F
                + path + " could not be located"));
       }
       cbfsgetchild(null, stat.isDirectory()
-                   ? jsDAV_Chunked_Directory.new(path)
-                   : jsDAV_Chunked_File.new(path));
+                   ? Directory.new(path)
+                   : File.new(path));
     });
   },
 
@@ -47,10 +48,13 @@ var jsDAV_Chunked_Directory = module.exports = jsDAV_FS_Directory.extend(jsDAV_F
     var nodes = [];
     Async.readdir(this.path)
       .stat()
+      .filter(function(file) {
+        return file.name !== File.PROPS_DIR;
+      })
       .each(function(file, cbnextdirch) {
         nodes.push(file.stat.isDirectory()
-                   ? jsDAV_Chunked_Directory.new(file.path)
-                   : jsDAV_Chunked_File.new(file.path)
+                   ? Directory.new(file.path)
+                   : File.new(file.path)
                   );
         cbnextdirch();
       })
@@ -72,13 +76,14 @@ var jsDAV_Chunked_Directory = module.exports = jsDAV_FS_Directory.extend(jsDAV_F
    */
   createFile: function(name, data, enc, cbfscreatefile) {
     var self = this;
-    jsDAV_FS_Directory.createFile.call(this, name, data, enc,
-                                       function() {
-                                         if (err)
-                                           return cbfscreatefile(err);
+    jsDAV_FSExt_Directory.createFile.call(this, name, data, enc,
+                                          function(err) {
+                                            if (err)
+                                              return cbfscreatefile(err);
 
-                                         Etag(self.path, cbfscreatefile);
-                                       });
+                                            var file = self.new([self.path, name].join('/'));
+                                            file.getETag(cbfscreatefile);
+                                          });
   },
 
   /**
@@ -92,13 +97,15 @@ var jsDAV_Chunked_Directory = module.exports = jsDAV_FS_Directory.extend(jsDAV_F
    * @return void
    */
   createFileStream: function(handler, name, enc, cbfscreatefile) {
+    var self = this;
     if (this.isChunked(name)) {
       handler.httpRequest.headers["oc-file-name"] = name;
       this.writeFileChunk(handler, enc, cbfscreatefile);
     } else {
       var path = Path.join(this.path, name);
-      jsDAV_FS_Directory.createFileStream.call(this, handler, name, enc, function() {
-        Etag(path, cbfscreatefile);
+      jsDAV_FSExt_Directory.createFileStream.call(this, handler, name, enc, function() {
+        var file = self.new([self.path, name].join('/'));
+        file.getETag(cbfscreatefile);
       });
     }
   },
@@ -154,7 +161,7 @@ var jsDAV_Chunked_Directory = module.exports = jsDAV_FS_Directory.extend(jsDAV_F
           handler.dispatchEvent("afterBind", handler.httpRequest.url,
                                 Path.join(self.path, filename));
 
-          Etag(originalPath, cbfswritechunk);
+          self.getETag(cbfswritechunk);
         });
       } else {
         cbfswritechunk(null, null);
