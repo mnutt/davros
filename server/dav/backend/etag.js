@@ -3,6 +3,8 @@ var Fs     = require('fs');
 var Path   = require('path');
 var Base   = require("jsDAV/lib/shared/base");
 
+var jsDAV_iCollection = require("jsDAV/lib/DAV/interfaces/iCollection");
+
 var Etag = module.exports = Base.extend({
   getETag: function(cb) {
     var self = this;
@@ -33,8 +35,8 @@ var Etag = module.exports = Base.extend({
 
   calculateEtag: function(cb) {
     var path = this.path;
-    if(this.getChild) {
-      path = this.getResourceInfoPath();
+    if(this.hasFeature(jsDAV_iCollection)) {
+      path = Path.join(this.path, this.PROPS_DIR);
     }
 
     var sum = crypto.createHash('md5');
