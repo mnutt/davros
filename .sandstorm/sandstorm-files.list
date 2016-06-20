@@ -8,6 +8,7 @@ bin/dash
 bin/df
 bin/ls
 bin/mkdir
+bin/rm
 bin/sh
 etc/alternatives/awk
 etc/alternatives/node
