@@ -82,7 +82,7 @@ var Directory = module.exports = jsDAV_FSExt_Directory.extend(jsDAV_iFile, Etag,
                                             if (err)
                                               return cbfscreatefile(err);
 
-                                            var file = self.new([self.path, name].join('/'));
+                                            var file = File.new([self.path, name].join('/'));
                                             file.getETag(cbfscreatefile);
                                           });
   },
@@ -105,7 +105,7 @@ var Directory = module.exports = jsDAV_FSExt_Directory.extend(jsDAV_iFile, Etag,
     } else {
       var path = Path.join(this.path, name);
       jsDAV_FSExt_Directory.createFileStream.call(this, handler, name, enc, function() {
-        var file = self.new([self.path, name].join('/'));
+        var file = File.new([self.path, name].join('/'));
         file.getETag(cbfscreatefile);
       });
     }
