@@ -1,3 +1,6 @@
+# 0.17.2
+* Repackaged to take advantage of another Sandstorm v0.170 memory issue fix
+
 # 0.17.1
 * Repackaged to take advantage of Sandstorm v0.166 flow control fixes for large file downloads
 
