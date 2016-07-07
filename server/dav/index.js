@@ -45,7 +45,7 @@ exports.server = function(root) {
 
 exports.status = function(req, res, next) {
   res.writeHead(200, {});
-  res.end('{"installed":"true","version":"5.0.17","versionstring":"5.0.10","edition":""}');
+  res.end('{"installed":"true","version":"8.2.5","versionstring":"8.2.5","edition":""}');
 };
 
 exports.capabilities = function(req, res, next) {
