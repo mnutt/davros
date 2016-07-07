@@ -1,3 +1,7 @@
+# 0.18.0
+* Fix MS Edge web font icon issues
+* Report as Owncloud 8.2.5 to prevent Owncloud Client warnings
+
 # 0.17.2
 * Repackaged to take advantage of another Sandstorm v0.170 memory issue fix
 

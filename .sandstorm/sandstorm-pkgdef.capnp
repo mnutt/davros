@@ -19,9 +19,9 @@ const pkgdef :Spk.PackageDefinition = (
 
     appTitle = (defaultText = "Davros"),
 
-    appVersion = 172,  # Increment this for every release.
+    appVersion = 180,  # Increment this for every release.
 
-    appMarketingVersion = (defaultText = "0.17.2"),
+    appMarketingVersion = (defaultText = "0.18.0"),
     # Human-readable representation of appVersion. Should match the way you
     # identify versions of your app in documentation and marketing.
 
