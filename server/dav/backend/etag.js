@@ -24,7 +24,7 @@ var Etag = module.exports = Base.extend({
           self.updateProperties({etag: etag}, function(err) {
             if(err) { return cb(err, null); }
 
-            self.expireEtagTree(function(err) {
+            self.recalculateEtagTree(function(err) {
               cb(err, etag);
             });
           });
@@ -51,8 +51,9 @@ var Etag = module.exports = Base.extend({
 
       sum.end();
 
+      var etag = sum.read();
       callbackCalled = true;
-      cb(null, '"' + sum.read() + '"');
+      cb(null, '"' + etag + '"');
     });
 
     stream.on('error', function() {
@@ -71,7 +72,7 @@ var Etag = module.exports = Base.extend({
   // lazily recalculate when someone else requests them.
 
   // This function calls itself recursively until it finishes, then calls `cb`
-  expireEtagTree(cb) {
+  recalculateEtagTree(cb) {
     var parent = Path.dirname(this.path);
 
     // Stop unsetting etags when we get to the root of our data dir
@@ -87,14 +88,20 @@ var Etag = module.exports = Base.extend({
 
     var parentNode = this.new(parent);
 
-    parentNode.updateProperties({etag: null}, function(err) {
+    parentNode.calculateEtag(function(err, etag) {
       if(err) {
-        // this may be a legit error or we may just not have access, either
-        // way we're done
-        cb(null);
-      } else {
-        parentNode.expireEtagTree(cb);
+        return cb(null);
       }
+
+      parentNode.updateProperties({etag: etag}, function(err) {
+        if(err) {
+          // this may be a legit error or we may just not have access, either
+          // way we're done
+          cb(null);
+        } else {
+          parentNode.recalculateEtagTree(cb);
+        }
+      });
     });
   }
 });

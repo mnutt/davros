@@ -8,4 +8,18 @@ var Util             = require("jsDAV/lib/shared/util");
 var Etag             = require("./etag");
 var CachedProperties = require("./cached-properties");
 
-module.exports = jsDAV_FSExt_File.extend(Etag, CachedProperties);
+module.exports = jsDAV_FSExt_File.extend(Etag, CachedProperties, {
+  setName: function(name, cbfssetname) {
+    var self = this;
+    this.recalculateEtagTree(function() {
+      jsDAV_FSExt_File.setName.call(self, name, cbfssetname);
+    });
+  },
+
+  delete: function(cbfsfiledelete) {
+    var self = this;
+    this.recalculateEtagTree(function() {
+      jsDAV_FSExt_File['delete'].call(self, cbfsfiledelete);
+    });
+  }
+});

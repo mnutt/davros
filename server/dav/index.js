@@ -27,9 +27,10 @@ exports.server = function(root) {
     sandboxed: true,
     locksBackend: jsDAV_Locks_Backend_FS.new(root),
     plugins: jsDAV_Util.extend(jsDAV_Server.DEFAULT_PLUGINS, {
-      "ws-notify": require("./notify"),
+      "ws-notify":   require("./notify"),
       "root-delete": require("./root-delete"),
-      "safe-gets": require("./safe-gets")
+      "mtime":       require("./mtime"),
+      "safe-gets":   require("./safe-gets")
     })
   });
 

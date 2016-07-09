@@ -176,10 +176,19 @@ var Directory = module.exports = jsDAV_FSExt_Directory.extend(jsDAV_iFile, Etag,
   // stack overflows on very large directories.
   "delete": function(cbfsdel) {
     var self = this;
-    ChildProcess.spawn("rm", ["-rf", this.path]).on("exit", function(err) {
-      if (err)
-        return cbfsdel(err);
-      self.deleteResourceData(cbfsdel);
+    this.recalculateEtagTree(function() {
+      ChildProcess.spawn("rm", ["-rf", self.path]).on("exit", function(err) {
+        if (err)
+          return cbfsdel(err);
+        self.deleteResourceData(cbfsdel);
+      });
+    });
+  },
+
+  setName: function(name, cbfssetname) {
+    var self = this;
+    this.recalculateEtagTree(function() {
+      jsDAV_FSExt_Directory.setName.call(self, name, cbfssetname);
     });
   }
 });
