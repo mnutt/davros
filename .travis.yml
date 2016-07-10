@@ -9,6 +9,9 @@ cache:
   directories:
     - node_modules
 
+env:
+  - PORT=6849
+
 before_install:
   - npm config set spin false
   - npm install -g bower
@@ -26,7 +29,7 @@ install:
   - cd ../..
 
 before_script:
-  - PORT=6849 node app.js &> /dev/null &
+  - node app.js &> /dev/null &
 
 script:
   - npm test
