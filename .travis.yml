@@ -36,4 +36,4 @@ before_script:
 script:
   - npm test
   - npm run test-server
-  - cd tmp/litmus-0.13 && make OPTS="-k" URL=http://127.0.0.1:6849/remote.php/webdav check
+  - cd tmp/litmus-0.13 && make URL=http://127.0.0.1:6849/remote.php/webdav check
