@@ -1,3 +1,5 @@
+/*jslint node: true  */
+
 const os      = require('os');
 const http    = require('http');
 const fs      = require('fs');

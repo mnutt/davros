@@ -1,3 +1,6 @@
+/*jslint node: true */
+/*global describe, it */
+
 const assert  = require('chai').assert;
 const request = require('supertest');
 const support = require('./support');
@@ -46,10 +49,10 @@ describe('PUT file', function() {
     request(server)
       .put('/remote.php/webdav/foo.txt')
       .send({foo: 'foobar'})
-      .end(function(err) {
+      .end(function() {
         request(server)
           .propfind('/remote.php/webdav')
-          .end(function(err, res) {
+          .end(function(_, res) {
             let listing = support.directoryListing(res);
             let etag = listing[0].etag;
             assert.ok(etag, 'initial directory listing should have etag set');
