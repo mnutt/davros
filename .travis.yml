@@ -29,4 +29,4 @@ script:
   - npm test
   - npm run test-server
   - PORT=6849 node app.js &
-  - tmp/litmus-0.13/litmus -k http://localhost:6849/remote.php/webdav
+  - cd tmp/litmus-0.13 && make OPTS="-k" URL=http://localhost:6849/remote.php/webdav check
