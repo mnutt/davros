@@ -15,7 +15,6 @@ var Etag = module.exports = Base.extend({
 
       var sum = crypto.createHash('md5');
 
-      console.log(self.path, stat.mtime);
       sum.update(self.path);
       sum.update(':' + stat.length);
       sum.update(':' + stat.mtime.getTime());
