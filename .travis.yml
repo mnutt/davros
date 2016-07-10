@@ -29,6 +29,7 @@ install:
   - cd ../..
 
 before_script:
+  - npm run build
   - node app.js &> /dev/null &
 
 script:
