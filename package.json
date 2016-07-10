@@ -10,7 +10,8 @@
   "scripts": {
     "start": "node_modules/.bin/ember server",
     "build": "ember build",
-    "test": "ember test"
+    "test": "ember test",
+    "test-server": "node_modules/.bin/mocha tests/server/*.js"
   },
   "repository": "",
   "engines": {
@@ -21,6 +22,7 @@
   "devDependencies": {
     "bower": "^1.7.9",
     "broccoli-asset-rev": "^2.4.2",
+    "chai": "^3.5.0",
     "ember-ajax": "0.7.1",
     "ember-cli": "2.5.0",
     "ember-cli-app-version": "^1.0.0",
@@ -50,7 +52,10 @@
     "ember-transition-helper": "0.0.6",
     "ember-websockets": "1.2.3",
     "glob": "^4.5.3",
-    "loader.js": "^4.0.1"
+    "loader.js": "^4.0.1",
+    "mocha": "^2.5.3",
+    "supertest": "^1.2.0",
+    "xmldoc": "^0.5.1"
   },
   "dependencies": {
     "archiver": "^1.0.0",
