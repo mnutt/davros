@@ -8,7 +8,7 @@ const xmldoc  = require('xmldoc');
 const api     = require('../../../server/index');
 
 exports.makeApp = function() {
-  process.env.STORAGE_PATH = os.tmpdir() + 'davros-test-data-' + Math.random();
+  process.env.STORAGE_PATH = os.tmpdir() + '/davros-test-data-' + Math.random();
   fs.mkdirSync(process.env.STORAGE_PATH);
 
   let app = express();
