@@ -17,7 +17,16 @@ before_install:
 install:
   - npm install
   - bower install
+  - pushd tmp
+  - wget http://www.webdav.org/neon/litmus/litmus-0.13.tar.gz
+  - tar -zxf http://www.webdav.org/neon/litmus/litmus-0.13.tar.gz
+  - pushd litmus-0.13
+  - sed -i -e "s/T\(propfind_invalid2\),//g" src/props.c
+  - ./configure && make
+  - popd; popd;
 
 script:
   - npm test
   - npm run test-server
+  - PORT=6849 node app.js &
+  - tmp/litmus-0.13/litmus -k http://localhost:6849/remote.php/webdav
