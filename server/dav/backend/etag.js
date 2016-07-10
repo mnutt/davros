@@ -8,100 +8,21 @@ var jsDAV_iCollection = require("jsDAV/lib/DAV/interfaces/iCollection");
 var Etag = module.exports = Base.extend({
   getETag: function(cb) {
     var self = this;
-    self.getProperties(['etag'], function(err, props) {
+    Fs.stat(this.path, function(err, stat) {
       if(err) {
-        return cb(err, null);
+        return cb(err);
       }
 
-      if(props && props['etag']) {
-        cb(null, props['etag']);
-      } else {
-        var path = self.path;
+      var sum = crypto.createHash('md5');
 
-        self.calculateEtag(function(err, etag) {
-          if(err) { return cb(err, null); }
+      console.log(self.path, stat.mtime);
+      sum.update(self.path);
+      sum.update(':' + stat.length);
+      sum.update(':' + stat.mtime.getTime());
+      sum.update(':' + stat.mtime.getMilliseconds());
 
-          self.updateProperties({etag: etag}, function(err) {
-            if(err) { return cb(err, null); }
-
-            self.recalculateEtagTree(function(err) {
-              cb(err, etag);
-            });
-          });
-        });
-      }
-    });
-  },
-
-  calculateEtag: function(cb) {
-    var path = this.path;
-    if(this.hasFeature(jsDAV_iCollection)) {
-      path = Path.join(this.path, this.PROPS_DIR);
-    }
-
-    var sum = crypto.createHash('md5');
-    sum.setEncoding('hex');
-
-    var stream = Fs.createReadStream(path);
-
-    var callbackCalled = false;
-
-    stream.on('end', function() {
-      if(callbackCalled) { return; }
-
-      sum.end();
-
-      var etag = sum.read();
-      callbackCalled = true;
-      cb(null, '"' + etag + '"');
-    });
-
-    stream.on('error', function() {
-      if(callbackCalled) { return; }
-
-      callbackCalled = true;
-      cb(null, null);
-    });
-
-    stream.pipe(sum);
-  },
-
-  // Recursively unset the etag for a node's ancestors. Whenever a node changes,
-  // we want its ancestors to recalculate their own etags. However, it would be
-  // too much work to do it ourselves so we instead just unset them so we can
-  // lazily recalculate when someone else requests them.
-
-  // This function calls itself recursively until it finishes, then calls `cb`
-  recalculateEtagTree(cb) {
-    var parent = Path.dirname(this.path);
-
-    // Stop unsetting etags when we get to the root of our data dir
-    if(module.exports.tree && !module.exports.tree.insideSandbox(parent)) {
-      return cb(null);
-    }
-
-    // Reached the root. Doubtful we'll get this far, but we don't want to end
-    // up in an infinite loop.
-    if(parent === this.path) {
-      return cb(null);
-    }
-
-    var parentNode = this.new(parent);
-
-    parentNode.calculateEtag(function(err, etag) {
-      if(err) {
-        return cb(null);
-      }
-
-      parentNode.updateProperties({etag: etag}, function(err) {
-        if(err) {
-          // this may be a legit error or we may just not have access, either
-          // way we're done
-          cb(null);
-        } else {
-          parentNode.recalculateEtagTree(cb);
-        }
-      });
+      var etag = '"' + sum.digest('hex') + '"';
+      cb(null, etag);
     });
   }
 });

@@ -11,7 +11,7 @@ var Etag = require("./etag");
 var CachedProperties      = require("./cached-properties");
 var ChildProcess          = require("child_process");
 
-var Directory = module.exports = jsDAV_FSExt_Directory.extend(jsDAV_iFile, Etag, CachedProperties, {
+var Directory = module.exports = jsDAV_FSExt_Directory.extend(jsDAV_iFile, Etag, {
 
   chunkMatch: /(.*?)-chunking-(\d+)-(\d+)-(\d+)(-done)?$/,
 
@@ -175,20 +175,12 @@ var Directory = module.exports = jsDAV_FSExt_Directory.extend(jsDAV_iFile, Etag,
   // We redefine fsext's `delete` because it uses asyncjs rmtree, which causes
   // stack overflows on very large directories.
   "delete": function(cbfsdel) {
-    var self = this;
-    this.recalculateEtagTree(function() {
-      ChildProcess.spawn("rm", ["-rf", self.path]).on("exit", function(err) {
-        if (err)
-          return cbfsdel(err);
-        self.deleteResourceData(cbfsdel);
-      });
-    });
-  },
-
-  setName: function(name, cbfssetname) {
-    var self = this;
-    this.recalculateEtagTree(function() {
-      jsDAV_FSExt_Directory.setName.call(self, name, cbfssetname);
+    ChildProcess.spawn("rm", ["-rf", this.path]).on("exit", function(err) {
+      if(err) {
+        cbfsdel(err)
+      } else {
+        cbfsdel(null);
+      }
     });
   }
 });
