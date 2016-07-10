@@ -84,9 +84,6 @@ opt/app/.sandstorm/launcher.sh
 opt/app/CHANGELOG.md
 opt/app/app.js
 opt/app/dist
-opt/app/dist/assets/davros-1e916d63f1f54f28d36419bd26baf67a.css
-opt/app/dist/assets/davros-b1e502d45d593e21bb966ed798771efb.js
-opt/app/dist/assets/vendor-04b18c0b8f358029a600bc13de7d8a59.js
 opt/app/dist/assets/vendor-bced1d99d8e2f66834eaa78bae817a82.css
 opt/app/dist/fonts/materialicons/v16/2fcrYFNaTjcS6g4U3t-Y5UEw0lE80llgEseQY3FEmqw.woff2
 opt/app/dist/index.html
@@ -190,6 +187,8 @@ opt/app/node_modules/dirStat/node_modules/async/package.json
 opt/app/node_modules/dirStat/package.json
 opt/app/node_modules/ee-first/index.js
 opt/app/node_modules/ee-first/package.json
+opt/app/node_modules/encodeurl/index.js
+opt/app/node_modules/encodeurl/package.json
 opt/app/node_modules/end-of-stream/index.js
 opt/app/node_modules/end-of-stream/package.json
 opt/app/node_modules/escape-html/index.js
@@ -412,6 +411,8 @@ opt/app/node_modules/send/index.js
 opt/app/node_modules/send/package.json
 opt/app/node_modules/serve-static/index.js
 opt/app/node_modules/serve-static/package.json
+opt/app/node_modules/setprototypeof/index.js
+opt/app/node_modules/setprototypeof/package.json
 opt/app/node_modules/statuses/codes.json
 opt/app/node_modules/statuses/index.js
 opt/app/node_modules/statuses/package.json

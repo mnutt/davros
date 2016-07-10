@@ -44,7 +44,7 @@
     "ember-load-initializers": "^0.5.1",
     "ember-moment": "5.0.1",
     "ember-network": "^0.3.0",
-    "ember-paper": "git://github.com/mnutt/ember-paper.git#a772a6b",
+    "ember-paper": "git://github.com/mnutt/ember-paper.git#6e6d391",
     "ember-plupload": "1.13.12",
     "ember-route-action-helper": "0.3.1",
     "ember-transition-helper": "0.0.6",
@@ -55,7 +55,7 @@
   "dependencies": {
     "archiver": "^1.0.0",
     "async": "1.4.2",
-    "asyncjs": "git://github.com/fjakobs/async.js.git#bd61b6ae2cd7",
+    "asyncjs": "git://github.com/mnutt/async.js.git#28ddb08",
     "concat-files": "^0.1.0",
     "dirStat": "0.0.2",
     "ember-resolver": "^2.0.3",

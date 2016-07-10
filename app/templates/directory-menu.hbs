@@ -7,12 +7,12 @@
 
   {{else}}
 
-    {{#paper-menu-item onClick="chooseUpload" id="menu-upload-file"}}
-      <p class="label">Upload</p>
-      {{paper-icon "file-upload" class="md-menu-align-target"}}
-    {{/paper-menu-item}}
-
     {{#if canEdit}}
+      {{#paper-menu-item onClick="chooseUpload" id="menu-upload-file"}}
+        <p class="label">Upload</p>
+        {{paper-icon "file-upload" class="md-menu-align-target"}}
+      {{/paper-menu-item}}
+
       {{#paper-menu-item onClick="newDirectory"}}
         <p class="label">New Directory</p>
         {{paper-icon "add-circle-outline" class="md-menu-align-target"}}

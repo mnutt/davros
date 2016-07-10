@@ -5,9 +5,9 @@ var Path = require("path");
 var jsDAV_FSExt_Directory = require("jsDAV/lib/DAV/backends/fsext/directory");
 var jsDAV_iFile           = require("jsDAV/lib/DAV/interfaces/iFile");
 var File                  = require("./file");
-var Util                  = require("jsDAV/lib/shared/util");
-var Exc                   = require("jsDAV/lib/shared/exceptions");
-var Etag                  = require("./etag");
+var Util = require("jsDAV/lib/shared/util");
+var Exc = require("jsDAV/lib/shared/exceptions");
+var Etag = require("./etag");
 var CachedProperties      = require("./cached-properties");
 var ChildProcess          = require("child_process");
 
@@ -79,12 +79,12 @@ var Directory = module.exports = jsDAV_FSExt_Directory.extend(jsDAV_iFile, Etag,
     var self = this;
     jsDAV_FSExt_Directory.createFile.call(this, name, data, enc,
                                           function(err) {
-                                            if (err)
-                                              return cbfscreatefile(err);
+                                         if (err)
+                                           return cbfscreatefile(err);
 
                                             var file = File.new([self.path, name].join('/'));
                                             file.getETag(cbfscreatefile);
-                                          });
+                                       });
   },
 
   /**
