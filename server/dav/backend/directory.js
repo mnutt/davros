@@ -8,7 +8,6 @@ var File                  = require("./file");
 var Util = require("jsDAV/lib/shared/util");
 var Exc = require("jsDAV/lib/shared/exceptions");
 var Etag = require("./etag");
-var CachedProperties      = require("./cached-properties");
 var ChildProcess          = require("child_process");
 
 var Directory = module.exports = jsDAV_FSExt_Directory.extend(jsDAV_iFile, Etag, {
