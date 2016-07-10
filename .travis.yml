@@ -26,9 +26,9 @@ install:
   - cd ../..
 
 before_script:
-  - PORT=6849 node app.js &
+  - PORT=6849 node app.js &> /dev/null &
 
 script:
   - npm test
   - npm run test-server
-  - cd tmp/litmus-0.13 && make OPTS="-k" URL=http://localhost:6849/remote.php/webdav check
+  - cd tmp/litmus-0.13 && make OPTS="-k" URL=http://127.0.0.1:6849/remote.php/webdav check
