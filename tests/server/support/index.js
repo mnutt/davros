@@ -35,4 +35,4 @@ exports.directoryListing = function(doc) {
       isCollection:  !!prop.descendantWithPath('d:resourcetype.d:collection')
     };
   });
-}
+};

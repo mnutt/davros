@@ -66,7 +66,7 @@ describe('PUT file', function() {
                     let listing = support.directoryListing(res);
                     let newEtag = listing[0].etag;
                     assert.ok(newEtag, 'new directory listing should have etag set');
-                    assert.ok(etag != newEtag, 'etag should be different than before: ' + etag + ', ' + newEtag);
+                    assert.ok(etag !== newEtag, 'etag should be different than before: ' + etag + ', ' + newEtag);
                   })
                   .expect(207, done);
               });
