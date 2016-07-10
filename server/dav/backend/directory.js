@@ -73,7 +73,7 @@ var jsDAV_Chunked_Directory = module.exports = jsDAV_FS_Directory.extend(jsDAV_F
   createFile: function(name, data, enc, cbfscreatefile) {
     var self = this;
     jsDAV_FS_Directory.createFile.call(this, name, data, enc,
-                                       function() {
+                                       function(err) {
                                          if (err)
                                            return cbfscreatefile(err);
 
