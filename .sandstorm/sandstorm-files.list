@@ -84,6 +84,9 @@ opt/app/.sandstorm/launcher.sh
 opt/app/CHANGELOG.md
 opt/app/app.js
 opt/app/dist
+opt/app/dist/assets/davros-631181d382171941441c87893ac1df06.css
+opt/app/dist/assets/davros-9f0105690c78952149d946e4a926abb3.js
+opt/app/dist/assets/vendor-52246784f6c94516e5e02e64cb24b15a.js
 opt/app/dist/assets/vendor-bced1d99d8e2f66834eaa78bae817a82.css
 opt/app/dist/fonts/materialicons/v16/2fcrYFNaTjcS6g4U3t-Y5UEw0lE80llgEseQY3FEmqw.woff2
 opt/app/dist/index.html
@@ -473,13 +476,13 @@ opt/app/server
 opt/app/server/api-ws.js
 opt/app/server/api.js
 opt/app/server/changelog.js
-opt/app/server/dav/backend/cached-properties.js
 opt/app/server/dav/backend/directory.js
 opt/app/server/dav/backend/etag.js
 opt/app/server/dav/backend/file.js
 opt/app/server/dav/backend/tree.js
 opt/app/server/dav/cache.js
 opt/app/server/dav/index.js
+opt/app/server/dav/mtime.js
 opt/app/server/dav/notify.js
 opt/app/server/dav/root-delete.js
 opt/app/server/dav/safe-gets.js

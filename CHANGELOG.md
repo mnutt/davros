@@ -1,3 +1,7 @@
+# 0.19.0
+* Support X-OC-Mtime header to prevent Owncloud Client crashes
+* Directories have etags, to make client syncing more efficient
+
 # 0.18.0
 * Fix MS Edge web font icon issues
 * Report as Owncloud 8.2.5 to prevent Owncloud Client warnings
