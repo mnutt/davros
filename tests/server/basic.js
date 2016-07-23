@@ -45,6 +45,17 @@ describe('GET directory', function() {
 describe('PUT file', function() {
   let server = support.makeApp();
 
+  it('accepts x-oc-mtime header for owncloud', function(done) {
+    request(server)
+      .put('/remote.php/webdav/foo.txt')
+      .send({foo: 'foobar'})
+      .set('x-oc-mtime', '1469294928893')
+      .end(function(_, res) {
+        assert.equal(res.header['x-oc-mtime'], 'accepted');
+        done();
+      });
+  });
+
   it('changes the directory etag', function(done) {
     request(server)
       .put('/remote.php/webdav/foo.txt')
