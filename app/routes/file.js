@@ -21,7 +21,8 @@ export default Ember.Route.extend({
     var message = JSON.parse(rawMessage.data);
 
     if(message.file) {
-      if(this.get('controller.model.id') === message.file) {
+      if(message.file === "/") { message.file = ""; }
+      if(this.get('controller.model.path') === message.file) {
         this.get('controller.model').load();
       }
     }
