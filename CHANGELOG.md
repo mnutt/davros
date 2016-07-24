@@ -1,3 +1,6 @@
+# 0.19.1
+* Fix regression where web UI did not update when files were modified
+
 # 0.19.0
 * Support X-OC-Mtime header to prevent Owncloud Client crashes
 * Directories have etags, to make client syncing more efficient
