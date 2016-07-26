@@ -3,7 +3,7 @@ import Webdav from 'davros/lib/webdav';
 import jQuery from 'jquery';
 
 export default Ember.Mixin.create({
-  davBase: '/remote.php/webdav',
+  davBase: Webdav.base,
 
   load: function() {
     return Webdav.propfind(this.get('rawPath')).then((xml) => {

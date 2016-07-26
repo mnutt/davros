@@ -13,6 +13,8 @@ var jsDAV_Locks_Backend_FS = require("jsDAV/lib/DAV/plugins/locks/fs");
 var statvfs = require('./statvfs-shim');
 fs.statvfs = statvfs;
 
+exports.base = '/remote.php/webdav';
+
 exports.server = function(root) {
   console.log("Mounting webdav from data dir " + root);
 
@@ -37,24 +39,13 @@ exports.server = function(root) {
   tree.setSandbox(tree.basePath);
   require('./backend/etag').tree = tree;
 
-  server.baseUri = '/remote.php/webdav/';
-  var baseUri = server.baseUri.slice(0, -1);
+  server.baseUri = exports.base + '/';
 
   return function(req, res, next) {
-    if(req.url.indexOf(baseUri) === 0) {
+    if(req.url.indexOf(exports.base) === 0) {
       server.emit('request', req, res);
     } else {
       next();
     }
   };
-};
-
-exports.status = function(req, res, next) {
-  res.writeHead(200, {});
-  res.end('{"installed":"true","version":"8.2.5","versionstring":"8.2.5","edition":""}');
-};
-
-exports.capabilities = function(req, res, next) {
-  res.writeHead(200, {});
-  res.end('{"ocs":{"meta":{"status":"ok","statuscode":100,"message":null},"data":{"capabilities":{"files":{"versioning":true,"bigfilechunking":true,"undelete":true},"core":{"pollinterval":60}},"version":{"major":5,"minor":0,"micro":17,"string":"5.0.10","edition":""}}}}');
 };

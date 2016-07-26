@@ -85,8 +85,8 @@ opt/app/CHANGELOG.md
 opt/app/app.js
 opt/app/dist
 opt/app/dist/assets/davros-631181d382171941441c87893ac1df06.css
-opt/app/dist/assets/davros-b3a42916b7b0cfaac1d10e7d89aa3217.js
-opt/app/dist/assets/vendor-aae96ab1b04d37f1b2a5f6adf290dade.js
+opt/app/dist/assets/davros-74405c85267acd6442fa727607814460.js
+opt/app/dist/assets/vendor-0c82fb6e16555291bd97687791f9b29b.js
 opt/app/dist/assets/vendor-bced1d99d8e2f66834eaa78bae817a82.css
 opt/app/dist/fonts/materialicons/v16/2fcrYFNaTjcS6g4U3t-Y5UEw0lE80llgEseQY3FEmqw.woff2
 opt/app/dist/index.html
@@ -481,6 +481,7 @@ opt/app/server/dav/backend/etag.js
 opt/app/server/dav/backend/file.js
 opt/app/server/dav/backend/tree.js
 opt/app/server/dav/cache.js
+opt/app/server/dav/capabilities.js
 opt/app/server/dav/index.js
 opt/app/server/dav/mtime.js
 opt/app/server/dav/notify.js

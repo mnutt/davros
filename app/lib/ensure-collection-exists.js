@@ -13,7 +13,7 @@ export default function(path) {
     parts.pop(); // don't care about the actual file
 
     let dirs = parts.map(function(part, index) {
-      return '/remote.php/webdav/' + parts.slice(0, index + 1).join('/');
+      return Webdav.base + '/' + parts.slice(0, index + 1).join('/');
     });
 
     dirs.reduce(function(cur, next) {

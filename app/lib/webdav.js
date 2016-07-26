@@ -4,6 +4,8 @@ import fetch from 'ember-network/fetch';
 const propFindQuery = new Blob(['<?xml version="1.0" ?>\n<D:propfind xmlns:D="DAV:"><D:allprop/></D:propfind>'], {type: 'application/xml'});
 
 export default {
+  base: '/remote.php/webdav',
+
   propfind: function(path) {
     return fetch(path, {
       method: 'PROPFIND',

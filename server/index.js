@@ -7,14 +7,15 @@
 //   });
 // };
 
-var path   = require('path');
-var api    = require('./api');
-var apiWs  = require('./api-ws');
-var dav    = require('./dav');
-var morgan = require('morgan');
-var publishing = require('./publishing');
+var path                 = require('path');
+var morgan               = require('morgan');
+var api                  = require('./api');
+var apiWs                = require('./api-ws');
+var changelog            = require('./changelog');
+var dav                  = require('./dav');
+var capabilities         = require('./dav/capabilities');
+var publishing           = require('./publishing');
 var sandstormPermissions = require('./sandstorm_permissions');
-var changelog = require('./changelog');
 
 module.exports = function(app, options) {
   var root = path.resolve(process.env.STORAGE_PATH || (__dirname + "/../data"));
@@ -28,8 +29,8 @@ module.exports = function(app, options) {
 
   var davServer = dav.server(root);
   app.use(davServer);
-  app.use('/status.php', dav.status);
-  app.use('/ocs/v1.php/cloud/capabilities', dav.capabilities);
+  app.use('/status.php', capabilities.status);
+  app.use('/ocs/v1.php/cloud/capabilities', capabilities.ocs);
 
   var uploadServer = api.upload(davServer);
   app.use('/api/upload', uploadServer);
