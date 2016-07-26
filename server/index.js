@@ -34,6 +34,7 @@ module.exports = function(app, options) {
 
   var uploadServer = api.upload(davServer);
   app.use('/api/upload', uploadServer);
+  app.use('/api/thumbnail', api.thumbnail(davServer));
 
   app.get('/api/archive', api.downloadDirectory(root));
   app.get('/api/publish/info', publishing.getInfo);

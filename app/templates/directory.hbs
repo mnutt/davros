@@ -44,7 +44,11 @@
             {{#if file.isDirectory}}
               <md-icon class="paper-icon md-font material-icons md-default-theme">folder</md-icon>
             {{else}}
-              <md-icon class="paper-icon md-font material-icons md-default-theme">{{-paper-underscore file.typeIcon}}</md-icon>
+              {{#if (eq file.type 'image')}}
+                {{image-thumbnail original=file.rawPath timestamp=file.mtime width=24 height=24 op="fit"}}
+              {{else}}
+                <md-icon class="paper-icon md-font material-icons md-default-theme">{{-paper-underscore file.typeIcon}}</md-icon>
+              {{/if}}
             {{/if}}
 
             <div class="truncated">{{file.name}}</div>
