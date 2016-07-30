@@ -87,7 +87,7 @@ md-content p.content {
 md-sidenav {
   background-color: #FFF;
   text-align: left;
-  width: auto !important;
+  max-width: 280px;
 
   md-content md-list .md-button {
     background-color: #FFF;

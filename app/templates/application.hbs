@@ -1,13 +1,12 @@
-{{#paper-nav-container open=drawerOpen classNames="ember-app"}}
+{{#paper-sidenav-container class="site-nav-container"}}
+  {{#paper-sidenav class="md-whiteframe-z2 site-sidenav" open=isSidenavOpen lockedOpen="gt-sm" onToggle=(action (mut isSidenavOpen))}}
 
-  {{#paper-sidenav classNames="md-sidenav-left md-whiteframe-z2" flex-layout="column" flex=true locked-open="gt-md"}}
-
-    {{#paper-toolbar}}
-      <div class="md-toolbar-tools">
+    {{#paper-toolbar class="site-content-toolbar"}}
+      {{#paper-toolbar-tools}}
         <div class="logo">
           <strong>{{paper-icon "adjust"}} Davros File Storage</strong>
         </div>
-      </div>
+      {{/paper-toolbar-tools}}
     {{/paper-toolbar}}
 
     {{#paper-content}}
@@ -16,8 +15,8 @@
 
   {{/paper-sidenav}}
 
-  {{#paper-content flex-layout="column" flex=true id="content"}}
+  <div class="flex layout-column" role="main" id="content">
     {{outlet}}
-  {{/paper-content}}
+  </div>
 
-{{/paper-nav-container}}
+{{/paper-sidenav-container}}

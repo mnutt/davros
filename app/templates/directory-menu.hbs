@@ -1,7 +1,7 @@
 <div class="more">
-  {{#paper-menu position="target-right target" as |menu|}}
+  {{#paper-menu position="target-right target" width=4 as |menu|}}
 
-    {{#paper-button onClick=(action "toggleMenu" target=menu) class="more-button" icon-button=true}}
+    {{#paper-button onClick=(action "toggleMenu" target=menu) class="more-button" iconButton=true}}
         {{paper-icon "more-vert" class="md-menu-origin"}}
     {{/paper-button}}
 
