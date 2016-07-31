@@ -21,7 +21,8 @@ module.exports = function(environment) {
       'object-src': "'self'",
       'connect-src': "'self' ws://localhost:*",
       'img-src': "'self' data:",
-      'media-src': "'self'"
+      'media-src': "'self'",
+      'style-src': "'self' 'unsafe-inline'"
     },
 
     APP: {
