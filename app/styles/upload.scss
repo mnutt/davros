@@ -38,6 +38,8 @@
 }
 
 .dropzone-active {
+  * { pointer-events: none !important; }
+
   #dropzone-display {
     display: flex;
     position: fixed;
