@@ -107,10 +107,12 @@ export default Ember.Route.extend({
 
       console.log("uploading " + path + " into location " + location);
 
-      ensureCollectionExists(path).then(() => {
+      var fullPath = [location, path].join('');
+
+      ensureCollectionExists(fullPath).then(() => {
         file.upload('/api/upload', {
           data: {
-            destination: [location, path].join('')
+            destination: fullPath
           }
         }).then(() => {
           this.get('controller.model').load();
