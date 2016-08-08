@@ -26,46 +26,48 @@ body, #content {
   flex-direction: row;
 }
 
+.actions {
+  text-align: right;
+  border-bottom: 1px solid #BBB;
+}
+
 .sidebar-small {
-  max-width: 48px;
+  max-width: 50px;
   transform: translate3d(0, 0, 0);
   flex-direction: column;
-  background-color: #046;
+  background-color: #333;
 
   transition: max-width 0.3s, ease;
-
-  &:hover {
-    max-width: 180px;
-  }
 
   a {
     display: block;
     width: 100%;
     box-sizing: border-box;
-    padding: 12px;
+    padding: 12px 0;
+    text-align: center;
+    margin-right: 2px;
+    border-radius: 0 4px 4px 0;
     text-decoration: none;
     position: relative;
-    &:hover {
-      background-color: #069;
+
+    div {
+      font-size: 10px;
+      font-weight: bold;
     }
 
-    overflow: hidden;
-
-    span {
-      position: absolute;
-      top: 13px;
-      left: 50px;
-    }
-
-    span, md-icon {
+    div, md-icon {
       color: #FFF;
+    }
+
+    &:hover {
+      background-color: #444;
     }
 
     &.active {
       background-color: #FFF;
 
-      span, md-icon {
-        color: #444;
+      div, md-icon {
+        color: #000;
       }
     }
   }
@@ -74,13 +76,7 @@ body, #content {
 md-toolbar.md-whiteframe-1dp {
   min-height: 48px;
   box-shadow: none;
-  background-color: #FFF !important;
-  color: #000 !important;
-  border-bottom: 1px solid #000;
-
-  md-icon {
-    color: #000 !important;
-  }
+  background-color: #069;
 
   .md-toolbar-tools {
     height: 48px;
@@ -106,6 +102,10 @@ md-toolbar.md-whiteframe-1dp {
 
     .more {
       margin-right: -15px;
+    }
+
+    .compact-actions {
+      display: none;
     }
   }
 }
@@ -144,12 +144,13 @@ md-menu-item {
   }
 
   a {
-    border-bottom: 1px solid #000;
+    border-bottom: 1px solid #FFF;
   }
 }
 
 #content md-content {
   background-color: #EEE;
+  border-right: 10px solid #FFF;
 
   p.content {
     padding: 2em 1em;
@@ -161,11 +162,36 @@ md-menu-item {
   }
 }
 
+md-sidenav {
+  background-color: #FFF;
+  text-align: left;
+  max-width: 280px;
+
+  md-content md-list .md-button {
+    background-color: #FFF;
+  }
+
+  md-list-item {
+    &:hover {
+      background-color: #DDD;
+    }
+
+    .md-list-item-inner {
+      md-icon {
+        margin: 14px 12px 14px 0 !important;
+      }
+      flex: off;
+      display: block;
+      justify-content: initial !important;
+    }
+  }
+}
+
 .material-icons {
   line-height: 0.8
 }
 
-@media (max-width: 550px) {
+@media (max-width: 700px) {
   md-content {
     .md-toolbar-tools {
       padding: 0 !important;
@@ -182,6 +208,16 @@ md-menu-item {
 
   .breadcrumb .parent-only {
     display: inline-block;
+  }
+
+  .title-bar {
+    .compact-actions {
+      display: block !important;
+    }
+  }
+
+  .actions {
+    display: none;
   }
 }
 

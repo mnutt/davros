@@ -1,21 +1,25 @@
 <img src="/images/sidebar-logo@2x.png" width="50" height="61" alt="Davros">
 
 {{#link-to "home" current-when="file"}}
-  {{paper-icon "folder"}} <span>Files</span>
+  {{paper-icon "folder"}}
+  <div>Files</div>
 {{/link-to}}
 
 {{#if canSync}}
   {{#link-to "clients"}}
-    {{paper-icon "desktop-mac"}} <span>Clients</span>
+    {{paper-icon "desktop-mac"}}
+    <div>Clients</div>
   {{/link-to}}
 {{/if}}
 
 {{#if canEdit}}
   {{#link-to "publishing"}}
-    {{paper-icon "web"}} <span>Publishing</span>
+    {{paper-icon "web"}}
+    <div>Publish</div>
   {{/link-to}}
 {{/if}}
 
 {{#link-to "about"}}
-  {{paper-icon "info-outline"}} <span>About</span>
+  {{paper-icon "info-outline"}}
+  <div>About</div>
 {{/link-to}}
