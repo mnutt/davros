@@ -12,16 +12,75 @@ $font_root_url: '../fonts';
 @import 'spinner';
 
 body, #content {
-  background-color: #f3f3f3;
+  background-color: #FFF;
 }
 
 #content {
   min-height: 100vh;
   overflow-x: hidden;
+  position: relative;
 }
 
-md-toolbar {
+.content-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.sidebar-small {
+  max-width: 48px;
+  transform: translate3d(0, 0, 0);
+  flex-direction: column;
+  background-color: #046;
+
+  transition: max-width 0.3s, ease;
+
+  &:hover {
+    max-width: 180px;
+  }
+
+  a {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px;
+    text-decoration: none;
+    position: relative;
+    &:hover {
+      background-color: #069;
+    }
+
+    overflow: hidden;
+
+    span {
+      position: absolute;
+      top: 13px;
+      left: 50px;
+    }
+
+    span, md-icon {
+      color: #FFF;
+    }
+
+    &.active {
+      background-color: #FFF;
+
+      span, md-icon {
+        color: #444;
+      }
+    }
+  }
+}
+
+md-toolbar.md-whiteframe-1dp {
   min-height: 48px;
+  box-shadow: none;
+  background-color: #FFF !important;
+  color: #000 !important;
+  border-bottom: 1px solid #000;
+
+  md-icon {
+    color: #000 !important;
+  }
 
   .md-toolbar-tools {
     height: 48px;
@@ -52,8 +111,12 @@ md-toolbar {
 }
 
 md-menu-item {
+  > .md-button {
+    display: flex;
+  }
+
   p.label {
-    width: 150px;
+    flex: 1;
   }
 
   &.danger {
@@ -81,36 +144,20 @@ md-menu-item {
   }
 
   a {
-    text-decoration: underline;
+    border-bottom: 1px solid #000;
   }
 }
 
-md-content p.content {
-  padding: 2em 1em;
-}
+#content md-content {
+  background-color: #EEE;
 
-md-sidenav {
-  background-color: #FFF;
-  text-align: left;
-  max-width: 280px;
-
-  md-content md-list .md-button {
+  p.content {
+    padding: 2em 1em;
+    margin: 0;
+    max-width: 900px;
+    flex: 1;
+    flex-direction: column;
     background-color: #FFF;
-  }
-
-  md-list-item {
-    &:hover {
-      background-color: #DDD;
-    }
-
-    .md-list-item-inner {
-      md-icon {
-        margin: 14px 12px 14px 0 !important;
-      }
-      flex: off;
-      display: block;
-      justify-content: initial !important;
-    }
   }
 }
 

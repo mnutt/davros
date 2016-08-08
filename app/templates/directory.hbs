@@ -27,12 +27,12 @@
   {{partial 'directory-menu'}}
 {{/title-bar}}
 
-<table class="file-list">
+<table class="file-list {{if showExtraFields '' 'noExtraFields'}}">
   <thead>
     <tr>
       <th class="name">Name</th>
-      <th class="updated">Updated</th>
-      <th class="size">Size</th>
+      <th class="updated" {{action (toggle this "showExtraFields")}}>Updated</th>
+      <th class="size" {{action (toggle this "showExtraFields")}}>Size</th>
     </tr>
   </thead>
 
@@ -50,7 +50,7 @@
             <div class="truncated">{{file.name}}</div>
           </div>
         {{/link-to}}
-
+{{#if showExtraFields}}
         <td class="updated" title="{{file.mtime}}">
           <span class="short">
             {{#if model.lotsOfFiles}}
@@ -72,6 +72,7 @@
         <td class="size">
           {{filesize file.size}}
         </td>
+{{/if}}
       </tr>
     {{/each}}
   </tbody>

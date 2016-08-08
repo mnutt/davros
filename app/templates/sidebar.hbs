@@ -1,26 +1,21 @@
-{{#paper-list}}
-  {{#paper-item onClick=(transition-to "home")}}
-    {{paper-icon "folder"}}
-    Files
-  {{/paper-item}}
+<img src="/images/sidebar-logo@2x.png" width="50" height="61" alt="Davros">
 
-  {{#if canSync}}
-    {{#paper-item onClick=(transition-to "clients")}}
-      {{paper-icon "desktop-mac"}}
-      Clients
-    {{/paper-item}}
-  {{/if}}
+{{#link-to "home" current-when="file"}}
+  {{paper-icon "folder"}} <span>Files</span>
+{{/link-to}}
 
-  {{#if canEdit}}
-    {{#paper-item onClick=(transition-to "publishing")}}
-      {{paper-icon "web"}}
-      Publishing
-    {{/paper-item}}
-  {{/if}}
+{{#if canSync}}
+  {{#link-to "clients"}}
+    {{paper-icon "desktop-mac"}} <span>Clients</span>
+  {{/link-to}}
+{{/if}}
 
-  {{#paper-item onClick=(transition-to "about")}}
-    {{paper-icon "info-outline"}}
-    About
-  {{/paper-item}}
+{{#if canEdit}}
+  {{#link-to "publishing"}}
+    {{paper-icon "web"}} <span>Publishing</span>
+  {{/link-to}}
+{{/if}}
 
-{{/paper-list}}
+{{#link-to "about"}}
+  {{paper-icon "info-outline"}} <span>About</span>
+{{/link-to}}

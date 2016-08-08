@@ -1,22 +1,9 @@
-{{#paper-sidenav-container class="site-nav-container"}}
-  {{#paper-sidenav class="md-whiteframe-z2 site-sidenav" open=isSidenavOpen lockedOpen="gt-sm" onToggle=(action (mut isSidenavOpen))}}
-
-    {{#paper-toolbar class="site-content-toolbar"}}
-      {{#paper-toolbar-tools}}
-        <div class="logo">
-          <strong>{{paper-icon "adjust"}} Davros File Storage</strong>
-        </div>
-      {{/paper-toolbar-tools}}
-    {{/paper-toolbar}}
-
-    {{#paper-content}}
-      {{partial 'sidebar'}}
-    {{/paper-content}}
-
-  {{/paper-sidenav}}
-
-  <div class="flex layout-column" role="main" id="content">
+<div class="flex content-container">
+  <div class="flex layout-column" id="content">
     {{outlet}}
   </div>
 
-{{/paper-sidenav-container}}
+  <div class="flex sidebar-small">
+    {{partial "sidebar"}}
+  </div>
+</div>

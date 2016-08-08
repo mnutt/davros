@@ -43,13 +43,11 @@
   }
 
   .preview {
-    flex: 1 0 auto;
+    flex: 0;
 
     display: flex;
     justify-content: center;
     align-items: center;
-
-    background-color: #000;
 
     audio, .no-preview {
       width: 100%;
