@@ -17,10 +17,10 @@
       </a>
     </div>
 
-    <div title="{{model.mtime}}" class="fsinfo">
-      <span class="updated">Updated {{moment-from-now model.mtime locale="en" interval=5000}}</span>
+    <div class="fsinfo">
+      <span title="{{model.mtime}}" class="updated">Updated {{moment-from-now model.mtime locale="en" interval=5000}}</span>
       &middot;
-      <span class="size">{{filesize model.size}}</span>
+      <span title="{{commify model.size}} bytes" class="size">{{filesize model.size}}</span>
       &middot;
       <a href="{{model.rawPath}}" target="_blank">Download Original</a>
     </div>
