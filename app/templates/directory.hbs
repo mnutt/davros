@@ -27,55 +27,61 @@
   {{partial 'directory-menu'}}
 {{/title-bar}}
 
-<table class="file-list {{if showExtraFields '' 'noExtraFields'}}">
-  <thead>
-    <tr>
-      <th class="name">Name</th>
-      <th class="updated" {{action (toggle this "showExtraFields")}}>Updated</th>
-      <th class="size" {{action (toggle this "showExtraFields")}}>Size</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    {{#each model.sortedFiles as |file|}}
+{{#if model.sortedFiles}}
+  <table class="file-list {{if showExtraFields '' 'noExtraFields'}}">
+    <thead>
       <tr>
-        {{#link-to 'file' (unbound file.linkedPath) class="name" tagName="td"}}
-          <div class="filename">
-            {{#if file.isDirectory}}
-              <md-icon class="paper-icon md-font material-icons md-default-theme">folder</md-icon>
-            {{else}}
-              <md-icon class="paper-icon md-font material-icons md-default-theme">{{-paper-underscore file.typeIcon}}</md-icon>
-            {{/if}}
-
-            <div class="truncated">{{file.name}}</div>
-          </div>
-        {{/link-to}}
-{{#if showExtraFields}}
-        <td class="updated" title="{{file.mtime}}">
-          <span class="short">
-            {{#if model.lotsOfFiles}}
-              {{moment-from-now file.mtime locale="en-short" hideSuffix=true}}
-            {{else}}
-              {{moment-from-now file.mtime locale="en-short" interval=5000 hideSuffix=true}}
-            {{/if}}
-          </span>
-
-          <span class="long">
-            {{#if model.lotsOfFiles}}
-              {{moment-from-now file.mtime locale="en"}}
-            {{else}}
-              {{moment-from-now file.mtime locale="en" interval=5000}}
-            {{/if}}
-          </span>
-        </td>
-
-        <td class="size" title="{{commify file.size}} bytes">
-          {{filesize file.size}}
-        </td>
-{{/if}}
+        <th class="name">Name</th>
+        <th class="updated" {{action (toggle this "showExtraFields")}}>Updated</th>
+        <th class="size" {{action (toggle this "showExtraFields")}}>Size</th>
       </tr>
-    {{/each}}
-  </tbody>
-</table>
+    </thead>
+
+    <tbody>
+      {{#each model.sortedFiles as |file|}}
+        <tr>
+          {{#link-to 'file' (unbound file.linkedPath) class="name" tagName="td"}}
+            <div class="filename">
+              {{#if file.isDirectory}}
+                <md-icon class="paper-icon md-font material-icons md-default-theme">folder</md-icon>
+              {{else}}
+                <md-icon class="paper-icon md-font material-icons md-default-theme">{{-paper-underscore file.typeIcon}}</md-icon>
+              {{/if}}
+
+              <div class="truncated">{{file.name}}</div>
+            </div>
+          {{/link-to}}
+  {{#if showExtraFields}}
+          <td class="updated" title="{{file.mtime}}">
+            <span class="short">
+              {{#if model.lotsOfFiles}}
+                {{moment-from-now file.mtime locale="en-short" hideSuffix=true}}
+              {{else}}
+                {{moment-from-now file.mtime locale="en-short" interval=5000 hideSuffix=true}}
+              {{/if}}
+            </span>
+
+            <span class="long">
+              {{#if model.lotsOfFiles}}
+                {{moment-from-now file.mtime locale="en"}}
+              {{else}}
+                {{moment-from-now file.mtime locale="en" interval=5000}}
+              {{/if}}
+            </span>
+          </td>
+
+          <td class="size" title="{{commify file.size}} bytes">
+            {{filesize file.size}}
+          </td>
+  {{/if}}
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+{{else}}
+  <div class="empty-notice">
+    This directory is empty. You can <a href="#" {{action "chooseUpload"}}>upload some files</a> or just drag them in.
+  </div>
+{{/if}}
 
 {{partial 'plugins/gallery'}}
