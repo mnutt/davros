@@ -28,7 +28,10 @@ body, #content {
 
 .actions {
   text-align: right;
-  border-bottom: 1px solid #BBB;
+}
+
+.ember-tooltip {
+  z-index: 3;
 }
 
 .sidebar-small {
@@ -107,6 +110,12 @@ md-toolbar.md-whiteframe-1dp {
     .compact-actions {
       display: none;
     }
+  }
+}
+
+.md-button {
+  &.icon-button {
+    min-width: 20px;
   }
 }
 

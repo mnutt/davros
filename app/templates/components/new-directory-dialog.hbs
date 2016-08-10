@@ -1,0 +1,21 @@
+{{#if active}}
+  {{#paper-dialog fullscreen=true origin=".new-directory-button"}}
+    {{#paper-toolbar}}
+      <div class="md-toolbar-tools">
+        <h2>New Directory</h2>
+        <span class="flex"></span>
+        {{#paper-button iconButton=true onClick=(action "close")}}{{paper-icon icon="close"}}{{/paper-button}}
+      </div>
+    {{/paper-toolbar}}
+
+    {{#paper-dialog-content}}
+      {{paper-input label="Name" lastIsValid=isValid autofocus=true value=directoryName customValidations=directoryValidation onChange=(action (mut directoryName))}}
+    {{/paper-dialog-content}}
+
+    {{#paper-dialog-actions class="layout-row"}}
+      <span class="flex"></span>
+      {{#paper-button primary=true onClick=(action "close")}}Cancel{{/paper-button}}
+      {{#paper-button primary=true raised=true disabled=isInvalid onClick=(action "create" directoryName)}}Create{{/paper-button}}
+    {{/paper-dialog-actions}}
+  {{/paper-dialog}}
+{{/if}}

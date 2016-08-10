@@ -43,38 +43,22 @@ export default Ember.Route.extend({
   },
 
   actions: {
-    "delete": function() {
+    "delete": function(defer) {
       var model = this.get('controller.model');
       var parent = model.get('parent');
-      var type = model.get('isDirectory') ? 'directory and everything in it' : 'file';
 
-      if(confirm("Are you sure you want to delete this " + type + "? It will also be deleted from any synced clients.")) {
-        return model.delete().then(() => {
-          return this.transitionTo('file', parent);
-        });
-      } else {
-        return true;
-      }
+      return model.delete().then(() => {
+        this.transitionTo('file', parent);
+      }).then(() => { defer.resolve(); }, () => { defer.reject(); });
     },
 
-    newDirectory: function() {
+    newDirectory: function(dirname, defer) {
       var model = this.get('controller.model');
 
-      var dirname = prompt("Directory name");
-      if(!dirname || !dirname.length) {
-        console.log("New directory cancelled.");
-        return;
-      }
-
-      if(dirname.match(/^[^\\/?%*:|"<>\.]+$/)) {
-        var fullPath = [model.get('rawPath'), dirname].join('/');
-        return fetch(fullPath, {method: 'MKCOL'}).then(() => {
-          return this.get('controller.model').load();
-        });
-      } else {
-        alert("The directory name is not valid.");
-        this.send('newDirectory');
-      }
+      var fullPath = [model.get('rawPath'), dirname].join('/');
+      return fetch(fullPath, {method: 'MKCOL'}).then(() => {
+        return this.get('controller.model').load();
+      }).then(() => { defer.resolve(); }, () => { defer.reject(); });
     },
 
     chooseUpload: function() {

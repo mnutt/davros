@@ -1,0 +1,21 @@
+{{#if active}}
+  {{#paper-dialog fullscreen=true origin=".delete-button"}}
+    {{#paper-toolbar}}
+      <div class="md-toolbar-tools">
+        <h2>Delete Directory</h2>
+        <span class="flex"></span>
+        {{#paper-button iconButton=true onClick=(action "close")}}{{paper-icon icon="close"}}{{/paper-button}}
+      </div>
+    {{/paper-toolbar}}
+
+    {{#paper-dialog-content}}
+      {{yield}}
+    {{/paper-dialog-content}}
+
+    {{#paper-dialog-actions class="layout-row"}}
+      <span class="flex"></span>
+      {{#paper-button primary=true onClick=(action "close")}}Cancel{{/paper-button}}
+      {{#paper-button primary=true onClick=(action "delete")}}Delete{{/paper-button}}
+    {{/paper-dialog-actions}}
+  {{/paper-dialog}}
+{{/if}}

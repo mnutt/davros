@@ -27,37 +27,6 @@
   {{partial 'directory-menu'}}
 {{/title-bar}}
 
-<div class="actions">
-  {{#if canEdit}}
-    {{#paper-button onClick="chooseUpload"}}
-      {{paper-icon "file-upload"}}
-      Upload
-    {{/paper-button}}
-
-    {{#paper-button onClick="newDirectory"}}
-      {{paper-icon "add-circle-outline"}}
-      New Directory
-    {{/paper-button}}
-  {{/if}}
-
-  {{#paper-button onClick="slideshow"}}
-    {{paper-icon "photo"}}
-    Slideshow
-  {{/paper-button}}
-
-  {{#paper-button onClick="downloadDirectory"}}
-    {{paper-icon "file-download"}}
-    Download (zip)
-  {{/paper-button}}
-
-  {{#if canEdit}}
-    {{#paper-button onClick="delete"}}
-      {{paper-icon "delete"}}
-      Delete
-    {{/paper-button}}
-  {{/if}}
-</div>
-
 <table class="file-list {{if showExtraFields '' 'noExtraFields'}}">
   <thead>
     <tr>

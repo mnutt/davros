@@ -1,3 +1,55 @@
+<div class="actions">
+  {{#if canEdit}}
+    {{#paper-button class="icon-button new-directory-button" onClick="chooseUpload"}}
+      {{paper-icon "file-upload"}}
+
+      {{#tooltip-on-component}}
+        Upload
+      {{/tooltip-on-component}}
+    {{/paper-button}}
+
+    {{#paper-button class="icon-button" onClick=(action (mut newDialogActive true))}}
+      {{paper-icon "add-circle-outline"}}
+
+      {{#tooltip-on-component}}
+        New Directory
+      {{/tooltip-on-component}}
+
+    {{/paper-button}}
+  {{/if}}
+
+  {{#paper-button class="icon-button" onClick="slideshow"}}
+    {{paper-icon "photo"}}
+
+    {{#tooltip-on-component}}
+      Slideshow
+    {{/tooltip-on-component}}
+  {{/paper-button}}
+
+  {{#paper-button class="icon-button" onClick="downloadDirectory"}}
+    {{paper-icon "file-download"}}
+
+      {{#tooltip-on-component}}
+        Download (zip)
+      {{/tooltip-on-component}}
+  {{/paper-button}}
+
+  {{#if canEdit}}
+    {{#paper-button class="icon-button delete-button" onClick=(action (mut deleteDialogActive true))}}
+      {{paper-icon "delete"}}
+
+      {{#tooltip-on-component}}
+        {{#if isRoot}}
+          Delete Everything
+        {{else}}
+          Delete Directory
+        {{/if}}
+      {{/tooltip-on-component}}
+    {{/paper-button}}
+  {{/if}}
+</div>
+
+<!-- only displayed on mobile -->
 <div class="compact-actions">
   <div class="more">
     {{#paper-menu position="target-right target" width=4 as |menu|}}
@@ -14,7 +66,7 @@
           {{paper-icon "file-upload" class="md-menu-align-target"}}
         {{/paper-menu-item}}
 
-        {{#paper-menu-item onClick="newDirectory"}}
+        {{#paper-menu-item onClick=(action (mut newDialogActive true))}}
           <p class="label">New Directory</p>
           {{paper-icon "add-circle-outline" class="md-menu-align-target"}}
         {{/paper-menu-item}}
@@ -31,7 +83,7 @@
       {{/paper-menu-item}}
 
       {{#if canEdit}}
-        {{#paper-menu-item class="danger" onClick="delete"}}
+        {{#paper-menu-item class="danger" onClick=(action (mut deleteDialogActive true))}}
           <p class="label">Delete Directory</p>
           {{paper-icon "delete" class="md-menu-align-target"}}
         {{/paper-menu-item}}
@@ -40,3 +92,15 @@
     {{/paper-menu}}
   </div>
 </div>
+
+{{new-directory-dialog active=newDialogActive onCreate=(route-action "newDirectory")}}
+
+{{#delete-dialog active=deleteDialogActive onDelete=(route-action "delete")}}
+  Are you sure you want to delete
+  {{#if isRoot}}
+    <b>absolutely everything</b>
+  {{~else~}}
+    this directory
+  {{~/if~}}?
+  It will also be deleted from any synced clients.
+{{/delete-dialog}}
