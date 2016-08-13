@@ -1,3 +1,12 @@
+# 0.20.0
+* Major UI and navigation updates
+  * Navigation moved to the right for better Sandstorm UI integration
+  * Don't hide common actions behind menu dropdown, if there's room
+  * Slightly cleaned up file details view
+* Davros reports itself to OwnCloud Client as a newer server version
+* Fix some directory upload regressions; progress bar should work more consistently
+* Use Sandstorm's `$GRAIN_TITLE_SLUG` as username to differentiate shared directories on desktop clients
+
 # 0.19.1
 * Fix regression where web UI did not update when files were modified
 
