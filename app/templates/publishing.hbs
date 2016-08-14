@@ -19,10 +19,10 @@
         </div>
 
         <div class="dns-setup">
-          <h2>Set up your own domain or subdomain:</h2>
+          <h2>Instructions for setting up your own domain or subdomain:</h2>
 
           <div class="setup">
-              {{paper-input value=domain placeholder="www.example.com"}}
+              {{paper-input value=domain placeholder="www.example.com" onChange=(action (mut domain))}}
           </div>
 
           <div class="records">
