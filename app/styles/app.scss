@@ -35,12 +35,23 @@ body, #content {
 }
 
 .sidebar-small {
+  width: 50px;
   max-width: 50px;
-  transform: translate3d(0, 0, 0);
   flex-direction: column;
   background-color: #333;
 
-  transition: max-width 0.3s, ease;
+  img {
+    position: relative;
+  }
+
+  .logo-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 48px;
+    background-color: #2196f3;
+  }
 
   a {
     display: block;
