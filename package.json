@@ -62,6 +62,7 @@
     "archiver": "^1.0.0",
     "async": "1.4.2",
     "asyncjs": "git://github.com/mnutt/async.js.git#28ddb08",
+    "compression": "^1.6.2",
     "concat-files": "^0.1.0",
     "dirStat": "0.0.2",
     "ember-resolver": "^2.0.3",
