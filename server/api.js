@@ -1,10 +1,11 @@
 var multiparty        = require('multiparty');
 var fs                = require('fs');
+var os                = require('os');
 var path              = require('path');
 var url               = require('url');
 var archiver          = require('archiver');
 var im                = require('imagemagick-stream');
-var FileCache         = require('./file_cache');
+var FileCache         = require('./file-cache');
 
 function errorHandler(res) {
   return function(err) {
@@ -17,6 +18,8 @@ const resizeOperations = {
   'smaller': '>',
   'fit': '^'
 };
+
+var tempDir = os.tmpdir();
 
 exports.upload = function(davServer) {
   return function(req, res, next) {
@@ -61,12 +64,12 @@ exports.thumbnail = function(davServer) {
     let timestamp = queryParams.ts;
 
     let cacheKey = [w, h, op, queryParams.url].join(":");
-    let cache = new FileCache(cacheKey, timestamp);
+    let cache = new FileCache(tempDir, cacheKey, timestamp);
     cache.get((cached, path) => {
       if(cached) {
         cached.pipe(res);
         cached.on('end', function() {
-          console.log("Thumbnailer cache hit");
+          console.log("Thumbnailer cache hit for " + cacheKey);
         });
       } else {
         thumbnailer.quality(90);
@@ -95,7 +98,7 @@ exports.thumbnail = function(davServer) {
         let cached = thumbnailer.pipe(cache);
         cached.pipe(res);
         cached.on('end', function() {
-          console.log("Thumbnailer cache miss");
+          console.log("Thumbnailer cache miss for " + cacheKey);
         });
 
         davServer(req, thumbnailer, next);

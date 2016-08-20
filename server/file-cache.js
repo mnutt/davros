@@ -4,7 +4,6 @@ var fs = require('fs');
 var crypto = require('crypto');
 var path = require('path');
 var mkdirp = require('mkdirp');
-var pathCache = {};
 var Transform = stream.Transform;
 
 class FileCache extends Transform {
