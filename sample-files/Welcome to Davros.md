@@ -42,6 +42,7 @@ This uses [ember-cli-vagrant-spk](https://github.com/mnutt/ember-cli-vagrant-spk
 
 * Built on [Ember.js](https://emberjs.com).
 * WebDAV support built with [jsDAV](https://github.com/mikedeboer/jsDAV).
+* Sample images courtesy of NASA
 
 ### License
 

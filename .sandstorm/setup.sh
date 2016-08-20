@@ -21,7 +21,10 @@
 
 export DEBIAN_FRONTEND=noninteractive
 curl -sL https://deb.nodesource.com/setup_6.x | bash -
-apt-get install -y nodejs git-core g++
+apt-get install -y nodejs git-core g++ imagemagick
+
+# Disable dangerous imagemagick features
+cp /opt/app/.sandstorm/imagemagick-policy.xml /etc/ImageMagick-6/policy.xml
 
 # Compile a small helper to get a publicId
 /opt/app/.sandstorm/compile_helper.sh

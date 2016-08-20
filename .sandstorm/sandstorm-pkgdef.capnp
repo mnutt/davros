@@ -42,9 +42,14 @@ const pkgdef :Spk.PackageDefinition = (
 
     metadata = (
       icons = (
-        appGrid = (svg = embed "app-graphics/davros-128.svg"),
-        grain = (svg = embed "app-graphics/davros-24.svg"),
-        market = (svg = embed "app-graphics/davros-128.svg"),
+        appGrid = (png = (dpi1x = embed "app-graphics/icon-128.png",
+                          dpi2x = embed "app-graphics/icon-256.png")),
+        grain = (png = (dpi1x = embed "app-graphics/icon-24.png",
+                        dpi2x = embed "app-graphics/icon-48.png")),
+        market = (png = (dpi1x = embed "app-graphics/icon-150.png",
+                         dpi2x = embed "app-graphics/icon-300.png")),
+        marketBig = (png = (dpi1x = embed "app-graphics/icon-300.png",
+                            dpi2x = embed "app-graphics/icon-600.png")),
       ),
 
       website = "https://github.com/mnutt/davros/",
