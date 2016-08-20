@@ -128,6 +128,10 @@ md-toolbar.md-whiteframe-1dp {
   &.icon-button {
     min-width: 20px;
   }
+
+  &:not([disabled]):hover {
+    background-color: rgba(50,50,50, 0.2) !important;
+  }
 }
 
 md-menu-item {
