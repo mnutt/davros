@@ -45,7 +45,7 @@
               {{#if file.isDirectory}}
                 <md-icon class="paper-icon md-font material-icons md-default-theme">folder</md-icon>
               {{else}}
-                <md-icon class="paper-icon md-font material-icons md-default-theme">{{-paper-underscore file.typeIcon}}</md-icon>
+                <md-icon aria-label="type {{file.type}}" class="paper-icon md-font material-icons md-default-theme">{{-paper-underscore file.typeIcon}}</md-icon>
               {{/if}}
 
               <div class="truncated">{{file.name}}</div>
