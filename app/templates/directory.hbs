@@ -55,29 +55,30 @@
               <div class="truncated">{{file.name}}</div>
             </div>
           {{/link-to}}
-  {{#if showExtraFields}}
-          <td class="updated" title="{{file.mtime}}">
-            <span class="short">
-              {{#if model.lotsOfFiles}}
-                {{moment-from-now file.mtime locale="en-short" hideSuffix=true}}
-              {{else}}
-                {{moment-from-now file.mtime locale="en-short" interval=5000 hideSuffix=true}}
-              {{/if}}
-            </span>
 
-            <span class="long">
-              {{#if model.lotsOfFiles}}
-                {{moment-from-now file.mtime locale="en"}}
-              {{else}}
-                {{moment-from-now file.mtime locale="en" interval=5000}}
-              {{/if}}
-            </span>
-          </td>
+          {{#if showExtraFields}}
+            <td class="updated" title="{{file.mtime}}">
+              <span class="short">
+                {{#if model.lotsOfFiles}}
+                  {{moment-from-now file.mtime locale="en-short" hideSuffix=true}}
+                {{else}}
+                  {{moment-from-now file.mtime locale="en-short" interval=5000 hideSuffix=true}}
+                {{/if}}
+              </span>
 
-          <td class="size" title="{{commify file.size}} bytes">
-            {{filesize file.size}}
-          </td>
-  {{/if}}
+              <span class="long">
+                {{#if model.lotsOfFiles}}
+                  {{moment-from-now file.mtime locale="en"}}
+                {{else}}
+                  {{moment-from-now file.mtime locale="en" interval=5000}}
+                {{/if}}
+              </span>
+            </td>
+
+            <td class="size" title="{{commify file.size}} bytes">
+              {{filesize file.size}}
+            </td>
+          {{/if}}
         </tr>
       {{/each}}
     </tbody>
