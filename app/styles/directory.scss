@@ -1,5 +1,5 @@
 .file-list {
-  background-color: #f3f3f3;
+  background-color: #FFF;
   border-collapse: collapse;
   display: block;
   flex: 1;
@@ -7,18 +7,19 @@
   tbody {
     display: block;
 
+    tr:nth-child(1) td:first-child {
+      border-radius: 5px 0 0 0;
+    }
+
     tr:nth-child(odd) {
       background-color: #F7F7F7;
     }
   }
 
   td,th {
-    padding: 12px 16px;
-    text-align: left
-  }
-
-  td,th {
     vertical-align: top;
+    padding: 12px 16px;
+    text-align: left;
 
     &.name {
       width: 100%;
@@ -63,6 +64,18 @@
       text-align: right;
     }
   }
+
+  &.noExtraFields {
+    th.updated, th.size {
+      opacity: 0.3;
+    }
+  }
+}
+
+.empty-notice {
+  margin-top: 4em;
+  padding: 2em;
+  text-align: center !important;
 }
 
 .file-list md-list-item:nth-child(even) {

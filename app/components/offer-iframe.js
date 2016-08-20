@@ -16,7 +16,7 @@ export default Ember.Component.extend({
     let options = {};
     options.rpcId = this.get('elementId');
     options.template = this.get('replacedTemplate');
-    options.static = owncloudStatus;
+    options.unauthenticated = owncloudStatus;
 
     if(this.get('clipboardButton')) {
       options.clipboardButton = this.get('clipboardButton');

@@ -2,9 +2,8 @@
   "name": "davros",
   "dependencies": {
     "dinosheets": "0.0.1",
-    "ember": "~2.6.0",
+    "ember": "~2.8.0-beta.1",
     "ember-cli-shims": "0.1.1",
-    "ember-cli-test-loader": "0.2.2",
     "hammer.js": "^2.0.8",
     "matchMedia": "0.2.0",
     "moment": ">= 2.8.0",

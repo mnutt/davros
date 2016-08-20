@@ -12,16 +12,74 @@ $font_root_url: '../fonts';
 @import 'spinner';
 
 body, #content {
-  background-color: #f3f3f3;
+  background-color: #FFF;
 }
 
 #content {
   min-height: 100vh;
   overflow-x: hidden;
+  position: relative;
 }
 
-md-toolbar {
+.content-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.actions {
+  text-align: right;
+}
+
+.ember-tooltip {
+  z-index: 3;
+}
+
+.sidebar-small {
+  max-width: 50px;
+  transform: translate3d(0, 0, 0);
+  flex-direction: column;
+  background-color: #333;
+
+  transition: max-width 0.3s, ease;
+
+  a {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 0;
+    text-align: center;
+    margin-right: 2px;
+    border-radius: 0 4px 4px 0;
+    text-decoration: none;
+    position: relative;
+
+    div {
+      font-size: 10px;
+      font-weight: bold;
+    }
+
+    div, md-icon {
+      color: #FFF;
+    }
+
+    &:hover {
+      background-color: #444;
+    }
+
+    &.active {
+      background-color: #FFF;
+
+      div, md-icon {
+        color: #000;
+      }
+    }
+  }
+}
+
+md-toolbar.md-whiteframe-1dp {
   min-height: 48px;
+  box-shadow: none;
+  background-color: #069;
 
   .md-toolbar-tools {
     height: 48px;
@@ -40,15 +98,34 @@ md-toolbar {
       line-height: 2.3;
     }
 
+    .toggle-menu {
+      margin-top: 2px;
+      margin-right: 0 !important;
+    }
+
     .more {
       margin-right: -15px;
+    }
+
+    .compact-actions {
+      display: none;
     }
   }
 }
 
+.md-button {
+  &.icon-button {
+    min-width: 20px;
+  }
+}
+
 md-menu-item {
+  > .md-button {
+    display: flex;
+  }
+
   p.label {
-    width: 150px;
+    flex: 1;
   }
 
   &.danger {
@@ -76,18 +153,28 @@ md-menu-item {
   }
 
   a {
-    text-decoration: underline;
+    border-bottom: 1px solid #FFF;
   }
 }
 
-md-content p.content {
-  padding: 2em 1em;
+#content md-content {
+  background-color: #EEE;
+  border-right: 10px solid #FFF;
+
+  p.content {
+    padding: 2em 1em;
+    margin: 0;
+    max-width: 900px;
+    flex: 1;
+    flex-direction: column;
+    background-color: #FFF;
+  }
 }
 
 md-sidenav {
   background-color: #FFF;
   text-align: left;
-  width: auto !important;
+  max-width: 280px;
 
   md-content md-list .md-button {
     background-color: #FFF;
@@ -113,7 +200,7 @@ md-sidenav {
   line-height: 0.8
 }
 
-@media (max-width: 550px) {
+@media (max-width: 700px) {
   md-content {
     .md-toolbar-tools {
       padding: 0 !important;
@@ -130,6 +217,16 @@ md-sidenav {
 
   .breadcrumb .parent-only {
     display: inline-block;
+  }
+
+  .title-bar {
+    .compact-actions {
+      display: block !important;
+    }
+  }
+
+  .actions {
+    display: none;
   }
 }
 
