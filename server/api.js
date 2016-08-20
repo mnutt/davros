@@ -75,6 +75,9 @@ exports.thumbnail = function(davServer) {
         thumbnailer.quality(90);
         thumbnailer.resize(`${w}x${h}${op}`);
 
+        // Only use the first frame, if animated
+        thumbnailer.input = "-[0]";
+
         if(op === '^') {
           thumbnailer.gravity('center');
           thumbnailer.op('repage', '0x0+0+0');
