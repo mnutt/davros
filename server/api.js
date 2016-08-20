@@ -95,6 +95,10 @@ exports.thumbnail = function(davServer) {
           this._headers = headers;
         };
 
+        thumbnailer.on('error', function(err) {
+          console.error(err);
+        });
+
         let cached = thumbnailer.pipe(cache);
         cached.pipe(res);
         cached.on('end', function() {
