@@ -1,3 +1,6 @@
+# 0.21.4
+* Bugfix: ensure all imagemagick coders are present
+
 # 0.21.3
 * Remove sandstorm app icon borders
 
