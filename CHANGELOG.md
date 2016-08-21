@@ -1,3 +1,7 @@
+# 0.21.1
+* Better mobile styling
+* Some sandstorm metadata optimizations
+
 # 0.21.0
 * Image thumbnails
 * Fix markdown display
