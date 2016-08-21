@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import owncloudStatus from 'davros/lib/owncloud';
 
 export default Ember.Component.extend({
   classNames: ['offer-iframe'],
@@ -16,7 +15,6 @@ export default Ember.Component.extend({
     let options = {};
     options.rpcId = this.get('elementId');
     options.template = this.get('replacedTemplate');
-    options.unauthenticated = owncloudStatus;
 
     if(this.get('clipboardButton')) {
       options.clipboardButton = this.get('clipboardButton');
