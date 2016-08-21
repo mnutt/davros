@@ -1,3 +1,6 @@
+# 0.21.5
+* Correctly report version to OwnCloud clients via /status
+
 # 0.21.4
 * Bugfix: ensure all imagemagick coders are present
 
