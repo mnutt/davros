@@ -43,13 +43,13 @@ const pkgdef :Spk.PackageDefinition = (
     metadata = (
       icons = (
         appGrid = (png = (dpi1x = embed "app-graphics/icon-128.png",
-                          dpi2x = embed "app-graphics/icon-256.png")),
+                          dpi2x = embed "app-graphics/icon-256.jpg")),
         grain = (png = (dpi1x = embed "app-graphics/icon-24.png",
                         dpi2x = embed "app-graphics/icon-48.png")),
         market = (png = (dpi1x = embed "app-graphics/icon-150.png",
-                         dpi2x = embed "app-graphics/icon-300.png")),
-        marketBig = (png = (dpi1x = embed "app-graphics/icon-300.png",
-                            dpi2x = embed "app-graphics/icon-600.png")),
+                         dpi2x = embed "app-graphics/icon-300.jpg")),
+        marketBig = (png = (dpi1x = embed "app-graphics/icon-300.jpg",
+                            dpi2x = embed "app-graphics/icon-600.jpg")),
       ),
 
       website = "https://github.com/mnutt/davros/",
@@ -67,9 +67,9 @@ const pkgdef :Spk.PackageDefinition = (
       shortDescription = (defaultText = "File storage"),
 
       screenshots = [
-        (width = 1134, height = 764, png = embed "screenshot-1.png"),
-        (width = 1134, height = 764, jpeg = embed "screenshot-2.jpg"),
-        (width = 1134, height = 764, png = embed "screenshot-3.png"),
+        (width = 2418, height = 1326, png = embed "app-graphics/screenshot-1.png"),
+        (width = 2418, height = 1326, jpeg = embed "app-graphics/screenshot-2.jpg"),
+        (width = 2418, height = 1326, png = embed "app-graphics/screenshot-3.png"),
       ],
 
       changeLog = (defaultText = embed "../CHANGELOG.md"),
