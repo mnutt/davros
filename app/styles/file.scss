@@ -65,9 +65,11 @@
       border-top: 3px solid #DDD;
       background-color: #FFF;
       max-width: 900px;
+      margin: auto;
 
       .inner {
         padding: 10px;
+        text-align: left;
       }
     }
   }
