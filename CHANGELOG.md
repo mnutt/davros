@@ -1,3 +1,6 @@
+# 0.21.2
+* Fix markdown alignment
+
 # 0.21.1
 * Better mobile styling
 * Some sandstorm metadata optimizations
