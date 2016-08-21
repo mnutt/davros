@@ -1,3 +1,10 @@
+# 0.21.0
+* Image thumbnails
+* Fix markdown display
+* Fix back button issue using replaceState
+* Enable gzip compression
+* Begin adding aria labels
+
 # 0.20.0
 * Major UI and navigation updates
   * Navigation moved to the right for better Sandstorm UI integration
