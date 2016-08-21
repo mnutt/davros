@@ -1,3 +1,6 @@
+# 0.21.3
+* Remove sandstorm app icon borders
+
 # 0.21.2
 * Fix markdown alignment
 
