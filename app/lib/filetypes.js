@@ -7,6 +7,7 @@ export default {
   'tiff': 'image',
   'mp4': 'video',
   'mov': 'video',
+  'm4v': 'video',
   'avi': 'video',
   'mp3': 'audio',
   'aac': 'audio',
