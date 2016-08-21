@@ -9,7 +9,9 @@
     {{/paper-toolbar}}
 
     {{#paper-dialog-content}}
-      {{paper-input label="Name" lastIsValid=isValid autofocus=true value=directoryName customValidations=directoryValidation onChange=(action (mut directoryName))}}
+        <form {{action "create" directoryName on="submit"}}>
+          {{paper-input label="Name" lastIsValid=isValid autofocus=true value=directoryName customValidations=directoryValidation onChange=(action (mut directoryName))}}
+        </form>
     {{/paper-dialog-content}}
 
     {{#paper-dialog-actions class="layout-row"}}
