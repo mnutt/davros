@@ -1,3 +1,7 @@
+# 0.21.6
+* Label m4v format as video
+* Fix styling on pdfs and iframed content
+
 # 0.21.5
 * Correctly report version to OwnCloud clients via /status
 
