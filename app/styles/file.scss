@@ -33,6 +33,27 @@
 
   .preview {
     text-align: center;
+    position: relative;
+    padding-top: 10px;
+    border-top: 1px solid #555;
+
+    .fullview-button {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+    }
+
+    &.fullview {
+      border: 0;
+      padding-top: 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      background-color: #FFF;
+      z-index: 10;
+    }
 
     audio, .no-preview {
       width: 100%;

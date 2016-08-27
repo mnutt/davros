@@ -125,10 +125,13 @@ const myCommand :Spk.Manifest.Command = (
   argv = ["/sandstorm-http-bridge", "8000", "--", "/opt/app/.sandstorm/launcher.sh"],
   environ = [
     # Note that this defines the *entire* environment seen by your app.
-    (key = "PATH", value = "/usr/local/bin:/usr/bin:/bin"),
+    (key = "PATH", value = "/opt/app/vendor:/usr/local/bin:/usr/bin:/bin"),
     (key = "PORT", value = "8000"),
+    (key = "HOME", value = "/var"),
+    (key = "SANDSTORM", value = "1"),
     (key = "STORAGE_PATH", value = "/var/davros/data"),
     (key = "TEMP_STORAGE_PATH", value = "/var/davros/tmp"),
     (key = "TMPDIR", value = "/var/davros/tmp"),
+    (key = "UserInstallation", value = "file:///var/libreoffice/config"),
   ]
 );
