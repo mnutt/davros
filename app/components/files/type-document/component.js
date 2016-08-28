@@ -21,7 +21,7 @@ export default Ember.Component.extend({
       this.set('previewState', 'loaded');
       result = result.replace(bullet, '&bullet;');
       this.set('srcDoc', result);
-    }).catch((error) => {
+    }).catch(() => {
       this.set('previewState', 'error');
     });
   },
