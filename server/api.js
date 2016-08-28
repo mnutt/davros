@@ -20,6 +20,11 @@ const resizeOperations = {
   'fit': '^'
 };
 
+const resizeOperationNames = {
+  '>': 'smaller',
+  '^': 'fit'
+};
+
 var tempDir = os.tmpdir();
 
 exports.upload = function(davServer) {
@@ -120,7 +125,7 @@ exports.thumbnail = function(davServer) {
     let op = resizeOperations[queryParams.op] || '^';
     let timestamp = queryParams.ts;
 
-    let cacheKey = [w, h, op, queryParams.url].join(":");
+    let cacheKey = [w, h, resizeOperationNames[op], queryParams.url].join("-");
     let cache = new FileCache(tempDir, cacheKey, timestamp);
     cache.get((cached, path) => {
       if(cached) {
