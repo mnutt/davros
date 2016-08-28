@@ -79,6 +79,7 @@ etc/locale.alias
 etc/localtime
 etc/mtab
 etc/papersize
+etc/passwd
 etc/profile
 etc/profile.d
 etc/profile.d/bash_completion.sh
@@ -154,7 +155,7 @@ opt/app/CHANGELOG.md
 opt/app/app.js
 opt/app/dist
 opt/app/dist/assets/davros-937d297d4e177a30733f94516df2b09d.js
-opt/app/dist/assets/davros-9f3f640c345e607fec5f06c67c4aedc4.css
+opt/app/dist/assets/davros-ff5775678438757a75677824ff1064c3.css
 opt/app/dist/assets/vendor-1f4b0936f9eb96945d56b53a2996e8a9.css
 opt/app/dist/assets/vendor-c9cf26ccc3d8789d1b615cc8ac090d12.js
 opt/app/dist/fonts/materialicons/v16/2fcrYFNaTjcS6g4U3t-Y5UEw0lE80llgEseQY3FEmqw.woff2
@@ -573,6 +574,10 @@ opt/app/vendor
 opt/app/vendor/.gitkeep
 opt/app/vendor/unoconv
 proc/cpuinfo
+proc/filesystems
+proc/meminfo
+proc/mounts
+proc/self/exe
 sandstorm-http-bridge
 sandstorm-http-bridge-config
 sandstorm-manifest
@@ -627,13 +632,17 @@ usr/lib/libreoffice/program/fundamentalrc
 usr/lib/libreoffice/program/libanalysislo.so
 usr/lib/libreoffice/program/libanimcorelo.so
 usr/lib/libreoffice/program/libbinaryurplo.so
+usr/lib/libreoffice/program/libbootstraplo.so
 usr/lib/libreoffice/program/libcomphelper.so
 usr/lib/libreoffice/program/libdatelo.so
+usr/lib/libreoffice/program/libdbalo.so
+usr/lib/libreoffice/program/libdbaxmllo.so
 usr/lib/libreoffice/program/libevtattlo.so
 usr/lib/libreoffice/program/libexpwraplo.so
 usr/lib/libreoffice/program/libforlo.so
 usr/lib/libreoffice/program/libforuilo.so
 usr/lib/libreoffice/program/libfrmlo.so
+usr/lib/libreoffice/program/libfwllo.so
 usr/lib/libreoffice/program/libgcc3_uno.so
 usr/lib/libreoffice/program/libgielo.so
 usr/lib/libreoffice/program/libhyphenlo.so
@@ -650,6 +659,7 @@ usr/lib/libreoffice/program/liblocaledata_es.so
 usr/lib/libreoffice/program/liblocaledata_euro.so
 usr/lib/libreoffice/program/liblocaledata_others.so
 usr/lib/libreoffice/program/libmergedlo.so
+usr/lib/libreoffice/program/libmswordlo.so
 usr/lib/libreoffice/program/liboffacclo.so
 usr/lib/libreoffice/program/libooxlo.so
 usr/lib/libreoffice/program/liborcus-0.11.so.0
@@ -664,8 +674,11 @@ usr/lib/libreoffice/program/libscnlo.so
 usr/lib/libreoffice/program/libsdlo.so
 usr/lib/libreoffice/program/libspelllo.so
 usr/lib/libreoffice/program/libstocserviceslo.so
+usr/lib/libreoffice/program/libstoragefdlo.so
 usr/lib/libreoffice/program/libstorelo.so
+usr/lib/libreoffice/program/libswdlo.so
 usr/lib/libreoffice/program/libswlo.so
+usr/lib/libreoffice/program/libt602filterlo.so
 usr/lib/libreoffice/program/libucbhelper.so
 usr/lib/libreoffice/program/libucppkg1.so
 usr/lib/libreoffice/program/libuno_cppu.so.3
@@ -675,6 +688,7 @@ usr/lib/libreoffice/program/libuno_salhelpergcc3.so.3
 usr/lib/libreoffice/program/libunoidllo.so
 usr/lib/libreoffice/program/libuuresolverlo.so
 usr/lib/libreoffice/program/libvbahelperlo.so
+usr/lib/libreoffice/program/libvbaswobjlo.so
 usr/lib/libreoffice/program/libwpftcalclo.so
 usr/lib/libreoffice/program/libwpftdrawlo.so
 usr/lib/libreoffice/program/libwpftimpresslo.so
@@ -683,6 +697,7 @@ usr/lib/libreoffice/program/libwps-0.4-lo.so.4
 usr/lib/libreoffice/program/libwriterfilterlo.so
 usr/lib/libreoffice/program/libwriterperfectlo.so
 usr/lib/libreoffice/program/libxmlfalo.so
+usr/lib/libreoffice/program/libxmlfdlo.so
 usr/lib/libreoffice/program/libxmlreaderlo.so
 usr/lib/libreoffice/program/libxmlsecurity.so
 usr/lib/libreoffice/program/libxsltfilterlo.so
@@ -705,6 +720,7 @@ usr/lib/libreoffice/program/resource/sfxen-US.res
 usr/lib/libreoffice/program/resource/svten-US.res
 usr/lib/libreoffice/program/resource/svxen-US.res
 usr/lib/libreoffice/program/resource/swen-US.res
+usr/lib/libreoffice/program/resource/vclen-US.res
 usr/lib/libreoffice/program/services
 usr/lib/libreoffice/program/services.rdb
 usr/lib/libreoffice/program/services/pyuno.rdb
@@ -747,8 +763,12 @@ usr/lib/libreoffice/share/config/soffice.cfg/modules/simpress/statusbar
 usr/lib/libreoffice/share/config/soffice.cfg/modules/simpress/toolbar
 usr/lib/libreoffice/share/config/soffice.cfg/modules/simpress/toolbar/toolbar.xml
 usr/lib/libreoffice/share/config/soffice.cfg/modules/swriter/menubar
+usr/lib/libreoffice/share/config/soffice.cfg/modules/swriter/menubar/menubar.xml
 usr/lib/libreoffice/share/config/soffice.cfg/modules/swriter/statusbar
+usr/lib/libreoffice/share/config/soffice.cfg/modules/swriter/statusbar/statusbar.xml
 usr/lib/libreoffice/share/config/soffice.cfg/modules/swriter/toolbar
+usr/lib/libreoffice/share/config/soffice.cfg/modules/swriter/toolbar/standardbar.xml
+usr/lib/libreoffice/share/config/soffice.cfg/modules/swriter/toolbar/textobjectbar.xml
 usr/lib/libreoffice/share/config/soffice.cfg/simpress/layoutlist.xml
 usr/lib/libreoffice/share/config/soffice.cfg/simpress/objectlist.xml
 usr/lib/libreoffice/share/config/soffice.cfg/simpress/transitions.xml
@@ -772,6 +792,8 @@ usr/lib/libreoffice/share/registry/res/fcfg_langpack_en-US.xcd
 usr/lib/libreoffice/share/registry/writer.xcd
 usr/lib/libreoffice/share/registry/xsltfilter.xcd
 usr/lib/libreoffice/share/uno_packages/cache
+usr/lib/libreoffice/share/wordbook
+usr/lib/libreoffice/share/wordbook/technical.dic
 usr/lib/libreoffice/share/xslt/common/measure_conversion.xsl
 usr/lib/libreoffice/share/xslt/export/common/body.xsl
 usr/lib/libreoffice/share/xslt/export/common/styles/style_collector.xsl
@@ -1322,6 +1344,7 @@ usr/share/fonts/truetype/gentium-basic
 usr/share/fonts/truetype/liberation
 usr/share/fonts/truetype/liberation/LiberationMono-Regular.ttf
 usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf
+usr/share/fonts/truetype/liberation/LiberationSans-Italic.ttf
 usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf
 usr/share/fonts/truetype/liberation/LiberationSerif-Bold.ttf
 usr/share/fonts/truetype/liberation/LiberationSerif-Italic.ttf
@@ -1330,7 +1353,10 @@ usr/share/fonts/truetype/openoffice
 usr/share/fonts/truetype/openoffice/opens___.ttf
 usr/share/fonts/type1
 usr/share/fonts/type1/gsfonts
+usr/share/fonts/type1/gsfonts/s050000l.pfb
 usr/share/hunspell
+usr/share/hunspell/en_US.aff
+usr/share/hunspell/en_US.dic
 usr/share/liblangtag/common/bcp47/calendar.xml
 usr/share/liblangtag/common/bcp47/collation.xml
 usr/share/liblangtag/common/bcp47/currency.xml

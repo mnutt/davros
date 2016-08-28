@@ -83,6 +83,20 @@ const pkgdef :Spk.PackageDefinition = (
     # here are only to tell it where to find files that the app wants.
     searchPath = [
       ( sourcePath = "." ),  # Search this directory first.
+      # fake out libreoffice
+      ( packagePath = "proc/version",
+        sourcePath = "/opt/app/.sandstorm/fake/proc-version" ),
+      ( packagePath = "proc/mounts",
+        sourcePath = "/opt/app/.sandstorm/fake/proc-mounts" ),
+      ( packagePath = "proc/filesystems",
+        sourcePath = "/opt/app/.sandstorm/fake/proc-filesystems" ),
+      ( packagePath = "proc/meminfo",
+        sourcePath = "/opt/app/.sandstorm/fake/proc-meminfo" ),
+      ( packagePath = "proc/self/exe",
+        sourcePath = "/opt/app/.sandstorm/fake/proc-self-exe" ),
+      ( packagePath = "etc/passwd",
+        sourcePath = "/opt/app/.sandstorm/fake/etc-passwd" ),
+      # end fake out libreoffice
       ( sourcePath = "/",    # Then search the system root directory.
         hidePaths = [ "home", "proc", "sys",
                       "etc/passwd", "etc/hosts", "etc/host.conf",
@@ -98,7 +112,16 @@ const pkgdef :Spk.PackageDefinition = (
   # `spk dev` will write a list of all the files your app uses to this file.
   # You should review it later, before shipping your app.
 
-  alwaysInclude = ["opt/app/dist", "opt/app/server", "opt/app/sample-files"],
+  alwaysInclude = [
+    "opt/app/dist", # css/js files change due to fingerprinting
+    "opt/app/server",
+    "opt/app/sample-files",
+    # libreoffice stats() some files without reading them
+    "usr/lib/libreoffice/presets/config/autotbl.fmt",
+    "usr/lib/libreoffice/program",
+    "usr/lib/python3.4", # pull in the whole Python 3 runtime
+    "usr/lib/python3", # pull in any Debian pure-Python packages
+    ],
   # Fill this list with more names of files or directories that should be
   # included in your package, even if not listed in sandstorm-files.list.
   # Use this to force-include stuff that you know you need but which may
