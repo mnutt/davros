@@ -8,9 +8,11 @@ cd /opt/app
 
 # Add some sample files if the grain is empty
 if [ ! -d "$STORAGE_PATH" ]; then
-  mkdir -p $TEMP_STORAGE_PATH
   mkdir -p $STORAGE_PATH
   cp -r sample-files/* $STORAGE_PATH/
 fi
+
+mkdir -p $CONFIG_PATH
+mkdir -p $TEMP_STORAGE_PATH
 
 /usr/bin/node app.js

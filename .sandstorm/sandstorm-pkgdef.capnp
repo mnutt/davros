@@ -154,6 +154,7 @@ const myCommand :Spk.Manifest.Command = (
     (key = "SANDSTORM", value = "1"),
     (key = "STORAGE_PATH", value = "/var/davros/data"),
     (key = "TEMP_STORAGE_PATH", value = "/var/davros/tmp"),
+    (key = "CONFIG_PATH", value = "/var/davros/config"),
     (key = "TMPDIR", value = "/var/davros/tmp"),
     (key = "UserInstallation", value = "file:///var/libreoffice/config"),
   ]

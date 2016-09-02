@@ -1,25 +1,29 @@
 import Ember from 'ember';
 import fetch from 'ember-network/fetch';
 
+const { get, inject } = Ember;
+
 export default Ember.Route.extend({
-  model: function() {
-    return fetch('/api/publish/info').then((response) => {
-      return response.json();
-    });
-  },
+  publishing: inject.service(),
 
   actions: {
     publish: function() {
-      fetch('/api/publish', {method: 'POST'}).then((response) => {
+      let publishUrl = "/api/publish";
+      let domain = get(this, 'controller.domain');
+      if(domain && domain !== '') {
+        publishUrl += `?domain=${encodeURIComponent(domain)}`;
+      }
+
+      fetch(publishUrl, {method: 'POST'}).then((response) => {
         return response.json();
       }).then((result) => {
-        this.set('controller.model', result);
+        get(this, 'publishing').update(result);
       });
     },
 
     unpublish: function() {
       fetch('/api/unpublish', {method: 'POST'}).then(() => {
-        this.set('controller.model', {});
+        get(this, 'publishing').update({});
       });
     }
   }

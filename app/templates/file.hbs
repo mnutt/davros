@@ -23,6 +23,10 @@
       <span title="{{commify model.size}} bytes" class="size">{{filesize model.size}}</span>
       &middot;
       <a href="{{model.rawPath}}" target="_blank">Download Original</a>
+      {{#if publicUrl}}
+        &middot;
+        <a href="{{publicUrl}}" target="_blank">Public URL</a>
+      {{/if}}
     </div>
   </div>
 

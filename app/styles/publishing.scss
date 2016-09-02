@@ -4,6 +4,16 @@
     text-align: center;
   }
 
+  .setup {
+    text-align: center;
+    padding-top: 1em;
+
+    md-input-container {
+      width: 100%;
+      max-width: 400px;
+    }
+  }
+
   .auto-url {
     font-weight: bold;
     background-color: #FFF;
