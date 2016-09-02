@@ -15,6 +15,10 @@ moduleForAcceptance('Acceptance | display files', {
     stub.get('/api/permissions', function() {
       return [404, {}, ''];
     });
+
+    stub.get('/api/publish/info', function() {
+      return [200, {}, '{}'];
+    });
   },
 
   afterEach: function() {
