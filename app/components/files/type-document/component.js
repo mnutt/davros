@@ -1,7 +1,8 @@
 import Ember from 'ember';
 import fetch from 'ember-network/fetch';
 
-const bullet = new RegExp('\uF077\uF077|\uF0B7\uF0B7', 'g');
+// Attempt to work around LibreOffice .doc bullet rendering issues
+const bullet = new RegExp(/[\uF077\uF0B7\uF024\uF0A7]+/, 'g');
 
 export default Ember.Component.extend({
   fullview: false,
