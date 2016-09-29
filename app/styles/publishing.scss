@@ -1,9 +1,17 @@
 .publishing {
-  background-color: #f3f3f3 !important;
-
   .toggle-publishing {
     margin: 20px 0;
     text-align: center;
+  }
+
+  .setup {
+    text-align: center;
+    padding-top: 1em;
+
+    md-input-container {
+      width: 100%;
+      max-width: 400px;
+    }
   }
 
   .auto-url {
@@ -12,6 +20,7 @@
     padding: 20px 10px;
     margin: 20px 0;
     text-align: center;
+    word-break: break-word;
   }
 
   .dns-setup {

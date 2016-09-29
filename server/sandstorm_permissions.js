@@ -1,4 +1,4 @@
-var davReadMethods = {
+var readMethods = {
   'GET': true,
   'HEAD': true,
   'OPTIONS': true,
@@ -6,23 +6,17 @@ var davReadMethods = {
   'REPORT': true
 };
 
-var webReadMethods = {
-  'GET': true,
-  'HEAD': true,
-  'OPTIONS': true
-}
-
 var validate = {
   edit: function validateEdit(req) {
     return true;
   },
 
   view: function validateView(req) {
-    return webReadMethods[req.method];
+    return readMethods[req.method];
   },
 
   sync: function validateSync(req) {
-    return davReadMethods[req.method];
+    return readMethods[req.method];
   }
 };
 
@@ -48,6 +42,11 @@ module.exports = function(req, res, next) {
     res.writeHead(403, {});
     res.end("Access denied.");
   } else {
-    next();
+    if(req.url === '/api/permissions') {
+      res.writeHead(404, {});
+      res.end();
+    } else {
+      next();
+    }
   }
 };

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE policymap [
+<!ELEMENT policymap (policy)+>
+<!ELEMENT policy (#PCDATA)>
+<!ATTLIST policy domain (delegate|coder|filter|path|resource) #IMPLIED>
+<!ATTLIST policy name CDATA #IMPLIED>
+<!ATTLIST policy rights CDATA #IMPLIED>
+<!ATTLIST policy pattern CDATA #IMPLIED>
+<!ATTLIST policy value CDATA #IMPLIED>
+]>
+<!-- Basically stock debian policies, with restrictions for total
+     image filesize and limited to 30s processing -->
+<policymap>
+  <policy domain="resource" name="area" value="100MB"/>
+  <policy domain="resource" name="time" value="30"/>
+  <policy domain="cache" name="shared-secret" value="passphrase"/>
+  <policy domain="coder" rights="none" pattern="EPHEMERAL" />
+  <policy domain="coder" rights="none" pattern="URL" />
+  <policy domain="coder" rights="none" pattern="HTTPS" />
+  <policy domain="coder" rights="none" pattern="MVG" />
+  <policy domain="coder" rights="none" pattern="MSL" />
+  <policy domain="coder" rights="none" pattern="TEXT" />
+  <policy domain="coder" rights="none" pattern="SHOW" />
+  <policy domain="coder" rights="none" pattern="WIN" />
+  <policy domain="coder" rights="none" pattern="PLT" />
+  <policy domain="path" rights="none" pattern="@*" />
+</policymap>

@@ -20,8 +20,24 @@
 # appropriate for your application.
 
 export DEBIAN_FRONTEND=noninteractive
-curl -sL https://deb.nodesource.com/setup_node_4.x | bash -
-apt-get install -y iojs git-core g++
+curl -sL https://deb.nodesource.com/setup_6.x | bash -
+apt-get install -y nodejs git-core g++ imagemagick libreoffice
+
+# Disable dangerous imagemagick features
+cp /opt/app/.sandstorm/imagemagick-policy.xml /etc/ImageMagick-6/policy.xml
+
+# Set up libreoffice
+echo "deb http://ftp.debian.org/debian jessie-backports main" > /etc/apt/sources.list.d/backports.list
+apt-get update
+apt-get -t jessie-backports install -y libreoffice
+
+# Set up libreoffice config directory
+rm -Rf /var/libreoffice
+mkdir -p /var/libreoffice/config
+# Libreoffice always crashes the first time it is run, in the process of creating its config dir
+/usr/lib/libreoffice/program/soffice.bin -env:UserInstallation=file:///var/libreoffice/config --headless --invisible --nocrashreport --nodefault --nofirststartwizard --nologo --norestore
+# Make sure sandstorm can write to config dir
+chown -R 1000:1000 /var/libreoffice
 
 # Compile a small helper to get a publicId
 /opt/app/.sandstorm/compile_helper.sh

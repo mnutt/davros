@@ -1,6 +1,8 @@
 import Ember from 'ember';
-import ajax from 'ic-ajax';
+import fetch from 'ember-network/fetch';
 import $ from 'jquery';
+import File from 'davros/models/file';
+import ensureCollectionExists from 'davros/lib/ensure-collection-exists';
 
 export default Ember.Route.extend({
 
@@ -19,15 +21,17 @@ export default Ember.Route.extend({
     var message = JSON.parse(rawMessage.data);
 
     if(message.file) {
-      if(this.get('controller.model.id') === message.file) {
-        this.get('controller.model').reload();
+      if(message.file === "/") { message.file = ""; }
+      if(this.get('controller.model.path') === message.file) {
+        this.get('controller.model').load();
       }
     }
   },
 
   model: function(params) {
-    var id = params.path || '/';
-    return this.store.find('file', id);
+    var id = params.path || '';
+    var file = File.create({path: id});
+    return file.load();
   },
 
   renderTemplate: function() {
@@ -39,40 +43,65 @@ export default Ember.Route.extend({
   },
 
   actions: {
-    "delete": function() {
+    "delete": function(defer) {
       var model = this.get('controller.model');
       var parent = model.get('parent');
-      var type = model.get('isDirectory') ? 'directory and everything in it' : 'file';
 
-      if(confirm("Are you sure you want to delete this " + type + "? It will also be deleted from any synced clients.")) {
-        return ajax({url: model.get('rawPath'), method: 'DELETE'}).then(() => {
-          return this.transitionTo('file', parent);
-        });
-      } else {
-        return true;
-      }
+      return model.delete().then(() => {
+        this.transitionTo('file', parent);
+      }).then(() => { defer.resolve(); }, () => { defer.reject(); });
     },
 
-    newDirectory: function() {
+    newDirectory: function(dirname, defer) {
       var model = this.get('controller.model');
 
-      var dirname = prompt("Directory name");
-      if(!dirname || !dirname.length) {
-        console.log("New directory cancelled.");
-        return;
-      }
-
-      if(dirname.match(/^[^\\/?%*:|"<>\.]+$/)) {
-        var fullPath = [model.get('rawPath'), dirname].join('/');
-        return ajax({url: fullPath, method: 'MKCOL'});
-      } else {
-        alert("The directory name is not valid.");
-        this.send('newDirectory');
-      }
+      var fullPath = [model.get('rawPath'), dirname].join('/');
+      return fetch(fullPath, {method: 'MKCOL'}).then(() => {
+        return this.get('controller.model').load();
+      }).then(() => { defer.resolve(); }, () => { defer.reject(); });
     },
 
     chooseUpload: function() {
       $("#upload-placeholder").click();
+    },
+
+    downloadDirectory: function() {
+      var path = this.get('controller.model.path');
+      var endpoint = "/api/archive?path=" + encodeURIComponent(path);
+      document.location.href = endpoint;
+    },
+
+    uploadFile: function (file) {
+      var source = file.file.getSource();
+      var location = document.location.pathname;
+      var path = source.relativePath || file.get('name');
+
+      if(location.indexOf('/files') === 0) {
+        // if user is in a directory, upload the files there
+        location = location.replace(/^\/files\//, '');
+        // dirname of current path, so if path is /foo/README, use /foo/
+        location = location.replace(/\/[^\/]*$/, '');
+      } else {
+        // otherwise, upload files in the root directory
+        // (this shouldn't happen anymore)
+        location = '';
+      }
+
+      if(path[0] !== '/') { path = '/' + path; }
+
+      console.log("uploading " + path + " into location " + location);
+
+      var fullPath = [location, path].join('');
+
+      ensureCollectionExists(fullPath).then(() => {
+        file.upload('/api/upload', {
+          data: {
+            destination: fullPath
+          }
+        }).then(() => {
+          this.get('controller.model').load();
+        });
+      });
     }
   }
 

@@ -1,23 +1,39 @@
 ---
 language: node_js
 node_js:
-  - "0.12"
+  - "6"
 
 sudo: false
 
 cache:
   directories:
     - node_modules
+    - ~/.npm
+
+env:
+  - PORT=6849
 
 before_install:
-  - export PATH=/usr/local/phantomjs-2.0.0/bin:$PATH
-  - "npm config set spin false"
-  - "npm install -g npm@^2"
+  - npm config set spin false
+  - npm install -g bower
+  - npm install phantomjs-prebuilt
 
 install:
-  - npm install -g bower
   - npm install
   - bower install
+  - mkdir -p tmp && cd tmp
+  - wget http://www.webdav.org/neon/litmus/litmus-0.13.tar.gz
+  - tar -zxf litmus-0.13.tar.gz
+  - cd litmus-0.13
+  - sed -i -e "s/T(propfind_invalid2),//g" src/props.c # we're a bit more lax than the official dav spec, so we let this slide
+  - ./configure && make
+  - cd ../..
+
+before_script:
+  - npm run build
+  - node app.js &> /dev/null &
 
 script:
   - npm test
+  - npm run test-server
+  - cd tmp/litmus-0.13 && make URL=http://127.0.0.1:6849/remote.php/webdav check

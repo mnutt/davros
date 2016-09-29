@@ -19,3 +19,5 @@ testem.log
 
 # webdav data
 /data/*
+/.jsdav
+/config/domain

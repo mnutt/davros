@@ -15,6 +15,10 @@ moduleForAcceptance('Acceptance | display files', {
     stub.get('/api/permissions', function() {
       return [404, {}, ''];
     });
+
+    stub.get('/api/publish/info', function() {
+      return [200, {}, '{}'];
+    });
   },
 
   afterEach: function() {
@@ -25,7 +29,7 @@ moduleForAcceptance('Acceptance | display files', {
 test('viewing an image', function(assert) {
   visit('/files/');
 
-  click('div:contains(space)');
+  click('div.filename div:contains(space)');
 
   andThen(function() {
     find('.parent-only').remove(); // not in mobile view

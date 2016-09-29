@@ -1,17 +1,40 @@
-<div class="more">
-  {{#paper-menu position="target-right target" as |menu|}}
+<div class="actions">
+  {{#if canEdit}}
+    {{#paper-button class="icon-button delete-button" onClick=(action (mut deleteDialogActive true))}}
+      {{paper-icon "delete"}}
 
-    {{#paper-button target=menu action="toggleMenu" icon-button=true}}
-        {{paper-icon class="md-menu-origin" icon="more-vert"}}
+      {{#tooltip-on-component}}
+        Delete File
+      {{/tooltip-on-component}}
     {{/paper-button}}
-
-  {{else}}
-    {{#if canEdit}}
-      {{#paper-menu-item class="danger" action="delete"}}
-        <p class="label">Delete File</p>
-        {{paper-icon icon="delete" class="md-menu-align-target"}}
-      {{/paper-menu-item}}
-    {{/if}}
-
-  {{/paper-menu}}
+  {{/if}}
 </div>
+
+<!-- Only displayed on mobile -->
+<div class="compact-actions">
+  <div class="more">
+    {{#paper-menu position="target-right target" as |menu|}}
+
+      {{#paper-button onClick=(action "toggleMenu" target=menu) class="more-button" icon-button=true}}
+        {{paper-icon "more-vert" class="md-menu-origin"}}
+      {{/paper-button}}
+
+    {{else}}
+      {{#if canEdit}}
+        {{#paper-menu-item class="danger" onClick=(action (mut deleteDialogActive true))}}
+          <p class="label">Delete File</p>
+          {{paper-icon "delete" class="md-menu-align-target"}}
+        {{/paper-menu-item}}
+      {{else}}
+        {{#paper-menu-item}}
+          <p class="label">Read-only mode</p>
+        {{/paper-menu-item}}
+      {{/if}}
+
+    {{/paper-menu}}
+  </div>
+</div>
+
+{{#delete-dialog active=deleteDialogActive onDelete=(route-action "delete")}}
+  Are you sure you want to delete the file {{model.name}}? It will also be deleted from any synced clients.
+{{/delete-dialog}}

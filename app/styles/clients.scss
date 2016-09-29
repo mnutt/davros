@@ -1,58 +1,53 @@
 .clients {
-  background-color: #f3f3f3 !important;
-
   .client-download {
     text-align: center;
   }
 
   .server-url {
     text-align: center;
+    overflow: hidden;
 
     iframe {
-      margin: 20px auto;
-      width: 95%;
-      max-width: 800px;
+      margin: 20px auto 5px auto;
+      max-width: 600px;
       border: 1px solid #000;
       padding: 3px;
-      height: 2.1em;
+      height: 1.2em;
       background-color: #FFF;
     }
   }
 
+  .use-auth-in-url {
+    max-width: 600px;
+    margin: 0 auto 20px auto;
+    text-align: center;
+  }
+
   .authentication {
-    width: 510px;
+    max-width: 510px;
     margin: auto;
     padding: 20px 0;
 
     .username-field, .password-field {
-      margin-bottom: 10px;
-      height: 2em;
+      clear: both;
     }
 
     label {
-      width: 90px;
-      text-align: right;
-      float: left;
+      display: block;
       line-height: 1.7em;
-      padding-right: 4px;
     }
 
     .username, .password {
-      float: left;
-      width: 400px;
+      overflow: hidden;
     }
 
-    .username pre {
-      padding: 0 0 2px 0;
-      margin: 0;
-    }
-
-    .username, .password iframe {
+    .username iframe, .password iframe {
       border: 1px solid #000;
       padding: 3px;
       height: 1.2em;
-      width: 400px;
+      max-width: 500px;
       background-color: #FFF;
+      width: 95%;
     }
   }
 }

@@ -1,4 +1,4 @@
-var jsDAV_ServerPlugin = require("jsdav/lib/DAV/plugin");
+var jsDAV_ServerPlugin = require("jsDAV/lib/DAV/plugin");
 var apiWs = require('../api-ws');
 var path = require('path');
 

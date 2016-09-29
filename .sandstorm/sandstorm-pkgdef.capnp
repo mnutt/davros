@@ -19,9 +19,9 @@ const pkgdef :Spk.PackageDefinition = (
 
     appTitle = (defaultText = "Davros"),
 
-    appVersion = 141,  # Increment this for every release.
+    appVersion = 216,  # Increment this for every release.
 
-    appMarketingVersion = (defaultText = "0.14.1"),
+    appMarketingVersion = (defaultText = "0.21.6"),
     # Human-readable representation of appVersion. Should match the way you
     # identify versions of your app in documentation and marketing.
 
@@ -42,9 +42,14 @@ const pkgdef :Spk.PackageDefinition = (
 
     metadata = (
       icons = (
-        appGrid = (svg = embed "app-graphics/davros-128.svg"),
-        grain = (svg = embed "app-graphics/davros-24.svg"),
-        market = (svg = embed "app-graphics/davros-128.svg"),
+        appGrid = (png = (dpi1x = embed "app-graphics/icon-128.png",
+                          dpi2x = embed "app-graphics/icon-256.jpg")),
+        grain = (png = (dpi1x = embed "app-graphics/icon-24.png",
+                        dpi2x = embed "app-graphics/icon-48.png")),
+        market = (png = (dpi1x = embed "app-graphics/icon-150.png",
+                         dpi2x = embed "app-graphics/icon-300.jpg")),
+        marketBig = (png = (dpi1x = embed "app-graphics/icon-300.jpg",
+                            dpi2x = embed "app-graphics/icon-600.jpg")),
       ),
 
       website = "https://github.com/mnutt/davros/",
@@ -62,9 +67,9 @@ const pkgdef :Spk.PackageDefinition = (
       shortDescription = (defaultText = "File storage"),
 
       screenshots = [
-        (width = 1134, height = 764, png = embed "screenshot-1.png"),
-        (width = 1134, height = 764, jpeg = embed "screenshot-2.jpg"),
-        (width = 1134, height = 764, png = embed "screenshot-3.png"),
+        (width = 2418, height = 1326, png = embed "app-graphics/screenshot-1.png"),
+        (width = 2418, height = 1326, jpeg = embed "app-graphics/screenshot-2.jpg"),
+        (width = 2418, height = 1326, png = embed "app-graphics/screenshot-3.png"),
       ],
 
       changeLog = (defaultText = embed "../CHANGELOG.md"),
@@ -78,6 +83,20 @@ const pkgdef :Spk.PackageDefinition = (
     # here are only to tell it where to find files that the app wants.
     searchPath = [
       ( sourcePath = "." ),  # Search this directory first.
+      # fake out libreoffice
+      ( packagePath = "proc/version",
+        sourcePath = "/opt/app/.sandstorm/fake/proc-version" ),
+      ( packagePath = "proc/mounts",
+        sourcePath = "/opt/app/.sandstorm/fake/proc-mounts" ),
+      ( packagePath = "proc/filesystems",
+        sourcePath = "/opt/app/.sandstorm/fake/proc-filesystems" ),
+      ( packagePath = "proc/meminfo",
+        sourcePath = "/opt/app/.sandstorm/fake/proc-meminfo" ),
+      ( packagePath = "proc/self/exe",
+        sourcePath = "/opt/app/.sandstorm/fake/proc-self-exe" ),
+      ( packagePath = "etc/passwd",
+        sourcePath = "/opt/app/.sandstorm/fake/etc-passwd" ),
+      # end fake out libreoffice
       ( sourcePath = "/",    # Then search the system root directory.
         hidePaths = [ "home", "proc", "sys",
                       "etc/passwd", "etc/hosts", "etc/host.conf",
@@ -93,7 +112,16 @@ const pkgdef :Spk.PackageDefinition = (
   # `spk dev` will write a list of all the files your app uses to this file.
   # You should review it later, before shipping your app.
 
-  alwaysInclude = ["opt/app/dist", "opt/app/server", "opt/app/sample-files"],
+  alwaysInclude = [
+    "opt/app/dist", # css/js files change due to fingerprinting
+    "opt/app/server",
+    "opt/app/sample-files",
+    # libreoffice stats() some files without reading them
+    "usr/lib/libreoffice/presets/config/autotbl.fmt",
+    "usr/lib/libreoffice/program",
+    "usr/lib/python3.4", # pull in the whole Python 3 runtime
+    "usr/lib/python3", # pull in any Debian pure-Python packages
+    ],
   # Fill this list with more names of files or directories that should be
   # included in your package, even if not listed in sandstorm-files.list.
   # Use this to force-include stuff that you know you need but which may
@@ -120,10 +148,14 @@ const myCommand :Spk.Manifest.Command = (
   argv = ["/sandstorm-http-bridge", "8000", "--", "/opt/app/.sandstorm/launcher.sh"],
   environ = [
     # Note that this defines the *entire* environment seen by your app.
-    (key = "PATH", value = "/usr/local/bin:/usr/bin:/bin"),
+    (key = "PATH", value = "/opt/app/vendor:/usr/local/bin:/usr/bin:/bin"),
     (key = "PORT", value = "8000"),
+    (key = "HOME", value = "/var"),
+    (key = "SANDSTORM", value = "1"),
     (key = "STORAGE_PATH", value = "/var/davros/data"),
     (key = "TEMP_STORAGE_PATH", value = "/var/davros/tmp"),
+    (key = "CONFIG_PATH", value = "/var/davros/config"),
     (key = "TMPDIR", value = "/var/davros/tmp"),
+    (key = "UserInstallation", value = "file:///var/libreoffice/config"),
   ]
 );

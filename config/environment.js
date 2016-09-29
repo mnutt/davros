@@ -4,7 +4,7 @@ module.exports = function(environment) {
   var ENV = {
     modulePrefix: 'davros',
     environment: environment,
-    baseURL: '/',
+    rootURL: '/',
     locationType: 'auto',
     EmberENV: {
       FEATURES: {
@@ -17,9 +17,12 @@ module.exports = function(environment) {
       'default-src': "'none'",
       'script-src': "'self'",
       'font-src': "'self'",
+      'frame-src': "'self'",
+      'object-src': "'self'",
       'connect-src': "'self' ws://localhost:*",
       'img-src': "'self' data:",
-      'media-src': "'self'"
+      'media-src': "'self'",
+      'style-src': "'self' 'unsafe-inline'"
     },
 
     APP: {
@@ -38,7 +41,6 @@ module.exports = function(environment) {
 
   if (environment === 'test') {
     // Testem prefers this...
-    ENV.baseURL = '/';
     ENV.locationType = 'none';
 
     // keep test console output quieter

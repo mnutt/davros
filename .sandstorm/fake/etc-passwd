@@ -1,0 +1,1 @@
+sandboxuser:x:1000:1000:Sandbox User,,,:/var:/bin/bash

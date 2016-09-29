@@ -9,17 +9,88 @@ $font_root_url: '../fonts';
 @import 'file';
 @import 'clients';
 @import 'about';
+@import 'spinner';
 
 body, #content {
-  background-color: #f3f3f3;
+  background-color: #FFF;
 }
 
 #content {
   min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
 }
 
-md-toolbar {
+.content-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.actions {
+  text-align: right;
+}
+
+.ember-tooltip {
+  z-index: 3;
+}
+
+.sidebar-small {
+  width: 50px;
+  max-width: 50px;
+  flex-direction: column;
+  background-color: #555;
+
+  img {
+    position: relative;
+  }
+
+  .logo-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 48px;
+    background-color: #2196f3;
+  }
+
+  a {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 0;
+    text-align: center;
+    margin-right: 2px;
+    border-radius: 0 4px 4px 0;
+    text-decoration: none;
+    position: relative;
+
+    div {
+      font-size: 10px;
+      font-weight: bold;
+    }
+
+    div, md-icon {
+      color: #FFF;
+    }
+
+    &:hover {
+      background-color: #444;
+    }
+
+    &.active {
+      background-color: #FFF;
+
+      div, md-icon {
+        color: #000;
+      }
+    }
+  }
+}
+
+md-toolbar.md-whiteframe-1dp {
   min-height: 48px;
+  box-shadow: none;
+  background-color: #069;
 
   .md-toolbar-tools {
     height: 48px;
@@ -38,17 +109,38 @@ md-toolbar {
       line-height: 2.3;
     }
 
+    .toggle-menu {
+      margin-top: 2px;
+      margin-right: 0 !important;
+    }
+
     .more {
-      margin-left: auto;
-      width: 50px;
-      text-align: right;
+      margin-right: -15px;
+    }
+
+    .compact-actions {
+      display: none;
     }
   }
 }
 
+.md-button {
+  &.icon-button {
+    min-width: 20px;
+  }
+
+  &:not([disabled]):hover {
+    background-color: rgba(50,50,50, 0.2) !important;
+  }
+}
+
 md-menu-item {
+  > .md-button {
+    display: flex;
+  }
+
   p.label {
-    width: 150px;
+    flex: 1;
   }
 
   &.danger {
@@ -76,19 +168,46 @@ md-menu-item {
   }
 
   a {
-    text-decoration: underline;
+    border-bottom: 1px solid #FFF;
   }
 }
 
-md-content p.content {
-  padding: 2em 1em;
+#content md-content {
+  background-color: #EEE;
+  border-right: 10px solid #FFF;
+
+  p.content {
+    padding: 2em 1em;
+    margin: 0;
+    max-width: 900px;
+    flex: 1;
+    flex-direction: column;
+    background-color: #FFF;
+  }
 }
 
 md-sidenav {
+  background-color: #FFF;
   text-align: left;
+  max-width: 280px;
 
-  md-list-item .md-list-item-inner md-icon {
-    flex: 1;
+  md-content md-list .md-button {
+    background-color: #FFF;
+  }
+
+  md-list-item {
+    &:hover {
+      background-color: #DDD;
+    }
+
+    .md-list-item-inner {
+      md-icon {
+        margin: 14px 12px 14px 0 !important;
+      }
+      flex: off;
+      display: block;
+      justify-content: initial !important;
+    }
   }
 }
 
@@ -96,9 +215,15 @@ md-sidenav {
   line-height: 0.8
 }
 
-@media (max-width: 550px) {
-  .md-toolbar-tools {
-    padding: 0 !important;
+@media (max-width: 700px) {
+  md-content {
+    .md-toolbar-tools {
+      padding: 0 !important;
+    }
+
+    p.content {
+      padding-top: 0.5em;
+    }
   }
 
   .breadcrumb .full {
@@ -107,6 +232,16 @@ md-sidenav {
 
   .breadcrumb .parent-only {
     display: inline-block;
+  }
+
+  .title-bar {
+    .compact-actions {
+      display: block !important;
+    }
+  }
+
+  .actions {
+    display: none;
   }
 }
 
