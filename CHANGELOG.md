@@ -2,6 +2,9 @@
 * Support for previewing documents: .doc, .docx, .xls, .xlsx, .ppt, .pptx
 * Get a file's public URL when publishing is enabled
 
+# 0.21.7
+* Security: disable javascript in html previews. Otherwise, it is possible to make relative xhr POSTs from the preview iframe to the webdav API.
+
 # 0.21.6
 * Label m4v format as video
 * Fix styling on pdfs and iframed content
