@@ -154,8 +154,8 @@ opt/app/.sandstorm/launcher.sh
 opt/app/CHANGELOG.md
 opt/app/app.js
 opt/app/dist
+opt/app/dist/assets/davros-3e6baa5f3eaef9402fe427a819880099.js
 opt/app/dist/assets/davros-833517583a3446fb9cca4f2295cc0973.css
-opt/app/dist/assets/davros-f73f8cab43935d646653fc977022017b.js
 opt/app/dist/assets/vendor-1f4b0936f9eb96945d56b53a2996e8a9.css
 opt/app/dist/assets/vendor-c9cf26ccc3d8789d1b615cc8ac090d12.js
 opt/app/dist/fonts/materialicons/v16/2fcrYFNaTjcS6g4U3t-Y5UEw0lE80llgEseQY3FEmqw.woff2

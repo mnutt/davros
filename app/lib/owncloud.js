@@ -15,5 +15,8 @@ export default {
       language: "en",
       body
     }
+  },
+  options: {
+    dav: ["1", "2", "3", 'mkcol-extended']
   }
 };
