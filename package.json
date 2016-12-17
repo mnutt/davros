@@ -71,7 +71,7 @@
     "express": "^4.13.1",
     "fs-promise": "^0.5.0",
     "imagemagick-stream": "^4.1.0",
-    "jsDAV": "git://github.com/mnutt/jsDAV.git#e28bac7",
+    "jsDAV": "git://github.com/mnutt/jsDAV.git#0556df11183",
     "jsonapi-serializer": "^1.0.4",
     "loader.js": "^4.0.1",
     "mkdirp": "0.5.1",
