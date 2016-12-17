@@ -47,7 +47,7 @@
     "ember-load-initializers": "^0.5.1",
     "ember-moment": "6.1.0",
     "ember-network": "^0.3.0",
-    "ember-paper": "git://github.com/mnutt/ember-paper.git#54d479e",
+    "ember-paper": "git://github.com/mnutt/ember-paper.git#422d81e",
     "ember-plupload": "1.13.15",
     "ember-route-action-helper": "0.3.3",
     "ember-tether": "0.3.1",

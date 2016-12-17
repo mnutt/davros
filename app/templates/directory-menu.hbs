@@ -53,42 +53,42 @@
 <div class="compact-actions">
   <div class="more">
     {{#paper-menu position="target-right target" width=4 as |menu|}}
-
-      {{#paper-button onClick=(action "toggleMenu" target=menu) class="more-button" iconButton=true}}
+      {{#menu.trigger}}
+        {{#paper-button class="more-button" iconButton=true}}
           {{paper-icon "more-vert" class="md-menu-origin" aria-label="Menu"}}
-      {{/paper-button}}
+        {{/paper-button}}
+      {{/menu.trigger}}
 
-    {{else}}
+      {{#menu.content}}
+        {{#if canEdit}}
+          {{#paper-menu-item onClick="chooseUpload" id="menu-upload-file"}}
+            <p class="label">Upload</p>
+            {{paper-icon "file-upload" class="md-menu-align-target"}}
+          {{/paper-menu-item}}
 
-      {{#if canEdit}}
-        {{#paper-menu-item onClick="chooseUpload" id="menu-upload-file"}}
-          <p class="label">Upload</p>
-          {{paper-icon "file-upload" class="md-menu-align-target"}}
+          {{#paper-menu-item onClick=(action (mut newDialogActive true))}}
+            <p class="label">New Directory</p>
+            {{paper-icon "add-circle-outline" class="md-menu-align-target"}}
+          {{/paper-menu-item}}
+        {{/if}}
+
+        {{#paper-menu-item onClick="slideshow"}}
+          <p class="label">View Slideshow</p>
+          {{paper-icon "photo" class="md-menu-align-target"}}
         {{/paper-menu-item}}
 
-        {{#paper-menu-item onClick=(action (mut newDialogActive true))}}
-          <p class="label">New Directory</p>
-          {{paper-icon "add-circle-outline" class="md-menu-align-target"}}
+        {{#paper-menu-item onClick="downloadDirectory" id="menu-download-directory"}}
+          <p class="label">Download (zip)</p>
+          {{paper-icon "file-download" class="md-menu-align-target"}}
         {{/paper-menu-item}}
-      {{/if}}
 
-      {{#paper-menu-item onClick="slideshow"}}
-        <p class="label">View Slideshow</p>
-        {{paper-icon "photo" class="md-menu-align-target"}}
-      {{/paper-menu-item}}
-
-      {{#paper-menu-item onClick="downloadDirectory" id="menu-download-directory"}}
-        <p class="label">Download (zip)</p>
-        {{paper-icon "file-download" class="md-menu-align-target"}}
-      {{/paper-menu-item}}
-
-      {{#if canEdit}}
-        {{#paper-menu-item class="danger" onClick=(action (mut deleteDialogActive true))}}
-          <p class="label">Delete Directory</p>
-          {{paper-icon "delete" class="md-menu-align-target"}}
-        {{/paper-menu-item}}
-      {{/if}}
-
+        {{#if canEdit}}
+          {{#paper-menu-item class="danger" onClick=(action (mut deleteDialogActive true))}}
+            <p class="label">Delete Directory</p>
+            {{paper-icon "delete" class="md-menu-align-target"}}
+          {{/paper-menu-item}}
+        {{/if}}
+      {{/menu.content}}
     {{/paper-menu}}
   </div>
 </div>
