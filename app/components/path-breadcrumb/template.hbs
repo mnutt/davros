@@ -1,14 +1,14 @@
 <div class="full">
-  {{#link-to 'file' ''}}home{{/link-to}}
+  {{#link-to 'file' (query-params path="")}}home{{/link-to}}
 
   {{#each parts as |part|}}
     <span class="separator">/</span>
-    {{#link-to 'file' part.path}}{{part.name}}{{/link-to}}
+    {{#link-to 'file' (query-params path=part.path)}}{{part.name}}{{/link-to}}
   {{/each}}
 
   /
 </div>
 
 <div class="parent-only">
-  {{#link-to 'file' parentPath}}{{#if isHome}}home{{else}}...{{/if}}{{/link-to}} /
+  {{#link-to 'file' (query-params path=parentPath)}}{{#if isHome}}home{{else}}...{{/if}}{{/link-to}} /
 </div>

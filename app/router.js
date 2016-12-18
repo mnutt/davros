@@ -7,7 +7,7 @@ const Router = Ember.Router.extend({
 });
 
 Router.map(function() {
-  this.route('file', {path: '/files/*path'});
+  this.route('file', {path: '/files'});
   this.route('home', {path: '/'});
   this.route('clients');
   this.route('publishing');
