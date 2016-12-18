@@ -5,11 +5,6 @@ import File from 'davros/models/file';
 import ensureCollectionExists from 'davros/lib/ensure-collection-exists';
 
 export default Ember.Route.extend({
-  queryParams: {
-    path: {
-      refreshModel: true
-    }
-  },
 
   socketUrl: ((document.location.protocol === 'https:') ? 'wss://' : 'ws://') + document.location.host,
   socketService: Ember.inject.service('websockets'),

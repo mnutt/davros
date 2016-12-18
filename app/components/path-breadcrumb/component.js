@@ -33,6 +33,6 @@ export default Ember.Component.extend({
   }.property('path'),
 
   parentPath: function() {
-    return this.get('parts.lastObject.path') || '';
+    return this.get('parts.lastObject.path') || '/';
   }.property('parts')
 });

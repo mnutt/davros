@@ -40,7 +40,7 @@
     <tbody>
       {{#each model.sortedFiles as |file|}}
         <tr>
-          {{#link-to 'file' (query-params path=(unbound file.linkedPath)) class="name" tagName="td"}}
+          {{#link-to 'file' (unbound file.linkedPath) class="name" tagName="td"}}
             <div class="filename">
               {{#if file.isDirectory}}
                 <md-icon class="paper-icon md-font material-icons md-default-theme">folder</md-icon>

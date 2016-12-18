@@ -26,12 +26,12 @@ test('redirecting root to /files', function(assert) {
   visit('/');
 
   andThen(function() {
-    assert.equal(currentURL(), '/files/');
+    assert.equal(currentURL(), '/files');
   });
 });
 
 test('listing files', function(assert) {
-  visit('/files/');
+  visit('/files');
 
   andThen(function() {
     assert.equal(find('.file-list tr:nth-child(1) .filename .truncated').text(), 'myDir');
@@ -40,7 +40,7 @@ test('listing files', function(assert) {
 });
 
 test('traversing directories', function(assert) {
-  visit('/files/');
+  visit('/files');
   click('div.filename div:contains(myDir)');
 
   andThen(function() {

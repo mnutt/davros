@@ -5,7 +5,7 @@ export default Ember.Route.extend({
     // Redirect /files to file route
     var path = transition.params['not-found'].path;
     if(path === "files/" || path === "files") {
-      this.transitionTo('file', { queryParams: { path: "" }});
+      this.transitionTo('files');
     }
 
     return true;
