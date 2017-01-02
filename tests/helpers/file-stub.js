@@ -8,15 +8,19 @@ let space = '<?xml version="1.0" encoding="utf-8"?><d:multistatus xmlns:d="DAV:"
 
 export default function() {
   return new Pretender(function() {
-    this.propfind('/remote.php/webdav/', function() {
+    // HACK to make propfinds work, since we don't currently use PATCH it's probably ok
+    let registry = this.hosts.forURL('/remote.php/webdav/');
+    registry['PROPFIND'] = registry['PATCH'];
+
+    this.register('PROPFIND', '/remote.php/webdav/', function() {
       return [200, {}, root];
     });
 
-    this.propfind('/remote.php/webdav/myDir/', function() {
+    this.register('PROPFIND', '/remote.php/webdav/myDir/', function() {
       return [200, {}, myDir];
     });
 
-    this.propfind('/remote.php/webdav/space.jpg', function() {
+    this.register('PROPFIND', '/remote.php/webdav/space.jpg', function() {
       return [200, {}, space];
     });
   });
