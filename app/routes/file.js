@@ -4,15 +4,17 @@ import $ from 'jquery';
 import File from 'davros/models/file';
 import ensureCollectionExists from 'davros/lib/ensure-collection-exists';
 
-export default Ember.Route.extend({
+const { get, inject } = Ember;
 
-  socketUrl: ((document.location.protocol === 'https:') ? 'wss://' : 'ws://') + document.location.host,
-  socketService: Ember.inject.service('websockets'),
+const socketUrl = ((document.location.protocol === 'https:') ? 'wss://' : 'ws://') + document.location.host;
+
+export default Ember.Route.extend({
+  websockets: inject.service(),
 
   init: function() {
     this._super.apply(this, arguments);
 
-    var socket = this.get('socketService').socketFor(this.get('socketUrl'));
+    const socket = get(this, 'websockets').socketFor(socketUrl);
 
     socket.on('message', this.messageHandler, this);
   },
