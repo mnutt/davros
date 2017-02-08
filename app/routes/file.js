@@ -50,7 +50,11 @@ export default Ember.Route.extend({
       var parent = model.get('parent');
 
       return model.delete().then(() => {
-        this.transitionTo('file', parent);
+        if(parent) {
+          this.transitionTo('file', parent);
+        } else {
+          this.transitionTo('files');
+        }
       }).then(() => { defer.resolve(); }, () => { defer.reject(); });
     },
 
