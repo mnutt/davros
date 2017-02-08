@@ -1,15 +1,17 @@
-var WebSocketServer = require('ws').Server;
+const WebSocket = require('ws');
 
-var wss;
+let wss;
 
 exports.notify = function(file) {
   if(!wss) { return; }
 
-  wss.clients.forEach(function(client) {
-    client.send(JSON.stringify({file: file}));
-  });
+  const response = JSON.stringify({file: file});
+
+  for(const client of wss.clients) {
+    client.send(response);
+  }
 };
 
 exports.serve = function(server) {
-  wss = new WebSocketServer({ server: server });
+  wss = new WebSocket.Server({ server: server });
 };

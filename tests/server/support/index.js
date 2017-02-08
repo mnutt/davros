@@ -1,4 +1,4 @@
-/*jslint node: true  */
+/* eslint-env node, mocha */
 
 const os      = require('os');
 const http    = require('http');
