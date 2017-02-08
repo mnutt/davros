@@ -28,7 +28,7 @@ export default {
     return fetch(path, {
       method: 'MKCOL'
     }).catch(function(err) {
-      console.log(err);
+      console.error(err);
     });
   }
 };

@@ -95,7 +95,7 @@ export default Ember.Route.extend({
 
       if(path[0] !== '/') { path = '/' + path; }
 
-      console.log("uploading " + path + " into location " + location);
+      // console.log("uploading " + path + " into location " + location);
 
       var fullPath = [location, path].join('');
 

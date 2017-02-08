@@ -38,7 +38,6 @@ export default plUploader.extend({
   },
 
   leftDropzone(evt) {
-    console.log('left');
     var e = evt.originalEvent;
     if (e.preventDefault) { e.preventDefault(); }
     if (e.stopPropagation) { e.stopPropagation(); }
@@ -49,13 +48,11 @@ export default plUploader.extend({
   },
 
   activateDropzone(evt) {
-    console.log('activated');
     this.dropzoneElement().addClass('dropzone-active');
     set(this, 'dragData', get(evt, 'dataTransfer'));
   },
 
   deactivateDropzone() {
-    console.log('deactivated');
     this._dragCounter = 0;
     this.dropzoneElement().removeClass('dropzone-active');
     set(this, 'dragData', null);
