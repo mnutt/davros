@@ -4,8 +4,6 @@
     "dinosheets": "0.0.1",
     "ember": "~2.10.0",
     "ember-cli-shims": "0.1.3",
-    "hammer.js": "^2.0.8",
-    "matchMedia": "0.2.0",
     "moment": ">= 2.8.0",
     "plupload": "v2.1.8",
     "urijs": "~1.16.0",

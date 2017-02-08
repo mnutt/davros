@@ -1565,9 +1565,9 @@ ember-ajax@^2.4.1:
   dependencies:
     ember-cli-babel "^5.1.5"
 
-ember-basic-dropdown@^0.19.1, ember-basic-dropdown@^0.19.2:
-  version "0.19.2"
-  resolved "https://registry.yarnpkg.com/ember-basic-dropdown/-/ember-basic-dropdown-0.19.2.tgz#c1fbf90c3702f44b564b2d85d05ad2ee3c6a4e90"
+ember-basic-dropdown@0.20.0, ember-basic-dropdown@^0.20.0:
+  version "0.20.0"
+  resolved "https://registry.yarnpkg.com/ember-basic-dropdown/-/ember-basic-dropdown-0.20.0.tgz#6db6b452b7a50b70cbe51a0033e7761ae9d867fe"
   dependencies:
     ember-cli-babel "^5.1.10"
     ember-cli-htmlbars "^1.1.1"
@@ -1946,12 +1946,13 @@ ember-cli@^2.10.0:
     walk-sync "^0.3.0"
     yam "0.0.22"
 
-ember-composability-tools@0.0.6:
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/ember-composability-tools/-/ember-composability-tools-0.0.6.tgz#38f1b6fc4ea7edde4147f7124913ff6b078d2961"
+ember-composability-tools@0.0.7:
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/ember-composability-tools/-/ember-composability-tools-0.0.7.tgz#2ac23ab9f9a92638be1616219f40e215828c149b"
   dependencies:
     ember-cli-babel "^5.1.6"
     ember-cli-htmlbars "^1.0.3"
+    ember-getowner-polyfill "1.1.1"
     ember-wormhole "0.5.1"
 
 ember-concurrency@^0.7.15:
@@ -1974,7 +1975,7 @@ ember-export-application-global@^1.0.5:
   dependencies:
     ember-cli-babel "^5.1.10"
 
-ember-getowner-polyfill@^1.1.0, ember-getowner-polyfill@^1.1.1:
+ember-getowner-polyfill@1.1.1, ember-getowner-polyfill@^1.1.0, ember-getowner-polyfill@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/ember-getowner-polyfill/-/ember-getowner-polyfill-1.1.1.tgz#6bb6603827dd2f8f33be2434570a86cc9e5273ff"
   dependencies:
@@ -2019,21 +2020,25 @@ ember-network@^0.3.1:
     node-fetch "^1.3.3"
     whatwg-fetch "^0.11.0"
 
-"ember-paper@git://github.com/mnutt/ember-paper.git#99310c4":
-  version "1.0.0-alpha.13"
-  resolved "git://github.com/mnutt/ember-paper.git#99310c4"
+"ember-paper@git://github.com/mnutt/ember-paper.git#321206a":
+  version "1.0.0-alpha.15"
+  resolved "git://github.com/mnutt/ember-paper.git#321206a"
   dependencies:
     angular-material-source angular/material#v1.0.6
     broccoli-autoprefixer "^3.0.0"
     broccoli-filter "^1.2.3"
     broccoli-funnel "^1.0.1"
     broccoli-merge-trees "^1.1.0"
-    ember-basic-dropdown "^0.19.2"
+    ember-basic-dropdown "0.20.0"
     ember-cli-babel "^5.1.7"
-    ember-composability-tools "0.0.6"
+    ember-cli-htmlbars "^1.1.1"
+    ember-composability-tools "0.0.7"
     ember-css-transitions "0.1.9"
-    ember-power-select "1.0.3"
+    ember-power-select "1.2.0"
     ember-wormhole "0.5.1"
+    hammerjs "^2.0.8"
+    matchmedia-polyfill "^0.3.0"
+    propagating-hammerjs "^1.4.6"
     resolve "^1.1.7"
     virtual-each "0.3.1"
 
@@ -2044,16 +2049,16 @@ ember-plupload@1.13.18:
     ember-cli-babel "^5.1.5"
     rsvp "^3.0.17"
 
-ember-power-select@1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/ember-power-select/-/ember-power-select-1.0.3.tgz#2c907e964c1016f485095b4a32a72c9d30b26f35"
+ember-power-select@1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/ember-power-select/-/ember-power-select-1.2.0.tgz#eeba47f06824cf5817e590e902f2d8ab9ab09442"
   dependencies:
-    ember-basic-dropdown "^0.19.1"
+    ember-basic-dropdown "^0.20.0"
     ember-cli-babel "^5.1.10"
     ember-cli-htmlbars "^1.1.1"
     ember-concurrency "^0.7.15"
     ember-text-measurer "^0.3.3"
-    ember-truth-helpers "^1.2.0"
+    ember-truth-helpers "^1.3.0"
 
 ember-qunit@^2.0.0-beta.1:
   version "2.0.0-beta.1"
@@ -2114,11 +2119,11 @@ ember-transition-helper@0.0.6:
   dependencies:
     ember-cli-babel "^5.1.5"
 
-ember-truth-helpers@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/ember-truth-helpers/-/ember-truth-helpers-1.2.0.tgz#e63cffeaa8211882ae61a958816fded3790d065b"
+ember-truth-helpers@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/ember-truth-helpers/-/ember-truth-helpers-1.3.0.tgz#6ed9f83ce9a49f52bb416d55e227426339a64c60"
   dependencies:
-    ember-cli-babel "^5.1.5"
+    ember-cli-babel "^5.1.6"
 
 ember-try-config@^2.0.1:
   version "2.1.0"
@@ -2864,6 +2869,10 @@ growl@1.9.2:
 growly@^1.2.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/growly/-/growly-1.3.0.tgz#f10748cbe76af964b7c96c93c6bcc28af120c081"
+
+hammerjs@^2.0.6, hammerjs@^2.0.8:
+  version "2.0.8"
+  resolved "https://registry.yarnpkg.com/hammerjs/-/hammerjs-2.0.8.tgz#04ef77862cff2bb79d30f7692095930222bf60f1"
 
 handlebars@^4.0.4:
   version "4.0.6"
@@ -3836,6 +3845,10 @@ matcher-collection@^1.0.0, matcher-collection@^1.0.1:
   dependencies:
     minimatch "^3.0.2"
 
+matchmedia-polyfill@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/matchmedia-polyfill/-/matchmedia-polyfill-0.3.0.tgz#6f91e34012b3dfc9d5b76cec89deafc1b41b45fa"
+
 md5-hex@^1.0.2:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/md5-hex/-/md5-hex-1.3.0.tgz#d2c4afe983c4370662179b8cad145219135046c4"
@@ -4627,6 +4640,12 @@ promzard@^0.3.0:
   resolved "https://registry.yarnpkg.com/promzard/-/promzard-0.3.0.tgz#26a5d6ee8c7dee4cb12208305acfb93ba382a9ee"
   dependencies:
     read "1"
+
+propagating-hammerjs@^1.4.6:
+  version "1.4.6"
+  resolved "https://registry.yarnpkg.com/propagating-hammerjs/-/propagating-hammerjs-1.4.6.tgz#fed00e9b00767ffd42d14f5b531bc493eb672e37"
+  dependencies:
+    hammerjs "^2.0.6"
 
 proto-list@~1.2.1:
   version "1.2.4"
