@@ -26,6 +26,14 @@
         {{offer-iframe content="$API_PROTO//$API_HOST/" clipboardButton="right" unauthenticated=unauthenticated}}
       {{/if}}
     </div>
+    If you are using WebDav, use this path:
+    <div class="server-url">
+      {{#if useAuthInServerUrl}}
+        {{offer-iframe content="$API_PROTO//$GRAIN_TITLE_SLUG:$API_TOKEN@$API_HOST/remote.php/webdav/" clipboardButton="right" unauthenticated=unauthenticated}}
+      {{else}}
+        {{offer-iframe content="$API_PROTO//$API_HOST/remote.php/webdav/" clipboardButton="right" unauthenticated=unauthenticated}}
+      {{/if}}
+    </div>
 
       {{#paper-switch class="use-auth-in-url" noink=true value=useAuthInServerUrl onChange=(action (mut useAuthInServerUrl))}} Put auth in URL (command line use) {{/paper-switch}}
 
