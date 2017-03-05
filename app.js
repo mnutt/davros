@@ -1,3 +1,6 @@
+var startTime = new Date();
+require('cache-require-paths');
+
 var express = require('express');
 var fs      = require('fs');
 var api     = require('./server');
@@ -35,6 +38,7 @@ if(socket) {
   });
 } else {
   server.listen(port, function () {
-    console.log('Davros listening on port %s', port);
+    var time = new Date() - startTime;
+    console.log('Davros started in %sms, listening on port %s', time, port);
   });
 }

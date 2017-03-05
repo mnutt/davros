@@ -152,6 +152,7 @@ const myCommand :Spk.Manifest.Command = (
     (key = "PORT", value = "8000"),
     (key = "HOME", value = "/var"),
     (key = "SANDSTORM", value = "1"),
+    (key = "CACHE_REQUIRE_PATHS_FILE", value = "/var/davros/.require-cache.0"),
     (key = "STORAGE_PATH", value = "/var/davros/data"),
     (key = "TEMP_STORAGE_PATH", value = "/var/davros/tmp"),
     (key = "CONFIG_PATH", value = "/var/davros/config"),

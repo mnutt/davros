@@ -208,12 +208,10 @@ opt/app/node_modules/buffer-crc32/index.js
 opt/app/node_modules/buffer-crc32/package.json
 opt/app/node_modules/buffer-shims/index.js
 opt/app/node_modules/buffer-shims/package.json
-opt/app/node_modules/bufferutil/build/Release/bufferutil.node
-opt/app/node_modules/bufferutil/fallback.js
-opt/app/node_modules/bufferutil/index.js
-opt/app/node_modules/bufferutil/package.json
 opt/app/node_modules/bytes/index.js
 opt/app/node_modules/bytes/package.json
+opt/app/node_modules/cache-require-paths/index.js
+opt/app/node_modules/cache-require-paths/package.json
 opt/app/node_modules/child-process-promise/index.js
 opt/app/node_modules/child-process-promise/lib/ChildProcessPromise.js
 opt/app/node_modules/child-process-promise/lib/index.js
