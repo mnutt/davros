@@ -1,4 +1,3 @@
-var fsp  = require('fs-promise');
 var exec = require('child-process-promise').exec;
 var path = require('path');
 var url  = require('url');
@@ -10,6 +9,7 @@ var configPath = process.env.CONFIG_PATH || (__dirname + "/../config");
 var domainFilePath = [configPath, 'domain'].join('/');
 
 exports.unpublish = function(req, res, next) {
+  var fsp = require('fs-promise');
   fsp.unlink(domainFilePath).catch(()=>{}).then(() => {
     return fsp.unlink(destination);
   }).then(() => {
@@ -21,6 +21,7 @@ exports.unpublish = function(req, res, next) {
 };
 
 exports.getInfo = function(req, res, next) {
+  var fsp = require('fs-promise');
   let domain;
   fsp.readFile(domainFilePath, 'utf-8').then((domainData) => {
     domain = domainData;
@@ -50,6 +51,8 @@ exports.getInfo = function(req, res, next) {
 };
 
 exports.publish = function(req, res, next) {
+  var fsp = require('fs-promise');
+
   fsp.unlink(destination).catch(()=>{}).then(() => {
     return fsp.symlink(source, destination);
   }).then(() => {

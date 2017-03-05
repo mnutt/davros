@@ -11,10 +11,12 @@ var compression = require('compression');
 var root = __dirname;
 var indexFile = path.resolve(root + '/dist/index.html');
 
-if(!fs.existsSync(indexFile)) {
-  console.error("Missing dist/index.html; run `ember build` to generate it.");
-  process.exit(1);
-}
+fs.access(indexFile, fs.constants.F_OK, function(err) {
+  if(err) {
+    console.error("Missing dist/index.html; run `ember build` to generate it.");
+    process.exit(1);
+  }
+});
 
 var app = express();
 var server = http.createServer(app);
