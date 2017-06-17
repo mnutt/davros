@@ -1,4 +1,3 @@
-var archiver          = require('archiver');
 var fs                = require('fs');
 var path              = require('path');
 
@@ -28,7 +27,7 @@ module.exports = function(root) {
     name = name.replace(/["\\/]/g, '');
 
     function respondArchive() {
-      var archive = archiver.create('zip', {
+      var archive = require('archiver').create('zip', {
         statConcurrency: 1
       });
       archive.on('error', errorHandler(res));

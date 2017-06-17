@@ -1,7 +1,6 @@
 var os                = require('os');
 var url               = require('url');
 var FileCache         = require('../file-cache');
-var im                = require('imagemagick-stream');
 
 var tempDir = os.tmpdir();
 
@@ -23,6 +22,8 @@ module.exports = function(davServer) {
   }
 
   return function(req, res, next) {
+    const im = require('imagemagick-stream');
+
     let thumbnailer = im().quality(90);
 
     let queryParams = url.parse(req.url, true).query;

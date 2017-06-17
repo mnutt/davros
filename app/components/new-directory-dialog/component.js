@@ -1,11 +1,9 @@
 import Ember from 'ember';
 
-const { get, set, computed } = Ember;
+const { get, set } = Ember;
 
 export default Ember.Component.extend({
   directoryName: '',
-  isValid: false,
-  isInvalid: computed.not('isValid'),
 
   directoryValidation: [{
     message: 'Directory name is not valid.',
@@ -20,8 +18,8 @@ export default Ember.Component.extend({
       set(this, 'active', false);
     },
 
-    create(directoryName) {
-      if(get(this, 'isInvalid')) { return; }
+    create() {
+      let directoryName = get(this, 'directoryName');
 
       let defer = Ember.RSVP.defer();
       this.sendAction('onCreate', directoryName, defer);

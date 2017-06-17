@@ -14,23 +14,24 @@
 <div class="compact-actions">
   <div class="more">
     {{#paper-menu position="target-right target" as |menu|}}
+      {{#menu.trigger}}
+        {{#paper-button class="more-button" icon-button=true}}
+          {{paper-icon "more-vert" class="md-menu-origin"}}
+        {{/paper-button}}
+      {{/menu.trigger}}
 
-      {{#paper-button onClick=(action "toggleMenu" target=menu) class="more-button" icon-button=true}}
-        {{paper-icon "more-vert" class="md-menu-origin"}}
-      {{/paper-button}}
-
-    {{else}}
-      {{#if canEdit}}
-        {{#paper-menu-item class="danger" onClick=(action (mut deleteDialogActive true))}}
-          <p class="label">Delete File</p>
-          {{paper-icon "delete" class="md-menu-align-target"}}
-        {{/paper-menu-item}}
-      {{else}}
-        {{#paper-menu-item}}
-          <p class="label">Read-only mode</p>
-        {{/paper-menu-item}}
-      {{/if}}
-
+      {{#menu.content}}
+        {{#if canEdit}}
+          {{#paper-menu-item class="danger" onClick=(action (mut deleteDialogActive true))}}
+            <p class="label">Delete File</p>
+            {{paper-icon "delete" class="md-menu-align-target"}}
+          {{/paper-menu-item}}
+        {{else}}
+          {{#paper-menu-item}}
+            <p class="label">Read-only mode</p>
+          {{/paper-menu-item}}
+        {{/if}}
+      {{/menu.content}}
     {{/paper-menu}}
   </div>
 </div>

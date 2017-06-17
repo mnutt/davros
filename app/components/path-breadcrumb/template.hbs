@@ -1,5 +1,5 @@
 <div class="full">
-  {{#link-to 'file' ''}}home{{/link-to}}
+  {{#link-to 'files'}}home{{/link-to}}
 
   {{#each parts as |part|}}
     <span class="separator">/</span>
@@ -10,5 +10,15 @@
 </div>
 
 <div class="parent-only">
-  {{#link-to 'file' parentPath}}{{#if isHome}}home{{else}}...{{/if}}{{/link-to}} /
+  {{#if isHome}}
+    {{#link-to 'files'}}home{{/link-to}}
+  {{else}}
+    {{#if (eq parentPath '')}}
+      {{#link-to 'files'}}...{{/link-to}}
+    {{else}}
+      {{#link-to 'file' parentPath}}...{{/link-to}}
+    {{/if}}
+  {{/if}}
+
+  /
 </div>

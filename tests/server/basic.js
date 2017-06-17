@@ -1,5 +1,4 @@
-/*jslint node: true */
-/*global describe, it */
+/* eslint-env node, mocha */
 
 const assert  = require('chai').assert;
 const request = require('supertest');

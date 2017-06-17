@@ -19,9 +19,9 @@ const pkgdef :Spk.PackageDefinition = (
 
     appTitle = (defaultText = "Davros"),
 
-    appVersion = 217,  # Increment this for every release.
+    appVersion = 230,  # Increment this for every release.
 
-    appMarketingVersion = (defaultText = "0.21.7"),
+    appMarketingVersion = (defaultText = "0.23.0"),
     # Human-readable representation of appVersion. Should match the way you
     # identify versions of your app in documentation and marketing.
 
@@ -152,6 +152,7 @@ const myCommand :Spk.Manifest.Command = (
     (key = "PORT", value = "8000"),
     (key = "HOME", value = "/var"),
     (key = "SANDSTORM", value = "1"),
+    (key = "CACHE_REQUIRE_PATHS_FILE", value = "/var/davros/.require-cache.0"),
     (key = "STORAGE_PATH", value = "/var/davros/data"),
     (key = "TEMP_STORAGE_PATH", value = "/var/davros/tmp"),
     (key = "CONFIG_PATH", value = "/var/davros/config"),

@@ -14,8 +14,9 @@
 /connect.lock
 /coverage/*
 /libpeerconnection.log
-npm-debug.log
+npm-debug.log*
 testem.log
+/.cache-require-paths.json
 
 # webdav data
 /data/*

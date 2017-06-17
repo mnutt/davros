@@ -175,6 +175,7 @@ md-menu-item {
 #content md-content {
   background-color: #EEE;
   border-right: 10px solid #FFF;
+  height: 100%;
 
   p.content {
     padding: 2em 1em;
@@ -183,6 +184,7 @@ md-menu-item {
     flex: 1;
     flex-direction: column;
     background-color: #FFF;
+    min-height: calc(100vh - 110px);
   }
 }
 

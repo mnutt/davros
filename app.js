@@ -1,3 +1,6 @@
+var startTime = new Date();
+require('cache-require-paths');
+
 var express = require('express');
 var fs      = require('fs');
 var api     = require('./server');
@@ -8,10 +11,12 @@ var compression = require('compression');
 var root = __dirname;
 var indexFile = path.resolve(root + '/dist/index.html');
 
-if(!fs.existsSync(indexFile)) {
-  console.error("Missing dist/index.html; run `ember build` to generate it.");
-  process.exit(1);
-}
+fs.access(indexFile, fs.constants.F_OK, function(err) {
+  if(err) {
+    console.error("Missing dist/index.html; run `ember build` to generate it.");
+    process.exit(1);
+  }
+});
 
 var app = express();
 var server = http.createServer(app);
@@ -35,6 +40,7 @@ if(socket) {
   });
 } else {
   server.listen(port, function () {
-    console.log('Davros listening on port %s', port);
+    var time = new Date() - startTime;
+    console.log('Davros started in %sms, listening on port %s', time, port);
   });
 }

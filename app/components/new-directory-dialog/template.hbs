@@ -8,16 +8,16 @@
       </div>
     {{/paper-toolbar}}
 
-    {{#paper-dialog-content}}
-        <form {{action "create" directoryName on="submit"}}>
-          {{paper-input label="Name" lastIsValid=isValid autofocus=true value=directoryName customValidations=directoryValidation onChange=(action (mut directoryName))}}
-        </form>
-    {{/paper-dialog-content}}
+    {{#paper-form onSubmit=(action "create") as |form|}}
+      {{#paper-dialog-content}}
+        {{form.input label="Name" autofocus=true value=directoryName customValidations=directoryValidation onChange=(action (mut directoryName))}}
+      {{/paper-dialog-content}}
 
-    {{#paper-dialog-actions class="layout-row"}}
-      <span class="flex"></span>
-      {{#paper-button primary=true onClick=(action "close")}}Cancel{{/paper-button}}
-      {{#paper-button primary=true raised=true disabled=isInvalid onClick=(action "create" directoryName)}}Create{{/paper-button}}
-    {{/paper-dialog-actions}}
+      {{#paper-dialog-actions class="layout-row"}}
+        <span class="flex"></span>
+        {{#paper-button primary=true onClick=(action "close")}}Cancel{{/paper-button}}
+        {{#form.submit-button primary=true raised=true disabled=form.isInvalid}}Create{{/form.submit-button}}
+      {{/paper-dialog-actions}}
+    {{/paper-form}}
   {{/paper-dialog}}
 {{/if}}

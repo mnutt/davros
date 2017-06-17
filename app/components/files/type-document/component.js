@@ -41,7 +41,6 @@ export default Ember.Component.extend({
   actions: {
     toggleFullview() {
       this.toggleProperty('fullview');
-      console.log(this.get('fullview'));
     }
   }
 });
