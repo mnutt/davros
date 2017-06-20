@@ -12,7 +12,15 @@ export default {
       contentType: 'application/xml',
       body: propFindQuery
     }).then(function(response) {
-      return response.text();
+      if(response.status >= 200 && response.status < 400) {
+        return response.text();
+      } else {
+        if(response.status === 404) {
+          throw(new Error(`404 Not Found`));
+        } else {
+          throw(new Error(`${response.status} Error`));
+        }
+      }
     }).then(function(raw) {
       return Ember.$.parseXML(raw);
     });

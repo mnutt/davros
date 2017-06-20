@@ -120,8 +120,8 @@ md-toolbar.md-whiteframe-1dp {
 
     .compact-actions {
       display: none;
-    }
   }
+}
 }
 
 .md-button {
@@ -178,14 +178,14 @@ md-menu-item {
   height: 100%;
 
   p.content {
-    padding: 2em 1em;
+  padding: 2em 1em;
     margin: 0;
     max-width: 900px;
     flex: 1;
     flex-direction: column;
     background-color: #FFF;
     min-height: calc(100vh - 110px);
-  }
+}
 }
 
 md-sidenav {
@@ -239,7 +239,7 @@ md-sidenav {
   .title-bar {
     .compact-actions {
       display: block !important;
-    }
+}
   }
 
   .actions {

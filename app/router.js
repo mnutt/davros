@@ -13,7 +13,7 @@ Router.map(function() {
   this.route('clients');
   this.route('publishing');
   this.route('about');
-  this.route('not-found', {path: '*path'});
+  this.route('application-error', {path: '*path'});
 });
 
 Router.reopen({

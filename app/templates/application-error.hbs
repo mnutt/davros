@@ -1,0 +1,9 @@
+{{#title-bar}}
+  Not Found
+{{/title-bar}}
+
+{{#paper-content class="notfound" flex-layout="column" flex=true}}
+  <div class="huge">{{if model.message model.message "500 Error"}}</div>
+
+  <div class="description">We couldn't find this page. Please check the URL to make sure it is correct.</div>
+{{/paper-content}}

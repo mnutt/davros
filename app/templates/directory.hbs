@@ -1,18 +1,25 @@
-{{#davros-uploader onfileadd="uploadFile" for="upload-placeholder" for-dropzone="content" as |queue dropzone|}}
+{{#davros-uploader fullscreen=true name="content" as |dropzone queue|}}
+  {{#if dropzone.active}}
+    <div id="dropzone-overlay">
+      <div class="message">
+        {{paper-icon "add-circle"}}
+        Drop files or directories to add them to
+        {{path-breadcrumb path=model.path}}
+      </div>
+    </div>
+  {{/if}}
+
   {{#if queue.length}}
     <div class="upload-progress">
       {{paper-progress-linear warn=true value=queue.progress}}
     </div>
   {{/if}}
-  <div id="upload-placeholder"></div>
+
+  {{#file-upload name="content"
+     multiple=true
+     onfileadd=(route-action "upload") id="upload-placeholder"}}
+  {{/file-upload}}
 {{/davros-uploader}}
-<div id="dropzone-display">
-  <div class="message">
-    {{paper-icon "add-circle"}}
-    Drop files or directories to add them to
-    {{path-breadcrumb path=model.path}}
-  </div>
-</div>
 
 {{#title-bar}}
   <div class="title">

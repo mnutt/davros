@@ -33,54 +33,49 @@
   }
 }
 
-#dropzone-display {
-  display: none;
-}
+#dropzone-overlay {
+  * { pointer-events: none; }
 
-.dropzone-active {
-  * { pointer-events: none !important; }
+  display: flex;
+  position: fixed;
+  z-index: 200;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.7);
+  align-items: center;
+  justify-content: center;
 
-  #dropzone-display {
-    display: flex;
-    position: fixed;
-    z-index: 200;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0,0,0,0.7);
-    align-items: center;
-    justify-content: center;
-
-    .message {
-      font-size: 2em;
-      font-weight: bold;
-      color: #FFF;
-      padding: 30px;
-      background-color: rgba(0,0,0,0.5);
-      border-radius: 5px;
+  .message {
+    font-size: 2em;
+    font-weight: bold;
+    color: #FFF;
+    padding: 30px;
+    background-color: rgba(0,0,0,0.5);
+    border-radius: 5px;
       position: relative;
 
-      md-icon {
-        color: color($primary);
+    md-icon {
+      color: color($primary);
         position: absolute;
         top: -18px;
         left: -18px;
         font-size: 36px;
-      }
+    }
 
-      .breadcrumb {
-        display: block;
-        font-size: 1.2em;
+    .breadcrumb {
+      display: block;
+      font-size: 1.2em;
 
-        a {
-          color: #FFF;
+      a {
+        color: #FFF;
           text-decoration: none;
-        }
       }
     }
   }
 }
+
 
 @media (max-width: 550px) {
   .upload {

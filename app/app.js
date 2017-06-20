@@ -6,8 +6,6 @@ import 'davros/lib/moment-locale-updates';
 
 let App;
 
-Ember.MODEL_FACTORY_INJECTIONS = true;
-
 App = Ember.Application.extend({
   modulePrefix: config.modulePrefix,
   podModulePrefix: config.podModulePrefix,
