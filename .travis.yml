@@ -10,6 +10,7 @@ cache:
   yarn: true
 
 env:
+  global:
   - PORT=6849
   - BROWSER=Chrome
 
