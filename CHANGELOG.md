@@ -1,7 +1,8 @@
-# HEAD
+# 0.24.0
 * Support for previewing documents: .doc, .docx, .xls, .xlsx, .ppt, .pptx
 * Get a file's public URL when publishing is enabled
 * Added unauthenticated OPTIONS DAV header to fix auth issues with transmit among others
+* Upgraded to support latest sandstorm build system
 
 # 0.21.7
 * Security: disable javascript in html previews. Otherwise, it is possible to make relative xhr POSTs from the preview iframe to the webdav API.

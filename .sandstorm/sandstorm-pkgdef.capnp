@@ -19,9 +19,9 @@ const pkgdef :Spk.PackageDefinition = (
 
     appTitle = (defaultText = "Davros"),
 
-    appVersion = 230,  # Increment this for every release.
+    appVersion = 240,  # Increment this for every release.
 
-    appMarketingVersion = (defaultText = "0.23.0"),
+    appMarketingVersion = (defaultText = "0.24.0"),
     # Human-readable representation of appVersion. Should match the way you
     # identify versions of your app in documentation and marketing.
 
@@ -113,13 +113,14 @@ const pkgdef :Spk.PackageDefinition = (
   # You should review it later, before shipping your app.
 
   alwaysInclude = [
+    "opt/app/.sandstorm",
     "opt/app/dist", # css/js files change due to fingerprinting
     "opt/app/server",
     "opt/app/sample-files",
     # libreoffice stats() some files without reading them
     "usr/lib/libreoffice/presets/config/autotbl.fmt",
     "usr/lib/libreoffice/program",
-    "usr/lib/python3.4", # pull in the whole Python 3 runtime
+    "usr/lib/python3.5", # pull in the whole Python 3 runtime
     "usr/lib/python3", # pull in any Debian pure-Python packages
     ],
   # Fill this list with more names of files or directories that should be
