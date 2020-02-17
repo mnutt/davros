@@ -6,7 +6,7 @@
 if [ ! -e /usr/local/bin/capnp ] ; then
     sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -q clang autoconf pkg-config libtool
     cd /tmp
-    if [ ! -e capnproto ]; then git clone https://github.com/sandstorm-io/capnproto; fi
+    if [ ! -e capnproto ]; then git clone https://github.com/capnproto/capnproto; fi
     cd capnproto
     git checkout master
     cd c++
