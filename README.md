@@ -36,6 +36,12 @@ A few parts of Davros are dependent on running within Sandstorm, such as the aut
 
 This uses [ember-cli-vagrant-spk](https://github.com/mnutt/ember-cli-vagrant-spk) to automatically inject Davros into your local Sandstorm instance.
 
+### Linting
+
+* `npm run lint:hbs`
+* `npm run lint:js`
+* `npm run lint:js -- --fix`
+
 ### Building
 
 * `ember build` (development)
