@@ -5,10 +5,10 @@ export default Controller.extend({
   permissions: service(),
 
   canEdit: function() {
-    return this.get('permissions').can('edit');
+    return this.permissions.can('edit');
   }.property('permissions.list'),
 
   canSync: function() {
-    return this.get('permissions').can('edit');
+    return this.permissions.can('edit');
   }.property('permissions.list')
 });

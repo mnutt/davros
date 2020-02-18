@@ -17,13 +17,13 @@ export default Route.extend({
       fetch(publishUrl, {method: 'POST'}).then((response) => {
         return response.json();
       }).then((result) => {
-        get(this, 'publishing').update(result);
+        this.publishing.update(result);
       });
     },
 
     unpublish: function() {
       fetch('/api/unpublish', {method: 'POST'}).then(() => {
-        get(this, 'publishing').update({});
+        this.publishing.update({});
       });
     }
   }

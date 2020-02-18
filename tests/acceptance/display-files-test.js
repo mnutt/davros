@@ -1,6 +1,6 @@
-import { test } from 'qunit';
+import { module, test } from 'qunit';
+import { setupApplicationTest } from 'ember-qunit';
 import fileStub from 'davros/tests/helpers/file-stub';
-import moduleForAcceptance from 'davros/tests/helpers/module-for-acceptance';
 
 var stub;
 
@@ -8,8 +8,10 @@ function stripTitle(text) {
   return text.replace(/\s+/g, ' ').trim();
 }
 
-moduleForAcceptance('Acceptance | display files', {
-  beforeEach: function() {
+module('Acceptance | display files', function(hooks) {
+  setupApplicationTest(hooks);
+
+  hooks.beforeEach(function() {
     stub = fileStub();
 
     stub.get('/api/permissions', function() {
@@ -19,19 +21,17 @@ moduleForAcceptance('Acceptance | display files', {
     stub.get('/api/publish/info', function() {
       return [200, {}, '{}'];
     });
-  },
+  });
 
-  afterEach: function() {
+  hooks.afterEach(function() {
     stub.shutdown();
-  }
-});
+  });
 
-test('viewing an image', function(assert) {
-  visit('/files/');
+  test('viewing an image', async function(assert) {
+    await visit('/files/');
 
-  click('div.filename div:contains(space)');
+    await click('div.filename div:contains(space)');
 
-  andThen(function() {
     find('.parent-only').remove(); // not in mobile view
 
     // title looks good

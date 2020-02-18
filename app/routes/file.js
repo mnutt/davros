@@ -15,7 +15,7 @@ export default Route.extend({
   init: function() {
     this._super.apply(this, arguments);
 
-    const socket = get(this, 'websockets').socketFor(socketUrl);
+    const socket = this.websockets.socketFor(socketUrl);
 
     socket.on('message', this.messageHandler, this);
   },
@@ -112,7 +112,7 @@ export default Route.extend({
     },
 
     upload: function(file) {
-      this.get('uploadFile').perform(file);
+      this.uploadFile.perform(file);
     }
   }
 

@@ -10,11 +10,11 @@ export default EmberObject.extend(Webdav, {
   files: null, // if a directory, a list of children
 
   name: function() {
-    return this.get('path').split(/[\\/]/).pop();
+    return this.path.split(/[\\/]/).pop();
   }.property('path'),
 
   sortedFiles: function() {
-    return this.get('files').sortBy('isFile', 'name');
+    return this.files.sortBy('isFile', 'name');
   }.property('files'),
 
   lotsOfFiles: function() {
@@ -22,25 +22,25 @@ export default EmberObject.extend(Webdav, {
   }.property('files.length'),
 
   parent: function() {
-    return this.get('path').replace(/\/?[^\/]*\/?$/, '');
+    return this.path.replace(/\/?[^\/]*\/?$/, '');
   }.property('path'),
 
   linkedPath: function() {
-    if(this.get('isDirectory')) {
-      return this.get('path') + "/";
+    if(this.isDirectory) {
+      return this.path + "/";
     } else {
-      return this.get('path');
+      return this.path;
     }
   }.property('path', 'isDirectory'),
 
   isDirectory: false,
 
   isFile: function() {
-    return !this.get('isDirectory');
+    return !this.isDirectory;
   }.property('isDirectory'),
 
   extension: function() {
-    var pieces = this.get('name').split('.');
+    var pieces = this.name.split('.');
     if(pieces.length > 1) {
       return pieces[pieces.length - 1];
     } else {
@@ -49,18 +49,18 @@ export default EmberObject.extend(Webdav, {
   }.property('name'),
 
   type: function() {
-    return filetypes[this.get('extension').toLowerCase()] || filetypes.defaultType;
+    return filetypes[this.extension.toLowerCase()] || filetypes.defaultType;
   }.property('extension'),
 
   typeIcon: function() {
-    return filetypeIcons[this.get('type')];
+    return filetypeIcons[this.type];
   }.property('type'),
 
   typeComponent: function() {
-    return `files/type-${this.get('type')}`;
+    return `files/type-${this.type}`;
   }.property('type'),
 
   rawPath: function() {
-    return [this.get('davBase'), this.get('path')].join('/');
+    return [this.davBase, this.path].join('/');
   }.property('path', 'davBase')
 });

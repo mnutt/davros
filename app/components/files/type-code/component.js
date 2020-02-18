@@ -3,7 +3,7 @@ import fetch from 'ember-network/fetch';
 
 export default Component.extend({
   didInsertElement(){
-    if(!this.get('canSandbox')) { return; }
+    if(!this.canSandbox) { return; }
     fetch(this.get('model.rawPath')).then((response) => {
       return response.text();
     }).then((result) => {

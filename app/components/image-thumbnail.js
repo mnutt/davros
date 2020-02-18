@@ -9,7 +9,7 @@ export default Component.extend({
   attributeBindings: ['src', 'width', 'height', 'alt'],
 
   cachebuster: computed('timestamp', function() {
-    let timestamp = this.get('timestamp');
+    let timestamp = this.timestamp;
     if(timestamp.getTime) {
       return timestamp.getTime();
     } else {
@@ -19,11 +19,11 @@ export default Component.extend({
 
   src: computed('original', function() {
     return base + $.param({
-      url:    this.get('original'),
-      width:  this.get('width'),
-      height: this.get('height'),
-      op:     this.get('op') || 'fit',
-      ts:     this.get('cachebuster')
+      url:    this.original,
+      width:  this.width,
+      height: this.height,
+      op:     this.op || 'fit',
+      ts:     this.cachebuster
     });
   })
 });

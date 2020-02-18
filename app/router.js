@@ -19,7 +19,7 @@ Router.map(function() {
 Router.reopen({
   updateSandstorm: function() {
     window.parent.postMessage({
-      setPath: this.get('url')
+      setPath: this.url
     }, '*');
   }.on('didTransition')
 });

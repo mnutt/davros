@@ -23,6 +23,6 @@ export default Controller.extend(GalleryPlugin, {
   }),
 
   canEdit: function() {
-    return this.get('permissions').can('edit');
+    return this.permissions.can('edit');
   }.property('permissions.list')
 });

@@ -6,7 +6,7 @@ export default Mixin.create({
   davBase: Webdav.base,
 
   load: function() {
-    return Webdav.propfind(this.get('rawPath')).then((xml) => {
+    return Webdav.propfind(this.rawPath).then((xml) => {
       let responses = jQuery.makeArray(xml.querySelectorAll('d\\:response, response'));
       let parsedResponses = responses.map(this.parseResponse.bind(this));
       parsedResponses.sort((a, b) => {
@@ -24,7 +24,7 @@ export default Mixin.create({
   },
 
   delete: function() {
-    return Webdav.delete(this.get('rawPath'));
+    return Webdav.delete(this.rawPath);
   },
 
   loadFromResponse: function(response) {

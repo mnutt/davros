@@ -9,7 +9,7 @@ export default fileDropzone.extend({
   didInsertElement() {
     this._super();
 
-    if (get(this, 'fullscreen')) {
+    if (this.fullscreen) {
       dragListener.addEventListeners('body', {
         dragenter: bind(this, 'didEnterDropzone'),
         dragleave: bind(this, 'didLeaveDropzone'),
@@ -22,7 +22,7 @@ export default fileDropzone.extend({
   willDestroyElement() {
     this._super();
 
-    if (get(this, 'fullscreen')) {
+    if (this.fullscreen) {
       dragListener.removeEventListeners('body');
     }
   }

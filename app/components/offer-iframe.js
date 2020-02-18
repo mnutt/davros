@@ -7,20 +7,20 @@ export default Component.extend({
   src: '',
 
   replacedTemplate: function() {
-    var template = this.get('content');
+    var template = this.content;
     return template.replace('$API_PROTO', document.location.protocol);
   }.property('content'),
 
   fillIframe: function() {
     let options = {};
-    options.rpcId = this.get('elementId');
-    options.template = this.get('replacedTemplate');
+    options.rpcId = this.elementId;
+    options.template = this.replacedTemplate;
 
-    if(this.get('clipboardButton')) {
-      options.clipboardButton = this.get('clipboardButton');
+    if(this.clipboardButton) {
+      options.clipboardButton = this.clipboardButton;
     }
-    if(this.get('unauthenticated')) {
-      options.unauthenticated = this.get('unauthenticated');
+    if(this.unauthenticated) {
+      options.unauthenticated = this.unauthenticated;
     }
 
     window.parent.postMessage({ renderTemplate: options }, "*");
@@ -32,7 +32,7 @@ export default Component.extend({
 
   messageListener: function(e) {
     var event = e.originalEvent;
-    if (event.data && event.data.rpcId === this.get('elementId')) {
+    if (event.data && event.data.rpcId === this.elementId) {
       if (event.data.error) {
         console.error("Offer template error: " + event.data.error);
       } else {

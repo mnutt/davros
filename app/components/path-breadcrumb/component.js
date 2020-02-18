@@ -5,7 +5,7 @@ export default Component.extend({
   classNames: ['breadcrumb'],
 
   parts: function() {
-    var pieces = (this.get('path') || '').split('/');
+    var pieces = (this.path || '').split('/');
     var p = [];
 
     if(pieces.join('') === '') {
@@ -30,7 +30,7 @@ export default Component.extend({
   }.property('path'),
 
   isHome: function() {
-    return this.get('path') === '/';
+    return this.path === '/';
   }.property('path'),
 
   parentPath: function() {

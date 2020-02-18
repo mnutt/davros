@@ -10,7 +10,7 @@ export default Component.extend({
   previewState: 'loading',
 
   didInsertElement(){
-    if(!this.get('canSandbox')) { return; }
+    if(!this.canSandbox) { return; }
     let params = {
       url: this.get('model.rawPath'),
       ts: this.get('model.mtime').getTime()

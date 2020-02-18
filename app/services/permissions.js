@@ -17,7 +17,7 @@ export default Service.extend({
   },
 
   can: function(permission) {
-    if(this.get('error')) { return true; } // fail safe in case permissions not available
-    return this.get('list').indexOf(permission) >= 0;
+    if(this.error) { return true; } // fail safe in case permissions not available
+    return this.list.indexOf(permission) >= 0;
   }
 });
