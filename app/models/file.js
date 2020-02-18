@@ -1,14 +1,4 @@
 import { computed } from '@ember/object';
-import { computed } from '@ember/object';
-import { computed } from '@ember/object';
-import { computed } from '@ember/object';
-import { computed } from '@ember/object';
-import { computed } from '@ember/object';
-import { computed } from '@ember/object';
-import { computed } from '@ember/object';
-import { computed } from '@ember/object';
-import { computed } from '@ember/object';
-import { computed } from '@ember/object';
 import EmberObject from '@ember/object';
 import filetypes from 'davros/lib/filetypes';
 import filetypeIcons from 'davros/lib/filetype-icons';

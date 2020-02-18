@@ -1,8 +1,7 @@
 import { computed } from '@ember/object';
-import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import Controller from '@ember/controller';
-import { computed, get } from '@ember/object';
+import { get } from '@ember/object';
 import GalleryPlugin from '../mixins/directory/gallery';
 
 export default Controller.extend(GalleryPlugin, {

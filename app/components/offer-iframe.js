@@ -1,4 +1,4 @@
-import { on } from '@ember/object/evented';
+import { computed } from '@ember/object';
 import { on } from '@ember/object/evented';
 import Component from '@ember/component';
 
@@ -8,10 +8,10 @@ export default Component.extend({
   attributeBindings: ['src'],
   src: '',
 
-  replacedTemplate: function() {
+  replacedTemplate: computed('content', function() {
     var template = this.content;
     return template.replace('$API_PROTO', document.location.protocol);
-  }.property('content'),
+  }),
 
   fillIframe: on('didInsertElement', function() {
     let options = {};
