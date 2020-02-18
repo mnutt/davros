@@ -1,9 +1,8 @@
 ---
 language: node_js
 node_js:
-  - "8"
+  - "10"
 
-sudo: false
 dist: trusty
 
 addons:
@@ -39,6 +38,10 @@ install:
 before_script:
   - npm run build
   - node app.js &> /dev/null &
+
+branches:
+  only:
+    - master
 
 script:
   - yarn lint:hbs
