@@ -1,15 +1,15 @@
-import Ember from 'ember';
+import { inject as service } from '@ember/service';
+import Controller from '@ember/controller';
+import { computed, get } from '@ember/object';
 import GalleryPlugin from '../mixins/directory/gallery';
 
-const { get, computed, inject } = Ember;
-
-export default Ember.Controller.extend(GalleryPlugin, {
+export default Controller.extend(GalleryPlugin, {
   showExtraFields: true,
   newDialogActive: false,
   deleteDialogActive: false,
 
-  permissions: inject.service(),
-  publishing: inject.service(),
+  permissions: service(),
+  publishing: service(),
 
   isRoot: function() {
     return this.get('model.path') === '';

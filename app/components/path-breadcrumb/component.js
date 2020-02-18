@@ -1,6 +1,7 @@
-import Ember from 'ember';
+import EmberObject from '@ember/object';
+import Component from '@ember/component';
 
-export default Ember.Component.extend({
+export default Component.extend({
   classNames: ['breadcrumb'],
 
   parts: function() {
@@ -17,7 +18,7 @@ export default Ember.Component.extend({
     for(var i = 0; i < pieces.length - 1; i++) {
       var path = pieces.slice(0, i + 1).join('/');
       if(i !== pieces.length - 1) { path += "/"; }
-      var part = Ember.Object.create({
+      var part = EmberObject.create({
         name: pieces[i],
         path: path
       });

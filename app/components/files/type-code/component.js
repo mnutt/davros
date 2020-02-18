@@ -1,7 +1,7 @@
-import Ember from 'ember';
+import Component from '@ember/component';
 import fetch from 'ember-network/fetch';
 
-export default Ember.Component.extend({
+export default Component.extend({
   didInsertElement(){
     if(!this.get('canSandbox')) { return; }
     fetch(this.get('model.rawPath')).then((response) => {

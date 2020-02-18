@@ -1,12 +1,14 @@
-import Ember from 'ember';
+import $ from 'jquery';
+import { computed } from '@ember/object';
+import Component from '@ember/component';
 
 const base = '/api/thumbnail?';
 
-export default Ember.Component.extend({
+export default Component.extend({
   tagName: 'img',
   attributeBindings: ['src', 'width', 'height', 'alt'],
 
-  cachebuster: Ember.computed('timestamp', function() {
+  cachebuster: computed('timestamp', function() {
     let timestamp = this.get('timestamp');
     if(timestamp.getTime) {
       return timestamp.getTime();
@@ -15,8 +17,8 @@ export default Ember.Component.extend({
     }
   }),
 
-  src: Ember.computed('original', function() {
-    return base + Ember.$.param({
+  src: computed('original', function() {
+    return base + $.param({
       url:    this.get('original'),
       width:  this.get('width'),
       height: this.get('height'),

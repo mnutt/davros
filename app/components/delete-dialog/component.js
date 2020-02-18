@@ -1,6 +1,7 @@
-import Ember from 'ember';
+import { defer } from 'rsvp';
+import Component from '@ember/component';
 
-export default Ember.Component.extend({
+export default Component.extend({
   what: 'this directory',
 
   actions: {
@@ -9,10 +10,10 @@ export default Ember.Component.extend({
     },
 
     delete() {
-      let defer = Ember.RSVP.defer();
-      this.sendAction('onDelete', defer);
+      let _defer = defer();
+      this.sendAction('onDelete', _defer);
 
-      defer.promise.then(() => {
+      _defer.promise.then(() => {
         this.send('close');
       });
     }

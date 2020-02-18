@@ -1,9 +1,9 @@
-import Ember from 'ember';
+import { alias } from '@ember/object/computed';
+import Service from '@ember/service';
+import { computed, set, get } from '@ember/object';
 import fetch from 'ember-network/fetch';
 
-const { get, set, computed } = Ember;
-
-export default Ember.Service.extend({
+export default Service.extend({
   data: null,
 
   init: function() {
@@ -18,10 +18,10 @@ export default Ember.Service.extend({
     set(this, 'data', data);
   },
 
-  domain: computed.alias('data.domain'),
-  autoUrl: computed.alias('data.autoUrl'),
-  publicId: computed.alias('data.publicId'),
-  host: computed.alias('data.host'),
+  domain: alias('data.domain'),
+  autoUrl: alias('data.autoUrl'),
+  publicId: alias('data.publicId'),
+  host: alias('data.host'),
 
   urlBase: computed('domain', 'autoUrl', function() {
     let domain = get(this, 'domain');

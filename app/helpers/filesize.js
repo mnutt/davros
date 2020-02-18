@@ -1,6 +1,7 @@
-import Ember from 'ember';
+import { htmlSafe } from '@ember/template';
+import { helper as buildHelper } from '@ember/component/helper';
 
-export default Ember.Helper.helper(function(value) {
+export default buildHelper(function(value) {
   if (typeof value === 'undefined') {
     return null;
   }
@@ -10,7 +11,7 @@ export default Ember.Helper.helper(function(value) {
   for (i = 0; i < units.length; i++) {
     if (value < 1024) {
       var unitValue = '<span>' + units[i] + '</span>';
-      return new Ember.String.htmlSafe(Math.floor(value) + unitValue);
+      return new htmlSafe(Math.floor(value) + unitValue);
     }
     value = value / 1024;
   }

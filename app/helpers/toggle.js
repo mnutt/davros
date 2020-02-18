@@ -1,8 +1,5 @@
-import Ember from 'ember';
-
-/* From ember-toggle-helper */
-
-const { Helper: { helper }, get, set } = Ember;
+import { helper } from '@ember/component/helper';
+import { set, get } from '@ember/object';
 
 export function toggle([obj, prop]) {
   return function() {

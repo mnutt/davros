@@ -1,8 +1,8 @@
-import Ember from 'ember';
+import Mixin from '@ember/object/mixin';
 import Webdav from 'davros/lib/webdav';
 import jQuery from 'jquery';
 
-export default Ember.Mixin.create({
+export default Mixin.create({
   davBase: Webdav.base,
 
   load: function() {

@@ -1,7 +1,7 @@
-import Ember from 'ember';
+import Service from '@ember/service';
 import fetch from 'ember-network/fetch';
 
-export default Ember.Service.extend({
+export default Service.extend({
   list: [],
   error: false,
 

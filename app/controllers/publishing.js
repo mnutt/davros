@@ -1,9 +1,9 @@
-import Ember from 'ember';
+import { inject as service } from '@ember/service';
+import Controller from '@ember/controller';
+import { computed, get } from '@ember/object';
 
-const { get, computed, inject } = Ember;
-
-export default Ember.Controller.extend({
-  publishing: inject.service(),
+export default Controller.extend({
+  publishing: service(),
   domain: '',
 
   apexValidation: [{

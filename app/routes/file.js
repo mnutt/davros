@@ -1,16 +1,16 @@
-import Ember from 'ember';
+import { inject as service } from '@ember/service';
+import Route from '@ember/routing/route';
+import { get } from '@ember/object';
 import fetch from 'ember-network/fetch';
 import $ from 'jquery';
 import File from 'davros/models/file';
 import ensureCollectionExists from 'davros/lib/ensure-collection-exists';
 import { task } from 'ember-concurrency';
 
-const { get, inject } = Ember;
-
 const socketUrl = ((document.location.protocol === 'https:') ? 'wss://' : 'ws://') + document.location.host;
 
-export default Ember.Route.extend({
-  websockets: inject.service(),
+export default Route.extend({
+  websockets: service(),
 
   init: function() {
     this._super.apply(this, arguments);

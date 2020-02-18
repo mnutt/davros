@@ -1,10 +1,10 @@
-import Ember from 'ember';
+import { inject as service } from '@ember/service';
+import Route from '@ember/routing/route';
+import { get } from '@ember/object';
 import fetch from 'ember-network/fetch';
 
-const { get, inject } = Ember;
-
-export default Ember.Route.extend({
-  publishing: inject.service(),
+export default Route.extend({
+  publishing: service(),
 
   actions: {
     publish: function() {

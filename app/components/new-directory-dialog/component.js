@@ -1,8 +1,8 @@
-import Ember from 'ember';
+import { defer } from 'rsvp';
+import Component from '@ember/component';
+import { set, get } from '@ember/object';
 
-const { get, set } = Ember;
-
-export default Ember.Component.extend({
+export default Component.extend({
   directoryName: '',
 
   directoryValidation: [{
@@ -21,10 +21,10 @@ export default Ember.Component.extend({
     create() {
       let directoryName = get(this, 'directoryName');
 
-      let defer = Ember.RSVP.defer();
-      this.sendAction('onCreate', directoryName, defer);
+      let _defer = defer();
+      this.sendAction('onCreate', directoryName, _defer);
 
-      defer.promise.then(() => {
+      _defer.promise.then(() => {
         this.send('close');
       });
     }

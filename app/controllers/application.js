@@ -1,7 +1,8 @@
-import Ember from 'ember';
+import { inject as service } from '@ember/service';
+import Controller from '@ember/controller';
 
-export default Ember.Controller.extend({
-  permissions: Ember.inject.service(),
+export default Controller.extend({
+  permissions: service(),
 
   canEdit: function() {
     return this.get('permissions').can('edit');
