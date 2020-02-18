@@ -1,16 +1,22 @@
 ---
 language: node_js
 node_js:
-  - "6"
+  - "8"
 
 sudo: false
 dist: trusty
 
+addons:
+  chrome: stable
+
 cache:
   yarn: true
+  directories:
+    - $HOME/.npm
 
 env:
   global:
+  - JOBS=1
   - PORT=6849
   - BROWSER=Chrome
 
@@ -35,6 +41,8 @@ before_script:
   - node app.js &> /dev/null &
 
 script:
+  - yarn lint:hbs
+  - yarn lint:js
   - yarn test
   - npm run test-server
   - cd tmp/litmus-0.13 && make URL=http://127.0.0.1:6849/remote.php/webdav check
