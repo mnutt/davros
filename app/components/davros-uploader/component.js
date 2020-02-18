@@ -1,5 +1,4 @@
 import { bind } from '@ember/runloop';
-import { get } from '@ember/object';
 import fileDropzone from 'ember-file-upload/components/file-dropzone/component';
 import DragListener from 'ember-file-upload/system/drag-listener';
 

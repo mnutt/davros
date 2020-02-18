@@ -5,27 +5,27 @@
     {{model.name}}
   </div>
 
-  {{partial 'file-menu'}}
+  {{partial "file-menu"}}
 {{/title-bar}}
 
 <div class="file file-{{model.type}}">
   <div class="meta">
     <div class="filename">
 
-      <a href="{{model.rawPath}}">
+      <a href={{model.rawPath}}>
         {{model.name}}
       </a>
     </div>
 
     <div class="fsinfo">
-      <span title="{{model.mtime}}" class="updated">Updated {{moment-from-now model.mtime locale="en" interval=5000}}</span>
+      <span title={{model.mtime}} class="updated">Updated {{moment-from-now model.mtime locale="en" interval=5000}}</span>
       &middot;
       <span title="{{commify model.size}} bytes" class="size">{{filesize model.size}}</span>
       &middot;
-      <a href="{{model.rawPath}}" target="_blank">Download Original</a>
+      <a href={{model.rawPath}} target="_blank" rel="noopener">Download Original</a>
       {{#if publicUrl}}
         &middot;
-        <a href="{{publicUrl}}" target="_blank">Public URL</a>
+        <a href={{publicUrl}} target="_blank" rel="noopener">Public URL</a>
       {{/if}}
     </div>
   </div>

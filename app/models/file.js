@@ -22,7 +22,7 @@ export default EmberObject.extend(Webdav, {
   }.property('files.length'),
 
   parent: function() {
-    return this.path.replace(/\/?[^\/]*\/?$/, '');
+    return this.path.replace(/\/?[^/]*\/?$/, '');
   }.property('path'),
 
   linkedPath: function() {

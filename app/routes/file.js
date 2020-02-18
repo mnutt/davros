@@ -1,6 +1,5 @@
 import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
-import { get } from '@ember/object';
 import fetch from 'ember-network/fetch';
 import $ from 'jquery';
 import File from 'davros/models/file';
@@ -54,7 +53,7 @@ export default Route.extend({
       // if user is in a directory, upload the files there
       location = location.replace(/^\/files\//, '');
       // dirname of current path, so if path is /foo/README, use /foo/
-      location = location.replace(/\/[^\/]*$/, '');
+      location = location.replace(/\/[^/]*$/, '');
     } else {
       // otherwise, upload files in the root directory
       // (this shouldn't happen anymore)
@@ -62,8 +61,6 @@ export default Route.extend({
     }
 
     if(path[0] !== '/') { path = '/' + path; }
-
-    console.log("uploading " + path + " into location " + location);
 
     var fullPath = [location, path].join('');
 

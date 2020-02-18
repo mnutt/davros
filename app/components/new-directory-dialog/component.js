@@ -8,7 +8,7 @@ export default Component.extend({
   directoryValidation: [{
     message: 'Directory name is not valid.',
     validate: (name) => {
-      return name.match(/^[^\\/?%*:|"<>\.]+$/);
+      return name.match(/^[^\\/?%*:|"<>.]+$/);
     }
   }],
 

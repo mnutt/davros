@@ -29,9 +29,9 @@
   {{#paper-button class="icon-button" onClick="downloadDirectory"}}
     {{paper-icon "file-download" aria-label="Download directory as zip"}}
 
-      {{#tooltip-on-component}}
-        Download (zip)
-      {{/tooltip-on-component}}
+    {{#tooltip-on-component}}
+      Download (zip)
+    {{/tooltip-on-component}}
   {{/paper-button}}
 
   {{#if canEdit}}
@@ -49,7 +49,7 @@
   {{/if}}
 </div>
 
-<!-- only displayed on mobile -->
+{{!-- only displayed on mobile --}}
 <div class="compact-actions">
   <div class="more">
     {{#paper-menu position="target-right target" width=4 as |menu|}}

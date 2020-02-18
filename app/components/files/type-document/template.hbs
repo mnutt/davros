@@ -4,7 +4,7 @@
 
 {{#if canSandbox}}
   {{#if (eq previewState "loaded")}}
-    <iframe class="{{size}}" srcdoc="{{srcDoc}}" sandbox></iframe>
+    <iframe class={{size}} srcdoc={{srcDoc}} sandbox></iframe>
   {{/if}}
 
   {{#if (eq previewState "loading")}}

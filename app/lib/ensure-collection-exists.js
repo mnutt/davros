@@ -1,4 +1,4 @@
-import { Promise, resolve } from 'rsvp';
+import { resolve } from 'rsvp';
 import Webdav from 'davros/lib/webdav';
 
 var pathsCompleted = {};

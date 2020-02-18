@@ -20,7 +20,7 @@
       <div class="publish-info">
         <div class="auto-url">
           Preview available from:
-          <a target="_blank" href={{publishing.autoUrl}}>{{publishing.autoUrl}}</a>
+          <a target="_blank" rel="noopener" href={{publishing.autoUrl}}>{{publishing.autoUrl}}</a>
         </div>
 
         {{#if publishing.domain}}
@@ -30,7 +30,7 @@
             <div class="records">
               Add the following DNS records to your domain registrar:
               <pre>
-    {{publishing.domain}}. IN CNAME {{publishing.host}}
+                {{publishing.domain}}. IN CNAME {{publishing.host}}
     sandstorm-www.{{publishing.domain}}. IN TXT {{publishing.publicId}}
               </pre>
 
