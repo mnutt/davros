@@ -1,9 +1,11 @@
-<div class="flex content-container">
-  <div class="flex layout-column" id="content">
-    {{outlet}}
-  </div>
+<div class="ember-view">
+  <div class="flex content-container">
+    <div class="flex layout-column" id="content">
+      {{outlet}}
+    </div>
 
-  <div class="flex sidebar-small">
-    {{partial "sidebar"}}
+    <div class="flex sidebar-small">
+      {{partial "sidebar"}}
+    </div>
   </div>
 </div>

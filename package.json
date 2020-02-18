@@ -1,28 +1,42 @@
 {
   "name": "davros",
   "version": "0.0.0",
-  "description": "Personal file storage server",
   "private": true,
+  "description": "Personal file storage server",
+  "repository": "",
+  "license": "MIT",
   "author": "Michael Nutt <michael@nutt.im>",
   "directories": {
     "doc": "doc",
     "test": "tests"
   },
   "scripts": {
+    "build": "ember build --environment=production",
     "lint:hbs": "ember-template-lint .",
     "start": "node_modules/.bin/ember server",
-    "build": "ember build --environment=production",
     "test": "ember test",
     "test-server": "node_modules/.bin/mocha server/tests/*.js"
   },
-  "repository": "",
-  "engines": {
-    "node": "10.* || >= 12"
+  "dependencies": {
+    "archiver": "^1.3.0",
+    "async": "2.4.1",
+    "asyncjs": "https://github.com/mnutt/async.js.git#28ddb08",
+    "cache-require-paths": "0.3.0",
+    "chai": "^4.0.2",
+    "child-process-promise": "^2.2.1",
+    "compression": "^1.7.4",
+    "concat-files": "^0.1.1",
+    "dirStat": "0.0.2",
+    "express": "^4.17.1",
+    "fs-promise": "^2.0.3",
+    "imagemagick-stream": "^4.1.1",
+    "jsDAV": "https://github.com/mnutt/jsDAV.git#0556df11183",
+    "mkdirp": "1.0.3",
+    "morgan": "^1.9.1",
+    "multiparty": "4.2.1",
+    "walker": "^1.0.7",
+    "ws": "^3.0.0"
   },
-  "ember": {
-    "edition": "octane"
-  },
-  "license": "MIT",
   "devDependencies": {
     "@ember/optional-features": "^1.3.0",
     "@glimmer/component": "^1.0.0",
@@ -74,24 +88,10 @@
     "supertest": "^4.0.2",
     "xmldoc": "^1.1.0"
   },
-  "dependencies": {
-    "archiver": "^1.3.0",
-    "async": "2.4.1",
-    "asyncjs": "https://github.com/mnutt/async.js.git#28ddb08",
-    "cache-require-paths": "0.3.0",
-    "chai": "^4.0.2",
-    "child-process-promise": "^2.2.1",
-    "compression": "^1.7.4",
-    "concat-files": "^0.1.1",
-    "dirStat": "0.0.2",
-    "express": "^4.17.1",
-    "fs-promise": "^2.0.3",
-    "imagemagick-stream": "^4.1.1",
-    "jsDAV": "https://github.com/mnutt/jsDAV.git#0556df11183",
-    "mkdirp": "1.0.3",
-    "morgan": "^1.9.1",
-    "multiparty": "4.2.1",
-    "walker": "^1.0.7",
-    "ws": "^3.0.0"
+  "engines": {
+    "node": "10.* || >= 12"
+  },
+  "ember": {
+    "edition": "octane"
   }
 }
