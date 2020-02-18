@@ -1,3 +1,4 @@
+import { click, currentURL, find, visit } from '@ember/test-helpers';
 import { module, test } from 'qunit';
 import { setupApplicationTest } from 'ember-qunit';
 import fileStub from 'davros/tests/helpers/file-stub';
@@ -43,13 +44,13 @@ module('Acceptance | list files', function(hooks) {
     find('.parent-only').remove(); // not in mobile view
 
     // title looks good
-    assert.equal(stripTitle(find('.title').text()), 'Files in home / myDir /');
+    assert.equal(stripTitle(find('.title').textContent), 'Files in home / myDir /');
     // first file in subdir exists
     assert.dom('.file-list tr:nth-child(1) .filename .truncated').hasText('ios-davros.png');
 
     await click('a:contains(home)');
 
     find('.parent-only').remove();
-    assert.equal(stripTitle(find('.title').text()), 'Files in home /');
+    assert.equal(stripTitle(find('.title').textContent), 'Files in home /');
   });
 });

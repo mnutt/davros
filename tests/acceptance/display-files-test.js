@@ -1,3 +1,4 @@
+import { find, click, visit } from '@ember/test-helpers';
 import { module, test } from 'qunit';
 import { setupApplicationTest } from 'ember-qunit';
 import fileStub from 'davros/tests/helpers/file-stub';
@@ -35,9 +36,9 @@ module('Acceptance | display files', function(hooks) {
     find('.parent-only').remove(); // not in mobile view
 
     // title looks good
-    assert.equal(stripTitle(find('.title').text()), 'Viewing home / space.jpg');
+    assert.equal(stripTitle(find('.title').textContent), 'Viewing home / space.jpg');
 
     // image is shown
-    assert.equal(find('.preview img').attr('src'), '/remote.php/webdav/space.jpg');
+    assert.equal(find('.preview img').getAttribute('src'), '/remote.php/webdav/space.jpg');
   });
 });
