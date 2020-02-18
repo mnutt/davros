@@ -1,101 +1,101 @@
 <div class="actions">
   {{#if canEdit}}
-    {{#paper-button class="icon-button new-directory-button" onClick="chooseUpload"}}
+    <PaperButton @class="icon-button new-directory-button" @onClick="chooseUpload">
       {{paper-icon "file-upload" aria-label="Upload"}}
 
-      {{#tooltip-on-component}}
+      <TooltipOnComponent>
         Upload
-      {{/tooltip-on-component}}
-    {{/paper-button}}
+      </TooltipOnComponent>
+    </PaperButton>
 
-    {{#paper-button class="icon-button" onClick=(action (mut newDialogActive true))}}
+    <PaperButton @class="icon-button" @onClick={{action (mut newDialogActive true)}}>
       {{paper-icon "add-circle-outline" aria-label="New directory"}}
 
-      {{#tooltip-on-component}}
+      <TooltipOnComponent>
         New Directory
-      {{/tooltip-on-component}}
+      </TooltipOnComponent>
 
-    {{/paper-button}}
+    </PaperButton>
   {{/if}}
 
-  {{#paper-button class="icon-button" onClick="slideshow"}}
+  <PaperButton @class="icon-button" @onClick="slideshow">
     {{paper-icon "photo" aria-label="Slideshow"}}
 
-    {{#tooltip-on-component}}
+    <TooltipOnComponent>
       Slideshow
-    {{/tooltip-on-component}}
-  {{/paper-button}}
+    </TooltipOnComponent>
+  </PaperButton>
 
-  {{#paper-button class="icon-button" onClick="downloadDirectory"}}
+  <PaperButton @class="icon-button" @onClick="downloadDirectory">
     {{paper-icon "file-download" aria-label="Download directory as zip"}}
 
-    {{#tooltip-on-component}}
+    <TooltipOnComponent>
       Download (zip)
-    {{/tooltip-on-component}}
-  {{/paper-button}}
+    </TooltipOnComponent>
+  </PaperButton>
 
   {{#if canEdit}}
-    {{#paper-button class="icon-button delete-button" onClick=(action (mut deleteDialogActive true))}}
+    <PaperButton @class="icon-button delete-button" @onClick={{action (mut deleteDialogActive true)}}>
       {{paper-icon "delete" aria-label="Delete"}}
 
-      {{#tooltip-on-component}}
+      <TooltipOnComponent>
         {{#if isRoot}}
           Delete Everything
         {{else}}
           Delete Directory
         {{/if}}
-      {{/tooltip-on-component}}
-    {{/paper-button}}
+      </TooltipOnComponent>
+    </PaperButton>
   {{/if}}
 </div>
 
 {{!-- only displayed on mobile --}}
 <div class="compact-actions">
   <div class="more">
-    {{#paper-menu position="target-right target" width=4 as |menu|}}
-      {{#menu.trigger}}
-        {{#paper-button class="more-button" iconButton=true}}
+    <PaperMenu @position="target-right target" @width={{4}} as |menu|>
+      <menu.trigger>
+        <PaperButton @class="more-button" @iconButton={{true}}>
           {{paper-icon "more-vert" class="md-menu-origin" aria-label="Menu"}}
-        {{/paper-button}}
-      {{/menu.trigger}}
+        </PaperButton>
+      </menu.trigger>
 
-      {{#menu.content}}
+      <menu.content>
         {{#if canEdit}}
-          {{#paper-menu-item onClick="chooseUpload" id="menu-upload-file"}}
+          <PaperMenuItem @onClick="chooseUpload" @id="menu-upload-file">
             <p class="label">Upload</p>
             {{paper-icon "file-upload" class="md-menu-align-target"}}
-          {{/paper-menu-item}}
+          </PaperMenuItem>
 
-          {{#paper-menu-item onClick=(action (mut newDialogActive true))}}
+          <PaperMenuItem @onClick={{action (mut newDialogActive true)}}>
             <p class="label">New Directory</p>
             {{paper-icon "add-circle-outline" class="md-menu-align-target"}}
-          {{/paper-menu-item}}
+          </PaperMenuItem>
         {{/if}}
 
-        {{#paper-menu-item onClick="slideshow"}}
+        <PaperMenuItem @onClick="slideshow">
           <p class="label">View Slideshow</p>
           {{paper-icon "photo" class="md-menu-align-target"}}
-        {{/paper-menu-item}}
+        </PaperMenuItem>
 
-        {{#paper-menu-item onClick="downloadDirectory" id="menu-download-directory"}}
+        <PaperMenuItem @onClick="downloadDirectory" @id="menu-download-directory">
           <p class="label">Download (zip)</p>
           {{paper-icon "file-download" class="md-menu-align-target"}}
-        {{/paper-menu-item}}
+        </PaperMenuItem>
 
         {{#if canEdit}}
-          {{#paper-menu-item class="danger" onClick=(action (mut deleteDialogActive true))}}
+          <PaperMenuItem @class="danger" @onClick={{action (mut deleteDialogActive true)}}>
             <p class="label">Delete Directory</p>
             {{paper-icon "delete" class="md-menu-align-target"}}
-          {{/paper-menu-item}}
+          </PaperMenuItem>
         {{/if}}
-      {{/menu.content}}
-    {{/paper-menu}}
+      </menu.content>
+    </PaperMenu>
   </div>
 </div>
 
-{{new-directory-dialog active=newDialogActive onCreate=(route-action "newDirectory")}}
+<NewDirectoryDialog @active={{newDialogActive}} @onCreate={{route-action "newDirectory"}} />
 
-{{#delete-dialog active=deleteDialogActive onDelete=(route-action "delete")}}
+<DeleteDialog @active={{deleteDialogActive}} @onDelete={{route-action "delete"}}>
   Are you sure you want to delete
   {{#if isRoot}}
     <b>absolutely everything</b>
@@ -103,4 +103,4 @@
     this directory
   {{~/if~}}?
   It will also be deleted from any synced clients.
-{{/delete-dialog}}
+</DeleteDialog>

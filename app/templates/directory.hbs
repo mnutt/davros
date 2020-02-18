@@ -1,30 +1,28 @@
-{{#davros-uploader fullscreen=true name="content" as |dropzone queue|}}
+<DavrosUploader @fullscreen={{true}} @name="content" as |dropzone queue|>
   {{#if dropzone.active}}
     <div id="dropzone-overlay">
       <div class="message">
         {{paper-icon "add-circle"}}
         Drop files or directories to add them to
-        {{path-breadcrumb path=model.path}}
+        <PathBreadcrumb @path={{model.path}} />
       </div>
     </div>
   {{/if}}
 
   {{#if queue.length}}
     <div class="upload-progress">
-      {{paper-progress-linear warn=true value=queue.progress}}
+      <PaperProgressLinear @warn={{true}} @value={{queue.progress}} />
     </div>
   {{/if}}
 
-  {{#file-upload name="content"
-     multiple=true
-     onfileadd=(route-action "upload") id="upload-placeholder"}}
-  {{/file-upload}}
-{{/davros-uploader}}
+  <FileUpload @name="content" @multiple={{true}} @onfileadd={{route-action "upload"}} @id="upload-placeholder">
+  </FileUpload>
+</DavrosUploader>
 
-{{#title-bar}}
+<TitleBar>
   <div class="title">
     Files in
-    {{path-breadcrumb path=model.path}}
+    <PathBreadcrumb @path={{model.path}} />
 
     {{#if model.name}}
       {{model.name}} /
@@ -32,7 +30,7 @@
   </div>
 
   {{partial "directory-menu"}}
-{{/title-bar}}
+</TitleBar>
 
 {{#if model.sortedFiles}}
   <table class="file-list {{if showExtraFields "" "noExtraFields"}}">
@@ -47,13 +45,13 @@
     <tbody>
       {{#each model.sortedFiles as |file|}}
         <tr>
-          {{#link-to "file" file.linkedPath class="name" tagName="td"}}
+          <LinkTo @route="file" @model={{file.linkedPath}} class="name" @tagName="td">
             <div class="filename">
               {{#if file.isDirectory}}
                 <md-icon class="paper-icon md-font material-icons md-default-theme">folder</md-icon>
               {{else}}
                 {{#if (eq file.type "image")}}
-                  {{image-thumbnail original=file.rawPath timestamp=file.mtime width=24 height=24 op="fit"}}
+                  <ImageThumbnail @original={{file.rawPath}} @timestamp={{file.mtime}} @width={{24}} @height={{24}} @op="fit" />
                 {{else}}
                   <md-icon aria-label="type {{file.type}}" class="paper-icon md-font material-icons md-default-theme">{{-paper-underscore file.typeIcon}}</md-icon>
                 {{/if}}
@@ -61,7 +59,7 @@
 
               <div class="truncated">{{file.name}}</div>
             </div>
-          {{/link-to}}
+          </LinkTo>
 
           {{#if showExtraFields}}
             <td class="updated" title={{file.mtime}}>

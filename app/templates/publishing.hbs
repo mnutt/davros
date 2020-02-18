@@ -1,14 +1,14 @@
-{{#title-bar}}
+<TitleBar>
   Web Publishing
-{{/title-bar}}
+</TitleBar>
 
-{{#paper-content class="publishing" flex-layout="column" flex=true}}
+<PaperContent @class="publishing" @flex-layout="column" @flex={{true}}>
   <p class="content">
     You can publish this shared directory to the web. Add <code>index.html</code> to the top level to set up your site. All files in the shared directory will be publicly accessible.
 
     {{#if publishing.publicId}}
       <div class="toggle-publishing">
-        {{#paper-button raised=true warn=true onClick=(route-action "unpublish")}}Disable{{/paper-button}}
+        <PaperButton @raised={{true}} @warn={{true}} @onClick={{route-action "unpublish"}}>Disable</PaperButton>
         <strong>
           Publishing is Enabled
           {{#if publishing.domain}}
@@ -46,14 +46,14 @@
     {{else}}
 
       <div class="setup">
-        {{paper-input label="Optional Custom Domain" value=domain customValidations=apexValidation onChange=(action (mut domain))}}
+        <PaperInput @label="Optional Custom Domain" @value={{domain}} @customValidations={{apexValidation}} @onChange={{action (mut domain)}} />
       </div>
 
       <div class="toggle-publishing">
-        {{#paper-button raised=true primary=true onClick=(route-action "publish")}}Enable{{/paper-button}}
+        <PaperButton @raised={{true}} @primary={{true}} @onClick={{route-action "publish"}}>Enable</PaperButton>
         <strong>Publishing is Disabled</strong>
       </div>
     {{/if}}
   </p>
 
-{{/paper-content}}
+</PaperContent>

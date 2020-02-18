@@ -1,3 +1,4 @@
+import { on } from '@ember/object/evented';
 import EmberRouter from '@ember/routing/router';
 import config from './config/environment';
 
@@ -17,11 +18,11 @@ Router.map(function() {
 });
 
 Router.reopen({
-  updateSandstorm: function() {
+  updateSandstorm: on('didTransition', function() {
     window.parent.postMessage({
       setPath: this.url
     }, '*');
-  }.on('didTransition')
+  })
 });
 
 export default Router;

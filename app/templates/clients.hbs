@@ -1,8 +1,8 @@
-{{#title-bar}}
+<TitleBar>
   Desktop and Mobile Clients
-{{/title-bar}}
+</TitleBar>
 
-{{#paper-content class="clients" flex-layout="column" flex=true}}
+<PaperContent @class="clients" @flex-layout="column" @flex={{true}}>
   <p class="content">
     You can synchronize your file storage with your local device using a desktop or mobile WebDAV client. Unfortunately, <b>OwnCloud/NextCloud are not supported</b>, due to protocol incompatibilities.
 
@@ -11,25 +11,25 @@
     Start the client. In the <strong>Server Name</strong> field, use this value:
     <div class="server-url">
       {{#if useAuthInServerUrl}}
-        {{offer-iframe content="$API_PROTO//$GRAIN_TITLE_SLUG:$API_TOKEN@$API_HOST/remote.php/webdav/" clipboardButton="right" unauthenticated=unauthenticated}}
+        <OfferIframe @content="$API_PROTO//$GRAIN_TITLE_SLUG:$API_TOKEN@$API_HOST/remote.php/webdav/" @clipboardButton="right" @unauthenticated={{unauthenticated}} />
       {{else}}
-        {{offer-iframe content="$API_PROTO//$API_HOST/remote.php/webdav/" clipboardButton="right" unauthenticated=unauthenticated}}
+        <OfferIframe @content="$API_PROTO//$API_HOST/remote.php/webdav/" @clipboardButton="right" @unauthenticated={{unauthenticated}} />
       {{/if}}
     </div>
 
-    {{#paper-switch class="use-auth-in-url" noink=true value=useAuthInServerUrl onChange=(action (mut useAuthInServerUrl))}} Put auth in URL (command line use) {{/paper-switch}}
+    <PaperSwitch @class="use-auth-in-url" @noink={{true}} @value={{useAuthInServerUrl}} @onChange={{action (mut useAuthInServerUrl)}}> Put auth in URL (command line use) </PaperSwitch>
 
     On the <strong>Enter user credentials</strong> step, use:
 
     <div class="authentication">
       <div class="username-field">
         <label for="username">Username</label>
-        <div class="username">{{offer-iframe content="$GRAIN_TITLE_SLUG" clipboardButton="right" unauthenticated=unauthenticated}}</div>
+        <div class="username"><OfferIframe @content="$GRAIN_TITLE_SLUG" @clipboardButton="right" @unauthenticated={{unauthenticated}} /></div>
       </div>
 
       <div class="password-field">
         <label for="password">Password</label>
-        <div class="password">{{offer-iframe content="$API_TOKEN" clipboardButton="right" unauthenticated=unauthenticated}}</div>
+        <div class="password"><OfferIframe @content="$API_TOKEN" @clipboardButton="right" @unauthenticated={{unauthenticated}} /></div>
       </div>
     </div>
 
@@ -39,4 +39,4 @@
     </em>
   </p>
 
-{{/paper-content}}
+</PaperContent>

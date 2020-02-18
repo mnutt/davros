@@ -1,41 +1,41 @@
 <div class="actions">
   {{#if canEdit}}
-    {{#paper-button class="icon-button delete-button" onClick=(action (mut deleteDialogActive true))}}
+    <PaperButton @class="icon-button delete-button" @onClick={{action (mut deleteDialogActive true)}}>
       {{paper-icon "delete"}}
 
-      {{#tooltip-on-component}}
+      <TooltipOnComponent>
         Delete File
-      {{/tooltip-on-component}}
-    {{/paper-button}}
+      </TooltipOnComponent>
+    </PaperButton>
   {{/if}}
 </div>
 
 {{!-- Only displayed on mobile --}}
 <div class="compact-actions">
   <div class="more">
-    {{#paper-menu position="target-right target" as |menu|}}
-      {{#menu.trigger}}
-        {{#paper-button class="more-button" icon-button=true}}
+    <PaperMenu @position="target-right target" as |menu|>
+      <menu.trigger>
+        <PaperButton @class="more-button" @icon-button={{true}}>
           {{paper-icon "more-vert" class="md-menu-origin"}}
-        {{/paper-button}}
-      {{/menu.trigger}}
+        </PaperButton>
+      </menu.trigger>
 
-      {{#menu.content}}
+      <menu.content>
         {{#if canEdit}}
-          {{#paper-menu-item class="danger" onClick=(action (mut deleteDialogActive true))}}
+          <PaperMenuItem @class="danger" @onClick={{action (mut deleteDialogActive true)}}>
             <p class="label">Delete File</p>
             {{paper-icon "delete" class="md-menu-align-target"}}
-          {{/paper-menu-item}}
+          </PaperMenuItem>
         {{else}}
-          {{#paper-menu-item}}
+          <PaperMenuItem>
             <p class="label">Read-only mode</p>
-          {{/paper-menu-item}}
+          </PaperMenuItem>
         {{/if}}
-      {{/menu.content}}
-    {{/paper-menu}}
+      </menu.content>
+    </PaperMenu>
   </div>
 </div>
 
-{{#delete-dialog active=deleteDialogActive onDelete=(route-action "delete")}}
+<DeleteDialog @active={{deleteDialogActive}} @onDelete={{route-action "delete"}}>
   Are you sure you want to delete the file {{model.name}}? It will also be deleted from any synced clients.
-{{/delete-dialog}}
+</DeleteDialog>

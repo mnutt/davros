@@ -1,12 +1,12 @@
-{{#title-bar}}
+<TitleBar>
   <div class="title">
     Viewing
-    {{path-breadcrumb path=model.path}}
+    <PathBreadcrumb @path={{model.path}} />
     {{model.name}}
   </div>
 
   {{partial "file-menu"}}
-{{/title-bar}}
+</TitleBar>
 
 <div class="file file-{{model.type}}">
   <div class="meta">

@@ -1,26 +1,26 @@
 <div class="logo-bg" aria-hidden="true"></div>
 <img src="/images/sidebar-logo@2x.png" width="50" height="61" alt="Davros">
 
-{{#link-to "home" current-when="file"}}
+<LinkTo @route="home" @current-when="file">
   {{paper-icon "folder"}}
   <div>Files</div>
-{{/link-to}}
+</LinkTo>
 
 {{#if canSync}}
-  {{#link-to "clients"}}
+  <LinkTo @route="clients">
     {{paper-icon "desktop-mac"}}
     <div>Clients</div>
-  {{/link-to}}
+  </LinkTo>
 {{/if}}
 
 {{#if canEdit}}
-  {{#link-to "publishing"}}
+  <LinkTo @route="publishing">
     {{paper-icon "web"}}
     <div>Publish</div>
-  {{/link-to}}
+  </LinkTo>
 {{/if}}
 
-{{#link-to "about"}}
+<LinkTo @route="about">
   {{paper-icon "info-outline"}}
   <div>About</div>
-{{/link-to}}
+</LinkTo>

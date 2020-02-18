@@ -1,3 +1,5 @@
+import { computed } from '@ember/object';
+import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import Controller from '@ember/controller';
 import { computed, get } from '@ember/object';
@@ -11,9 +13,9 @@ export default Controller.extend(GalleryPlugin, {
   permissions: service(),
   publishing: service(),
 
-  isRoot: function() {
+  isRoot: computed('model.path', function() {
     return this.get('model.path') === '';
-  }.property('model.path'),
+  }),
 
   publicUrl: computed('model.path', 'publishing.urlBase', function() {
     let urlBase = get(this, 'publishing.urlBase');
@@ -22,7 +24,7 @@ export default Controller.extend(GalleryPlugin, {
     return [urlBase, get(this, 'model.path')].join('/');
   }),
 
-  canEdit: function() {
+  canEdit: computed('permissions.list', function() {
     return this.permissions.can('edit');
-  }.property('permissions.list')
+  })
 });

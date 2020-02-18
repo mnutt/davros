@@ -1,3 +1,5 @@
+import { on } from '@ember/object/evented';
+import { on } from '@ember/object/evented';
 import Component from '@ember/component';
 
 export default Component.extend({
@@ -11,7 +13,7 @@ export default Component.extend({
     return template.replace('$API_PROTO', document.location.protocol);
   }.property('content'),
 
-  fillIframe: function() {
+  fillIframe: on('didInsertElement', function() {
     let options = {};
     options.rpcId = this.elementId;
     options.template = this.replacedTemplate;
@@ -24,11 +26,11 @@ export default Component.extend({
     }
 
     window.parent.postMessage({ renderTemplate: options }, "*");
-  }.on('didInsertElement'),
+  }),
 
-  registerMessageListener: function() {
+  registerMessageListener: on('willInsertElement', function() {
     this.$(window).on('message', this.messageListener.bind(this));
-  }.on('willInsertElement'),
+  }),
 
   messageListener: function(e) {
     var event = e.originalEvent;

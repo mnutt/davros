@@ -1,10 +1,13 @@
+import { computed } from '@ember/object';
+import { computed } from '@ember/object';
+import { computed } from '@ember/object';
 import EmberObject from '@ember/object';
 import Component from '@ember/component';
 
 export default Component.extend({
   classNames: ['breadcrumb'],
 
-  parts: function() {
+  parts: computed('path', function() {
     var pieces = (this.path || '').split('/');
     var p = [];
 
@@ -27,13 +30,13 @@ export default Component.extend({
     }
 
     return p;
-  }.property('path'),
+  }),
 
-  isHome: function() {
+  isHome: computed('path', function() {
     return this.path === '/';
-  }.property('path'),
+  }),
 
-  parentPath: function() {
+  parentPath: computed('parts', function() {
     return this.get('parts.lastObject.path') || '/';
-  }.property('parts')
+  })
 });

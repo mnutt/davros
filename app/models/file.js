@@ -1,3 +1,14 @@
+import { computed } from '@ember/object';
+import { computed } from '@ember/object';
+import { computed } from '@ember/object';
+import { computed } from '@ember/object';
+import { computed } from '@ember/object';
+import { computed } from '@ember/object';
+import { computed } from '@ember/object';
+import { computed } from '@ember/object';
+import { computed } from '@ember/object';
+import { computed } from '@ember/object';
+import { computed } from '@ember/object';
 import EmberObject from '@ember/object';
 import filetypes from 'davros/lib/filetypes';
 import filetypeIcons from 'davros/lib/filetype-icons';
@@ -9,58 +20,58 @@ export default EmberObject.extend(Webdav, {
   mtime: null, // modified time
   files: null, // if a directory, a list of children
 
-  name: function() {
+  name: computed('path', function() {
     return this.path.split(/[\\/]/).pop();
-  }.property('path'),
+  }),
 
-  sortedFiles: function() {
+  sortedFiles: computed('files', function() {
     return this.files.sortBy('isFile', 'name');
-  }.property('files'),
+  }),
 
-  lotsOfFiles: function() {
+  lotsOfFiles: computed('files.length', function() {
     return this.get('files.length') > 50;
-  }.property('files.length'),
+  }),
 
-  parent: function() {
+  parent: computed('path', function() {
     return this.path.replace(/\/?[^/]*\/?$/, '');
-  }.property('path'),
+  }),
 
-  linkedPath: function() {
+  linkedPath: computed('path', 'isDirectory', function() {
     if(this.isDirectory) {
       return this.path + "/";
     } else {
       return this.path;
     }
-  }.property('path', 'isDirectory'),
+  }),
 
   isDirectory: false,
 
-  isFile: function() {
+  isFile: computed('isDirectory', function() {
     return !this.isDirectory;
-  }.property('isDirectory'),
+  }),
 
-  extension: function() {
+  extension: computed('name', function() {
     var pieces = this.name.split('.');
     if(pieces.length > 1) {
       return pieces[pieces.length - 1];
     } else {
       return '';
     }
-  }.property('name'),
+  }),
 
-  type: function() {
+  type: computed('extension', function() {
     return filetypes[this.extension.toLowerCase()] || filetypes.defaultType;
-  }.property('extension'),
+  }),
 
-  typeIcon: function() {
+  typeIcon: computed('type', function() {
     return filetypeIcons[this.type];
-  }.property('type'),
+  }),
 
-  typeComponent: function() {
+  typeComponent: computed('type', function() {
     return `files/type-${this.type}`;
-  }.property('type'),
+  }),
 
-  rawPath: function() {
+  rawPath: computed('path', 'davBase', function() {
     return [this.davBase, this.path].join('/');
-  }.property('path', 'davBase')
+  })
 });

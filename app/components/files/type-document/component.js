@@ -1,3 +1,4 @@
+import { computed } from '@ember/object';
 import Component from '@ember/component';
 import fetch from 'ember-network/fetch';
 
@@ -34,9 +35,9 @@ export default Component.extend({
     }).join('&');
   },
 
-  canSandbox: function() {
+  canSandbox: computed(function() {
     return "sandbox" in document.createElement("iframe");
-  }.property(),
+  }),
 
   actions: {
     toggleFullview() {

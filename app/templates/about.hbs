@@ -1,8 +1,8 @@
-{{#title-bar}}
+<TitleBar>
   About
-{{/title-bar}}
+</TitleBar>
 
-{{#paper-content class="about" flex-layout="column" flex=true}}
+<PaperContent @class="about" @flex-layout="column" @flex={{true}}>
   <p class="content">
     Davros is a fully <a target="_blank" rel="noopener" href="https://github.com/mnutt/davros/blob/master/LICENSE">open source</a> file storage platform, built specifically to run inside of Sandstorm. It allows you to store files on your Sandstorm server, and optionally sync them among many desktop clients.
     <br><br>
@@ -22,8 +22,8 @@
     <em>Note: this list only shows up to the release you are currently using. You can find out if there is a newer release by clicking on the notifications icon in the Sandstorm bar.</em>
 
     <div class="changelog">
-      {{markdown-to-html markdown=model}}
+      <MarkdownToHtml @markdown={{model}} />
     </div>
   </p>
 
-{{/paper-content}}
+</PaperContent>
