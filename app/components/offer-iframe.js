@@ -13,7 +13,7 @@ export default Component.extend({
     return template.replace('$API_PROTO', document.location.protocol);
   }),
 
-  fillIframe: on('didInsertElement', function() {
+  didInsertElement() {
     let options = {};
     options.rpcId = this.elementId;
     options.template = this.replacedTemplate;
@@ -26,7 +26,7 @@ export default Component.extend({
     }
 
     window.parent.postMessage({ renderTemplate: options }, '*');
-  }),
+  },
 
   registerMessageListener: on('willInsertElement', function() {
     window.addEventListener('message', this.messageListener.bind(this));
@@ -35,6 +35,7 @@ export default Component.extend({
   messageListener: function(event) {
     if (event.data && event.data.rpcId === this.elementId) {
       if (event.data.error) {
+        // eslint-disable-next-line no-console
         console.error('Offer template error: ' + event.data.error);
       } else {
         this.set('src', event.data.uri);

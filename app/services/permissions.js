@@ -6,11 +6,12 @@ function isIframed() {
 }
 
 export default Service.extend({
-  list: [],
   error: false,
 
   init: function() {
-    this._super.apply(this, arguments);
+    this._super(...arguments);
+
+    this.list = [];
 
     if (!isIframed()) {
       this.set('list', ['read', 'edit']);

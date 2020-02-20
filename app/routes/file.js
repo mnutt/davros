@@ -13,8 +13,8 @@ const socketUrl =
 export default Route.extend({
   websockets: service(),
 
-  init: function() {
-    this._super.apply(this, arguments);
+  init() {
+    this._super(...arguments);
 
     const socket = this.websockets.socketFor(socketUrl);
 
@@ -88,45 +88,26 @@ export default Route.extend({
     .enqueue(),
 
   actions: {
-    delete: function(defer) {
+    delete: function() {
       var model = this.get('controller.model');
       var parent = model.get('parent');
 
-      return model
-        .delete()
-        .then(() => {
-          if (parent) {
-            this.transitionTo('file', parent);
-          } else {
-            this.transitionTo('files');
-          }
-        })
-        .then(
-          () => {
-            defer.resolve();
-          },
-          () => {
-            defer.reject();
-          }
-        );
+      return model.remove().then(() => {
+        if (parent) {
+          this.transitionTo('file', parent);
+        } else {
+          this.transitionTo('files');
+        }
+      });
     },
 
-    newDirectory(dirname, defer) {
+    newDirectory(dirname) {
       var model = this.get('controller.model');
 
       var fullPath = [model.get('rawPath'), dirname].join('/');
-      return fetch(fullPath, { method: 'MKCOL' })
-        .then(() => {
-          return this.get('controller.model').load();
-        })
-        .then(
-          () => {
-            defer.resolve();
-          },
-          () => {
-            defer.reject();
-          }
-        );
+      return fetch(fullPath, { method: 'MKCOL' }).then(() => {
+        return this.get('controller.model').load();
+      });
     },
 
     downloadDirectory() {

@@ -1,10 +1,10 @@
-{{#if this.active}}
+{{#if @active}}
   <PaperDialog @fullscreen={{true}} @origin=".actions">
     <PaperToolbar>
       <div class="md-toolbar-tools">
         <h2>New Directory</h2>
         <span class="flex"></span>
-        <PaperButton @iconButton={{true}} onClick={{fn this.close}}>
+        <PaperButton @iconButton={{true}} @onClick={{this.close}}>
           <PaperIcon @icon="close"/>
         </PaperButton>
       </div>
@@ -12,15 +12,15 @@
 
     <PaperForm @onSubmit={{fn this.create}} as |form|>
       <PaperDialogContent>
-        <Form.Input @label="Name" @autofocus={{true}} @value={{this.directoryName}} @customValidations={{this.directoryValidation}} @onChange={{fn (mut this.directoryName)}} />
+        <form.input @label="Name" @autofocus={{true}} @value={{this.directoryName}} @customValidations={{this.directoryValidation}} @onChange={{fn (mut this.directoryName)}} />
       </PaperDialogContent>
 
       <PaperDialogActions class="layout-row">
         <span class="flex"></span>
         <PaperButton @primary={{true}} @onClick={{fn this.close}}>Cancel</PaperButton>
-        <Form.SubmitButton @primary={{true}} @raised={{true}} @disabled={{form.isInvalid}}>
+        <form.submit-button @primary={{true}} @raised={{true}} @disabled={{form.isInvalid}}>
           Create
-        </Form.SubmitButton>
+        </form.submit-button>
       </PaperDialogActions>
     </PaperForm>
   </PaperDialog>

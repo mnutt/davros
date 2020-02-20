@@ -1,5 +1,7 @@
 import fetch from 'fetch';
 
+const propnames = ['getlastmodified', 'quota-used-bytes', 'getcontentlength', 'getdimensions'];
+
 const propFindQuery = new Blob(
   [
     [
@@ -21,11 +23,17 @@ const propFindQuery = new Blob(
   { type: 'application/xml' }
 );
 
-export default {
-  base: '/remote.php/webdav',
+export default class WebdavClient {
+  constructor(base) {
+    this.base = base;
+  }
 
-  propfind: function(path) {
-    return fetch(path, {
+  fullPath(path) {
+    return [this.base, path].join('/');
+  }
+
+  propfind(path) {
+    return fetch(this.fullPath(path), {
       method: 'PROPFIND',
       headers: {
         'Content-Type': 'application/xml',
@@ -48,19 +56,66 @@ export default {
         const domParser = new DOMParser();
         return domParser.parseFromString(raw, 'application/xml');
       });
-  },
+  }
 
-  delete: function(path) {
-    return fetch(path, {
+  remove(path) {
+    return fetch(this.fullPath(path), {
       method: 'DELETE'
     });
-  },
+  }
 
-  mkcol: function(path) {
-    return fetch(path, {
+  mkcol(path) {
+    return fetch(this.fullPath(path), {
       method: 'MKCOL'
     }).catch(function(err) {
+      // eslint-disable-next-line no-console
       console.error(err);
     });
   }
-};
+
+  async load(path) {
+    const xml = await this.propfind(path);
+    const responses = [...xml.querySelectorAll('d\\:response, response')];
+    let parsedResponses = responses.map(r => this.parseResponse(r));
+
+    parsedResponses.sort((a, b) => {
+      return a.path.length - b.path.length;
+    });
+
+    return parsedResponses;
+  }
+
+  parseResponse(doc) {
+    let path = doc.querySelector('d\\:href, href').innerHTML;
+    path = path.slice(this.base.length + 1).replace(/\/$/, '');
+    let isDirectory = doc.querySelectorAll('d\\:collection, collection').length > 0;
+    path = decodeURIComponent(path);
+
+    const props = {};
+    for (let name of propnames) {
+      const el = doc.querySelector(`d\\:${name}, ${name}`);
+      if (el) {
+        props[name] = el.innerHTML;
+      }
+    }
+
+    let size, files;
+    if (isDirectory) {
+      size = parseInt(props['quota-used-bytes'], 10) || 0;
+      files = [];
+    } else {
+      size = parseInt(props.getcontentlength, 10) || 0;
+    }
+
+    const dimensions = props.getdimensions ? JSON.parse(props.getdimensions) : null;
+
+    return {
+      path,
+      isDirectory,
+      dimensions,
+      mtime: new Date(props.getlastmodified),
+      size,
+      files
+    };
+  }
+}

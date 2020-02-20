@@ -50,13 +50,15 @@
         </PaperButton>
       {{/if}}
 
-      <PaperButton @class="icon-button" @onClick={{fn photoswipe.actions.open}}>
-        {{paper-icon "photo" aria-label="Slideshow"}}
+      {{#if this.directoryGalleryItems.length}}
+        <PaperButton @class="icon-button" @onClick={{photoswipe.actions.open}}>
+          {{paper-icon "photo" aria-label="Slideshow"}}
 
-        <EmberTooltip>
-          Slideshow
-        </EmberTooltip>
-      </PaperButton>
+          <EmberTooltip>
+            Slideshow
+          </EmberTooltip>
+        </PaperButton>
+      {{/if}}
 
       <PaperButton @class="icon-button" @onClick="downloadDirectory">
         {{paper-icon "file-download" aria-label="Download directory as zip"}}
@@ -105,7 +107,7 @@
             </PaperMenuItem>
           {{/if}}
 
-          <PaperMenuItem @onClick="slideshow">
+          <PaperMenuItem @onClick={{fn (mut this.galleryEnabled) true}}>
             <p class="label">View Slideshow</p>
             {{paper-icon "photo" class="md-menu-align-target"}}
           </PaperMenuItem>
@@ -126,9 +128,9 @@
     </div>
   </div>
 
-  <NewDirectoryDialog @active={{this.newDialogActive}} @onCreate={{route-action "newDirectory"}} />
+  <NewDirectoryDialog @active={{this.newDialogActive}} @onCreate={{route-action "newDirectory"}} @onClose={{fn (mut this.newDialogActive) false}} />
 
-  <DeleteDialog @active={{this.deleteDialogActive}} @onDelete={{route-action "delete"}}>
+  <DeleteDialog @active={{this.deleteDialogActive}} @onDelete={{route-action "delete"}} @onClose={{fn (mut this.deleteDialogActive) false }}>
     Are you sure you want to delete
     {{#if this.isRoot}}
       <b>absolutely everything</b>

@@ -2,15 +2,31 @@ import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import Controller from '@ember/controller';
 import { get } from '@ember/object';
-import GalleryPlugin from '../mixins/directory/gallery';
 
-export default Controller.extend(GalleryPlugin, {
+const galleryOptions = { hideShare: true };
+
+export default Controller.extend({
   showExtraFields: true,
   newDialogActive: false,
   deleteDialogActive: false,
+  galleryEnabled: false,
 
   permissions: service(),
   publishing: service(),
+
+  directoryGalleryItems: computed('model.sortedFiles', function() {
+    return this.model.sortedFiles
+      .filter(file => {
+        return file.type === 'image';
+      })
+      .map(file => {
+        return { src: file.rawPath, title: file.name, w: file.width, h: file.height };
+      });
+  }),
+
+  galleryOptions() {
+    return galleryOptions;
+  },
 
   isRoot: computed('model.path', function() {
     return this.get('model.path') === '';

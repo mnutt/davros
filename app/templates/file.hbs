@@ -43,7 +43,8 @@
     </div>
   </div>
 
-  <DeleteDialog @active={{this.deleteDialogActive}} @onDelete={{route-action "delete"}}>
+  {{log this.deleteDialogActive}}
+  <DeleteDialog @active={{this.deleteDialogActive}} @onClose={{fn (mut this.deleteDialogActive) false}} @onDelete={{route-action "delete"}}>
     Are you sure you want to delete the file {{this.model.name}}? It will also be deleted from any synced clients.
   </DeleteDialog>
 </TitleBar>

@@ -2,13 +2,21 @@ import { computed } from '@ember/object';
 import EmberObject from '@ember/object';
 import filetypes from 'davros/lib/filetypes';
 import filetypeIcons from 'davros/lib/filetype-icons';
-import Webdav from 'davros/mixins/webdav';
+import DavClient from 'davros/lib/webdav';
 
-export default EmberObject.extend(Webdav, {
+export const base = '/remote.php/webdav';
+
+export default EmberObject.extend({
   path: null, // file's path within the dav server, excluding the dav base
   size: null, // in bytes
   mtime: null, // modified time
   files: null, // if a directory, a list of children
+
+  init() {
+    this._super(...arguments);
+
+    this.client = new DavClient(base);
+  },
 
   name: computed('path', function() {
     return this.path.split(/[\\/]/).pop();
@@ -69,7 +77,37 @@ export default EmberObject.extend(Webdav, {
     return `files/type-${this.type}`;
   }),
 
-  rawPath: computed('path', 'davBase', function() {
-    return [this.davBase, this.path].join('/');
-  })
+  rawPath: computed('path', function() {
+    return this.client.fullPath(this.path);
+  }),
+
+  load: function() {
+    return this.client.load(this.path).then(items => {
+      this.loadFromResponse(items.shift());
+
+      if (items.length > 0) {
+        this.loadChildren(items);
+      }
+
+      return this;
+    });
+  },
+
+  remove: function() {
+    return this.client.remove(this.path);
+  },
+
+  loadFromResponse: function(response) {
+    this.setProperties(response);
+  },
+
+  loadChildren: function(parsedResponses) {
+    var files = [];
+    for (var i = 0; i < parsedResponses.length; i++) {
+      var file = this.constructor.create();
+      file.loadFromResponse(parsedResponses[i]);
+      files.push(file);
+    }
+    this.set('files', files);
+  }
 });

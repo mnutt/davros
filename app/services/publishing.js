@@ -7,7 +7,7 @@ export default Service.extend({
   data: null,
 
   init: function() {
-    this._super.apply(this, arguments);
+    this._super(...arguments);
 
     fetch('/api/publish/info')
       .then(response => {
