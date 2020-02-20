@@ -8,7 +8,11 @@ module.exports = {
       legacyDecorators: true
     }
   },
-  extends: 'eslint:recommended',
+  extends: [
+    'eslint:recommended',
+    'plugin:ember/recommended',
+    'plugin:prettier/recommended'
+  ],
   env: {
     browser: true
   },
