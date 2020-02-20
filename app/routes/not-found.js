@@ -4,7 +4,7 @@ export default Route.extend({
   beforeModel: function(transition) {
     // Redirect /files to file route
     var path = transition.params['not-found'].path;
-    if(path === "files/" || path === "files") {
+    if (path === 'files/' || path === 'files') {
       this.transitionTo('files');
     }
 

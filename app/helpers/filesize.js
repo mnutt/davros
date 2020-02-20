@@ -6,8 +6,8 @@ export default buildHelper(function(value) {
     return null;
   }
   var i,
-      filesize,
-      units = ['B', 'KB', 'MB', 'GB', 'TB'];
+    filesize,
+    units = ['B', 'KB', 'MB', 'GB', 'TB'];
   for (i = 0; i < units.length; i++) {
     if (value < 1024) {
       var unitValue = '<span>' + units[i] + '</span>';

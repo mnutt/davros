@@ -18,14 +18,14 @@ export default Component.extend({
     options.rpcId = this.elementId;
     options.template = this.replacedTemplate;
 
-    if(this.clipboardButton) {
+    if (this.clipboardButton) {
       options.clipboardButton = this.clipboardButton;
     }
-    if(this.unauthenticated) {
+    if (this.unauthenticated) {
       options.unauthenticated = this.unauthenticated;
     }
 
-    window.parent.postMessage({ renderTemplate: options }, "*");
+    window.parent.postMessage({ renderTemplate: options }, '*');
   }),
 
   registerMessageListener: on('willInsertElement', function() {
@@ -35,7 +35,7 @@ export default Component.extend({
   messageListener: function(event) {
     if (event.data && event.data.rpcId === this.elementId) {
       if (event.data.error) {
-        console.error("Offer template error: " + event.data.error);
+        console.error('Offer template error: ' + event.data.error);
       } else {
         this.set('src', event.data.uri);
       }

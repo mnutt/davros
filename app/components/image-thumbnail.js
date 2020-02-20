@@ -9,7 +9,7 @@ export default Component.extend({
 
   cachebuster: computed('timestamp', function() {
     let timestamp = this.timestamp;
-    if(timestamp.getTime) {
+    if (timestamp.getTime) {
       return timestamp.getTime();
     } else {
       return timestamp.toString();
@@ -17,12 +17,17 @@ export default Component.extend({
   }),
 
   src: computed('original', function() {
-    return base + Object.entries({
-      url:    this.original,
-      width:  this.width,
-      height: this.height,
-      op:     this.op || 'fit',
-      ts:     this.cachebuster
-    }).map((p) => p.map(encodeURIComponent).join('=')).join('&')
+    return (
+      base +
+      Object.entries({
+        url: this.original,
+        width: this.width,
+        height: this.height,
+        op: this.op || 'fit',
+        ts: this.cachebuster
+      })
+        .map(p => p.map(encodeURIComponent).join('='))
+        .join('&')
+    );
   })
 });

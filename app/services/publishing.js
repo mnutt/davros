@@ -9,11 +9,13 @@ export default Service.extend({
   init: function() {
     this._super.apply(this, arguments);
 
-    fetch('/api/publish/info').then((response) => {
-      return response.json();
-    }).then((result) => {
-      this.update(result);
-    });
+    fetch('/api/publish/info')
+      .then(response => {
+        return response.json();
+      })
+      .then(result => {
+        this.update(result);
+      });
   },
 
   update(data) {
@@ -29,9 +31,9 @@ export default Service.extend({
     let domain = get(this, 'domain');
     let autoUrl = get(this, 'autoUrl');
 
-    if(domain) {
+    if (domain) {
       return `https://${domain}`;
-    } else if(autoUrl) {
+    } else if (autoUrl) {
       return autoUrl;
     } else {
       return null;

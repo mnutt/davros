@@ -5,8 +5,8 @@ import filetypeIcons from 'davros/lib/filetype-icons';
 import Webdav from 'davros/mixins/webdav';
 
 export default EmberObject.extend(Webdav, {
-  path: null,  // file's path within the dav server, excluding the dav base
-  size: null,  // in bytes
+  path: null, // file's path within the dav server, excluding the dav base
+  size: null, // in bytes
   mtime: null, // modified time
   files: null, // if a directory, a list of children
 
@@ -27,8 +27,8 @@ export default EmberObject.extend(Webdav, {
   }),
 
   linkedPath: computed('path', 'isDirectory', function() {
-    if(this.isDirectory) {
-      return this.path + "/";
+    if (this.isDirectory) {
+      return this.path + '/';
     } else {
       return this.path;
     }
@@ -42,7 +42,7 @@ export default EmberObject.extend(Webdav, {
 
   extension: computed('name', function() {
     var pieces = this.name.split('.');
-    if(pieces.length > 1) {
+    if (pieces.length > 1) {
       return pieces[pieces.length - 1];
     } else {
       return '';

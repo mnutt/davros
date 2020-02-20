@@ -3,7 +3,7 @@ import Component from '@glimmer/component';
 import { action } from '@ember/object';
 
 export default class DeleteDialog extends Component {
-  what='this directory';
+  what = 'this directory';
 
   @action
   close() {

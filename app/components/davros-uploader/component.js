@@ -12,8 +12,8 @@ export default fileDropzone.extend({
       dragListener.addEventListeners('body', {
         dragenter: bind(this, 'didEnterDropzone'),
         dragleave: bind(this, 'didLeaveDropzone'),
-        dragover:  bind(this, 'didDragOver'),
-        drop:      bind(this, 'didDrop')
+        dragover: bind(this, 'didDragOver'),
+        drop: bind(this, 'didDrop')
       });
     }
   },

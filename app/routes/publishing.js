@@ -8,21 +8,23 @@ export default Route.extend({
 
   actions: {
     publish: function() {
-      let publishUrl = "/api/publish";
+      let publishUrl = '/api/publish';
       let domain = get(this, 'controller.domain');
-      if(domain && domain !== '') {
+      if (domain && domain !== '') {
         publishUrl += `?domain=${encodeURIComponent(domain)}`;
       }
 
-      fetch(publishUrl, {method: 'POST'}).then((response) => {
-        return response.json();
-      }).then((result) => {
-        this.publishing.update(result);
-      });
+      fetch(publishUrl, { method: 'POST' })
+        .then(response => {
+          return response.json();
+        })
+        .then(result => {
+          this.publishing.update(result);
+        });
     },
 
     unpublish: function() {
-      fetch('/api/unpublish', {method: 'POST'}).then(() => {
+      fetch('/api/unpublish', { method: 'POST' }).then(() => {
         this.publishing.update({});
       });
     }

@@ -5,7 +5,7 @@ var pathsCompleted = {};
 
 export default function(path) {
   var parts = path.replace(/^\//, '').split('/');
-  if(parts.length < 2) {
+  if (parts.length < 2) {
     return resolve();
   }
 

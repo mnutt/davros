@@ -9,16 +9,20 @@ export default Component.extend({
     var pieces = (this.path || '').split('/');
     var p = [];
 
-    if(pieces.join('') === '') {
+    if (pieces.join('') === '') {
       return [];
     }
 
     // is a directory
-    if(pieces[pieces.length - 1] === "") { pieces.pop(); }
+    if (pieces[pieces.length - 1] === '') {
+      pieces.pop();
+    }
 
-    for(var i = 0; i < pieces.length - 1; i++) {
+    for (var i = 0; i < pieces.length - 1; i++) {
       var path = pieces.slice(0, i + 1).join('/');
-      if(i !== pieces.length - 1) { path += "/"; }
+      if (i !== pieces.length - 1) {
+        path += '/';
+      }
       var part = EmberObject.create({
         name: pieces[i],
         path: path

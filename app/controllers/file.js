@@ -18,7 +18,9 @@ export default Controller.extend(GalleryPlugin, {
 
   publicUrl: computed('model.path', 'publishing.urlBase', function() {
     let urlBase = get(this, 'publishing.urlBase');
-    if(!urlBase) { return null; }
+    if (!urlBase) {
+      return null;
+    }
 
     return [urlBase, get(this, 'model.path')].join('/');
   }),
@@ -28,6 +30,6 @@ export default Controller.extend(GalleryPlugin, {
   }),
 
   chooseUpload() {
-    document.querySelector(".upload-placeholder").click();
+    document.querySelector('.upload-placeholder').click();
   }
 });

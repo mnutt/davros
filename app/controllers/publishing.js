@@ -6,10 +6,12 @@ export default Controller.extend({
   publishing: service(),
   domain: '',
 
-  apexValidation: [{
-    message: "Apex domains (without www) will not work as well",
-    validate: (input) => !input.match(/^\w+\.\w?\w?\w?\w?$/)
-  }],
+  apexValidation: [
+    {
+      message: 'Apex domains (without www) will not work as well',
+      validate: input => !input.match(/^\w+\.\w?\w?\w?\w?$/)
+    }
+  ],
 
   unsavedDomainIsApex: computed('domain', function() {
     return !!get(this, 'domain');

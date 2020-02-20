@@ -8,9 +8,9 @@ export default class Router extends EmberRouter {
 }
 
 Router.map(function() {
-  this.route('file', {path: '/files/*path'});
+  this.route('file', { path: '/files/*path' });
   this.route('files');
-  this.route('home', {path: '/'});
+  this.route('home', { path: '/' });
   this.route('clients');
   this.route('publishing');
   this.route('about');
@@ -18,8 +18,11 @@ Router.map(function() {
 
 Router.reopen({
   updateSandstorm: on('didTransition', function() {
-    window.parent.postMessage({
-      setPath: this.url
-    }, '*');
+    window.parent.postMessage(
+      {
+        setPath: this.url
+      },
+      '*'
+    );
   })
 });
