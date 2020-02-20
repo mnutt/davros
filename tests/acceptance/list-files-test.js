@@ -39,7 +39,7 @@ module('Acceptance | list files', function(hooks) {
 
   test('traversing directories', async function(assert) {
     await visit('/files');
-    await click('div.filename div:contains(myDir)');
+    await click('.file-list tr:nth-child(1) .filename');
 
     find('.parent-only').remove(); // not in mobile view
 
@@ -48,7 +48,7 @@ module('Acceptance | list files', function(hooks) {
     // first file in subdir exists
     assert.dom('.file-list tr:nth-child(1) .filename .truncated').hasText('ios-davros.png');
 
-    await click('a:contains(home)');
+    await click('.breadcrumb a');
 
     find('.parent-only').remove();
     assert.equal(stripTitle(find('.title').textContent), 'Files in home /');

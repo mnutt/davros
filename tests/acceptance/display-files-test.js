@@ -31,7 +31,7 @@ module('Acceptance | display files', function(hooks) {
   test('viewing an image', async function(assert) {
     await visit('/files/');
 
-    await click('div.filename div:contains(space)');
+    await click('table.file-list tr:nth-child(2) .filename');
 
     find('.parent-only').remove(); // not in mobile view
 
