@@ -1,4 +1,4 @@
-var multiparty        = require('multiparty');
+var multiparty = require('multiparty');
 
 module.exports = function(davServer) {
   return function(req, res, next) {
@@ -7,7 +7,7 @@ module.exports = function(davServer) {
     // Unfortunately destination is sideloaded, so we have to extract it separately
     var destination;
     form.on('field', function(field, value) {
-      if(field === 'destination') {
+      if (field === 'destination') {
         destination = value;
       }
     });
@@ -20,7 +20,9 @@ module.exports = function(davServer) {
 
       // part is already a readable stream, so make it look like a request and
       // just send it on to the dav server
-      if(destination[0] !== '/') { destination = '/' + destination; }
+      if (destination[0] !== '/') {
+        destination = '/' + destination;
+      }
       part.url = '/remote.php/webdav' + destination;
       part.method = 'PUT';
       davServer(part, res, next);
@@ -31,7 +33,7 @@ module.exports = function(davServer) {
     });
 
     form.on('error', function(err) {
-      res.status(500).send("error: " + err.message);
+      res.status(500).send('error: ' + err.message);
     });
 
     form.parse(req);

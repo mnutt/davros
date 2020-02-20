@@ -1,17 +1,16 @@
 var Fs = require('fs');
-var Async = require("asyncjs");
-var Path = require("path");
+var Async = require('asyncjs');
+var Path = require('path');
 
-var jsDAV_FSExt_Directory = require("jsDAV/lib/DAV/backends/fsext/directory");
-var jsDAV_iFile           = require("jsDAV/lib/DAV/interfaces/iFile");
-var File                  = require("./file");
-var Util = require("jsDAV/lib/shared/util");
-var Exc = require("jsDAV/lib/shared/exceptions");
-var Etag = require("./etag");
-var ChildProcess          = require("child_process");
+var jsDAV_FSExt_Directory = require('jsDAV/lib/DAV/backends/fsext/directory');
+var jsDAV_iFile = require('jsDAV/lib/DAV/interfaces/iFile');
+var File = require('./file');
+var Util = require('jsDAV/lib/shared/util');
+var Exc = require('jsDAV/lib/shared/exceptions');
+var Etag = require('./etag');
+var ChildProcess = require('child_process');
 
-var Directory = module.exports = jsDAV_FSExt_Directory.extend(jsDAV_iFile, Etag, {
-
+var Directory = (module.exports = jsDAV_FSExt_Directory.extend(jsDAV_iFile, Etag, {
   chunkMatch: /(.*?)-chunking-(\d+)-(\d+)-(\d+)(-done)?$/,
 
   isChunked: function(name) {
@@ -29,13 +28,12 @@ var Directory = module.exports = jsDAV_FSExt_Directory.extend(jsDAV_iFile, Etag,
     var path = Path.join(this.path, name);
 
     Fs.stat(path, function(err, stat) {
-      if (err || typeof stat == "undefined") {
-        return cbfsgetchild(new Exc.FileNotFound("File with name "
-               + path + " could not be located"));
+      if (err || typeof stat == 'undefined') {
+        return cbfsgetchild(
+          new Exc.FileNotFound('File with name ' + path + ' could not be located')
+        );
       }
-      cbfsgetchild(null, stat.isDirectory()
-                   ? Directory.new(path)
-                   : File.new(path));
+      cbfsgetchild(null, stat.isDirectory() ? Directory.new(path) : File.new(path));
     });
   },
 
@@ -52,10 +50,7 @@ var Directory = module.exports = jsDAV_FSExt_Directory.extend(jsDAV_iFile, Etag,
         return file.name !== File.PROPS_DIR;
       })
       .each(function(file, cbnextdirch) {
-        nodes.push(file.stat.isDirectory()
-                   ? Directory.new(file.path)
-                   : File.new(file.path)
-                  );
+        nodes.push(file.stat.isDirectory() ? Directory.new(file.path) : File.new(file.path));
         cbnextdirch();
       })
       .end(function() {
@@ -76,14 +71,12 @@ var Directory = module.exports = jsDAV_FSExt_Directory.extend(jsDAV_iFile, Etag,
    */
   createFile: function(name, data, enc, cbfscreatefile) {
     var self = this;
-    jsDAV_FSExt_Directory.createFile.call(this, name, data, enc,
-                                          function(err) {
-                                         if (err)
-                                           return cbfscreatefile(err);
+    jsDAV_FSExt_Directory.createFile.call(this, name, data, enc, function(err) {
+      if (err) return cbfscreatefile(err);
 
-                                            var file = File.new([self.path, name].join('/'));
-                                            file.getETag(cbfscreatefile);
-                                       });
+      var file = File.new([self.path, name].join('/'));
+      file.getETag(cbfscreatefile);
+    });
   },
 
   /**
@@ -99,7 +92,7 @@ var Directory = module.exports = jsDAV_FSExt_Directory.extend(jsDAV_iFile, Etag,
   createFileStream: function(handler, name, enc, cbfscreatefile) {
     var self = this;
     if (this.isChunked(name)) {
-      handler.httpRequest.headers["oc-file-name"] = name;
+      handler.httpRequest.headers['oc-file-name'] = name;
       this.writeFileChunk(handler, enc, cbfscreatefile);
     } else {
       var path = Path.join(this.path, name);
@@ -113,12 +106,14 @@ var Directory = module.exports = jsDAV_FSExt_Directory.extend(jsDAV_iFile, Etag,
   writeFileChunk: function(handler, type, cbfswritechunk) {
     var self = this;
 
-    var filename = handler.httpRequest.headers["oc-file-name"];
+    var filename = handler.httpRequest.headers['oc-file-name'];
     var chunkSize = parseInt(handler.httpRequest.headers['oc-chunk-size']);
-    var size = parseInt(handler.httpRequest.headers["oc-total-length"]);
+    var size = parseInt(handler.httpRequest.headers['oc-total-length']);
 
     var parts = this.isChunked(filename);
-    if(!parts) { return cbfswritechunk("Invalid chunked file upload"); }
+    if (!parts) {
+      return cbfswritechunk('Invalid chunked file upload');
+    }
 
     var originalName = parts[1];
     var uid = parts[2];
@@ -146,20 +141,22 @@ var Directory = module.exports = jsDAV_FSExt_Directory.extend(jsDAV_iFile, Etag,
 
     var stream = Fs.createWriteStream(track.path, {
       encoding: type,
-      flags: track.count === 0 ? "w+" : "r+",
+      flags: track.count === 0 ? 'w+' : 'r+',
       start: startPosition
     });
 
-    stream.on("close", function() {
+    stream.on('close', function() {
       track.count += 1;
       if (track.count === totalChunks) {
         delete handler.server.chunkedUploads[uid];
         var originalPath = Path.join(self.path, originalName);
         Util.move(track.path, originalPath, true, function(err) {
-          if (err)
-            return;
-          handler.dispatchEvent("afterBind", handler.httpRequest.url,
-                                Path.join(self.path, filename));
+          if (err) return;
+          handler.dispatchEvent(
+            'afterBind',
+            handler.httpRequest.url,
+            Path.join(self.path, filename)
+          );
 
           self.getETag(cbfswritechunk);
         });
@@ -173,13 +170,13 @@ var Directory = module.exports = jsDAV_FSExt_Directory.extend(jsDAV_iFile, Etag,
 
   // We redefine fsext's `delete` because it uses asyncjs rmtree, which causes
   // stack overflows on very large directories.
-  "delete": function(cbfsdel) {
-    ChildProcess.spawn("rm", ["-rf", this.path]).on("exit", function(err) {
-      if(err) {
-        cbfsdel(err)
+  delete: function(cbfsdel) {
+    ChildProcess.spawn('rm', ['-rf', this.path]).on('exit', function(err) {
+      if (err) {
+        cbfsdel(err);
       } else {
         cbfsdel(null);
       }
     });
   }
-});
+}));

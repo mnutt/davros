@@ -2,7 +2,7 @@ var Cache = function() {
   this._cache = {};
 
   return this;
-}
+};
 
 Cache.prototype = {
   get: function(key) {

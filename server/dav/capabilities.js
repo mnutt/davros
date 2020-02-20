@@ -3,15 +3,15 @@ var dav = require('./index');
 exports.STATUS = JSON.stringify({
   installed: true,
   maintenance: false,
-  version: "9.1.0.14",
-  versionstring: "9.1.0 RC4",
-  edition: ""
+  version: '9.1.0.14',
+  versionstring: '9.1.0 RC4',
+  edition: ''
 });
 
 exports.CAPABILITIES = JSON.stringify({
   ocs: {
     meta: {
-      status: "ok",
+      status: 'ok',
       statuscode: 100,
       message: null
     },
@@ -20,13 +20,13 @@ exports.CAPABILITIES = JSON.stringify({
         major: 9,
         minor: 1,
         micro: 0,
-        string: "9.1.0 RC4",
-        edition: ""
+        string: '9.1.0 RC4',
+        edition: ''
       },
       capabilities: {
         core: {
           pollinterval: 60,
-          "webdav-root": dav.base.slice(1) // no leading slash
+          'webdav-root': dav.base.slice(1) // no leading slash
         },
         files_sharing: {
           api_enabled: false,
@@ -45,19 +45,12 @@ exports.CAPABILITIES = JSON.stringify({
         },
         files: {
           bigfilechunking: true,
-          blacklisted_files: [
-            ".htaccess",
-            ".jsdav"
-          ],
+          blacklisted_files: ['.htaccess', '.jsdav'],
           undelete: false,
           versioning: false
         },
         notifications: {
-          "ocs-endpoints": [
-            "list",
-            "get",
-            "delete"
-          ]
+          'ocs-endpoints': ['list', 'get', 'delete']
         }
       }
     }

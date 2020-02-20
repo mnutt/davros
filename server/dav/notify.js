@@ -1,14 +1,14 @@
-var jsDAV_ServerPlugin = require("jsDAV/lib/DAV/plugin");
+var jsDAV_ServerPlugin = require('jsDAV/lib/DAV/plugin');
 var apiWs = require('../api-ws');
 var path = require('path');
 
-var jsDAV_Notify_Plugin = module.exports = jsDAV_ServerPlugin.extend({
-  name: "ws-notify",
+var jsDAV_Notify_Plugin = (module.exports = jsDAV_ServerPlugin.extend({
+  name: 'ws-notify',
 
   initialize: function(handler) {
     this.handler = handler;
 
-    handler.addEventListener("beforeMethod", this.updateHandler.bind(this));
+    handler.addEventListener('beforeMethod', this.updateHandler.bind(this));
   },
 
   notifyMethods: {
@@ -21,12 +21,14 @@ var jsDAV_Notify_Plugin = module.exports = jsDAV_ServerPlugin.extend({
   },
 
   updateHandler: function(e, method, uri) {
-    if(this.notifyMethods[method]) {
+    if (this.notifyMethods[method]) {
       var directory = path.dirname(uri);
-      if(directory == '.') { directory = '/'; }
+      if (directory == '.') {
+        directory = '/';
+      }
       apiWs.notify(directory);
     }
 
     return e.next();
   }
-});
+}));

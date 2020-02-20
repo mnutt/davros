@@ -1,7 +1,7 @@
-var os                = require('os');
-var url               = require('url');
-var unoconv           = require('../unoconv');
-var FileCache         = require('../file-cache');
+var os = require('os');
+var url = require('url');
+var unoconv = require('../unoconv');
+var FileCache = require('../file-cache');
 
 var tempDir = os.tmpdir();
 
@@ -15,18 +15,18 @@ module.exports = function(davServer) {
     let cache = new FileCache(tempDir, fileUrl, timestamp);
 
     cache.get((cached, path) => {
-      if(cached) {
+      if (cached) {
         cached.pipe(res);
         cached.on('end', function() {
-          console.log("Unoconv cache hit for " + fileUrl);
+          console.log('Unoconv cache hit for ' + fileUrl);
         });
       } else {
         converter.outputFormat('xhtml');
         converter.set('-T 30'); // timeout after 30s
 
-        if(fileUrl.match(/\.(xls|xlsx|ods)$/)) {
+        if (fileUrl.match(/\.(xls|xlsx|ods)$/)) {
           converter.set('-d spreadsheet');
-        } else if(fileUrl.match(/\.(ppt|pptx|odp)$/)) {
+        } else if (fileUrl.match(/\.(ppt|pptx|odp)$/)) {
           converter.set('-d presentation');
         }
 
@@ -44,7 +44,7 @@ module.exports = function(davServer) {
         };
 
         converter.on('error', function(err) {
-          if(!err.toString().match(/validity error/)) {
+          if (!err.toString().match(/validity error/)) {
             console.error(err);
           }
         });
@@ -52,12 +52,11 @@ module.exports = function(davServer) {
         let cached = converter.pipe(cache);
         cached.pipe(res);
         cached.on('end', function() {
-          console.log("Converter cache miss for " + fileUrl);
+          console.log('Converter cache miss for ' + fileUrl);
         });
 
         davServer(req, converter, next);
       }
     });
-
   };
 };

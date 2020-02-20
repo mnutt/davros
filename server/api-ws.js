@@ -4,11 +4,13 @@ const url = require('url');
 let wss;
 
 exports.notify = function(file) {
-  if(!wss) { return; }
+  if (!wss) {
+    return;
+  }
 
-  const response = JSON.stringify({file: file});
+  const response = JSON.stringify({ file: file });
 
-  for(const client of wss.clients) {
+  for (const client of wss.clients) {
     client.send(response);
   }
 };
@@ -24,5 +26,5 @@ exports.serve = function(server) {
     }
   });
 
-  wss.on('error', (err) => console.error(err));
+  wss.on('error', err => console.error(err));
 };

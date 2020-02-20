@@ -10,9 +10,12 @@ class FileCache extends Transform {
   constructor(cacheDir, url, time) {
     super();
 
-    time = time > 0 ? time : "t";
+    time = time > 0 ? time : 't';
     this.cacheDir = cacheDir;
-    this.key = crypto.createHash('md5').update(url).digest('hex');
+    this.key = crypto
+      .createHash('md5')
+      .update(url)
+      .digest('hex');
     this.fileName = [this.key, time].join('_');
     this.path = this.cachePathFor(this.fileName);
   }
@@ -44,26 +47,31 @@ class FileCache extends Transform {
 
   cleanOld() {
     fs.readdir(path.dirname(this.path), (error, files) => {
-      files.filter((name) => {
-        if (this.fileName === name) {
-          return false;
-        } else {
-          return name.indexOf(this.key) === 0;
-        }
-      }).forEach((name) => {
-        console.log("Cleaned up " + (this.cachePathFor(name)));
-        fs.unlink(this.cachePathFor(name), () => {});
-      });
+      files
+        .filter(name => {
+          if (this.fileName === name) {
+            return false;
+          } else {
+            return name.indexOf(this.key) === 0;
+          }
+        })
+        .forEach(name => {
+          console.log('Cleaned up ' + this.cachePathFor(name));
+          fs.unlink(this.cachePathFor(name), () => {});
+        });
     });
   }
 
   cachePathFor(name) {
     var parts = [this.key.slice(0, 3), this.key.slice(3, 6), this.key.slice(6, 9)];
-    return [this.cacheDir].concat(parts).concat(name).join('/');
+    return [this.cacheDir]
+      .concat(parts)
+      .concat(name)
+      .join('/');
   }
 
   get(cb) {
-    fs.exists(this.path, (exists) => {
+    fs.exists(this.path, exists => {
       if (exists) {
         return cb(fs.createReadStream(this.path), this.path);
       } else {
@@ -71,6 +79,6 @@ class FileCache extends Transform {
       }
     });
   }
-};
+}
 
 module.exports = FileCache;

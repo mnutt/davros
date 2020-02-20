@@ -1,5 +1,5 @@
-var fs                = require('fs');
-var path              = require('path');
+var fs = require('fs');
+var path = require('path');
 
 function errorHandler(res) {
   return function(err) {
@@ -9,9 +9,8 @@ function errorHandler(res) {
 }
 
 module.exports = function(root) {
-
   // ignore relative or empty path components
-  var ignoredComponents = ["",".",".."];
+  var ignoredComponents = ['', '.', '..'];
 
   return function(req, res, next) {
     var relPath = req.query.path;
@@ -41,7 +40,7 @@ module.exports = function(root) {
     }
 
     fs.stat(fullPath, function(err, stats) {
-      if(err) {
+      if (err) {
         if (err.code === 'ENOENT') {
           res.writeHead(404);
           res.end('File not found');

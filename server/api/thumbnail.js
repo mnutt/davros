@@ -1,12 +1,12 @@
-var os                = require('os');
-var url               = require('url');
-var FileCache         = require('../file-cache');
+var os = require('os');
+var url = require('url');
+var FileCache = require('../file-cache');
 
 var tempDir = os.tmpdir();
 
 const resizeOperations = {
-  'smaller': '>',
-  'fit': '^'
+  smaller: '>',
+  fit: '^'
 };
 
 const resizeOperationNames = {
@@ -15,7 +15,7 @@ const resizeOperationNames = {
 };
 
 module.exports = function(davServer) {
-  function addListeners (stream, on, listeners) {
+  function addListeners(stream, on, listeners) {
     for (var i = 0; i < listeners.length; i++) {
       on.apply(stream, listeners[i]);
     }
@@ -28,26 +28,26 @@ module.exports = function(davServer) {
 
     let queryParams = url.parse(req.url, true).query;
     let w = Math.max(Math.min(parseInt(queryParams.width, 10) || 10, 5000), 1);
-    let h = Math.max(Math.min(parseInt(queryParams.height, 10)|| 10, 5000), 1);
+    let h = Math.max(Math.min(parseInt(queryParams.height, 10) || 10, 5000), 1);
     let op = resizeOperations[queryParams.op] || '^';
     let timestamp = queryParams.ts;
 
-    let cacheKey = [w, h, resizeOperationNames[op], queryParams.url].join("-");
+    let cacheKey = [w, h, resizeOperationNames[op], queryParams.url].join('-');
     let cache = new FileCache(tempDir, cacheKey, timestamp);
     cache.get((cached, path) => {
-      if(cached) {
+      if (cached) {
         cached.pipe(res);
         cached.on('end', function() {
-          console.log("Thumbnailer cache hit for " + cacheKey);
+          console.log('Thumbnailer cache hit for ' + cacheKey);
         });
       } else {
         thumbnailer.quality(90);
         thumbnailer.resize(`${w}x${h}${op}`);
 
         // Only use the first frame, if animated
-        thumbnailer.input = "-[0]";
+        thumbnailer.input = '-[0]';
 
-        if(op === '^') {
+        if (op === '^') {
           thumbnailer.gravity('center');
           thumbnailer.op('repage', '0x0+0+0');
           thumbnailer.crop(`${w}x${h}+0+0`);
@@ -74,7 +74,7 @@ module.exports = function(davServer) {
         let cached = thumbnailer.pipe(cache);
         cached.pipe(res);
         cached.on('end', function() {
-          console.log("Thumbnailer cache miss for " + cacheKey);
+          console.log('Thumbnailer cache miss for ' + cacheKey);
         });
 
         davServer(req, thumbnailer, next);

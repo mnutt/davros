@@ -1,13 +1,13 @@
-"use strict";
+'use strict';
 
-var Fs = require("fs");
+var Fs = require('fs');
 var sizeOf = require('image-size');
 
-var jsDAV_FSExt_File  = require("jsDAV/lib/DAV/backends/fsext/file");
-var jsDAV_iProperties = require("jsDAV/lib/DAV/interfaces/iProperties");
-var jsDAV_FS_Node     = require("jsDAV/lib/DAV/backends/fs/node");
-var Util              = require("jsDAV/lib/shared/util");
-var Etag              = require("./etag");
+var jsDAV_FSExt_File = require('jsDAV/lib/DAV/backends/fsext/file');
+var jsDAV_iProperties = require('jsDAV/lib/DAV/interfaces/iProperties');
+var jsDAV_FS_Node = require('jsDAV/lib/DAV/backends/fs/node');
+var Util = require('jsDAV/lib/shared/util');
+var Etag = require('./etag');
 
 module.exports = jsDAV_FSExt_File.extend(Etag, jsDAV_iProperties, {
   getProperties: function(properties, cbgetprops) {
@@ -22,5 +22,7 @@ module.exports = jsDAV_FSExt_File.extend(Etag, jsDAV_iProperties, {
     });
   },
 
-  updateProperties: function(mutations, cb) { cb(); }
+  updateProperties: function(mutations, cb) {
+    cb();
+  }
 });

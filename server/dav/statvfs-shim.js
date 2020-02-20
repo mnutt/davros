@@ -11,7 +11,7 @@ module.exports = function(p, cb) {
   var start = new Date();
 
   resolve(p, function(err, resolvedPath) {
-    if(err) {
+    if (err) {
       return cb(err, null);
     }
 
@@ -33,12 +33,12 @@ module.exports = function(p, cb) {
 
 function resolve(p, cb) {
   var cachedValue = cachedResolver.get(p);
-  if(cachedValue) {
+  if (cachedValue) {
     return cb(null, cachedValue);
   }
 
   fs.realpath(path.resolve(p), function(err, resolvedPath) {
-    if(err) {
+    if (err) {
       cb(err, resolvedPath);
     } else {
       cachedResolver.set(p, resolvedPath, 60000);
@@ -49,18 +49,18 @@ function resolve(p, cb) {
 
 function df(p, cb) {
   var cachedValue = cachedFree.get('all');
-  if(cachedValue) {
+  if (cachedValue) {
     return cb(null, cachedValue);
   }
 
   exec("df -k '" + p + "' | tail -n 1 | awk '{ print $2\":\"$4 }'", function(err, stdout, stderr) {
-    if(err) {
+    if (err) {
       return cb(err, null);
     }
 
     var match = stdout.match(/^(\d+):(\d+)/);
-    if(!match) {
-      return cb("Failed to fetch disk free space", null);
+    if (!match) {
+      return cb('Failed to fetch disk free space', null);
     }
 
     var free = parseInt(match[2], 10) || 0;
@@ -68,22 +68,22 @@ function df(p, cb) {
 
     cb(null, free);
   });
-};
+}
 
 function du(p, cb) {
   var cachedValue = cachedUsed.get(p);
-  if(typeof(cachedValue) !== "undefined") {
+  if (typeof cachedValue !== 'undefined') {
     return cb(null, cachedValue);
   }
 
   exec("du -k -d 0 '" + p + "'", function(err, stdout, stderr) {
-    if(err) {
+    if (err) {
       return cb(err, null);
     }
 
     var match = stdout.match(/^(\d+)/);
-    if(!match) {
-      return cb("Failed to fetch used disk space", null);
+    if (!match) {
+      return cb('Failed to fetch used disk space', null);
     }
 
     var used = parseInt(match[1], 10) || 0;
@@ -91,4 +91,4 @@ function du(p, cb) {
 
     cb(null, used);
   });
-};
+}

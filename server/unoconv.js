@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 const spawn = require('child_process').spawn;
 const Duplexify = require('duplexify');
@@ -14,26 +14,26 @@ class Unoconv extends Duplexify {
     this.binary = binloc || 'unoconv';
   }
 
-  resume () {
+  resume() {
     if (!this.spawned) this.spawn();
     this.spawned = true;
     super.resume();
   }
 
-  outputFormat (format) {
+  outputFormat(format) {
     this.format = format;
     return this;
   }
 
-  set (setting) {
-    setting.split(' ').forEach((word) => {
+  set(setting) {
+    setting.split(' ').forEach(word => {
       this.settings.push(word);
     });
 
     return this;
   }
 
-  spawn () {
+  spawn() {
     const onerror = this.onerror.bind(this);
     var errors = []; // stderr, only emitted if return code is > 0
     const proc = spawn(this.binary, this.args());
@@ -47,26 +47,28 @@ class Unoconv extends Duplexify {
     this.setWritable(stdin);
 
     const stderr = proc.stderr;
-    stderr.on('data', function(chunk) { errors.push(chunk); });
+    stderr.on('data', function(chunk) {
+      errors.push(chunk);
+    });
     stderr.on('error', onerror);
 
     proc.on('exit', function(code) {
-      if(code > 0) {
-        errors.push("Unoconv exited with code " + code);
+      if (code > 0) {
+        errors.push('Unoconv exited with code ' + code);
         onerror(errors.join('\n'));
       }
     });
   }
 
-  args () {
+  args() {
     return this.settings.concat(['-f', this.format]);
   }
 
-  onerror (err) {
+  onerror(err) {
     if (!isError(err)) err = new Error(err);
     if (!this.listeners('error')) throw err;
     this.emit('error', err);
   }
 }
 
-module.exports = (binloc) => new Unoconv(binloc);
+module.exports = binloc => new Unoconv(binloc);

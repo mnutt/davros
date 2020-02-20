@@ -1,15 +1,15 @@
 var crypto = require('crypto');
-var Fs     = require('fs');
-var Path   = require('path');
-var Base   = require("jsDAV/lib/shared/base");
+var Fs = require('fs');
+var Path = require('path');
+var Base = require('jsDAV/lib/shared/base');
 
-var jsDAV_iCollection = require("jsDAV/lib/DAV/interfaces/iCollection");
+var jsDAV_iCollection = require('jsDAV/lib/DAV/interfaces/iCollection');
 
-var Etag = module.exports = Base.extend({
+var Etag = (module.exports = Base.extend({
   getETag: function(cb) {
     var self = this;
     Fs.stat(this.path, function(err, stat) {
-      if(err) {
+      if (err) {
         return cb(err);
       }
 
@@ -24,6 +24,6 @@ var Etag = module.exports = Base.extend({
       cb(null, etag);
     });
   }
-});
+}));
 
 module.exports.tree = null;
