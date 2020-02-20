@@ -1,6 +1,6 @@
 import { computed } from '@ember/object';
 import Component from '@ember/component';
-import fetch from 'ember-network/fetch';
+import fetch from 'fetch';
 
 // Attempt to work around LibreOffice .doc bullet rendering issues
 const bullet = new RegExp(/[\uF077\uF0B7\uF024\uF0A7]+/, 'g');

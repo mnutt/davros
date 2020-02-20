@@ -1,12 +1,14 @@
 import { alias } from '@ember/object/computed';
 import Service from '@ember/service';
 import { computed, set, get } from '@ember/object';
-import fetch from 'ember-network/fetch';
+import fetch from 'fetch';
 
 export default Service.extend({
   data: null,
 
   init: function() {
+    this._super.apply(this, arguments);
+
     fetch('/api/publish/info').then((response) => {
       return response.json();
     }).then((result) => {

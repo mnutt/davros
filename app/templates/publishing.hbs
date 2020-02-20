@@ -2,17 +2,17 @@
   Web Publishing
 </TitleBar>
 
-<PaperContent @class="publishing" @flex-layout="column" @flex={{true}}>
+<PaperContent class="publishing" @flex-layout="column" @flex={{true}}>
   <p class="content">
     You can publish this shared directory to the web. Add <code>index.html</code> to the top level to set up your site. All files in the shared directory will be publicly accessible.
 
-    {{#if publishing.publicId}}
+    {{#if this.publishing.publicId}}
       <div class="toggle-publishing">
-        <PaperButton @raised={{true}} @warn={{true}} @onClick={{route-action "unpublish"}}>Disable</PaperButton>
+        <PaperButton @raised={{true}} @warn={{true}} {{on "click" (route-action "unpublish")}}>Disable</PaperButton>
         <strong>
           Publishing is Enabled
-          {{#if publishing.domain}}
-            with custom domain {{publishing.domain}}
+          {{#if this.publishing.domain}}
+            with custom domain {{this.publishing.domain}}
           {{/if}}
         </strong>
       </div>
@@ -20,23 +20,23 @@
       <div class="publish-info">
         <div class="auto-url">
           Preview available from:
-          <a target="_blank" rel="noopener" href={{publishing.autoUrl}}>{{publishing.autoUrl}}</a>
+          <a target="_blank" rel="noopener noreferrer" href={{this.publishing.autoUrl}}>{{this.publishing.autoUrl}}</a>
         </div>
 
-        {{#if publishing.domain}}
+        {{#if this.publishing.domain}}
           <div class="dns-setup">
             <h2>Instructions for setting up your own domain or subdomain:</h2>
 
             <div class="records">
               Add the following DNS records to your domain registrar:
               <pre>
-                {{publishing.domain}}. IN CNAME {{publishing.host}}
-    sandstorm-www.{{publishing.domain}}. IN TXT {{publishing.publicId}}
+                {{this.publishing.domain}}. IN CNAME {{this.publishing.host}}
+    sandstorm-www.{{this.publishing.domain}}. IN TXT {{this.publishing.publicId}}
               </pre>
 
-              {{#if domainIsApex}}
+              {{#if this.domainIsApex}}
                 <div class="note">
-                  The CNAME configuration above only works on subdomains. You should either use www.{{publishing.domain}} for the custom domain or replace <code>IN&nbsp;CNAME&nbsp;{{publishing.host}}</code> with <code>IN&nbsp;A&nbsp;<i>(IP&nbsp;of&nbsp;{{publishing.host}})</i></code>. If <b>{{publishing.host}}</b>'s IP ever changes, you'll need to update the DNS record.
+                  The CNAME configuration above only works on subdomains. You should either use www.{{this.publishing.domain}} for the custom domain or replace <code>IN&nbsp;CNAME&nbsp;{{this.publishing.host}}</code> with <code>IN&nbsp;A&nbsp;<i>(IP&nbsp;of&nbsp;{{this.publishing.host}})</i></code>. If <b>{{this.publishing.host}}</b>'s IP ever changes, you'll need to update the DNS record.
                 </div>
               {{/if}}
             </div>
@@ -46,11 +46,11 @@
     {{else}}
 
       <div class="setup">
-        <PaperInput @label="Optional Custom Domain" @value={{domain}} @customValidations={{apexValidation}} @onChange={{action (mut domain)}} />
+        <PaperInput @label="Optional Custom Domain" @value={{this.domain}} @customValidations={{this.apexValidation}} @onChange={{fn (mut this.domain)}} />
       </div>
 
       <div class="toggle-publishing">
-        <PaperButton @raised={{true}} @primary={{true}} @onClick={{route-action "publish"}}>Enable</PaperButton>
+        <PaperButton @raised={{true}} @primary={{true}} {{on "click" (route-action "publish")}}>Enable</PaperButton>
         <strong>Publishing is Disabled</strong>
       </div>
     {{/if}}

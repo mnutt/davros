@@ -1,34 +1,74 @@
 <TitleBar>
   <div class="title">
     Viewing
-    <PathBreadcrumb @path={{model.path}} />
-    {{model.name}}
+    <PathBreadcrumb @path={{this.model.path}} />
+    {{this.model.name}}
   </div>
 
-  {{partial "file-menu"}}
+  <div class="actions">
+    {{#if this.canEdit}}
+      <PaperButton @class="icon-button delete-button" @onClick={{fn (mut this.deleteDialogActive) true}}>
+        <PaperIcon @icon="delete"/>
+
+        <EmberTooltip>
+          Delete File
+        </EmberTooltip>
+      </PaperButton>
+    {{/if}}
+  </div>
+
+  {{!-- Only displayed on mobile --}}
+  <div class="compact-actions">
+    <div class="more">
+      <PaperMenu @position="target-right target" as |menu|>
+        <menu.trigger>
+          <PaperButton @class="more-button" @icon-button={{true}}>
+            {{paper-icon "more-vert" class="md-menu-origin"}}
+          </PaperButton>
+        </menu.trigger>
+
+        <menu.content>
+          {{#if this.canEdit}}
+            <PaperMenuItem @class="danger" @onClick={{fn (mut this.deleteDialogActive) true}}>
+              <p class="label">Delete File</p>
+              {{paper-icon "delete" class="md-menu-align-target"}}
+            </PaperMenuItem>
+          {{else}}
+            <PaperMenuItem>
+              <p class="label">Read-only mode</p>
+            </PaperMenuItem>
+          {{/if}}
+        </menu.content>
+      </PaperMenu>
+    </div>
+  </div>
+
+  <DeleteDialog @active={{this.deleteDialogActive}} @onDelete={{route-action "delete"}}>
+    Are you sure you want to delete the file {{this.model.name}}? It will also be deleted from any synced clients.
+  </DeleteDialog>
 </TitleBar>
 
-<div class="file file-{{model.type}}">
+<div class="file file-{{this.model.type}}">
   <div class="meta">
     <div class="filename">
 
-      <a href={{model.rawPath}}>
-        {{model.name}}
+      <a href={{this.model.rawPath}}>
+        {{this.model.name}}
       </a>
     </div>
 
     <div class="fsinfo">
-      <span title={{model.mtime}} class="updated">Updated {{moment-from-now model.mtime locale="en" interval=5000}}</span>
+      <span title={{this.model.mtime}} class="updated">Updated {{moment-from-now this.model.mtime locale="en" interval=5000}}</span>
       &middot;
-      <span title="{{commify model.size}} bytes" class="size">{{filesize model.size}}</span>
+      <span title="{{commify this.model.size}} bytes" class="size">{{filesize this.model.size}}</span>
       &middot;
-      <a href={{model.rawPath}} target="_blank" rel="noopener">Download Original</a>
-      {{#if publicUrl}}
+      <a href={{this.model.rawPath}} target="_blank" rel="noopener noreferrer">Download Original</a>
+      {{#if this.publicUrl}}
         &middot;
-        <a href={{publicUrl}} target="_blank" rel="noopener">Public URL</a>
+        <a href={{this.publicUrl}} target="_blank" rel="noopener noreferrer">Public URL</a>
       {{/if}}
     </div>
   </div>
 
-  {{component model.typeComponent model=model class="preview"}}
+  {{component this.model.typeComponent model=this.model class="preview"}}
 </div>

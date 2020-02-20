@@ -8,7 +8,7 @@ export default Mixin.create({
     return this.get('model.sortedFiles').filter((file) => {
       return file.get('type') === "image";
     }).map((file) => {
-      return {src: file.get('rawPath'), title: file.get('name')};
+      return {src: file.rawPath, title: file.name, w: file.width, h: file.height};
     });
   }),
   galleryOptions: { hideShare: true },

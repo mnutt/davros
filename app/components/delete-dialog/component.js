@@ -1,21 +1,22 @@
 import { defer } from 'rsvp';
-import Component from '@ember/component';
+import Component from '@glimmer/component';
+import { action } from '@ember/object';
 
-export default Component.extend({
-  what: 'this directory',
+export default class DeleteDialog extends Component {
+  what='this directory';
 
-  actions: {
-    close() {
-      this.set('active', false);
-    },
-
-    delete() {
-      let _defer = defer();
-      this.sendAction('onDelete', _defer);
-
-      _defer.promise.then(() => {
-        this.send('close');
-      });
-    }
+  @action
+  close() {
+    this.set('active', false);
   }
-});
+
+  @action
+  deleteItem() {
+    let _defer = defer();
+    this.sendAction('onDelete', _defer);
+
+    _defer.promise.then(() => {
+      this.send('close');
+    });
+  }
+}

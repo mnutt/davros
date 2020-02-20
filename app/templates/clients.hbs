@@ -10,26 +10,26 @@
 
     Start the client. In the <strong>Server Name</strong> field, use this value:
     <div class="server-url">
-      {{#if useAuthInServerUrl}}
-        <OfferIframe @content="$API_PROTO//$GRAIN_TITLE_SLUG:$API_TOKEN@$API_HOST/remote.php/webdav/" @clipboardButton="right" @unauthenticated={{unauthenticated}} />
+      {{#if this.useAuthInServerUrl}}
+        <OfferIframe @content="$API_PROTO//$GRAIN_TITLE_SLUG:$API_TOKEN@$API_HOST/remote.php/webdav/" @clipboardButton="right" @unauthenticated={{this.unauthenticated}} />
       {{else}}
-        <OfferIframe @content="$API_PROTO//$API_HOST/remote.php/webdav/" @clipboardButton="right" @unauthenticated={{unauthenticated}} />
+        <OfferIframe @content="$API_PROTO//$API_HOST/remote.php/webdav/" @clipboardButton="right" @unauthenticated={{this.unauthenticated}} />
       {{/if}}
     </div>
 
-    <PaperSwitch @class="use-auth-in-url" @noink={{true}} @value={{useAuthInServerUrl}} @onChange={{action (mut useAuthInServerUrl)}}> Put auth in URL (command line use) </PaperSwitch>
+    <PaperSwitch @class="use-auth-in-url" @noink={{true}} @value={{this.useAuthInServerUrl}} @onChange={{fn (mut this.useAuthInServerUrl)}}> Put auth in URL (command line use) </PaperSwitch>
 
     On the <strong>Enter user credentials</strong> step, use:
 
     <div class="authentication">
       <div class="username-field">
         <label for="username">Username</label>
-        <div class="username"><OfferIframe @content="$GRAIN_TITLE_SLUG" @clipboardButton="right" @unauthenticated={{unauthenticated}} /></div>
+        <div class="username"><OfferIframe @content="$GRAIN_TITLE_SLUG" @clipboardButton="right" @unauthenticated={{this.unauthenticated}} /></div>
       </div>
 
       <div class="password-field">
         <label for="password">Password</label>
-        <div class="password"><OfferIframe @content="$API_TOKEN" @clipboardButton="right" @unauthenticated={{unauthenticated}} /></div>
+        <div class="password"><OfferIframe @content="$API_TOKEN" @clipboardButton="right" @unauthenticated={{this.unauthenticated}} /></div>
       </div>
     </div>
 

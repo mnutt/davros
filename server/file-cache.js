@@ -21,7 +21,7 @@ class FileCache extends Transform {
     if (this.cachedFile) {
       this.__transform(chunk, encoding, done);
     } else {
-      mkdirp(path.dirname(this.path), () => {
+      mkdirp(path.dirname(this.path)).then(() => {
         this.cachedFile = fs.createWriteStream(this.path);
         this.cleanOld();
         this.__transform(chunk, encoding, done);
@@ -52,7 +52,7 @@ class FileCache extends Transform {
         }
       }).forEach((name) => {
         console.log("Cleaned up " + (this.cachePathFor(name)));
-        fs.unlink(this.cachePathFor(name));
+        fs.unlink(this.cachePathFor(name), () => {});
       });
     });
   }

@@ -1,12 +1,11 @@
 import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
-import fetch from 'ember-network/fetch';
-import $ from 'jquery';
+import fetch from 'fetch';
 import File from 'davros/models/file';
 import ensureCollectionExists from 'davros/lib/ensure-collection-exists';
 import { task } from 'ember-concurrency';
 
-const socketUrl = ((document.location.protocol === 'https:') ? 'wss://' : 'ws://') + document.location.host;
+const socketUrl = ((document.location.protocol === 'https:') ? 'wss://' : 'ws://') + document.location.host + "/ws-files";
 
 export default Route.extend({
   websockets: service(),
@@ -96,10 +95,6 @@ export default Route.extend({
         return fetch(fullPath, {method: 'MKCOL'}).then(() => {
           return this.get('controller.model').load();
       }).then(() => { defer.resolve(); }, () => { defer.reject(); });
-    },
-
-    chooseUpload() {
-      $("#upload-placeholder").click();
     },
 
     downloadDirectory() {

@@ -1,13 +1,14 @@
 import Mixin from '@ember/object/mixin';
 import Webdav from 'davros/lib/webdav';
-import jQuery from 'jquery';
+
+const propnames = ['getlastmodified', 'quota-used-bytes', 'getcontentlength', 'getdimensions'];
 
 export default Mixin.create({
   davBase: Webdav.base,
 
   load: function() {
     return Webdav.propfind(this.rawPath).then((xml) => {
-      let responses = jQuery.makeArray(xml.querySelectorAll('d\\:response, response'));
+      let responses = [...xml.querySelectorAll('d\\:response, response')];
       let parsedResponses = responses.map(this.parseResponse.bind(this));
       parsedResponses.sort((a, b) => {
         return a.path.length - b.path.length;
@@ -31,24 +32,37 @@ export default Mixin.create({
     this.setProperties(response);
   },
 
-  parseResponse: function(response) {
-    let doc = jQuery(response);
-    let path = doc.find('d\\:href, href').text();
+  parseResponse: function(doc) {
+    let path = doc.querySelector('d\\:href, href').innerHTML;
     path = path.slice(this.get('davBase.length') + 1).replace(/\/$/, '');
-    let isDirectory = doc.find('d\\:collection, collection').length > 0;
+    let isDirectory = doc.querySelectorAll('d\\:collection, collection').length > 0;
     path = decodeURIComponent(path);
-    let mtime = new Date(doc.find('d\\:getlastmodified, getlastmodified').text());
 
-    let size, files;
-    if(isDirectory) {
-      size = parseInt(doc.find('d\\:quota-used-bytes, quota-used-bytes').text(), 10);
-      files = [];
-    } else {
-      size = parseInt(doc.find('d\\:getcontentlength, getcontentlength').text(), 10) || 0;
+    const props = {};
+    for (let name of propnames) {
+      const el = doc.querySelector(`d\\:${name}, ${name}`);
+      if (el) {
+        props[name] = el.innerHTML;
+      }
     }
 
+    let size, files;
+    if (isDirectory) {
+      size = parseInt(props['quota-used-bytes'], 10) || 0;
+      files = [];
+    } else {
+      size = parseInt(props.getcontentlength, 10) || 0;
+    }
+
+    const dimensions = props.getdimensions ? JSON.parse(props.getdimensions) : null;
+
     return {
-      path, isDirectory, mtime, size, files
+      path,
+      isDirectory,
+      dimensions,
+      mtime: new Date(props.getlastmodified),
+      size,
+      files
     };
   },
 

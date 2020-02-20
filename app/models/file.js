@@ -49,6 +49,14 @@ export default EmberObject.extend(Webdav, {
     }
   }),
 
+  width: computed('dimensions', function() {
+    return this.dimensions[0];
+  }),
+
+  height: computed('dimensions', function() {
+    return this.dimensions[1];
+  }),
+
   type: computed('extension', function() {
     return filetypes[this.extension.toLowerCase()] || filetypes.defaultType;
   }),

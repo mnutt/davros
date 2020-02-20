@@ -1,7 +1,22 @@
-import $ from 'jquery';
-import fetch from 'ember-network/fetch';
+import fetch from 'fetch';
 
-const propFindQuery = new Blob(['<?xml version="1.0" ?>\n<D:propfind xmlns:D="DAV:"><D:allprop/></D:propfind>'], {type: 'application/xml'});
+const propFindQuery = new Blob([
+  [
+    '<?xml version="1.0" ?>',
+    '<D:propfind xmlns:D="DAV:">',
+    '  <D:prop>',
+    '    <D:getdimensions/>',
+    '    <D:getlastmodified/>',
+    '    <D:resourcetype/>',
+    '    <D:getetag/>',
+    '    <D:quota-used-bytes/>',
+    '    <D:quota-available-bytes/>',
+    '    <D:getcontenttype/>',
+    '    <D:getcontentlength/>',
+    '  </D:prop>',
+    '</D:propfind>'
+  ].join("\n")
+], {type: 'application/xml'});
 
 export default {
   base: '/remote.php/webdav',
@@ -9,7 +24,10 @@ export default {
   propfind: function(path) {
     return fetch(path, {
       method: 'PROPFIND',
-      contentType: 'application/xml',
+      headers: {
+        'Content-Type': 'application/xml',
+        Depth: '1'
+      },
       body: propFindQuery
     }).then(function(response) {
       if(response.status >= 200 && response.status < 400) {
@@ -22,7 +40,8 @@ export default {
         }
       }
     }).then(function(raw) {
-      return $.parseXML(raw);
+      const domParser = new DOMParser();
+      return domParser.parseFromString(raw, "application/xml");
     });
   },
 

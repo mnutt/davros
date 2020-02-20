@@ -10,6 +10,8 @@ $font_root_url: '../fonts';
 @import 'clients';
 @import 'about';
 @import 'spinner';
+@import 'ember-photoswipe';
+@import 'fonts';
 
 body, #content {
   background-color: #FFF;
@@ -144,10 +146,10 @@ md-menu-item {
   }
 
   &.danger {
-    color: color($warn);;
+    color: paper-color($warn);;
 
     md-icon {
-      color: color($warn);
+      color: paper-color($warn);
     }
   }
 

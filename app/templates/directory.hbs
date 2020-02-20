@@ -4,7 +4,7 @@
       <div class="message">
         {{paper-icon "add-circle"}}
         Drop files or directories to add them to
-        <PathBreadcrumb @path={{model.path}} />
+        <PathBreadcrumb @path={{this.model.path}} />
       </div>
     </div>
   {{/if}}
@@ -15,35 +15,142 @@
     </div>
   {{/if}}
 
-  <FileUpload @name="content" @multiple={{true}} @onfileadd={{route-action "upload"}} @id="upload-placeholder">
+  <FileUpload @name="content" @multiple={{true}} @onfileadd={{route-action "upload"}} @class="upload-placeholder">
   </FileUpload>
 </DavrosUploader>
 
 <TitleBar>
   <div class="title">
     Files in
-    <PathBreadcrumb @path={{model.path}} />
+    <PathBreadcrumb @path={{this.model.path}} />
 
-    {{#if model.name}}
-      {{model.name}} /
+    {{#if this.model.name}}
+      {{this.model.name}} /
     {{/if}}
   </div>
 
-  {{partial "directory-menu"}}
+  <PhotoSwipe @shareEl={{false}} @items={{this.directoryGalleryItems}} as |photoswipe|>
+    <div class="actions">
+      {{#if this.canEdit}}
+        <PaperButton @class="icon-button new-directory-button" @onClick="chooseUpload">
+          {{paper-icon "file-upload" aria-label="Upload"}}
+
+          <EmberTooltip>
+            Upload
+          </EmberTooltip>
+        </PaperButton>
+
+        <PaperButton @class="icon-button" @onClick={{fn (mut this.newDialogActive) true}}>
+          {{paper-icon "add-circle-outline" aria-label="New directory"}}
+
+          <EmberTooltip>
+            New Directory
+          </EmberTooltip>
+
+        </PaperButton>
+      {{/if}}
+
+      <PaperButton @class="icon-button" @onClick={{fn photoswipe.actions.open}}>
+        {{paper-icon "photo" aria-label="Slideshow"}}
+
+        <EmberTooltip>
+          Slideshow
+        </EmberTooltip>
+      </PaperButton>
+
+      <PaperButton @class="icon-button" @onClick="downloadDirectory">
+        {{paper-icon "file-download" aria-label="Download directory as zip"}}
+
+        <EmberTooltip>
+          Download (zip)
+        </EmberTooltip>
+      </PaperButton>
+
+      {{#if this.canEdit}}
+        <PaperButton @class="icon-button delete-button" @onClick={{fn (mut this.deleteDialogActive) true}}>
+          {{paper-icon "delete" aria-label="Delete"}}
+
+          <EmberTooltip>
+            {{#if this.isRoot}}
+              Delete Everything
+            {{else}}
+              Delete Directory
+            {{/if}}
+          </EmberTooltip>
+        </PaperButton>
+      {{/if}}
+    </div>
+  </PhotoSwipe>
+
+  {{!-- only displayed on mobile --}}
+  <div class="compact-actions">
+    <div class="more">
+      <PaperMenu @position="target-right target" @width={{4}} as |menu|>
+        <menu.trigger>
+          <PaperButton @class="more-button" @iconButton={{true}}>
+            {{paper-icon "more-vert" class="md-menu-origin" aria-label="Menu"}}
+          </PaperButton>
+        </menu.trigger>
+
+        <menu.content>
+          {{#if this.canEdit}}
+            <PaperMenuItem @onClick="chooseUpload" @id="menu-upload-file">
+              <p class="label">Upload</p>
+              {{paper-icon "file-upload" class="md-menu-align-target"}}
+            </PaperMenuItem>
+
+            <PaperMenuItem @onClick={{fn (mut this.newDialogActive) true}}>
+              <p class="label">New Directory</p>
+              {{paper-icon "add-circle-outline" class="md-menu-align-target"}}
+            </PaperMenuItem>
+          {{/if}}
+
+          <PaperMenuItem @onClick="slideshow">
+            <p class="label">View Slideshow</p>
+            {{paper-icon "photo" class="md-menu-align-target"}}
+          </PaperMenuItem>
+
+          <PaperMenuItem @onClick="downloadDirectory" @id="menu-download-directory">
+            <p class="label">Download (zip)</p>
+            {{paper-icon "file-download" class="md-menu-align-target"}}
+          </PaperMenuItem>
+
+          {{#if this.canEdit}}
+            <PaperMenuItem @class="danger" @onClick={{fn (mut this.deleteDialogActive) true}}>
+              <p class="label">Delete Directory</p>
+              {{paper-icon "delete" class="md-menu-align-target"}}
+            </PaperMenuItem>
+          {{/if}}
+        </menu.content>
+      </PaperMenu>
+    </div>
+  </div>
+
+  <NewDirectoryDialog @active={{this.newDialogActive}} @onCreate={{route-action "newDirectory"}} />
+
+  <DeleteDialog @active={{this.deleteDialogActive}} @onDelete={{route-action "delete"}}>
+    Are you sure you want to delete
+    {{#if this.isRoot}}
+      <b>absolutely everything</b>
+      {{~else~}}
+      this directory
+      {{~/if~}}?
+      It will also be deleted from any synced clients.
+  </DeleteDialog>
 </TitleBar>
 
-{{#if model.sortedFiles}}
-  <table class="file-list {{if showExtraFields "" "noExtraFields"}}">
+{{#if this.model.sortedFiles}}
+  <table class="file-list {{if this.showExtraFields "" "noExtraFields"}}">
     <thead>
       <tr>
         <th class="name">Name</th>
-        <th class="updated"><span {{action (toggle this "showExtraFields")}}>Updated</span></th>
-        <th class="size"><span {{action (toggle this "showExtraFields")}}>Size</span></th>
+        <th class="updated"><a href="#" {{on "click" (toggle this "showExtraFields")}}>Updated</a></th>
+        <th class="size"><a href="#" {{on "click" (toggle this "showExtraFields")}}>Size</a></th>
       </tr>
     </thead>
 
     <tbody>
-      {{#each model.sortedFiles as |file|}}
+      {{#each this.model.sortedFiles as |file|}}
         <tr>
           <LinkTo @route="file" @model={{file.linkedPath}} class="name" @tagName="td">
             <div class="filename">
@@ -61,18 +168,18 @@
             </div>
           </LinkTo>
 
-          {{#if showExtraFields}}
+          {{#if this.showExtraFields}}
             <td class="updated" title={{file.mtime}}>
               <span class="short">
-                {{#if model.lotsOfFiles}}
-                  {{moment-from-now file.mtime locale="en-short" hideSuffix=true}}
+                {{#if this.model.lotsOfFiles}}
+                  {{moment-from-now file.mtime locale="en-short" hideAffix=true}}
                 {{else}}
-                  {{moment-from-now file.mtime locale="en-short" interval=5000 hideSuffix=true}}
+                  {{moment-from-now file.mtime locale="en-short" interval=5000 hideAffix=true}}
                 {{/if}}
               </span>
 
               <span class="long">
-                {{#if model.lotsOfFiles}}
+                {{#if this.model.lotsOfFiles}}
                   {{moment-from-now file.mtime locale="en"}}
                 {{else}}
                   {{moment-from-now file.mtime locale="en" interval=5000}}
@@ -90,8 +197,6 @@
   </table>
 {{else}}
   <div class="empty-notice">
-    This directory is empty. You can <a href="#" {{action "chooseUpload"}}>upload some files</a> or just drag them in.
+    This directory is empty. You can <a href="#" {{on "click" (fn this.chooseUpload)}}>upload some files</a> or just drag them in.
   </div>
 {{/if}}
-
-{{partial "plugins/gallery"}}

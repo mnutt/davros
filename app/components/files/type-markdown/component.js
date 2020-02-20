@@ -1,5 +1,5 @@
 import Component from '@ember/component';
-import fetch from 'ember-network/fetch';
+import fetch from 'fetch';
 
 export default Component.extend({
   rawContent: 'Loading...',

@@ -1,23 +1,27 @@
-{{#if active}}
-  {{#paper-dialog fullscreen=true origin=".actions"}}
-    {{#paper-toolbar}}
+{{#if this.active}}
+  <PaperDialog @fullscreen={{true}} @origin=".actions">
+    <PaperToolbar>
       <div class="md-toolbar-tools">
         <h2>New Directory</h2>
         <span class="flex"></span>
-        {{#paper-button iconButton=true onClick=(action "close")}}{{paper-icon icon="close"}}{{/paper-button}}
+        <PaperButton @iconButton={{true}} onClick={{fn this.close}}>
+          <PaperIcon @icon="close"/>
+        </PaperButton>
       </div>
-    {{/paper-toolbar}}
+    </PaperToolbar>
 
-    {{#paper-form onSubmit=(action "create") as |form|}}
-      {{#paper-dialog-content}}
-        {{form.input label="Name" autofocus=true value=directoryName customValidations=directoryValidation onChange=(action (mut directoryName))}}
-      {{/paper-dialog-content}}
+    <PaperForm @onSubmit={{fn this.create}} as |form|>
+      <PaperDialogContent>
+        <Form.Input @label="Name" @autofocus={{true}} @value={{this.directoryName}} @customValidations={{this.directoryValidation}} @onChange={{fn (mut this.directoryName)}} />
+      </PaperDialogContent>
 
-      {{#paper-dialog-actions class="layout-row"}}
+      <PaperDialogActions class="layout-row">
         <span class="flex"></span>
-        {{#paper-button primary=true onClick=(action "close")}}Cancel{{/paper-button}}
-        {{#form.submit-button primary=true raised=true disabled=form.isInvalid}}Create{{/form.submit-button}}
-      {{/paper-dialog-actions}}
-    {{/paper-form}}
-  {{/paper-dialog}}
+        <PaperButton @primary={{true}} @onClick={{fn this.close}}>Cancel</PaperButton>
+        <Form.SubmitButton @primary={{true}} @raised={{true}} @disabled={{form.isInvalid}}>
+          Create
+        </Form.SubmitButton>
+      </PaperDialogActions>
+    </PaperForm>
+  </PaperDialog>
 {{/if}}

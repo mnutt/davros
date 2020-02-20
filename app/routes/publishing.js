@@ -1,7 +1,7 @@
 import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
 import { get } from '@ember/object';
-import fetch from 'ember-network/fetch';
+import fetch from 'fetch';
 
 export default Route.extend({
   publishing: service(),

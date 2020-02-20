@@ -29,11 +29,10 @@ export default Component.extend({
   }),
 
   registerMessageListener: on('willInsertElement', function() {
-    this.$(window).on('message', this.messageListener.bind(this));
+    window.addEventListener('message', this.messageListener.bind(this));
   }),
 
-  messageListener: function(e) {
-    var event = e.originalEvent;
+  messageListener: function(event) {
     if (event.data && event.data.rpcId === this.elementId) {
       if (event.data.error) {
         console.error("Offer template error: " + event.data.error);

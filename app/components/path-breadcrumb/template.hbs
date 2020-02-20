@@ -1,22 +1,22 @@
 <div class="full">
-  {{#link-to "files"}}home{{/link-to}}
+  <LinkTo @route="files">home</LinkTo>
 
-  {{#each parts as |part|}}
+  {{#each this.parts as |part|}}
     <span class="separator">/</span>
-    {{#link-to "file" part.path}}{{part.name}}{{/link-to}}
+    <LinkTo @route="file" @model={{part.path}}>{{part.name}}</LinkTo>
   {{/each}}
 
   /
 </div>
 
 <div class="parent-only">
-  {{#if isHome}}
-    {{#link-to "files"}}home{{/link-to}}
+  {{#if this.isHome}}
+    <LinkTo @route="files">home</LinkTo>
   {{else}}
-    {{#if (eq parentPath "")}}
-      {{#link-to "files"}}...{{/link-to}}
+    {{#if (eq this.parentPath "")}}
+      <LinkTo @route="files">...</LinkTo>
     {{else}}
-      {{#link-to "file" parentPath}}...{{/link-to}}
+      <LinkTo @route="file" @model={{this.parentPath}}>...</LinkTo>
     {{/if}}
   {{/if}}
 

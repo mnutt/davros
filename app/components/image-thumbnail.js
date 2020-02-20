@@ -1,4 +1,3 @@
-import $ from 'jquery';
 import { computed } from '@ember/object';
 import Component from '@ember/component';
 
@@ -18,12 +17,12 @@ export default Component.extend({
   }),
 
   src: computed('original', function() {
-    return base + $.param({
+    return base + Object.entries({
       url:    this.original,
       width:  this.width,
       height: this.height,
       op:     this.op || 'fit',
       ts:     this.cachebuster
-    });
+    }).map((p) => p.map(encodeURIComponent).join('=')).join('&')
   })
 });

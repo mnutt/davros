@@ -1,20 +1,20 @@
-{{#paper-button class="fullview-button" onClick="toggleFullview"}}
-  {{if fullview "Back" "Full view"}}
-{{/paper-button}}
+<PaperButton class="fullview-button" @onClick={{fn this.toggleView}}>
+  {{if this.fullview "Back" "Full view"}}
+</PaperButton>
 
-{{#if canSandbox}}
-  {{#if (eq previewState "loaded")}}
-    <iframe class={{size}} srcdoc={{srcDoc}} sandbox></iframe>
+{{#if this.canSandbox}}
+  {{#if (eq this.previewState "loaded")}}
+    <iframe title="Document Preview" class={{this.size}} srcdoc={{this.srcDoc}} sandbox></iframe>
   {{/if}}
 
-  {{#if (eq previewState "loading")}}
+  {{#if (eq this.previewState "loading")}}
     <div class="loading-container">
       <div class="loader"></div>
       <div class="loading-text">LOADING PREVIEW</div>
     </div>
   {{/if}}
 
-  {{#if (eq previewState "error")}}
+  {{#if (eq this.previewState "error")}}
     There was an error rendering this preview.
   {{/if}}
 {{else}}

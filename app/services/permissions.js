@@ -1,11 +1,22 @@
 import Service from '@ember/service';
-import fetch from 'ember-network/fetch';
+import fetch from 'fetch';
+
+function isIframed() {
+  return window.top !== window;
+}
 
 export default Service.extend({
   list: [],
   error: false,
 
   init: function() {
+    this._super.apply(this, arguments);
+
+    if (!isIframed()) {
+      this.set('list', ['read', 'edit']);
+      return;
+    }
+
     fetch("/api/permissions").then((response) => {
       return response.json();
     }).then((result) => {

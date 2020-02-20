@@ -25,5 +25,9 @@ export default Controller.extend(GalleryPlugin, {
 
   canEdit: computed('permissions.list', function() {
     return this.permissions.can('edit');
-  })
+  }),
+
+  chooseUpload() {
+    document.querySelector(".upload-placeholder").click();
+  }
 });
