@@ -1,46 +1,50 @@
-var startTime = new Date();
+/* eslint-disable no-console */
+const startTime = (global.start = new Date());
 require('cache-require-paths');
 
-var express = require('express');
-var fs = require('fs');
-var api = require('./server');
-var path = require('path');
-var http = require('http');
-var compression = require('compression');
+const express = require('express');
+const fs = require('fs');
+const api = require('./server');
+const path = require('path');
+const http = require('http');
+const compression = require('compression');
+const process = require('process');
 
-var root = __dirname;
-var indexFile = path.resolve(root + '/dist/index.html');
+const root = __dirname;
+const indexFile = path.resolve(root + '/dist/index.html');
 
-fs.access(indexFile, fs.constants.F_OK, function(err) {
-  if (err) {
-    console.error('Missing dist/index.html; run `ember build` to generate it.');
-    process.exit(1);
-  }
-});
-
-var app = express();
-var server = http.createServer(app);
+const app = express();
+const server = http.createServer(app);
 
 app.use(compression());
 app.use(express.static('dist'));
 
 api(app, { httpServer: server });
 
-app.use('/', function(req, res, next) {
+app.use('/', function(req, res) {
   // send ember's index.html for any unknown route
   res.sendFile(indexFile);
 });
 
-var port = process.env.PORT || 8000;
-var socket = process.env.SOCKET;
+const port = process.env.PORT || 8000;
+const socket = process.env.SOCKET;
+
+function listening(desc) {
+  return function() {
+    // We don't want to start if the UI is broken
+    fs.access(indexFile, fs.constants.F_OK, function(err) {
+      if (err) {
+        throw new Error('Missing dist/index.html; run `ember build` to generate it.');
+      }
+    });
+
+    const time = new Date() - startTime;
+    console.log(`Davros started in ${time}ms, listening on ${desc}`);
+  };
+}
 
 if (socket) {
-  server.listen(socket, function() {
-    console.log('Davros listening on %s', socket);
-  });
+  server.listen(socket, listening(socket));
 } else {
-  server.listen(port, function() {
-    var time = new Date() - startTime;
-    console.log('Davros started in %sms, listening on port %s', time, port);
-  });
+  server.listen(port, listening(`port ${port}`));
 }

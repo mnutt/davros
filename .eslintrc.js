@@ -8,11 +8,7 @@ module.exports = {
       legacyDecorators: true
     }
   },
-  extends: [
-    'eslint:recommended',
-    'plugin:ember/recommended',
-    'plugin:prettier/recommended'
-  ],
+  extends: ['eslint:recommended', 'plugin:ember/recommended', 'plugin:prettier/recommended'],
   env: {
     browser: true
   },
@@ -24,6 +20,7 @@ module.exports = {
         '.template-lintrc.js',
         'ember-cli-build.js',
         'testem.js',
+        './app.js',
         'blueprints/*/index.js',
         'config/**/*.js',
         'lib/*/index.js',
