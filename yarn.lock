@@ -1820,14 +1820,10 @@ async@~0.2.6, async@~0.2.9:
   resolved "https://registry.yarnpkg.com/async/-/async-0.2.10.tgz#b6bbe0b0674b9d719708ca38de8c237cb526c3d1"
   integrity sha1-trvgsGdLnXGXCMo43owjfLUmw9E=
 
-"asyncjs@git://github.com/mnutt/async.js.git#28ddb08":
-  version "0.0.10"
-  uid "28ddb08692b23b9e11f0e0e73cc99b3185306cdc"
-  resolved "git://github.com/mnutt/async.js.git#28ddb08692b23b9e11f0e0e73cc99b3185306cdc"
-
-"asyncjs@https://github.com/mnutt/async.js.git#28ddb08":
-  version "0.0.10"
-  resolved "https://github.com/mnutt/async.js.git#28ddb08692b23b9e11f0e0e73cc99b3185306cdc"
+asyncjs@0.0.13:
+  version "0.0.13"
+  resolved "https://registry.yarnpkg.com/asyncjs/-/asyncjs-0.0.13.tgz#9a39605cdbcab1283737039d4da14310b6d91c6f"
+  integrity sha512-ZwrkJ1zbf+LMmFKbb9DylLdcf30HaJ/6vxv/2Yx0Dt/aW8cxWlwNPlBsPB3WUnu9dpbVzjWgp6ix6DdnecUhwg==
 
 asynckit@^0.4.0:
   version "0.4.0"
@@ -6828,12 +6824,7 @@ form-data@~2.3.2:
     combined-stream "^1.0.6"
     mime-types "^2.1.12"
 
-formidable@1.0.17:
-  version "1.0.17"
-  resolved "https://registry.yarnpkg.com/formidable/-/formidable-1.0.17.tgz#ef5491490f9433b705faa77249c99029ae348559"
-  integrity sha1-71SRSQ+UM7cF+qdyScmQKa40hVk=
-
-formidable@^1.2.0:
+formidable@1.2.1, formidable@^1.2.0:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/formidable/-/formidable-1.2.1.tgz#70fb7ca0290ee6ff961090415f4b3df3d2082659"
   integrity sha512-Fs9VRguL0gqGHkXS5GQiMCr1VhZBxz0JnJs4JmMp/2jL18Fmbzvv7vOFRU+U8TBkHEE/CX1qDXzJplVULgsLeg==
@@ -7337,10 +7328,9 @@ globby@^9.2.0:
     pify "^4.0.1"
     slash "^2.0.0"
 
-gnu-tools@0.0.9:
+"gnu-tools@https://github.com/paroga/node-gnu-tools.git#5a4e8b88":
   version "0.0.9"
-  resolved "https://registry.yarnpkg.com/gnu-tools/-/gnu-tools-0.0.9.tgz#dff6238a26aebc394ffc061359edfeab0bdc9911"
-  integrity sha1-3/YjiiauvDlP/AYTWe3+qwvcmRE=
+  resolved "https://github.com/paroga/node-gnu-tools.git#5a4e8b888ea6f56041196778d754b3ff2c0bb579"
 
 got@^6.7.1:
   version "6.7.1"
@@ -8441,18 +8431,18 @@ js-yaml@^3.13.0, js-yaml@^3.13.1, js-yaml@^3.2.5, js-yaml@^3.2.7:
     argparse "^1.0.7"
     esprima "^4.0.0"
 
-"jsDAV@https://github.com/mnutt/jsDAV.git#0556df11183":
+"jsDAV@https://github.com/mnutt/jsDAV.git#4c4fc37":
   version "0.3.4"
-  resolved "https://github.com/mnutt/jsDAV.git#0556df11183f38b05f12427d420b1020d0b48d35"
+  resolved "https://github.com/mnutt/jsDAV.git#4c4fc3747307ef15d27d3d82e04ada015c52d8cb"
   dependencies:
-    asyncjs "git://github.com/mnutt/async.js.git#28ddb08"
-    formidable "1.0.17"
-    moment "2.11.1"
+    asyncjs "0.0.13"
+    formidable "1.2.1"
+    moment "2.24.0"
     xmldom "0.1.21"
-    xpath "0.0.21"
+    xpath "0.0.27"
   optionalDependencies:
     dbox "0.6.4"
-    gnu-tools "0.0.9"
+    gnu-tools "https://github.com/paroga/node-gnu-tools.git#5a4e8b88"
     jsftp "0.5.4"
     mongodb "2.1.4"
     node-sftp "0.1.1"
@@ -9641,12 +9631,7 @@ moment-timezone@^0.5.13:
   dependencies:
     moment ">= 2.9.0"
 
-moment@2.11.1:
-  version "2.11.1"
-  resolved "https://registry.yarnpkg.com/moment/-/moment-2.11.1.tgz#bf4026413640d1b802467cf353607f8464d6af47"
-  integrity sha1-v0AmQTZA0bgCRnzzU2B/hGTWr0c=
-
-"moment@>= 2.9.0", moment@^2.19.3:
+moment@2.24.0, "moment@>= 2.9.0", moment@^2.19.3:
   version "2.24.0"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"
   integrity sha512-bV7f+6l2QigeBBZSM/6yTNq4P2fNpSWj/0e7jQcy87A8e7o2nAfP/34/2ky5Vw4B9S446EtIhodAzkFCcR4dQg==
@@ -14082,10 +14067,10 @@ xmlhttprequest-ssl@~1.5.4:
   resolved "https://registry.yarnpkg.com/xmlhttprequest-ssl/-/xmlhttprequest-ssl-1.5.5.tgz#c2876b06168aadc40e57d97e81191ac8f4398b3e"
   integrity sha1-wodrBhaKrcQOV9l+gRkayPQ5iz4=
 
-xpath@0.0.21:
-  version "0.0.21"
-  resolved "https://registry.yarnpkg.com/xpath/-/xpath-0.0.21.tgz#470291597cbbd33c7c198e0fab2a643c31d4a8e9"
-  integrity sha1-RwKRWXy70zx8GY4PqypkPDHUqOk=
+xpath@0.0.27:
+  version "0.0.27"
+  resolved "https://registry.yarnpkg.com/xpath/-/xpath-0.0.27.tgz#dd3421fbdcc5646ac32c48531b4d7e9d0c2cfa92"
+  integrity sha512-fg03WRxtkCV6ohClePNAECYsmpKKTv5L8y/X3Dn1hQrec3POx2jHZ/0P2qQ6HvsrU1BmeqXcof3NGGueG6LxwQ==
 
 "xtend@>=4.0.0 <4.1.0-0", xtend@^4.0.0, xtend@~4.0.1:
   version "4.0.2"

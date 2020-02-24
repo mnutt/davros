@@ -1,39 +1,41 @@
 var fs = require('fs');
 var os = require('os');
 
-var jsDAV = require('jsDAV/lib/jsdav');
-var jsDAV_Server = require('jsDAV/lib/DAV/server');
-var jsDAV_Util = require('jsDAV/lib/shared/util');
-var Tree = require('./backend/tree');
-var jsDAV_Locks_Backend_FS = require('jsDAV/lib/DAV/plugins/locks/fs');
+const jsDAV = require('jsDAV/lib/jsdav');
+const Tree = require('./backend/tree');
+const jsDAV_Locks_Plugin = require('jsDAV/lib/dav/plugins/locks');
+const jsDAV_Locks_Backend_FS = require('jsDAV/lib/DAV/plugins/locks/fs');
 
 //jsDAV.debugMode = true
 
 // for free disk space reporting
-var statvfs = require('./statvfs-shim');
+const statvfs = require('./statvfs-shim');
 fs.statvfs = statvfs;
 
 exports.base = '/remote.php/webdav';
 
 exports.server = function(root) {
+  // eslint-disable-next-line no-console
   console.log('Mounting webdav from data dir ' + root);
 
-  var tempDir = os.tmpdir();
+  const tempDir = os.tmpdir();
+  // eslint-disable-next-line no-console
   console.log('Storing temporary files in ' + tempDir);
 
-  var tree = Tree.new(root);
+  const tree = Tree.new(root);
 
-  var server = jsDAV.mount({
+  const server = jsDAV.mount({
     tree: tree,
     tmpDir: tempDir,
     sandboxed: true,
     locksBackend: jsDAV_Locks_Backend_FS.new(root),
-    plugins: jsDAV_Util.extend(jsDAV_Server.DEFAULT_PLUGINS, {
+    plugins: {
       'ws-notify': require('./notify'),
       'root-delete': require('./root-delete'),
+      locks: jsDAV_Locks_Plugin,
       mtime: require('./mtime'),
       'safe-gets': require('./safe-gets')
-    })
+    }
   });
 
   tree.setSandbox(tree.basePath);
