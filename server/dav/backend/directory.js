@@ -47,7 +47,7 @@ var Directory = (module.exports = jsDAV_FSExt_Directory.extend(jsDAV_iFile, Etag
     Async.readdir(this.path)
       .stat()
       .filter(function(file) {
-        return file.name !== File.PROPS_DIR;
+        return file.name !== File.PROPS_DIR && file.name !== '.gitkeep';
       })
       .each(function(file, cbnextdirch) {
         nodes.push(file.stat.isDirectory() ? Directory.new(file.path) : File.new(file.path));
