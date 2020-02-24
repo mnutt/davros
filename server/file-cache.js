@@ -1,16 +1,18 @@
-var stream = require('stream');
-var util = require('util');
-var fs = require('fs');
-var crypto = require('crypto');
-var path = require('path');
-var mkdirp = require('mkdirp');
-var Transform = stream.Transform;
+/* eslint-disable no-console */
+const stream = require('stream');
+const fs = require('fs-extra');
+const crypto = require('crypto');
+const path = require('path');
+const os = require('os');
+
+const { Transform } = stream;
 
 class FileCache extends Transform {
-  constructor(cacheDir, url, time) {
+  constructor(url, time, cacheDir = os.tmpdir()) {
     super();
 
     time = time > 0 ? time : 't';
+
     this.cacheDir = cacheDir;
     this.key = crypto
       .createHash('md5')
@@ -23,8 +25,9 @@ class FileCache extends Transform {
   _transform(chunk, encoding, done) {
     if (this.cachedFile) {
       this.__transform(chunk, encoding, done);
-    } else {
-      mkdirp(path.dirname(this.path)).then(() => {
+    }
+    if (!this.cachedFile) {
+      fs.mkdirp(path.dirname(this.path), () => {
         this.cachedFile = fs.createWriteStream(this.path);
         this.cleanOld();
         this.__transform(chunk, encoding, done);
@@ -51,33 +54,36 @@ class FileCache extends Transform {
         .filter(name => {
           if (this.fileName === name) {
             return false;
-          } else {
-            return name.indexOf(this.key) === 0;
           }
+          return name.indexOf(this.key) === 0;
         })
         .forEach(name => {
-          console.log('Cleaned up ' + this.cachePathFor(name));
-          fs.unlink(this.cachePathFor(name), () => {});
+          console.log(`Cleaned up ${this.cachePathFor(name)}`);
+
+          fs.unlink(this.cachePathFor(name), err => {
+            if (err) {
+              console.error(`Cleanup: file ${this.cachePathFor(name)} already removed.`);
+            }
+          });
         });
     });
   }
 
   cachePathFor(name) {
-    var parts = [this.key.slice(0, 3), this.key.slice(3, 6), this.key.slice(6, 9)];
+    const parts = ['file-cache', this.key.slice(0, 3), this.key.slice(3, 6), this.key.slice(6, 9)];
     return [this.cacheDir]
       .concat(parts)
       .concat(name)
       .join('/');
   }
 
-  get(cb) {
-    fs.exists(this.path, exists => {
-      if (exists) {
-        return cb(fs.createReadStream(this.path), this.path);
-      } else {
-        return cb(false, this.path);
-      }
-    });
+  async get() {
+    try {
+      const exists = await fs.exists(this.path);
+      return exists && fs.createReadStream(this.path);
+    } catch (e) {
+      return null;
+    }
   }
 }
 
