@@ -7,10 +7,7 @@ export DEBIAN_FRONTEND=noninteractive
 
 curl -sL https://deb.nodesource.com/setup_10.x | bash -
 apt-get update
-apt-get install -y nodejs git-core g++ imagemagick libreoffice
-
-# Disable dangerous imagemagick features
-cp /opt/app/.sandstorm/imagemagick-policy.xml /etc/ImageMagick-6/policy.xml
+apt-get install -y --no-install-suggests --no-install-recommends nodejs git-core g++ libreoffice-writer libreoffice-impress libreoffice-calc unoconv
 
 # Set up libreoffice config directory
 rm -Rf /var/libreoffice
