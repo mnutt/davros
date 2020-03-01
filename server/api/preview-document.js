@@ -6,57 +6,59 @@ var FileCache = require('../file-cache');
 var tempDir = os.tmpdir();
 
 module.exports = function(davServer) {
-  return function(req, res, next) {
+  return async function(req, res, next) {
     let converter = unoconv('unoconv');
 
     let queryParams = url.parse(req.url, true).query;
     let fileUrl = queryParams.url;
     let timestamp = queryParams.ts;
-    let cache = new FileCache(tempDir, fileUrl, timestamp);
+    let cache = new FileCache(fileUrl, timestamp);
 
-    cache.get((cached, path) => {
-      if (cached) {
-        cached.pipe(res);
-        cached.on('end', function() {
-          console.log('Unoconv cache hit for ' + fileUrl);
-        });
-      } else {
-        converter.outputFormat('xhtml');
-        converter.set('-T 30'); // timeout after 30s
+    const cached = await cache.get();
 
-        if (fileUrl.match(/\.(xls|xlsx|ods)$/)) {
-          converter.set('-d spreadsheet');
-        } else if (fileUrl.match(/\.(ppt|pptx|odp)$/)) {
-          converter.set('-d presentation');
-        }
+    if (cached) {
+      cached.pipe(res);
+      cached.on('end', function() {
+        console.log('Unoconv cache hit for ' + fileUrl);
+        cached.close();
+      });
+      return;
+    }
 
-        req.url = fileUrl;
-        req.headers['accept-encoding'] = 'identity';
+    converter.outputFormat('xhtml');
+    converter.set('-T 30'); // timeout after 30s
 
-        converter._headers = {};
-        converter.setHeader = function(name, value) {
-          this._headers[name] = value;
-        };
+    if (fileUrl.match(/\.(xls|xlsx|ods)$/)) {
+      converter.set('-d spreadsheet');
+    } else if (fileUrl.match(/\.(ppt|pptx|odp)$/)) {
+      converter.set('-d presentation');
+    }
 
-        converter.writeHead = function(code, headers) {
-          this.code = code;
-          this._headers = headers;
-        };
+    req.url = fileUrl;
+    req.headers['accept-encoding'] = 'identity';
 
-        converter.on('error', function(err) {
-          if (!err.toString().match(/validity error/)) {
-            console.error(err);
-          }
-        });
+    converter._headers = {};
+    converter.setHeader = function(name, value) {
+      this._headers[name] = value;
+    };
 
-        let cached = converter.pipe(cache);
-        cached.pipe(res);
-        cached.on('end', function() {
-          console.log('Converter cache miss for ' + fileUrl);
-        });
+    converter.writeHead = function(code, headers) {
+      this.code = code;
+      this._headers = headers;
+    };
 
-        davServer(req, converter, next);
+    converter.on('error', function(err) {
+      if (!err.toString().match(/validity error/)) {
+        console.error(err);
       }
     });
+
+    let toCache = converter.pipe(cache);
+    toCache.pipe(res);
+    toCache.on('end', function() {
+      console.log('Converter cache miss for ' + fileUrl);
+    });
+
+    davServer(req, converter, next);
   };
 };
