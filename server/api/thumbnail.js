@@ -38,7 +38,6 @@ module.exports = function(davServer) {
       });
       return;
     }
-    console.log('CACHE KEY', cacheKey);
 
     let thumb = sharp().resize({
       width,
