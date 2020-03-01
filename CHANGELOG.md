@@ -1,3 +1,9 @@
+# 0.25.0
+* No new user-facing features
+* Applies 3.5 years of updates to node/ember/other dependencies to enable future enhancements
+* Switches from imagemagick to sharp (libvips) for thumbnails
+* Some bundling efficiencies
+
 # 0.24.0
 * Support for previewing documents: .doc, .docx, .xls, .xlsx, .ppt, .pptx
 * Get a file's public URL when publishing is enabled
