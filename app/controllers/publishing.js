@@ -12,10 +12,7 @@ const apexValidation = [
 export default Controller.extend({
   publishing: service(),
   domain: '',
-
-  apexValidation() {
-    return apexValidation;
-  },
+  apexValidation,
 
   unsavedDomainIsApex: computed('domain', function() {
     return !!get(this, 'domain');
