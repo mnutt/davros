@@ -30,8 +30,8 @@
             <div class="records">
               Add the following DNS records to your domain registrar:
               <pre>
-                {{this.publishing.domain}}. IN CNAME {{this.publishing.host}}
-    sandstorm-www.{{this.publishing.domain}}. IN TXT {{this.publishing.publicId}}
+{{this.publishing.domain}}. IN CNAME {{this.publishing.host}}<br>
+sandstorm-www.{{this.publishing.domain}}. IN TXT {{this.publishing.publicId}}
               </pre>
 
               {{#if this.domainIsApex}}
