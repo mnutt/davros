@@ -13,11 +13,14 @@ Davros is built to run inside [Sandstorm](https://sandstorm.io), an open source 
 
 ## Development
 
-Davros is built using Node.js and Ember.js. To run locally, you'll need to install node.js. Then:
+Davros is built using Node.js and Ember.js. To run locally, you'll need to install node.js. We also recommend that you use yarn to install dependencies since that will lock versions to the ones that are
+used during deployment.
 
-* `npm install`
-* `bower install`
-* `PORT=3009 ember serve`
+To install yarn run `npm install -g yarn`
+Then:
+
+* `yarn install`
+* `ember serve --port=3009`
 
 At this point you'll have Davros running at `http://localhost:3009`. Substitute `3009` for another port if you want. Note that running Davros this way is not particularly safe; it relies completely on Sandstorm for user management and authentication.
 
@@ -27,10 +30,12 @@ In development, you can connect your desktop client to http://localhost:3009/ wi
 
 A few parts of Davros are dependent on running within Sandstorm, such as the authentication instructions on the Clients page. To run inside Sandstorm, first get [vagrant-spk](https://github.com/sandstorm-io/vagrant-spk). Then, within the Davros directory, run
 
-    vagrant-spk up
-    ember spk
+    vagrant-spk vm up
+    vagrant-spk dev
 
-This uses [ember-cli-vagrant-spk](https://github.com/mnutt/ember-cli-vagrant-spk) to automatically inject Davros into your local Sandstorm instance.
+While this works it requires that you re-run `vagrant-spk dev` manually anytime you make a change. To
+have this done automatically consider using [ember-cli-vagrant-spk](https://github.com/mnutt/ember-cli-vagrant-spk) instead which will monitor your filesystem for changes and restart the server
+for you.
 
 ### Building
 

@@ -19,3 +19,5 @@ chown -R 1000:1000 /var/libreoffice
 
 # Compile a small helper to get a publicId
 /opt/app/.sandstorm/compile_helper.sh
+
+npm install -g yarn
