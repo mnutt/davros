@@ -32,7 +32,7 @@
   <PhotoSwipe @shareEl={{false}} @items={{this.directoryGalleryItems}} as |photoswipe|>
     <div class="actions">
       {{#if this.canEdit}}
-        <PaperButton @class="icon-button new-directory-button" @onClick="chooseUpload">
+        <PaperButton @class="icon-button new-directory-button" @onClick={{fn this.chooseUpload}}>
           {{paper-icon "file-upload" aria-label="Upload"}}
 
           <EmberTooltip>
@@ -96,7 +96,7 @@
 
         <menu.content>
           {{#if this.canEdit}}
-            <PaperMenuItem @onClick="chooseUpload" @id="menu-upload-file">
+            <PaperMenuItem @onClick={{fn this.chooseUpload}} @id="menu-upload-file">
               <p class="label">Upload</p>
               {{paper-icon "file-upload" class="md-menu-align-target"}}
             </PaperMenuItem>
