@@ -119,6 +119,7 @@ opt/app/CHANGELOG.md
 opt/app/app.js
 opt/app/dist
 opt/app/dist/assets/davros.css
+opt/app/dist/assets/davros.css.map
 opt/app/dist/assets/davros.js
 opt/app/dist/assets/images/default-skin.png
 opt/app/dist/assets/images/default-skin.svg
@@ -851,6 +852,7 @@ opt/app/server/changelog.js
 opt/app/server/dav/backend/directory.js
 opt/app/server/dav/backend/etag.js
 opt/app/server/dav/backend/file.js
+opt/app/server/dav/backend/prop-handlers.js
 opt/app/server/dav/backend/tree.js
 opt/app/server/dav/cache.js
 opt/app/server/dav/capabilities.js
