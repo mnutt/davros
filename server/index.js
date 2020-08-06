@@ -7,6 +7,8 @@
 //   });
 // };
 
+// Try and fix weird circular dependency problem
+var jsDAV_Server = require('jsDAV/lib/DAV/server');
 var path = require('path');
 var morgan = require('morgan');
 var apiWs = require('./api-ws');
