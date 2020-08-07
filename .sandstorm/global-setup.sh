@@ -12,8 +12,12 @@ CURL_OPTS="--silent --show-error"
 echo localhost > /etc/hostname
 hostname localhost
 
-# Install curl that is needed below.
+# Grub updates don't silent install well
+apt-mark hold grub-pc
 apt-get update
+apt-get upgrade -y
+
+# Install curl that is needed below.
 apt-get install -y curl
 
 # The following line copies stderr through stderr to cat without accidentally leaving it in the

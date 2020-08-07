@@ -3,7 +3,7 @@ var os = require('os');
 
 const jsDAV = require('jsDAV/lib/jsdav');
 const Tree = require('./backend/tree');
-const jsDAV_Locks_Plugin = require('jsDAV/lib/dav/plugins/locks');
+const jsDAV_Locks_Plugin = require('jsDAV/lib/DAV/plugins/locks');
 const jsDAV_Locks_Backend_FS = require('jsDAV/lib/DAV/plugins/locks/fs');
 
 //jsDAV.debugMode = true

@@ -9,8 +9,38 @@ var Util = require('jsDAV/lib/shared/util');
 var Exc = require('jsDAV/lib/shared/exceptions');
 var Etag = require('./etag');
 var ChildProcess = require('child_process');
+var PropHandlers = require('./prop-handlers');
 
-var Directory = (module.exports = jsDAV_FSExt_Directory.extend(jsDAV_iFile, Etag, {
+var Directory = (module.exports = jsDAV_FSExt_Directory.extend(jsDAV_iFile, Etag, PropHandlers, {
+  propHandlers: {
+    "{http://owncloud.org/ns}id": function(prop, next) {
+      return Fs.stat(this.path, function(err, stat) {
+        if (err || !stat) {
+          next()
+        } else {
+          next(null, "" + stat.ino);
+        }
+      });
+    },
+
+    // https://github.com/owncloud/client/blob/970331c531490f7aadbd262c87b09363a3d5cf2a/docs/modules/ROOT/pages/architecture.adoc
+    "{http://owncloud.org/ns}permissions": function(prop, next) {
+      next(null, "CKDNV");
+    }
+  },
+  getProperties: function(requestedProperties, cbgetprops) {
+    var self = this;
+    this.getHandlerProperties(requestedProperties, function(err, values) {
+      if(err) {
+        cbgetprops(err);
+      } else {
+        jsDAV_FSExt_Directory.getProperties.call(self, requestedProperties, function (err, properties) {
+          cbgetprops(err, Object.assign({}, values, properties));
+        });
+      }
+    });
+  },
+
   chunkMatch: /(.*?)-chunking-(\d+)-(\d+)-(\d+)(-done)?$/,
 
   isChunked: function(name) {
