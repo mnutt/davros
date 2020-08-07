@@ -1,3 +1,9 @@
+# 0.26.0
+* Fixes upload button
+* Re-enables support in OwnCloud/NextCloud
+* Upgrades build system
+* (thanks griff for all of these changes)
+
 # 0.25.0
 * No new user-facing features
 * Applies 3.5 years of updates to node/ember/other dependencies to enable future enhancements
