@@ -1,3 +1,6 @@
+# 0.26.1
+* Fixes issue uploading files into subdirectories
+
 # 0.26.0
 * Fixes upload button
 * Re-enables support in OwnCloud/NextCloud
