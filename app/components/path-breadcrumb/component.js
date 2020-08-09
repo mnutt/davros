@@ -3,7 +3,7 @@ import EmberObject from '@ember/object';
 import Component from '@ember/component';
 
 export default Component.extend({
-  classNames: ['breadcrumb'],
+  tagName: '',
 
   parts: computed('path', function() {
     var pieces = (this.path || '').split('/');

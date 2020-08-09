@@ -1,0 +1,16 @@
+.sidebar a {
+  @apply block w-full py-2 mb-2;
+}
+
+.sidebar a.active {
+  @apply bg-white text-black rounded-md rounded-l-none;
+}
+
+.sidebar a > div {
+  @apply text-xs font-bold leading-none;
+  font-size: 0.65em;
+}
+
+.sidebar a > .material-icons {
+  @apply text-2xl;
+}

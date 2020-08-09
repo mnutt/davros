@@ -110,12 +110,6 @@ export default Route.extend({
       });
     },
 
-    downloadDirectory() {
-      var path = this.get('controller.model.path');
-      var endpoint = '/api/archive?path=' + encodeURIComponent(path);
-      document.location.href = endpoint;
-    },
-
     upload: function(file) {
       this.uploadFile.perform(file);
     }

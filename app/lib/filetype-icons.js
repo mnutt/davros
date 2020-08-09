@@ -2,11 +2,11 @@
 
 export default {
   image: 'image',
-  video: 'local-movies',
-  audio: 'music-note',
+  video: 'local_movies',
+  audio: 'music_note',
   code: 'code',
   markdown: 'code',
-  pdf: 'insert-drive-file',
-  document: 'insert-drive-file',
-  'default-type': 'crop-portrait'
+  pdf: 'insert_drive_file',
+  document: 'insert_drive_file',
+  'default-type': 'crop_portrait'
 };

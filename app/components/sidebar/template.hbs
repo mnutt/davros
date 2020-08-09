@@ -1,26 +1,29 @@
-<div class="logo-bg" aria-hidden="true"></div>
-<img src="/images/sidebar-logo@2x.png" width="50" height="61" alt="Davros">
+<div class="h-12 bg-blue-500">
+  <img src="/images/sidebar-logo@2x.png" width="60" height="48" alt="Davros" class="block absolute top-0 right-0">
+</div>
 
-<LinkTo @route="home" @current-when="files file">
-  {{paper-icon "folder"}}
-  <div>Files</div>
-</LinkTo>
-
-{{#if @canSync}}
-  <LinkTo @route="clients">
-    {{paper-icon "desktop-mac"}}
-    <div>Clients</div>
+<nav class="sidebar mt-6 text-center">
+  <LinkTo @route="home" @current-when="files file">
+    <Icon @icon="folder" @ariaLabel="Files" />
+    <div>Files</div>
   </LinkTo>
-{{/if}}
 
-{{#if @canEdit}}
-  <LinkTo @route="publishing">
-    {{paper-icon "web"}}
-    <div>Publish</div>
+  {{#if @canSync}}
+    <LinkTo @route="clients">
+      <Icon @icon="desktop_mac" @ariaLabel="Clients" />
+      <div>Clients</div>
+    </LinkTo>
+  {{/if}}
+
+  {{#if @canEdit}}
+    <LinkTo @route="publishing">
+      <Icon @icon="web" @ariaLabel="Publish" />
+      <div>Publish</div>
+    </LinkTo>
+  {{/if}}
+
+  <LinkTo @route="about">
+    <Icon @icon="info_outline" @ariaLabel="About" />
+    <div>About</div>
   </LinkTo>
-{{/if}}
-
-<LinkTo @route="about">
-  {{paper-icon "info-outline"}}
-  <div>About</div>
-</LinkTo>
+</nav>

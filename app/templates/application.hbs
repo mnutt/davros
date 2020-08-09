@@ -1,10 +1,10 @@
-<div class="ember-view">
-  <div class="flex content-container">
-    <div class="flex layout-column" id="content">
+<div class="flex">
+  <div class="flex flex-1 flex-row overflow-hidden">
+    <div class="flex flex-col flex-1 overflow-hidden" id="content">
       {{outlet}}
     </div>
 
-    <div class="flex sidebar-small">
+    <div class="sidebar-small flex flex-col h-full w-12 bg-gray-700 text-white min-h-screen">
       <Sidebar @canSync={{this.canSync}} @canEdit={{this.canEdit}} />
     </div>
   </div>

@@ -3,18 +3,21 @@ import { inject as service } from '@ember/service';
 import Controller from '@ember/controller';
 import { get } from '@ember/object';
 
+import { action } from '@ember/object';
+
 const galleryOptions = { hideShare: true };
 
-export default Controller.extend({
-  showExtraFields: true,
-  newDialogActive: false,
-  deleteDialogActive: false,
-  galleryEnabled: false,
+export default class FileController extends Controller {
+  showExtraFields = true;
+  newDialogActive = false;
+  deleteDialogActive = false;
+  galleryEnabled = false;
 
-  permissions: service(),
-  publishing: service(),
+  @service permissions;
+  @service publishing;
 
-  directoryGalleryItems: computed('model.sortedFiles', function() {
+  @computed('model.sortedFiles')
+  get directoryGalleryItems() {
     return this.model.sortedFiles
       .filter(file => {
         return file.type === 'image';
@@ -22,30 +25,47 @@ export default Controller.extend({
       .map(file => {
         return { src: file.rawPath, title: file.name, w: file.width, h: file.height };
       });
-  }),
+  }
 
   galleryOptions() {
     return galleryOptions;
-  },
+  }
 
-  isRoot: computed('model.path', function() {
+  @computed('model.path')
+  get isRoot() {
     return this.get('model.path') === '';
-  }),
+  }
 
-  publicUrl: computed('model.path', 'publishing.urlBase', function() {
+  @computed('model.path', 'publish.urlBase')
+  get publicUrl() {
     let urlBase = get(this, 'publishing.urlBase');
     if (!urlBase) {
       return null;
     }
 
     return [urlBase, get(this, 'model.path')].join('/');
-  }),
+  }
 
-  canEdit: computed('permissions.list', function() {
+  @computed('permissions.list')
+  get canEdit() {
     return this.permissions.can('edit');
-  }),
+  }
 
+  @action
   chooseUpload() {
     document.querySelector('.upload-placeholder').click();
   }
-});
+
+  @action
+  downloadDirectory() {
+    const { path } = this.model;
+    const endpoint = `/api/archive?path=${encodeURIComponent(path)}`;
+    document.location.href = endpoint;
+  }
+
+  @action
+  preventDefault(e) {
+    e.stopPropagation();
+    e.preventDefault();
+  }
+}

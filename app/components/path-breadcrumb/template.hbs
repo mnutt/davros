@@ -1,24 +1,26 @@
-<div class="full">
-  <LinkTo @route="files">home</LinkTo>
-
-  {{#each this.parts as |part|}}
-    <span class="separator">/</span>
-    <LinkTo @route="file" @model={{part.path}}>{{part.name}}</LinkTo>
-  {{/each}}
-
-  /
-</div>
-
-<div class="parent-only">
-  {{#if this.isHome}}
+<span class="breadcrumb">
+  <span class="full hidden sm:inline">
     <LinkTo @route="files">home</LinkTo>
-  {{else}}
-    {{#if (eq this.parentPath "")}}
-      <LinkTo @route="files">...</LinkTo>
-    {{else}}
-      <LinkTo @route="file" @model={{this.parentPath}}>...</LinkTo>
-    {{/if}}
-  {{/if}}
 
-  /
-</div>
+    {{#each this.parts as |part|}}
+      <span class="separator">/</span>
+      <LinkTo @route="file" @model={{part.path}}>{{part.name}}</LinkTo>
+    {{/each}}
+
+    /
+  </span>
+
+  <span class="parent-only inline sm:hidden">
+    {{#if this.isHome}}
+      <LinkTo @route="files">home</LinkTo>
+    {{else}}
+      {{#if (eq this.parentPath "")}}
+        <LinkTo @route="files">...</LinkTo>
+      {{else}}
+        <LinkTo @route="file" @model={{this.parentPath}}>...</LinkTo>
+      {{/if}}
+    {{/if}}
+
+    /
+  </span>
+</span>
