@@ -72,7 +72,7 @@ export default Route.extend({
 
     var fullPath = [location, path].join('');
 
-    yield ensureCollectionExists(fullPath).then(() => {
+    yield ensureCollectionExists(fullPath, this.get('controller.model.client')).then(() => {
       return file
         .upload('/api/upload', {
           data: {
