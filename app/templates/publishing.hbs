@@ -1,59 +1,61 @@
 <TitleBar>
-  Web Publishing
+  <div class="title text-white text-lg flex-1">
+    Web Publishing
+  </div>
 </TitleBar>
 
-<PaperContent class="publishing" @flex-layout="column" @flex={{true}}>
-  <p class="content">
+<div class="publishing p-4">
+  <p class="mb-4">
     You can publish this shared directory to the web. Add <code>index.html</code> to the top level to set up your site. All files in the shared directory will be publicly accessible.
-
-    {{#if this.publishing.publicId}}
-      <div class="toggle-publishing">
-        <PaperButton @raised={{true}} @warn={{true}} {{on "click" (route-action "unpublish")}}>Disable</PaperButton>
-        <strong>
-          Publishing is Enabled
-          {{#if this.publishing.domain}}
-            with custom domain {{this.publishing.domain}}
-          {{/if}}
-        </strong>
-      </div>
-
-      <div class="publish-info">
-        <div class="auto-url">
-          Preview available from:
-          <a target="_blank" rel="noopener noreferrer" href={{this.publishing.autoUrl}}>{{this.publishing.autoUrl}}</a>
-        </div>
-
-        {{#if this.publishing.domain}}
-          <div class="dns-setup">
-            <h2>Instructions for setting up your own domain or subdomain:</h2>
-
-            <div class="records">
-              Add the following DNS records to your domain registrar:
-              <pre>
-{{this.publishing.domain}}. IN CNAME {{this.publishing.host}}<br>
-sandstorm-www.{{this.publishing.domain}}. IN TXT {{this.publishing.publicId}}
-              </pre>
-
-              {{#if this.domainIsApex}}
-                <div class="note">
-                  The CNAME configuration above only works on subdomains. You should either use www.{{this.publishing.domain}} for the custom domain or replace <code>IN&nbsp;CNAME&nbsp;{{this.publishing.host}}</code> with <code>IN&nbsp;A&nbsp;<i>(IP&nbsp;of&nbsp;{{this.publishing.host}})</i></code>. If <b>{{this.publishing.host}}</b>'s IP ever changes, you'll need to update the DNS record.
-                </div>
-              {{/if}}
-            </div>
-          </div>
-        {{/if}}
-      </div>
-    {{else}}
-
-      <div class="setup">
-        <PaperInput @label="Optional Custom Domain" @value={{this.domain}} @customValidations={{this.apexValidation}} @onChange={{fn (mut this.domain)}} />
-      </div>
-
-      <div class="toggle-publishing">
-        <PaperButton @raised={{true}} @primary={{true}} {{on "click" (route-action "publish")}}>Enable</PaperButton>
-        <strong>Publishing is Disabled</strong>
-      </div>
-    {{/if}}
   </p>
 
-</PaperContent>
+  <Switch class="my-6 text-center text-lg text-gray-900 font-bold" @value={{this.publishing.publicId}} @onChange={{if this.publishing.publicId (route-action "unpublish") (route-action "publish")}}>
+    Enable Web Publishing
+  </Switch>
+
+  {{#if this.publishing.publicId}}
+    <p class="font-bold text-center mt-4">
+      Publishing is Enabled
+      {{#if this.publishing.domain}}
+        with custom domain {{this.publishing.domain}}
+      {{/if}}
+    </p>
+
+    <div class="publish-info">
+      <div class="auto-url text-center mb-4">
+        Preview available from:
+        <a class="underline" target="_blank" rel="noopener noreferrer" href={{this.publishing.autoUrl}}>{{this.publishing.autoUrl}}</a>
+      </div>
+
+      {{#if this.publishing.domain}}
+        <div class="dns-setup">
+          <h2>Instructions for setting up your own domain or subdomain:</h2>
+
+          <div class="records">
+            Add the following DNS records to your domain registrar:
+            <div class="font-mono whitespace-pre-wrap bg-gray-200 rounded-sm p-2 my-4">
+              {{this.publishing.domain}}. IN CNAME {{this.publishing.host}}
+sandstorm-www.{{this.publishing.domain}}. IN TXT {{this.publishing.publicId}}
+            </div>
+
+            {{#if this.domainIsApex}}
+              <div class="note">
+                The CNAME configuration above only works on subdomains. You should either use www.{{this.publishing.domain}} for the custom domain or replace <code>IN&nbsp;CNAME&nbsp;{{this.publishing.host}}</code> with <code>IN&nbsp;A&nbsp;<i>(IP&nbsp;of&nbsp;{{this.publishing.host}})</i></code>. If <b>{{this.publishing.host}}</b>'s IP ever changes, you'll need to update the DNS record. Some DNS providers may offer other solutions such as <code>ALIAS</code>.
+              </div>
+            {{/if}}
+          </div>
+        </div>
+      {{/if}}
+    </div>
+  {{else}}
+
+    <form class="setup max-w-sm">
+      <label for="custom-domain">Optional Custom Domain</label>
+      <input name="custom-domain" type="text" class="form-input"
+             value={{this.domain}} {{on "keyup" (fn this.onChange)}} />
+      {{#if this.validationError}}
+        <p class="text-red-500 font-sm">{{this.validationError}}</p>
+      {{/if}}
+    </form>
+  {{/if}}
+</div>

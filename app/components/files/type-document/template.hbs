@@ -1,21 +1,10 @@
-<PaperButton class="fullview-button" @onClick={{fn this.toggleView}}>
-  {{if this.fullview "Back" "Full view"}}
-</PaperButton>
-
 {{#if this.canSandbox}}
-  {{#if (eq this.previewState "loaded")}}
-    <iframe title="Document Preview" class={{this.size}} srcdoc={{this.srcDoc}} sandbox></iframe>
-  {{/if}}
-
-  {{#if (eq this.previewState "loading")}}
-    <div class="loading-container">
-      <div class="loader"></div>
-      <div class="loading-text">LOADING PREVIEW</div>
+  {{#if this.errored}}
+    <div class="w-full h-full flex items-center justify-center text-center border-t">
+      There was an error rendering this preview.
     </div>
-  {{/if}}
-
-  {{#if (eq this.previewState "error")}}
-    There was an error rendering this preview.
+  {{else}}
+    <iframe class="w-full h-full border-t" title="Document Preview" class={{this.size}} srcdoc={{this.srcDoc}} sandbox></iframe>
   {{/if}}
 {{else}}
   <p>Your browser doesn't support sandboxing, so we can't show a preview inline.</p>

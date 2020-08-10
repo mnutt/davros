@@ -1,0 +1,8 @@
+/* We can't use tailwind inside of MarkdownToHtml, so have to specify styles here */
+.changelog h1 {
+  @apply font-bold;
+}
+
+.changelog ul {
+  @apply list-disc list-inside pb-4;
+}

@@ -1,21 +1,21 @@
-{{#if @active}}
-  <PaperDialog @fullscreen={{true}} @origin=".actions">
-    <PaperToolbar>
-      <div class="md-toolbar-tools">
-        <h2>Delete Directory</h2>
-        <span class="flex"></span>
-        <PaperButton @iconButton={{true}} {{on "click" @onClose}}><PaperIcon @icon="close"/></PaperButton>
-      </div>
-    </PaperToolbar>
+<div class="modal-title flex">
+  <h2 class="text-lg font-bold">Delete Directory</h2>
+  <span class="flex-1"></span>
+  <button type="button" {{on "click" @onClose}}>
+    <Icon @icon="close"/>
+  </button>
+</div>
 
-    <PaperDialogContent>
-      {{yield}}
-    </PaperDialogContent>
+<div class="py-4">
+  {{yield}}
+</div>
 
-    <PaperDialogActions class="layout-row">
-      <span class="flex"></span>
-      <PaperButton @primary={{true}} {{on "click" @onClose}}>Cancel</PaperButton>
-      <PaperButton @primary={{true}} {{on "click" this.onDelete}}>Delete</PaperButton>
-    </PaperDialogActions>
-  </PaperDialog>
-{{/if}}
+<form {{on "submit" this.onDelete}}>
+  <div class="form-actions flex">
+    <span class="flex-1"></span>
+    <button type="button" class="pr-4" {{on "click" @onClose}}>Cancel</button>
+    <button type="submit" class="button-danger" disabled={{false}}>
+      Delete
+    </button>
+  </div>
+</form>

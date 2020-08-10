@@ -5,7 +5,7 @@ const base = '/api/thumbnail?';
 
 export default Component.extend({
   tagName: 'img',
-  attributeBindings: ['src', 'alt'],
+  attributeBindings: ['src', 'alt', 'width', 'height'],
 
   cachebuster: computed('timestamp', function() {
     let timestamp = this.timestamp;

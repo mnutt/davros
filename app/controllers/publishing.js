@@ -1,6 +1,7 @@
 import { inject as service } from '@ember/service';
 import Controller from '@ember/controller';
-import { computed, get } from '@ember/object';
+import { action } from '@ember/object';
+import { tracked } from '@glimmer/tracking';
 
 const apexValidation = [
   {
@@ -9,16 +10,27 @@ const apexValidation = [
   }
 ];
 
-export default Controller.extend({
-  publishing: service(),
-  domain: '',
-  apexValidation,
+export default class PublishingController extends Controller {
+  @service publishing;
+  @tracked domain = '';
+  @tracked validationError = null;
 
-  unsavedDomainIsApex: computed('domain', function() {
-    return !!get(this, 'domain');
-  }),
+  get unsavedDomainIsApex() {
+    return !!this.domain;
+  }
 
-  domainIsApex: computed('publishing.domain', function() {
-    return !!get(this, 'publishing.domain').match(/^\w+\.\w?\w?\w?\w?$/);
-  })
-});
+  get domainIsApex() {
+    return !!(this.publishing.domain || '').match(/^\w+\.\w?\w?\w?\w?$/);
+  }
+
+  @action
+  onChange(event) {
+    const { value } = event.target;
+    if (!apexValidation[0].validate(value)) {
+      this.validationError = apexValidation[0].message;
+    } else {
+      this.validationError = null;
+    }
+    this.domain = value;
+  }
+}

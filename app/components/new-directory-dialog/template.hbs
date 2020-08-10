@@ -1,21 +1,19 @@
-<div class="w-64 p-4">
-  <div class="modal-title flex">
-    <h2 class="text-lg font-bold">New Directory</h2>
+<div class="modal-title flex">
+  <h2 class="text-lg font-bold">New Directory</h2>
+  <span class="flex-1"></span>
+  <button type="button" {{on "click" this.close}}>
+    <Icon @icon="close"/>
+  </button>
+</div>
+
+<form {{on "submit" this.create}}>
+  <input label="Name" class="form-input my-4" placeholder="Name" autofocus={{true}} value={{this.directoryName}} {{on "change" (fn (mut this.directoryName))}} />
+
+  <div class="form-actions flex">
     <span class="flex-1"></span>
-    <button type="button" {{on "click" this.close}}>
-      <Icon @icon="close"/>
+    <button type="button" class="pr-4" {{on "click" this.close}}>Cancel</button>
+    <button type="submit" class="button-primary" disabled={{false}}>
+      Create
     </button>
   </div>
-
-  <form {{on "submit" this.create}}>
-    <input label="Name" class="form-input my-4" placeholder="Name" autofocus={{true}} value={{this.directoryName}} {{on "change" (fn (mut this.directoryName))}} />
-
-    <div class="form-actions flex">
-      <span class="flex-1"></span>
-      <button type="button" class="pr-4" {{on "click" this.close}}>Cancel</button>
-      <button type="submit" class="button-primary" disabled={{false}}>
-        Create
-      </button>
-    </div>
-  </form>
-</div>
+</form>

@@ -3,6 +3,7 @@ import EmberObject from '@ember/object';
 import filetypes from 'davros/lib/filetypes';
 import filetypeIcons from 'davros/lib/filetype-icons';
 import DavClient from 'davros/lib/webdav';
+import fetch from 'fetch';
 
 export const base = '/remote.php/webdav';
 
@@ -81,16 +82,38 @@ export default EmberObject.extend({
     return this.client.fullPath(this.path);
   }),
 
-  load: function() {
-    return this.client.load(this.path).then(items => {
-      this.loadFromResponse(items.shift());
+  async load() {
+    const items = await this.client.load(this.path);
+    this.loadFromResponse(items.shift());
 
-      if (items.length > 0) {
-        this.loadChildren(items);
+    if (items.length > 0) {
+      this.loadChildren(items);
+    }
+
+    if (this.type === 'markdown') {
+      try {
+        const previewResponse = await fetch(this.rawPath);
+        this.previewContent = await previewResponse.text();
+      } catch (e) {
+        this.previewFailed = true;
       }
+    } else if (this.type === 'document') {
+      try {
+        const params = new URLSearchParams({
+          url: this.rawPath,
+          ts: this.mtime.getTime()
+        }).toString();
+        const previewResponse = await fetch(`/api/preview?${params}`);
+        this.previewContent = await previewResponse.text();
+        if (!this.previewContent.length) {
+          this.previewFailed = true;
+        }
+      } catch (e) {
+        this.previewFailed = true;
+      }
+    }
 
-      return this;
-    });
+    return this;
   },
 
   remove: function() {

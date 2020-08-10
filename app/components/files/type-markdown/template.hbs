@@ -1,5 +1,9 @@
-<div class="markdown">
-  <div class="inner">
-    <MarkdownToHtml @markdown={{this.rawContent}} />
-  </div>
-</div>
+{{#if this.canSandbox}}
+  {{#if (eq this.previewState "error")}}
+    There was an error rendering this preview.
+  {{else}}
+    <iframe class="w-full h-full border-t" title="Document Preview" class={{this.size}} srcdoc={{this.srcDoc}} sandbox></iframe>
+  {{/if}}
+{{else}}
+  <p>Your browser doesn't support sandboxing, so we can't show a preview inline.</p>
+{{/if}}

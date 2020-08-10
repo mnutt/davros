@@ -1,17 +1,17 @@
 <DavrosUploader @fullscreen={{true}} @name="content" as |dropzone queue|>
   {{#if dropzone.active}}
-    <div id="dropzone-overlay">
-      <div class="message">
-        <Icon @icon="add_circle" />
+    <div id="dropzone-overlay" class="absolute inset-0 flex justify-center items-center bg-opacity-50 bg-black text-white">
+      <div class="message p-8 bg-black bg-opacity-75 rounded-sm border-2 border-green-500 shadow">
+        <Icon @icon="add_circle" class="align-top" />
         Drop files or directories to add them to
         <PathBreadcrumb @path={{this.model.path}} />
       </div>
     </div>
   {{/if}}
 
-  {{#if queue.length}}
-    <div class="upload-progress">
-      <PaperProgressLinear @warn={{true}} @value={{queue.progress}} />
+  {{#if queue.size}}
+    <div class="upload-progress absolute w-full inset-x-0 top-0">
+      <ProgressBar @value={{queue.progress}} />
     </div>
   {{/if}}
 
@@ -32,103 +32,49 @@
 
     <div class="actions hidden sm:block">
       {{#if this.canEdit}}
-        <button type="button" class="icon-button p-1 pb-0 mx-2 rounded hover:bg-blue-700 new-directory-button" {{on "click" (fn chooseUpload)}}>
-          <Icon @icon="file_upload" @ariaLabel="Upload file" class="block" />
-
-          <EmberTooltip>
-            Upload
-          </EmberTooltip>
-        </button>
-
-        <div class="relative inline-block">
-          <BasicDropdown as |modal|>
-            <modal.Trigger>
-              <button type="button" class="icon-button p-1 pb-0 mx-2 rounded hover:bg-blue-700">
-                <Icon @icon="add_circle_outline" @ariaLabel="New directory" />
-
-                <EmberTooltip>
-                  New Directory
-                </EmberTooltip>
-
-              </button>
-            </modal.Trigger>
-
-            <modal.Content class="rounded-sm shadow-sm border">
-              <NewDirectoryDialog @active={{true}} @onCreate={{route-action "newDirectory"}} @onClose={{fn (mut this.newDialogActive) false}} />
-            </modal.Content>
-          </BasicDropdown>
-        </div>
+        <HeaderItem @title="Upload" @icon="file_upload" @onClick={{this.chooseUpload}} />
+        <HeaderItem @title="New directory" @icon="add_circle_outline" @onClick={{toggle this "newDialogActive"}} />
       {{/if}}
 
       {{#if this.directoryGalleryItems.length}}
-        <button type="button" class="icon-button p-1 pb-0 mx-2 rounded hover:bg-blue-700" {{on "click" (fn photoswipe.actions.open)}}>
-          <Icon @icon="photo" @ariaLabel="Slideshow" />
-
-          <EmberTooltip>
-            Slideshow
-          </EmberTooltip>
-        </button>
+        <HeaderItem @title="Slideshow" @icon="photo" @onClick={{photoswipe.actions.open}} />
       {{/if}}
 
-      <button type="button" class="icon-button p-1 pb-0 mx-2 rounded hover:bg-blue-700" {{on "click" this.downloadDirectory}}>
-        <Icon @icon="file_download" aria-label="Download directory as zip" />
-
-        <EmberTooltip>
-          Download (zip)
-        </EmberTooltip>
-      </button>
+      <HeaderItem @title="Download (zip)" @icon="file_download" @onClick={{this.downloadDirectory}} />
 
       {{#if this.canEdit}}
-        <button type="button" class="icon-button p-1 pb-0 mx-2 rounded hover:bg-blue-700 delete-button" {{on "click" (fn (mut this.deleteDialogActive) true)}}>
-          <Icon @icon="delete" @ariaLabel="Delete"/>
-
-          <EmberTooltip>
-            {{#if this.isRoot}}
-              Delete Everything
-            {{else}}
-              Delete Directory
-            {{/if}}
-          </EmberTooltip>
-        </button>
+        <HeaderItem
+          @title="Delete {{if this.isRoot "Everything" "Directory"}}"
+          @icon="delete"
+          @onClick={{toggle this "deleteDialogActive"}} />
       {{/if}}
     </div>
 
     {{!-- only displayed on mobile --}}
     <div class="compact-actions block sm:hidden">
       <div class="more relative">
-        <BasicDropdown @position="target-right target" @width={{4}} as |menu|>
+        <BasicDropdown @contentComponent="menu-content" @verticalPosition="below" @horizontalPosition="right" @width={{4}}  as |menu|>
           <menu.Trigger>
-            <button type="button" class="more-button pr-2 mt-1">
+            <button type="button" class="more-button px-2 mt-1">
               <Icon @icon="menu" class="md-menu-origin" ariaLabel="Menu"/>
             </button>
           </menu.Trigger>
 
-          <menu.Content class="rounded-md bg-white shadow-xs">
-            <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+          <menu.Content @animationEnabled={{false}} class="rounded-md bg-white shadow">
+            <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu" {{on "click" menu.actions.close}}>
               {{#if this.canEdit}}
                 <MenuItem {{on "click" (fn this.chooseUpload)}} @id="menu-upload-file">
                   <p class="label flex-1">Upload</p>
                   <Icon @icon="file_upload" @class="md-menu-align-target"/>
                 </MenuItem>
 
-                <MenuItem>
-                  <button type="button" class="relative w-full" {{on "click" this.preventDefault}}>
-                    <BasicDropdown as |modal|>
-                      <modal.Trigger class="flex text-left">
-                        <p class="label flex-1">New Directory</p>
-                        <Icon @icon="add_circle_outline" class="md-menu-align-target"/>
-                      </modal.Trigger>
-
-                      <modal.Content class="rounded-sm shadow-sm border">
-                        <NewDirectoryDialog @active={{true}} @onCreate={{route-action "newDirectory"}} @onClose={{menu.actions.close}} />
-                      </modal.Content>
-                    </BasicDropdown>
-                  </button>
-
+                <MenuItem {{on "click" (toggle this "newDialogActive")}}>
+                  <p class="label flex-1">New Directory</p>
+                  <Icon @icon="add_circle_outline" class="md-menu-align-target"/>
                 </MenuItem>
               {{/if}}
 
-              <MenuItem {{on  "click" (fn (mut this.galleryEnabled) true)}}>
+              <MenuItem {{on  "click" (toggle this "galleryEnabled")}}>
                 <p class="label flex-1">View Slideshow</p>
                 <Icon @icon="photo" class="md-menu-align-target"/>
               </MenuItem>
@@ -139,7 +85,7 @@
               </MenuItem>
 
               {{#if this.canEdit}}
-                <MenuItem @class="danger" {{on "click" (fn (mut this.deleteDialogActive) true)}}>
+                <MenuItem @class="danger" {{on "click" (toggle this "deleteDialogActive")}}>
                   <p class="label flex-1">Delete Directory</p>
                   <Icon @icon="delete" class="md-menu-align-target"/>
                 </MenuItem>
@@ -149,19 +95,8 @@
         </BasicDropdown>
       </div>
     </div>
-
-    <DeleteDialog @active={{this.deleteDialogActive}} @onDelete={{route-action "delete"}} @onClose={{fn (mut this.deleteDialogActive) false }}>
-      Are you sure you want to delete
-      {{#if this.isRoot}}
-        <b>absolutely everything</b>
-        {{~else~}}
-        this directory
-        {{~/if~}}?
-        It will also be deleted from any synced clients.
-    </DeleteDialog>
   </TitleBar>
 </PhotoSwipe>
-
 
 {{#if this.model.sortedFiles}}
   <table class="file-list w-full {{if this.showExtraFields "" "noExtraFields"}}">
@@ -251,7 +186,29 @@
     </tbody>
   </table>
 {{else}}
-  <div class="empty-notice">
+  <div class="empty-notice p-6">
     This directory is empty. You can <a href="#" {{on "click" (fn this.chooseUpload)}}>upload some files</a> or just drag them in.
   </div>
 {{/if}}
+
+<ModalContent class="rounded-sm shadow-sm border"
+              @active={{this.newDialogActive}}
+                     @onClose={{fn (mut this.newDialogActive) false}}
+              as |modalContent|>
+  <NewDirectoryDialog @onCreate={{route-action "newDirectory"}} @onClose={{modalContent.onClose}} />
+</ModalContent>
+
+<ModalContent class="rounded-sm shadow-sm border"
+              @active={{this.deleteDialogActive}}
+                     @onClose={{fn (mut this.deleteDialogActive) false}}
+              as |modalContent|>
+  <DeleteDialog @onDelete={{route-action "delete"}} @onClose={{modalContent.onClose}}>
+    Are you sure you want to delete
+    {{#if this.isRoot}}
+      <b>absolutely everything</b>
+      {{~else~}}
+      this directory
+      {{~/if~}}?
+      It will also be deleted from any synced clients.
+  </DeleteDialog>
+</ModalContent>

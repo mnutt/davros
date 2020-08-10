@@ -62,10 +62,4 @@ export default class FileController extends Controller {
     const endpoint = `/api/archive?path=${encodeURIComponent(path)}`;
     document.location.href = endpoint;
   }
-
-  @action
-  preventDefault(e) {
-    e.stopPropagation();
-    e.preventDefault();
-  }
 }

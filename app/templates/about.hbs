@@ -1,29 +1,32 @@
 <TitleBar>
-  About
+  <div class="title text-white text-lg flex-1">
+    About
+  </div>
 </TitleBar>
 
-<PaperContent @class="about" @flex-layout="column" @flex={{true}}>
-  <p class="content">
+<div class="about p-4 flex-1 w-full h-full overflow-auto">
+  <p class="pb-4">
     Davros is a fully <a target="_blank" rel="noopener noreferrer" href="https://github.com/mnutt/davros/blob/master/LICENSE">open source</a> file storage platform, built specifically to run inside of Sandstorm. It allows you to store files on your Sandstorm server, and optionally sync them among many desktop clients.
-    <br><br>
-    We welcome contributions! <a target="_blank" rel="noopener noreferrer" href="https://github.com/mnutt/davros">Fork Davros on Github</a> and open a pull request.
-
-    <h2>Software Powering Davros</h2>
-
-    <ul>
-      <li><a target="_blank" rel="noopener noreferrer" href="http://emberjs.com/">Ember.js</a> is a client-side MVC framework that enables all of the javascript interactions.</li>
-      <li><a target="_blank" rel="noopener noreferrer" href="https://github.com/mikedeboer/jsDAV">jsDAV</a> handles server-side syncing of files to clients.</li>
-      <li><a target="_blank" rel="noopener noreferrer" href="https://nodejs.org">Node.js</a> runs the backend.</li>
-      <li><a target="_blank" rel="noopener noreferrer" href="https://sandstorm.io">Sandstorm</a> handles user authentication, sharing, and keeping the apps in line.</li>
-    </ul>
-
-    <h2>Release Notes</h2>
-
-    <em>Note: this list only shows up to the release you are currently using. You can find out if there is a newer release by clicking on the notifications icon in the Sandstorm bar.</em>
-
-    <div class="changelog">
-      <MarkdownToHtml @markdown={{this.model}} />
-    </div>
   </p>
 
-</PaperContent>
+  <p class="pb-4">
+    We welcome contributions! <a target="_blank" rel="noopener noreferrer" href="https://github.com/mnutt/davros">Fork Davros on Github</a> and open a pull request.
+  </p>
+
+  <h2 class="font-bold text-lg mt-2 pb-4">Software Powering Davros</h2>
+
+  <ul class="list-disc list-inside px-2 pb-4">
+    <li><a target="_blank" rel="noopener noreferrer" href="http://emberjs.com/">Ember.js</a> is a client-side MVC framework that enables all of the javascript interactions.</li>
+    <li><a target="_blank" rel="noopener noreferrer" href="https://github.com/mikedeboer/jsDAV">jsDAV</a> handles server-side syncing of files to clients.</li>
+    <li><a target="_blank" rel="noopener noreferrer" href="https://nodejs.org">Node.js</a> runs the backend.</li>
+    <li><a target="_blank" rel="noopener noreferrer" href="https://sandstorm.io">Sandstorm</a> handles user authentication, sharing, and keeping the apps in line.</li>
+  </ul>
+
+  <h2 class="font-bold text-lg mt-2 pb-4">Release Notes</h2>
+
+  <em>Note: this list only shows up to the release you are currently using. You can find out if there is a newer release by clicking on the notifications icon in the Sandstorm bar.</em>
+
+  <div class="changelog my-4">
+    <MarkdownToHtml @markdown={{this.model}} />
+  </div>
+</div>

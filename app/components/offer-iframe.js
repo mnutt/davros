@@ -1,19 +1,20 @@
-import { computed } from '@ember/object';
-import { on } from '@ember/object/evented';
-import Component from '@ember/component';
+import { action } from '@ember/object';
+import Component from '@glimmer/component';
+import { tracked } from '@glimmer/tracking';
 
-export default Component.extend({
-  classNames: ['offer-iframe'],
-  tagName: 'iframe',
-  attributeBindings: ['src'],
-  src: '',
+export default class OfferIframe extends Component {
+  @tracked src = '';
 
-  replacedTemplate: computed('content', function() {
-    var template = this.content;
+  get replacedTemplate() {
+    const template = this.args.content || '';
     return template.replace('$API_PROTO', document.location.protocol);
-  }),
+  }
 
-  didInsertElement() {
+  @action
+  setupListener() {
+    this._messageListener = this.messageListener.bind(this);
+    window.addEventListener('message', this._messageListener);
+
     let options = {};
     options.rpcId = this.elementId;
     options.template = this.replacedTemplate;
@@ -26,20 +27,21 @@ export default Component.extend({
     }
 
     window.parent.postMessage({ renderTemplate: options }, '*');
-  },
+  }
 
-  registerMessageListener: on('willInsertElement', function() {
-    window.addEventListener('message', this.messageListener.bind(this));
-  }),
+  @action
+  destroyListener() {
+    window.removeEventListener('message', this._messageListener);
+  }
 
-  messageListener: function(event) {
+  messageListener(event) {
     if (event.data && event.data.rpcId === this.elementId) {
       if (event.data.error) {
         // eslint-disable-next-line no-console
         console.error('Offer template error: ' + event.data.error);
       } else {
-        this.set('src', event.data.uri);
+        this.src = event.data.uri;
       }
     }
   }
-});
+}

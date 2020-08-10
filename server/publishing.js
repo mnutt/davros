@@ -11,7 +11,21 @@ var source = path.relative(
 var configPath = process.env.CONFIG_PATH || __dirname + '/../config';
 var domainFilePath = [configPath, 'domain'].join('/');
 
+let mockDomain = null;
+let mockPublishingEnabled = false;
+
+function isNotSandstorm(req) {
+  return !req.headers['X-Sandstorm-Username'];
+}
+
 exports.unpublish = function(req, res, next) {
+  if (isNotSandstorm(req)) {
+    mockDomain = null;
+    mockPublishingEnabled = false;
+    res.json({ success: true });
+    return;
+  }
+
   var fsp = require('fs-promise');
   fsp
     .unlink(domainFilePath)
@@ -29,6 +43,20 @@ exports.unpublish = function(req, res, next) {
 };
 
 exports.getInfo = function(req, res, next) {
+  if (isNotSandstorm(req)) {
+    if (mockPublishingEnabled) {
+      res.json({
+        domain: mockDomain,
+        publicId: 'abc12345',
+        autoUrl: 'http://localhost',
+        host: 'localhost'
+      });
+    } else {
+      res.json({});
+    }
+    return;
+  }
+
   var fsp = require('fs-promise');
   let domain;
   fsp
@@ -68,6 +96,13 @@ exports.getInfo = function(req, res, next) {
 };
 
 exports.publish = function(req, res, next) {
+  if (isNotSandstorm(req)) {
+    const params = url.parse(req.url, true).query;
+    mockDomain = params.domain;
+    mockPublishingEnabled = true;
+    return exports.getInfo(req, res, next);
+  }
+
   var fsp = require('fs-promise');
 
   fsp

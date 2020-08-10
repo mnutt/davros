@@ -1,9 +1,11 @@
 <TitleBar>
-  Not Found
+  <a href="/" class="title text-white text-lg flex-1 underline">
+    Davros
+  </a>
 </TitleBar>
 
-<PaperContent @class="notfound" @flex-layout="column" @flex={{true}}>
-  <div class="huge">{{if this.model.message this.model.message "500 Error"}}</div>
+<div class="p-4">
+  <div class="text-xl font-bold">{{if this.model.message this.model.message "500 Error"}}</div>
 
   <div class="description">We couldn't find this page. Please check the URL to make sure it is correct.</div>
-</PaperContent>
+</div>

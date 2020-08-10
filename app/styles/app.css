@@ -2,27 +2,6 @@
 
 @import 'tailwindcss/components';
 @import 'components.css';
+@import './fonts.css';
 
 @import 'tailwindcss/utilities';
-@import 'utilities.css';
-
-@import './fonts.scss';
-@import './sidebar.css';
-
-@import 'photoswipe/dist/photoswipe.css';
-
-.file-list tbody tr:nth-child(odd) {
-  @apply bg-gray-100;
-}
-
-.file-list .updated .long {
-  min-width: 110px;
-}
-
-.file-list .updated .short {
-  min-width: 50px;
-}
-
-.file-list .size .long {
-  min-width: 60px;
-}

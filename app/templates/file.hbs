@@ -1,74 +1,93 @@
 <TitleBar>
-  <div class="title truncate" title="Viewing {{this.model.name}}">
+  <div class="title text-white text-lg flex-1 truncate" title="Viewing {{this.model.name}}">
     Viewing
     <PathBreadcrumb @path={{this.model.path}} />
     {{this.model.name}}
   </div>
 
-  <div class="actions">
+  <div class="actions hidden sm:block">
     {{#if this.canEdit}}
-      <PaperButton @class="icon-button delete-button" @onClick={{fn (mut this.deleteDialogActive) true}}>
-        <PaperIcon @icon="delete"/>
-
-        <EmberTooltip>
-          Delete File
-        </EmberTooltip>
-      </PaperButton>
+      <HeaderItem
+        @title="Delete File"
+        @icon="delete"
+        @onClick={{toggle this "deleteDialogActive"}} />
     {{/if}}
   </div>
 
   {{!-- Only displayed on mobile --}}
-  <div class="compact-actions">
-    <div class="more">
-      <PaperMenu @position="target-right target" as |menu|>
-        <menu.trigger>
-          <PaperButton @class="more-button" @icon-button={{true}}>
-            {{paper-icon "more-vert" class="md-menu-origin"}}
-          </PaperButton>
-        </menu.trigger>
+  <div class="compact-actions block sm:hidden">
+    <div class="more relative">
+      <BasicDropdown @contentComponent="menu-content" @verticalPosition="below" @horizontalPosition="right" @width={{4}}  as |menu|>
+        <menu.Trigger>
+          <button type="button" class="more-button px-2 mt-1">
+            <Icon @icon="menu" class="md-menu-origin" ariaLabel="Menu"/>
+          </button>
+        </menu.Trigger>
 
-        <menu.content>
-          {{#if this.canEdit}}
-            <PaperMenuItem @class="danger" @onClick={{fn (mut this.deleteDialogActive) true}}>
-              <p class="label">Delete File</p>
-              {{paper-icon "delete" class="md-menu-align-target"}}
-            </PaperMenuItem>
-          {{else}}
-            <PaperMenuItem>
-              <p class="label">Read-only mode</p>
-            </PaperMenuItem>
-          {{/if}}
-        </menu.content>
-      </PaperMenu>
+        <menu.Content @animationEnabled={{false}} class="rounded-md bg-white shadow">
+          <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu" {{on "click" menu.actions.close}}>
+            {{#if this.canEdit}}
+              <MenuItem {{on "click" (toggle this "deleteDialogActive")}} @id="menu-upload-file">
+                <p class="label flex-1 mr-2">Delete</p>
+                <Icon @icon="delete" />
+              </MenuItem>
+            {{else}}
+              <MenuItem {{on "click" (fn this.chooseUpload)}} @id="menu-upload-file">
+                <p class="label flex-1">Read-only mode</p>
+              </MenuItem>
+            {{/if}}
+          </div>
+        </menu.Content>
+      </BasicDropdown>
     </div>
   </div>
-
-  <DeleteDialog @active={{this.deleteDialogActive}} @onClose={{fn (mut this.deleteDialogActive) false}} @onDelete={{route-action "delete"}}>
-    Are you sure you want to delete the file {{this.model.name}}? It will also be deleted from any synced clients.
-  </DeleteDialog>
 </TitleBar>
 
-<div class="file file-{{this.model.type}}">
-  <div class="meta">
-    <div class="filename">
+<div class="file file-{{this.model.type}} flex-1 flex flex-col">
+  <div class="meta p-4">
+    <div class="filename text-lg font-bold leading-tight pb-2">
 
       <a href={{this.model.rawPath}}>
         {{this.model.name}}
       </a>
     </div>
 
-    <div class="fsinfo">
-      <span title={{this.model.mtime}} class="updated">Updated {{moment-from-now this.model.mtime locale="en" interval=5000}}</span>
-      &middot;
-      <span title="{{commify this.model.size}} bytes" class="size">{{filesize this.model.size}}</span>
-      &middot;
-      <a href={{this.model.rawPath}} target="_blank" rel="noopener noreferrer">Download Original</a>
-      {{#if this.publicUrl}}
+    <div class="fsinfo text-sm flex">
+      <div class="flex-1 mr-2">
+        <span title={{this.model.mtime}} class="updated">
+          Updated {{moment-from-now this.model.mtime locale="en" interval=5000}}
+        </span>
         &middot;
-        <a href={{this.publicUrl}} target="_blank" rel="noopener noreferrer">Public URL</a>
-      {{/if}}
+        <span title="{{commify this.model.size}} bytes" class="size">
+          {{filesize this.model.size}}
+        </span>
+      </div>
+
+      <div>
+        <a class="underline" href={{this.model.rawPath}} target="_blank" rel="noopener noreferrer">
+          Download Original
+        </a>
+
+        {{#if this.publicUrl}}
+          &middot;
+          <a class="underline" href={{this.publicUrl}} target="_blank" rel="noopener noreferrer">
+            Public URL
+          </a>
+        {{/if}}
+      </div>
     </div>
   </div>
 
-  {{component this.model.typeComponent model=this.model class="preview"}}
+  <div class="flex-1">
+    {{component this.model.typeComponent model=this.model class="preview flex justify-center"}}
+  </div>
 </div>
+
+<ModalContent class="rounded-sm shadow-sm border"
+              @active={{this.deleteDialogActive}}
+              @onClose={{toggle this "deleteDialogActive"}}
+              as |modalContent|>
+  <DeleteDialog @onClose={{modalContent.onClose}} @onDelete={{route-action "delete"}}>
+    Are you sure you want to delete the file {{this.model.name}}? It will also be deleted from any synced clients.
+  </DeleteDialog>
+</ModalContent>

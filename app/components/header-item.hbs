@@ -1,0 +1,7 @@
+<button type="button" class="icon-button p-1 pb-0 mx-2 rounded hover:bg-blue-700" {{on "click" @onClick}}>
+  <Icon @icon={{@icon}} @ariaLabel={{@title}} class="block" />
+
+  <EmberTooltip>
+    {{@title}}
+  </EmberTooltip>
+</button>

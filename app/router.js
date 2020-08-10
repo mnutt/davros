@@ -1,6 +1,6 @@
 import { on } from '@ember/object/evented';
 import EmberRouter from '@ember/routing/router';
-import config from './config/environment';
+import config from 'davros/config/environment';
 
 export default class Router extends EmberRouter {
   location = config.locationType;
