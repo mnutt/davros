@@ -62,7 +62,6 @@
     "ember-cli-inject-live-reload": "^2.0.2",
     "ember-cli-moment-shim": "^3.8.0",
     "ember-cli-postcss": "^6.0.1",
-    "ember-cli-pretender": "^3.2.0",
     "ember-cli-showdown": "^4.5.0",
     "ember-cli-sri": "^2.1.1",
     "ember-cli-uglify": "^3.0.0",
