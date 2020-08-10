@@ -1,33 +1,26 @@
-import { computed } from '@ember/object';
-import Component from '@ember/component';
+import Component from '@glimmer/component';
 
 const base = '/api/thumbnail?';
 
-export default Component.extend({
-  tagName: 'img',
-  attributeBindings: ['src', 'alt', 'width', 'height'],
-
-  cachebuster: computed('timestamp', function() {
-    let timestamp = this.timestamp;
+export default class ImageThumbnailComponent extends Component {
+  get cacheBuster() {
+    let timestamp = this.args.timestamp;
     if (timestamp.getTime) {
       return timestamp.getTime();
     } else {
       return timestamp.toString();
     }
-  }),
+  }
 
-  src: computed('original', function() {
-    return (
-      base +
-      Object.entries({
-        url: this.original,
-        width: this.width,
-        height: this.height,
-        op: this.op || 'fit',
-        ts: this.cachebuster
-      })
-        .map(p => p.map(encodeURIComponent).join('='))
-        .join('&')
-    );
-  })
-});
+  get src() {
+    const params = new URLSearchParams({
+      url: this.args.original,
+      width: this.args.width,
+      height: this.args.height,
+      op: this.args.op || 'fit',
+      ts: this.cachebuster
+    });
+
+    return base + params.toString();
+  }
+}

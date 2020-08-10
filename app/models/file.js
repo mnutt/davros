@@ -90,7 +90,7 @@ export default EmberObject.extend({
       this.loadChildren(items);
     }
 
-    if (this.type === 'markdown') {
+    if (this.type === 'markdown' || this.type === 'code') {
       try {
         const previewResponse = await fetch(this.rawPath);
         this.previewContent = await previewResponse.text();
