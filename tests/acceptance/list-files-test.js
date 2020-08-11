@@ -33,8 +33,8 @@ module('Acceptance | list files', function(hooks) {
   test('listing files', async function(assert) {
     await visit('/files');
 
-    assert.dom('.file-list tr:nth-child(1) .filename .truncated').hasText('myDir');
-    assert.dom('.file-list tr:nth-child(2) .filename .truncated').hasText('space.jpg');
+    assert.dom('.file-list tr:nth-child(1) .filename .truncate').hasText('myDir');
+    assert.dom('.file-list tr:nth-child(2) .filename .truncate').hasText('space.jpg');
   });
 
   test('traversing directories', async function(assert) {
@@ -46,7 +46,7 @@ module('Acceptance | list files', function(hooks) {
     // title looks good
     assert.equal(stripTitle(find('.title').textContent), 'Files in home / myDir /');
     // first file in subdir exists
-    assert.dom('.file-list tr:nth-child(1) .filename .truncated').hasText('ios-davros.png');
+    assert.dom('.file-list tr:nth-child(1) .filename .truncate').hasText('ios-davros.png');
 
     await click('.breadcrumb a');
 

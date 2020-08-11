@@ -8,7 +8,8 @@ const markdownOptions = {
   tables: true
 };
 
-const style = '<style>html { font-family: sans-serif; padding: 20px; }</style>\n\n';
+const style =
+  '<style>html { font-family: sans-serif; padding: 20px; } pre { white-space: pre-wrap; }</style>\n\n';
 
 export default class TypeMarkdownComponent extends Component {
   @tracked errored = false;

@@ -1,40 +1,42 @@
 import Service from '@ember/service';
 import fetch from 'fetch';
+import { tracked } from '@glimmer/tracking';
 
 function isIframed() {
   return window.top !== window;
 }
 
-export default Service.extend({
-  error: false,
+export default class PermissionsService extends Service {
+  @tracked error = false;
+  @tracked list = [];
 
-  init: function() {
-    this._super(...arguments);
-
-    this.list = [];
+  constructor() {
+    super(...arguments);
 
     if (!isIframed()) {
       this.set('list', ['read', 'edit']);
       return;
     }
 
-    fetch('/api/permissions')
-      .then(response => {
-        return response.json();
-      })
-      .then(result => {
-        this.set('list', result.permissions);
-      })
-      .catch(err => {
-        this.set('error', err);
-        this.set('list', []);
-      });
-  },
+    this.getPermissions();
+  }
 
-  can: function(permission) {
+  async getPermissions() {
+    try {
+      const response = await fetch('/api/permissions');
+      const result = await response.json();
+      this.list = result.permissions;
+    } catch (e) {
+      this.error = err;
+      this.list = [];
+    }
+  }
+
+  can(permission) {
     if (this.error) {
       return true;
     } // fail safe in case permissions not available
-    return this.list.indexOf(permission) >= 0;
+
+    return this.list.includes(permission);
   }
-});
+}

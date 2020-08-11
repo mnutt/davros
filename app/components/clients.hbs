@@ -1,0 +1,61 @@
+<TitleBar>
+  <div class="title text-white text-lg flex-1">
+    Desktop and Mobile Clients
+  </div>
+</TitleBar>
+
+<div class="p-4">
+  <p class="pb-4">
+    You can synchronize your file storage with your local device using a desktop or mobile WebDAV client. Unfortunately, <b>OwnCloud/NextCloud are not supported</b>, due to protocol incompatibilities.
+  </p>
+
+  <h2 class="text-lg font-bold mt-4 mb-2">Configuring the client</h2>
+
+  Start the client. In the <strong>Server Name</strong> field, use this value:
+  <div class="server-url my-4 ml-8 max-w-xl">
+    {{#if this.useAuthInServerUrl}}
+      <OfferIframe class="form-input w-full"
+                   @content="$API_PROTO//$GRAIN_TITLE_SLUG:$API_TOKEN@$API_HOST/remote.php/webdav/"
+                   @clipboardButton="right"
+                   @unauthenticated={{this.unauthenticated}} />
+    {{else}}
+      <OfferIframe class="form-input w-full"
+                   @content="$API_PROTO//$API_HOST/remote.php/webdav/"
+                   @clipboardButton="right"
+                   @unauthenticated={{this.unauthenticated}}  />
+    {{/if}}
+
+    <Switch class="mt-2" @onChange={{fn (mut this.useAuthInServerUrl)}} value={{this.useAuthInServerUrl}}>
+      Put auth in URL (command line use)
+    </Switch>
+  </div>
+
+  On the <strong>Enter user credentials</strong> step, use:
+
+  <div class="authentication my-4 ml-8 max-w-xl">
+    <div class="username-field mb-2">
+      <label for="username" class="text-sm pb-1">Username</label>
+      <div class="username">
+        <OfferIframe class="form-input w-full"
+                     @content="$GRAIN_TITLE_SLUG"
+                     @clipboardButton="right"
+                     @unauthenticated={{this.unauthenticated}} />
+      </div>
+    </div>
+
+    <div class="password-field mb-2">
+      <label for="password" class="text-sm pb-1">Password</label>
+      <div class="password">
+        <OfferIframe class="form-input w-full"
+                     @content="$API_TOKEN"
+                     @clipboardButton="right"
+                     @unauthenticated={{this.unauthenticated}} />
+      </div>
+    </div>
+  </div>
+
+  <em class="block pt-4">
+    Note: credentials generated here expire within 5 minutes if not used, so if
+    you see authentication failures, first try coming back to this page and re-copying.
+  </em>
+</div>

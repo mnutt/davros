@@ -38,6 +38,6 @@ export default class PathBreadcrumbComponent extends Component {
 
   get parentPath() {
     const lastPart = this.parts[this.parts.length - 1];
-    return (lastPart && lastPart.path) || '/';
+    return (lastPart && lastPart.path) || '';
   }
 }

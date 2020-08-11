@@ -1,7 +1,7 @@
 import Route from '@ember/routing/route';
 
-export default Route.extend({
-  beforeModel: function() {
+export default class HomeRoute extends Route {
+  beforeModel() {
     this.replaceWith('files');
   }
-});
+}

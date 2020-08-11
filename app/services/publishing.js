@@ -2,34 +2,41 @@ import { alias } from '@ember/object/computed';
 import Service from '@ember/service';
 import { computed, set, get } from '@ember/object';
 import fetch from 'fetch';
+import { tracked } from '@glimmer/tracking';
 
-export default Service.extend({
-  data: null,
+export default class PublishingService extends Service {
+  @tracked data = null;
+  @tracked error = null;
 
-  init: function() {
-    this._super(...arguments);
+  constructor() {
+    super(...arguments);
 
-    fetch('/api/publish/info')
-      .then(response => {
-        return response.json();
-      })
-      .then(result => {
-        this.update(result);
-      });
-  },
+    this.fetchPublishingData();
+  }
 
-  update(data) {
-    set(this, 'data', data);
-  },
+  async fetchPublishingData() {
+    try {
+      const response = await fetch('/api/publish/info');
+      const result = response.json();
+      this.update(result, null);
+    } catch (error) {
+      this.update(null, error);
+    }
+  }
 
-  domain: alias('data.domain'),
-  autoUrl: alias('data.autoUrl'),
-  publicId: alias('data.publicId'),
-  host: alias('data.host'),
+  update(data, error) {
+    this.data = data;
+    this.error = error;
+  }
 
-  urlBase: computed('domain', 'autoUrl', function() {
-    let domain = get(this, 'domain');
-    let autoUrl = get(this, 'autoUrl');
+  @alias('data.domain') domain;
+  @alias('data.autoUrl') autoUrl;
+  @alias('data.publicId') publicId;
+
+  @alias('data.host') host;
+
+  get urlBase() {
+    const { domain, autoUrl } = this;
 
     if (domain) {
       return `https://${domain}`;
@@ -38,5 +45,5 @@ export default Service.extend({
     } else {
       return null;
     }
-  })
-});
+  }
+}

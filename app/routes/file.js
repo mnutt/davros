@@ -2,58 +2,64 @@ import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
 import fetch from 'fetch';
 import File from 'davros/models/file';
-import ensureCollectionExists from 'davros/lib/ensure-collection-exists';
-import { task } from 'ember-concurrency';
+import { task } from 'ember-concurrency-decorators';
+import { action } from '@ember/object';
 
 const socketUrl =
   (document.location.protocol === 'https:' ? 'wss://' : 'ws://') +
   document.location.host +
   '/ws-files';
 
-export default Route.extend({
-  websockets: service(),
+export default class FileRoute extends Route {
+  templateName = 'file';
+  @service websockets;
 
-  init() {
-    this._super(...arguments);
+  constructor() {
+    super(...arguments);
 
+    this.setupWebsockets();
+  }
+
+  setupWebsockets() {
     const socket = this.websockets.socketFor(socketUrl);
-
     socket.on('message', this.messageHandler, this);
-  },
+  }
 
-  messageHandler: function(rawMessage) {
-    var message = JSON.parse(rawMessage.data);
+  messageHandler(rawMessage) {
+    const message = JSON.parse(rawMessage.data);
 
     if (message.file) {
       if (message.file === '/') {
         message.file = '';
       }
-      if (this.get('controller.model.path') === message.file) {
-        this.get('controller.model').load();
+
+      if (this.context && this.context.path === message.file) {
+        this.reload();
       }
     }
-  },
+  }
 
-  model: function(params) {
-    var id = params.path || '';
-    var file = File.create({ path: id });
-    return file.load();
-  },
+  async reload() {
+    const newModelAttrs = await File.load(this.context.path);
+    this.context.files = newModelAttrs.files;
+  }
 
-  renderTemplate: function() {
-    if (this.get('controller.model.isDirectory')) {
-      this.render('directory');
-    } else {
-      this.render('file');
-    }
-  },
+  model(params) {
+    const path = params.path || '';
+    return File.load(path);
+  }
 
-  uploadFile: task(function*(file) {
+  @task({
+    maxConcurrency: 5,
+    enqueue: true
+  })
+  *uploadFile(file) {
     if (file.blob.type === '') {
       yield;
     } // it's a directory
-    var location = document.location.pathname;
-    var path = file.blob.webkitRelativePath || file.get('fullPath') || file.get('name');
+
+    let location = document.location.pathname;
+    let path = file.blob.webkitRelativePath || file.fullPath || file.name;
 
     if (location.indexOf('/files') === 0) {
       // if user is in a directory, upload the files there
@@ -72,7 +78,7 @@ export default Route.extend({
 
     var fullPath = [location, path].join('');
 
-    yield ensureCollectionExists(fullPath, this.get('controller.model.client')).then(() => {
+    yield File.ensureCollectionExists(fullPath).then(() => {
       return file
         .upload('/api/upload', {
           data: {
@@ -80,38 +86,38 @@ export default Route.extend({
           }
         })
         .then(() => {
-          return this.get('controller.model').load();
+          return this.reload();
         });
     });
-  })
-    .maxConcurrency(5)
-    .enqueue(),
-
-  actions: {
-    delete: function() {
-      var model = this.get('controller.model');
-      var parent = model.get('parent');
-
-      return model.remove().then(() => {
-        if (parent) {
-          this.transitionTo('file', parent);
-        } else {
-          this.transitionTo('files');
-        }
-      });
-    },
-
-    newDirectory(dirname) {
-      var model = this.get('controller.model');
-
-      var fullPath = [model.get('rawPath'), dirname].join('/');
-      return fetch(fullPath, { method: 'MKCOL' }).then(() => {
-        return this.get('controller.model').load();
-      });
-    },
-
-    upload: function(file) {
-      this.uploadFile.perform(file);
-    }
   }
-});
+
+  @action
+  delete() {
+    const { model } = this.controller;
+    const { parent } = model;
+
+    return model.remove().then(() => {
+      if (parent) {
+        this.transitionTo('file', parent);
+      } else {
+        this.transitionTo('files');
+      }
+    });
+  }
+
+  @action
+  newDirectory(dirname) {
+    const { model } = this.controller;
+
+    const fullPath = [model.rawPath, dirname].join('/');
+
+    return fetch(fullPath, { method: 'MKCOL' }).then(() => {
+      return File.load(model.path);
+    });
+  }
+
+  @action
+  upload(file) {
+    this.uploadFile.perform(file);
+  }
+}

@@ -53,10 +53,10 @@
     {{!-- only displayed on mobile --}}
     <div class="compact-actions block sm:hidden">
       <div class="more relative">
-        <BasicDropdown @contentComponent="menu-content" @verticalPosition="below" @horizontalPosition="right" @width={{4}}  as |menu|>
+        <BasicDropdown @verticalPosition="below" @horizontalPosition="right" @width={{4}}  as |menu|>
           <menu.Trigger>
             <button type="button" class="more-button px-2 mt-1">
-              <Icon @icon="menu" class="md-menu-origin" ariaLabel="Menu"/>
+              <Icon @icon="menu" ariaLabel="Menu"/>
             </button>
           </menu.Trigger>
 
@@ -65,29 +65,29 @@
               {{#if this.canEdit}}
                 <MenuItem {{on "click" (fn this.chooseUpload)}} @id="menu-upload-file">
                   <p class="label flex-1">Upload</p>
-                  <Icon @icon="file_upload" @class="md-menu-align-target"/>
+                  <Icon @icon="file_upload" />
                 </MenuItem>
 
                 <MenuItem {{on "click" (toggle this "newDialogActive")}}>
                   <p class="label flex-1">New Directory</p>
-                  <Icon @icon="add_circle_outline" class="md-menu-align-target"/>
+                  <Icon @icon="add_circle_outline" />
                 </MenuItem>
               {{/if}}
 
-              <MenuItem {{on  "click" (toggle this "galleryEnabled")}}>
+              <MenuItem {{on  "click" photoswipe.actions.open}}>
                 <p class="label flex-1">View Slideshow</p>
-                <Icon @icon="photo" class="md-menu-align-target"/>
+                <Icon @icon="photo" />
               </MenuItem>
 
               <MenuItem {{on "click" this.downloadDirectory}} @id="menu-download-directory">
                 <p class="label flex-1">Download (zip)</p>
-                <Icon @icon="file_download" class="md-menu-align-target"/>
+                <Icon @icon="file_download" />
               </MenuItem>
 
               {{#if this.canEdit}}
                 <MenuItem @class="danger" {{on "click" (toggle this "deleteDialogActive")}}>
                   <p class="label flex-1">Delete Directory</p>
-                  <Icon @icon="delete" class="md-menu-align-target"/>
+                  <Icon @icon="delete" />
                 </MenuItem>
               {{/if}}
             </div>

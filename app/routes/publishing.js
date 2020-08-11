@@ -1,32 +1,36 @@
 import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
-import { get } from '@ember/object';
+import { action } from '@ember/object';
 import fetch from 'fetch';
 
-export default Route.extend({
-  publishing: service(),
+export default class PublishingRoute extends Route {
+  @service publishing;
 
-  actions: {
-    publish: function() {
-      let publishUrl = '/api/publish';
-      let domain = get(this, 'controller.domain');
-      if (domain && domain !== '') {
-        publishUrl += `?domain=${encodeURIComponent(domain)}`;
-      }
+  @action
+  async publish() {
+    let publishUrl = '/api/publish';
+    let { domain } = this.controller;
 
-      fetch(publishUrl, { method: 'POST' })
-        .then(response => {
-          return response.json();
-        })
-        .then(result => {
-          this.publishing.update(result);
-        });
-    },
+    if (domain && domain !== '') {
+      publishUrl += `?domain=${encodeURIComponent(domain)}`;
+    }
 
-    unpublish: function() {
-      fetch('/api/unpublish', { method: 'POST' }).then(() => {
-        this.publishing.update({});
-      });
+    try {
+      const response = await fetch(publishUrl, { method: 'POST' });
+      const result = await response.json();
+      this.publishing.update(result);
+    } catch (error) {
+      this.publishing.update(null, error);
     }
   }
-});
+
+  @action
+  async unpublish() {
+    try {
+      await fetch('/api/unpublish', { method: 'POST' });
+      this.publishing.update({});
+    } catch (error) {
+      this.publishing.update(null, error);
+    }
+  }
+}

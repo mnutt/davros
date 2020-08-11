@@ -1,5 +1,5 @@
-import Application from 'my-app/app';
-import config from 'my-app/config/environment';
+import Application from 'davros/app';
+import config from 'davros/config/environment';
 import { setApplication } from '@ember/test-helpers';
 import { start } from 'ember-qunit';
 

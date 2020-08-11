@@ -3,8 +3,8 @@ import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 
 export default class NewDirectoryDialog extends Component {
-  @tracked
-  directoryName = '';
+  @tracked directoryName = '';
+  @tracked validationError = null;
 
   directoryValidation = [
     {
@@ -16,13 +16,29 @@ export default class NewDirectoryDialog extends Component {
   ];
 
   @action
+  onChange(event) {
+    const { value } = event.target;
+
+    if (!this.directoryValidation[0].validate(value)) {
+      this.validationError = this.directoryValidation[0].message;
+      return;
+    } else {
+      this.validationError = null;
+      this.directoryName = value;
+    }
+  }
+
+  @action
   close() {
     this.directoryName = '';
+    this.validationError = null;
     this.args.onClose();
   }
 
   @action
-  create() {
+  create(event) {
+    event.preventDefault();
+
     this.args.onCreate(this.directoryName).then(() => this.close());
   }
 }

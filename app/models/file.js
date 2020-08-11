@@ -1,136 +1,140 @@
-import { computed } from '@ember/object';
-import EmberObject from '@ember/object';
 import filetypes from 'davros/lib/filetypes';
 import filetypeIcons from 'davros/lib/filetype-icons';
 import DavClient from 'davros/lib/webdav';
 import fetch from 'fetch';
+import { tracked } from '@glimmer/tracking';
+import ensureCollectionExists from 'davros/lib/ensure-collection-exists';
 
 export const base = '/remote.php/webdav';
+const client = new DavClient(base);
 
-export default EmberObject.extend({
-  path: null, // file's path within the dav server, excluding the dav base
-  size: null, // in bytes
-  mtime: null, // modified time
-  files: null, // if a directory, a list of children
+export default class File {
+  @tracked path; // file's path within the dav server, excluding the dav base
+  @tracked size; // in bytes
+  @tracked mtime; // modified time
+  @tracked files = []; // if a directory, a list of children
+  @tracked isDirectory = false;
+  @tracked dimensions = [0, 0];
 
-  init() {
-    this._super(...arguments);
+  constructor(attrs = {}) {
+    Object.assign(this, attrs);
+  }
 
-    this.client = new DavClient(base);
-  },
+  static ensureCollectionExists(path) {
+    return ensureCollectionExists(path, client);
+  }
 
-  name: computed('path', function() {
+  static async load(path) {
+    const items = await client.load(path);
+
+    const file = new File(items.shift());
+
+    if (items.length > 0) {
+      file.loadChildren(items);
+    }
+
+    if (file.type === 'markdown' || file.type === 'code') {
+      try {
+        const previewResponse = await fetch(file.rawPath);
+        file.previewContent = await previewResponse.text();
+      } catch (e) {
+        file.previewFailed = true;
+      }
+    } else if (file.type === 'document') {
+      try {
+        const previewResponse = await fetch(file.documentPreviewUrl());
+        file.previewContent = await previewResponse.text();
+
+        if (!file.previewContent.length) {
+          file.previewFailed = true;
+        }
+      } catch (e) {
+        file.previewFailed = true;
+      }
+    }
+
+    return file;
+  }
+
+  get name() {
     return this.path.split(/[\\/]/).pop();
-  }),
+  }
 
-  sortedFiles: computed('files', function() {
+  get sortedFiles() {
     return this.files.sortBy('isFile', 'name');
-  }),
+  }
 
-  lotsOfFiles: computed('files.length', function() {
-    return this.get('files.length') > 50;
-  }),
+  get lotsOfFiles() {
+    return this.files.length > 50;
+  }
 
-  parent: computed('path', function() {
+  get parent() {
     return this.path.replace(/\/?[^/]*\/?$/, '');
-  }),
+  }
 
-  linkedPath: computed('path', 'isDirectory', function() {
+  get linkedPath() {
     if (this.isDirectory) {
       return this.path + '/';
     } else {
       return this.path;
     }
-  }),
+  }
 
-  isDirectory: false,
-
-  isFile: computed('isDirectory', function() {
+  get isFile() {
     return !this.isDirectory;
-  }),
+  }
 
-  extension: computed('name', function() {
-    var pieces = this.name.split('.');
+  get extension() {
+    const pieces = this.name.split('.');
     if (pieces.length > 1) {
       return pieces[pieces.length - 1];
     } else {
       return '';
     }
-  }),
-
-  width: computed('dimensions', function() {
-    return this.dimensions[0];
-  }),
-
-  height: computed('dimensions', function() {
-    return this.dimensions[1];
-  }),
-
-  type: computed('extension', function() {
-    return filetypes[this.extension.toLowerCase()] || filetypes.defaultType;
-  }),
-
-  typeIcon: computed('type', function() {
-    return filetypeIcons[this.type];
-  }),
-
-  typeComponent: computed('type', function() {
-    return `files/type-${this.type}`;
-  }),
-
-  rawPath: computed('path', function() {
-    return this.client.fullPath(this.path);
-  }),
-
-  async load() {
-    const items = await this.client.load(this.path);
-    this.loadFromResponse(items.shift());
-
-    if (items.length > 0) {
-      this.loadChildren(items);
-    }
-
-    if (this.type === 'markdown' || this.type === 'code') {
-      try {
-        const previewResponse = await fetch(this.rawPath);
-        this.previewContent = await previewResponse.text();
-      } catch (e) {
-        this.previewFailed = true;
-      }
-    } else if (this.type === 'document') {
-      try {
-        const params = new URLSearchParams({
-          url: this.rawPath,
-          ts: this.mtime.getTime()
-        }).toString();
-        const previewResponse = await fetch(`/api/preview?${params}`);
-        this.previewContent = await previewResponse.text();
-        if (!this.previewContent.length) {
-          this.previewFailed = true;
-        }
-      } catch (e) {
-        this.previewFailed = true;
-      }
-    }
-
-    return this;
-  },
-
-  remove: function() {
-    return this.client.remove(this.path);
-  },
-
-  loadFromResponse: function(response) {
-    this.setProperties(response);
-  },
-
-  loadChildren: function(parsedResponses) {
-    var files = [];
-    for (var i = 0; i < parsedResponses.length; i++) {
-      var file = this.constructor.create();
-      file.loadFromResponse(parsedResponses[i]);
-      files.push(file);
-    }
-    this.set('files', files);
   }
-});
+
+  get width() {
+    return this.dimensions[0];
+  }
+
+  get height() {
+    return this.dimensions[1];
+  }
+
+  get type() {
+    return filetypes[this.extension.toLowerCase()] || filetypes.defaultType;
+  }
+
+  get typeIcon() {
+    return filetypeIcons[this.type];
+  }
+
+  get typeComponent() {
+    return `files/type-${this.type}`;
+  }
+
+  get rawPath() {
+    return client.fullPath(this.path);
+  }
+
+  get documentPreviewUrl() {
+    const params = new URLSearchParams({
+      url: this.rawPath,
+      ts: this.mtime.getTime()
+    }).toString();
+
+    return `/api/preview?${params}`;
+  }
+
+  remove() {
+    return client.remove(this.path);
+  }
+
+  loadFromResponse(response) {
+    Object.assign(this, response);
+  }
+
+  loadChildren(parsedResponses) {
+    this.files = parsedResponses.map(response => new File(response));
+  }
+}

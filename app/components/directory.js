@@ -1,22 +1,17 @@
-import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
-import Controller from '@ember/controller';
-import { get } from '@ember/object';
-
+import FileComponent from './file';
 import { action } from '@ember/object';
 
 const galleryOptions = { hideShare: true };
 
-export default class FileController extends Controller {
+export default class DirectoryComponent extends FileComponent {
   showExtraFields = true;
   newDialogActive = false;
-  deleteDialogActive = false;
   galleryEnabled = false;
 
   @service permissions;
   @service publishing;
 
-  @computed('model.sortedFiles')
   get directoryGalleryItems() {
     return this.model.sortedFiles
       .filter(file => {
@@ -31,24 +26,8 @@ export default class FileController extends Controller {
     return galleryOptions;
   }
 
-  @computed('model.path')
   get isRoot() {
-    return this.get('model.path') === '';
-  }
-
-  @computed('model.path', 'publish.urlBase')
-  get publicUrl() {
-    let urlBase = get(this, 'publishing.urlBase');
-    if (!urlBase) {
-      return null;
-    }
-
-    return [urlBase, get(this, 'model.path')].join('/');
-  }
-
-  @computed('permissions.list')
-  get canEdit() {
-    return this.permissions.can('edit');
+    return this.model.path === '';
   }
 
   @action
