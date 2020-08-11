@@ -1,24 +1,25 @@
-var exec = require('child-process-promise').exec;
-var path = require('path');
-var url = require('url');
+const exec = require('child-process-promise').exec;
+const path = require('path');
+const { URL } = require('url');
 
-var destination = '/var/www';
-var source = path.relative(
+const destination = '/var/www';
+const source = path.relative(
   path.dirname(destination),
   process.env.STORAGE_PATH || __dirname + '/../data'
 );
 
-var configPath = process.env.CONFIG_PATH || __dirname + '/../config';
-var domainFilePath = [configPath, 'domain'].join('/');
+const configPath = process.env.CONFIG_PATH || __dirname + '/../config';
+const domainFilePath = [configPath, 'domain'].join('/');
 
+// For testing outside of sandstorm
 let mockDomain = null;
 let mockPublishingEnabled = false;
 
 function isNotSandstorm(req) {
-  return !req.headers['X-Sandstorm-Username'];
+  return !req.headers['x-sandstorm-session-id'];
 }
 
-exports.unpublish = function(req, res, next) {
+exports.unpublish = function(req, res) {
   if (isNotSandstorm(req)) {
     mockDomain = null;
     mockPublishingEnabled = false;
@@ -42,7 +43,7 @@ exports.unpublish = function(req, res, next) {
     });
 };
 
-exports.getInfo = function(req, res, next) {
+exports.getInfo = function(req, res) {
   if (isNotSandstorm(req)) {
     if (mockPublishingEnabled) {
       res.json({
@@ -81,7 +82,7 @@ exports.getInfo = function(req, res, next) {
         var stdout = result.stdout;
 
         var [publicId, _, autoUrl] = stdout.split('\n');
-        var host = url.parse(autoUrl).hostname;
+        var host = new URL(autoUrl).hostname;
         var data = { domain, publicId, autoUrl, host };
 
         res.json(data);
@@ -97,8 +98,7 @@ exports.getInfo = function(req, res, next) {
 
 exports.publish = function(req, res, next) {
   if (isNotSandstorm(req)) {
-    const params = url.parse(req.url, true).query;
-    mockDomain = params.domain;
+    mockDomain = req.query.domain;
     mockPublishingEnabled = true;
     return exports.getInfo(req, res, next);
   }
@@ -112,9 +112,9 @@ exports.publish = function(req, res, next) {
       return fsp.symlink(source, destination);
     })
     .then(() => {
-      let params = url.parse(req.url, true).query;
-      if (params.domain) {
-        return fsp.writeFile(domainFilePath, params.domain);
+      const { domain } = req.query;
+      if (domain) {
+        return fsp.writeFile(domainFilePath, domain);
       }
     })
     .then(() => {

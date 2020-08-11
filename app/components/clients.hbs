@@ -25,7 +25,7 @@
                    @unauthenticated={{this.unauthenticated}}  />
     {{/if}}
 
-    <Switch class="mt-2" @onChange={{fn (mut this.useAuthInServerUrl)}} value={{this.useAuthInServerUrl}}>
+    <Switch class="mt-2" @onChange={{toggle this "useAuthInServerUrl"}} value={{this.useAuthInServerUrl}}>
       Put auth in URL (command line use)
     </Switch>
   </div>
