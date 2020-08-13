@@ -1,9 +1,9 @@
 <TitleBar>
-  <div class="title text-white text-lg flex-1 truncate" title="Viewing {{this.model.name}}">
+  <h1 class="title text-white text-lg flex-1 truncate" title="Viewing {{this.model.name}}">
     Viewing
     <PathBreadcrumb @path={{this.model.path}} />
     {{this.model.name}}
-  </div>
+  </h1>
 
   <div class="actions hidden sm:block">
     {{#if this.canEdit}}

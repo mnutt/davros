@@ -21,14 +21,14 @@
 
 <PhotoSwipe @shareEl={{false}} @items={{this.directoryGalleryItems}} as |photoswipe|>
   <TitleBar>
-    <div class="title text-white text-lg flex-1">
+    <h1 class="title text-white text-lg flex-1">
       Files in
       <PathBreadcrumb @path={{this.model.path}} />
 
       {{#if this.model.name}}
         {{this.model.name}} /
       {{/if}}
-    </div>
+    </h1>
 
     <div class="actions hidden sm:block">
       {{#if this.canEdit}}
