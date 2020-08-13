@@ -16,6 +16,11 @@ export default class NewDirectoryDialog extends Component {
   ];
 
   @action
+  focus(element) {
+    element.focus();
+  }
+
+  @action
   onChange(event) {
     const { value } = event.target;
 
