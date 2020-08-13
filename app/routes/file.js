@@ -25,6 +25,9 @@ export default class FileRoute extends Route {
     socket.on('message', this.messageHandler, this);
   }
 
+  // This is used by both `FileRoute` and `FilesRoute` (which extends `FileRoute`).
+  // `messageHandler` fires twice on every message; in the root directory `FilesRoute`
+  // will have a `context` while in nested directories `FileRoute` will.
   messageHandler(rawMessage) {
     const message = JSON.parse(rawMessage.data);
 
