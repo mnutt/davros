@@ -9,7 +9,6 @@ export default class TypeDocumentComponent extends Component {
   }
 
   get errored() {
-    console.log(this.args.model);
     return this.args.model.previewFailed;
   }
 

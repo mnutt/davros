@@ -18,7 +18,6 @@ export default class OfferIframe extends Component {
 
     let options = {};
     options.rpcId = guidFor(this);
-    console.log('rpcid', guidFor(this));
     options.template = this.replacedTemplate;
 
     if (this.args.clipboardButton) {
@@ -37,7 +36,6 @@ export default class OfferIframe extends Component {
   }
 
   messageListener(event) {
-    console.log('got', guidFor(this), event.data);
     if (event.data && event.data.rpcId === guidFor(this)) {
       if (event.data.error) {
         // eslint-disable-next-line no-console
