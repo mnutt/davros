@@ -1,3 +1,13 @@
+# 0.27.1
+* Minor css tweaks
+
+# 0.27.0
+* Minor visual cleanup
+* Fixes PDF preview height issues
+* Image thumbnails display @2x on retina
+* Under the hood: upgrades Ember to 3.20 and modernizes codebase to Ember Octane
+* Under the hood: replaces ember-paper (Material Design) with plain css/ember components
+
 # 0.26.1
 * Fixes issue uploading files into subdirectories
 
