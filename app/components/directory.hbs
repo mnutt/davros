@@ -137,10 +137,10 @@
     <tbody>
       {{#each this.model.sortedFiles as |file|}}
         <tr class="text-sm md:text-base">
-          <td class="p-2" colspan={{if this.showExtraFields '1' '3'}}>
+          <td class="p-2 md:py-3" colspan={{if this.showExtraFields '1' '3'}}>
             <LinkTo @route="file" @model={{file.linkedPath}} class="filename p-2 table table-fixed w-full">
               {{#if file.isDirectory}}
-                <Icon @icon="folder" class="mr-3 ml-4 float-left" />
+                <Icon @icon="folder" class="mr-3 ml-4 float-left text-gray-700" />
               {{else}}
                 {{#if (eq file.type "image")}}
                   <ImageThumbnail class="mr-3 ml-4 h-full float-left" @original={{file.rawPath}} @timestamp={{file.mtime}} @width={{24}} @height={{24}} @op="fit" />
