@@ -1,3 +1,6 @@
+# 0.27.2
+* Fix initial state of Publishing tab
+
 # 0.27.1
 * Minor css tweaks
 
