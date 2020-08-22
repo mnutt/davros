@@ -17,7 +17,7 @@ export default class PublishingService extends Service {
   async fetchPublishingData() {
     try {
       const response = await fetch('/api/publish/info');
-      const result = response.json();
+      const result = await response.json();
       this.update(result, null);
     } catch (error) {
       this.update(null, error);
