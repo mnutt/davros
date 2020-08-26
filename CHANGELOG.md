@@ -1,3 +1,6 @@
+# 0.27.3
+* Fix switch checkbox css on non-mac platforms
+
 # 0.27.2
 * Fix initial state of Publishing tab
 
