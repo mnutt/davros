@@ -1,6 +1,5 @@
 /* eslint-disable no-console */
 const startTime = (global.start = new Date());
-require('cache-require-paths');
 
 const express = require('express');
 const fs = require('fs');
@@ -10,7 +9,12 @@ const http = require('http');
 const compression = require('compression');
 const process = require('process');
 
-const root = __dirname;
+let root = __dirname;
+if (/output$/.test(root)) {
+  // If we're running from bundled, need to remove output from root
+  root = path.dirname(root);
+}
+
 const indexFile = path.resolve(root + '/dist/index.html');
 
 const app = express();

@@ -15,4 +15,4 @@ fi
 mkdir -p $CONFIG_PATH
 mkdir -p $TEMP_STORAGE_PATH
 
-/usr/bin/node app.js
+/usr/bin/node output/app.js

@@ -4,6 +4,7 @@
 /dist
 /tmp
 /build
+/output
 
 # dependencies
 /bower_components/
