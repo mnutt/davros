@@ -42,7 +42,7 @@ export default class File {
       }
     } else if (file.type === 'document') {
       try {
-        const previewResponse = await fetch(file.documentPreviewUrl());
+        const previewResponse = await fetch(file.documentPreviewUrl);
         file.previewContent = await previewResponse.text();
 
         if (!file.previewContent.length) {
