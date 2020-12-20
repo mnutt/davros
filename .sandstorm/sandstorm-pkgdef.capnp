@@ -120,7 +120,7 @@ const pkgdef :Spk.PackageDefinition = (
     # libreoffice stats() some files without reading them
     "usr/lib/libreoffice/presets/config/autotbl.fmt",
     "usr/lib/libreoffice/program",
-    "usr/lib/python3.7", # pull in the whole Python 3 runtime
+    "usr/lib/python3.5", # pull in the whole Python 3 runtime
     "usr/lib/python3", # pull in any Debian pure-Python packages
     ],
   # Fill this list with more names of files or directories that should be

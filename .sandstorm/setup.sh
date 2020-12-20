@@ -5,7 +5,7 @@
 
 export DEBIAN_FRONTEND=noninteractive
 
-curl -sL https://deb.nodesource.com/setup_10.x | bash -
+curl -sL https://deb.nodesource.com/setup_15.x | bash -
 apt-get update
 apt-get install -y --no-install-suggests --no-install-recommends nodejs git-core g++ libreoffice-writer libreoffice-impress libreoffice-calc unoconv
 
