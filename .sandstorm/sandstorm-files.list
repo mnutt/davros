@@ -8,6 +8,7 @@ bin/cp
 bin/dash
 bin/df
 bin/mkdir
+bin/rm
 bin/sh
 etc/alternatives/awk
 etc/fonts/conf.avail/20-unhint-small-dejavu-lgc-sans-mono.conf
