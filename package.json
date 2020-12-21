@@ -12,8 +12,10 @@
   },
   "scripts": {
     "build": "ember build --environment=production",
+    "build-server": "webpack -c webpack.config.js",
     "lint": "npm-run-all --aggregate-output --continue-on-error --parallel lint:*",
     "lint:hbs": "ember-template-lint .",
+    "lint:js": "eslint .",
     "start": "node_modules/.bin/ember server",
     "test": "npm-run-all lint:* test:*",
     "test:ember": "ember test",
