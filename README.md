@@ -12,8 +12,8 @@ Davros is built to run inside [Sandstorm](https://sandstorm.io), an open source 
 
 ## Installation
 
-* [Set up Sandstorm](https://sandstorm.io/install/)
-* Download the [latest release](https://github.com/mnutt/davros/releases) and upload it to your Sandstorm server.
+- [Set up Sandstorm](https://sandstorm.io/install/)
+- Download the [latest release](https://github.com/mnutt/davros/releases) and upload it to your Sandstorm server.
 
 ## Development
 
@@ -23,8 +23,8 @@ used during deployment.
 To install yarn run `npm install -g yarn`
 Then:
 
-* `yarn install`
-* `ember serve --port=3009`
+- `yarn install`
+- `ember serve --port=3009`
 
 At this point you'll have Davros running at `http://localhost:3009`. Substitute `3009` for another port if you want. Note that running Davros this way is not particularly safe; it relies completely on Sandstorm for user management and authentication.
 
@@ -43,20 +43,29 @@ for you.
 
 ### Linting
 
-* `npm run lint:hbs`
-* `npm run lint:js`
-* `npm run lint:js -- --fix`
+- `yarn lint:hbs`
+- `yarn lint:js`
+- `yarn lint:js -- --fix`
 
-### Building
+### Releasing
 
-* `ember build` (development)
-* `ember build --environment production` (production, minified)
-* `vagrant-spk pack build/davros-v0.10.0`
+Releasing an app is a little bit convoluted. This assumes you are on a non-linux machine, running sandstorm via vagrant-spk. On linux, you might be able to get away with skipping step 1.
+
+1. `vagrant-spk vm ssh` then `cd /opt/app && rm -rf node_modules/sharp && yarn` -- this is because the `sharp` module has native components that need to be built on linux
+2. Edit `.sandstorm/sandstorm-pkgdef.capnp` and update `appVersion` and `appMarketingVersion`. Bump major version for major breaking changes, minor version for significant new features, and patch version for tiny features and bugfixes.
+3. Edit `CHANGELOG.md` and add a section with your new version.
+4. Run `yarn build` to build the UI.
+5. Run `yarn build-server` to build the backend.
+6. Run `vagrant-spk dev` and navigate around the app testing various functionality. This is generally good to do, but when you exit, this will also update `.sandstorm/sandstorm-files.list` with any new files.
+7. Run `vagrant-spk pack build/[VERSION].spk` (replacing `[VERSION]` with the version you chose in step 2)
+8. On a sandstorm instance, upload the packed app file and install it. Test it to ensure everything works properly and that all files were included.
+9. Commit any uncommitted changes and tag them `v[VERSION]`.
+10. Run `vagrant-spk publish build/[VERSION].spk`
 
 ### Acknowledgements
 
-* Built on [Ember.js](https://emberjs.com).
-* WebDAV support built with [jsDAV](https://github.com/mikedeboer/jsDAV).
+- Built on [Ember.js](https://emberjs.com).
+- WebDAV support built with [jsDAV](https://github.com/mikedeboer/jsDAV).
 
 ### License
 
