@@ -33,4 +33,34 @@ export default class PublishingController extends Controller {
     }
     this.domain = value;
   }
+
+  async publish() {
+    let publishUrl = '/api/publish';
+    let { domain } = this;
+
+    if (domain && domain !== '') {
+      publishUrl += `?domain=${encodeURIComponent(domain)}`;
+    }
+
+    try {
+      const response = await fetch(publishUrl, { method: 'POST' });
+      const result = await response.json();
+      this.publishing.update(result);
+    } catch (error) {
+      this.publishing.update(null, error);
+    }
+  }
+
+  async unpublish() {
+    try {
+      await fetch('/api/unpublish', { method: 'POST' });
+      this.publishing.update({});
+    } catch (error) {
+      this.publishing.update(null, error);
+    }
+  }
+
+  @action togglePublish() {
+    return this.publishing.publicId ? this.unpublish() : this.publish();
+  }
 }

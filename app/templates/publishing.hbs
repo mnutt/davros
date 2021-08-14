@@ -9,7 +9,7 @@
     You can publish this shared directory to the web. Add <code>index.html</code> to the top level to set up your site. All files in the shared directory will be publicly accessible.
   </p>
 
-  <Switch class="my-6 text-center text-lg text-gray-900 font-bold" @value={{this.publishing.publicId}} @onChange={{if this.publishing.publicId (route-action "unpublish") (route-action "publish")}}>
+  <Switch class="my-6 text-center text-lg text-gray-900 font-bold" @value={{this.publishing.publicId}} @onChange={{this.togglePublish}}>
     Enable Web Publishing
   </Switch>
 

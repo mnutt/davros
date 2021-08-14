@@ -3,7 +3,7 @@
 }
 
 .form-input:focus {
-  @apply outline-none shadow-outline;
+  @apply outline-none ring;
 }
 
 .toggle-checkbox:checked ~ .toggle-switch {

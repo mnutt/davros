@@ -15,7 +15,7 @@
     </div>
   {{/if}}
 
-  <FileUpload @name="content" @multiple={{true}} @onfileadd={{route-action "upload"}} @class="upload-placeholder">
+  <FileUpload @name="content" @multiple={{true}} @onfileadd={{@upload}} @class="upload-placeholder">
   </FileUpload>
 </DavrosUploader>
 
@@ -157,17 +157,17 @@
             <td class="updated p-2" title={{file.mtime}}>
               <span class="short truncate block sm:hidden">
                 {{#if this.model.lotsOfFiles}}
-                  {{moment-from-now file.mtime locale="en-short" hideAffix=true}}
+                  {{relative-time file.mtime locale="en-short"}}
                 {{else}}
-                  {{moment-from-now file.mtime locale="en-short" interval=5000 hideAffix=true}}
+                  {{relative-time file.mtime locale="en-short" interval=5000}}
                 {{/if}}
               </span>
 
               <span class="long truncate hidden sm:block">
                 {{#if this.model.lotsOfFiles}}
-                  {{moment-from-now file.mtime locale="en"}}
+                  {{relative-time file.mtime locale="en" addSuffix=true}}
                 {{else}}
-                  {{moment-from-now file.mtime locale="en" interval=5000}}
+                  {{relative-time file.mtime locale="en" interval=5000 addSuffix=true}}
                 {{/if}}
               </span>
             </td>
@@ -195,14 +195,14 @@
               @active={{this.newDialogActive}}
                      @onClose={{fn (mut this.newDialogActive) false}}
               as |modalContent|>
-  <NewDirectoryDialog @onCreate={{route-action "newDirectory"}} @onClose={{modalContent.onClose}} />
+  <NewDirectoryDialog @onCreate={{@newDirectory}} @onClose={{modalContent.onClose}} />
 </ModalContent>
 
 <ModalContent class="rounded-sm shadow-sm border"
               @active={{this.deleteDialogActive}}
                      @onClose={{fn (mut this.deleteDialogActive) false}}
               as |modalContent|>
-  <DeleteDialog @onDelete={{route-action "delete"}} @onClose={{modalContent.onClose}}>
+  <DeleteDialog @onDelete={{@onDelete}} @onClose={{modalContent.onClose}}>
     Are you sure you want to delete
     {{#if this.isRoot}}
       <b>absolutely everything</b>

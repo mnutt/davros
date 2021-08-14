@@ -13,12 +13,12 @@ const purgeCSS = {
       './app/components/**/*.hbs',
       './app/templates/**/*.hbs'
     ],
-    whitelistPatterns: [/pswp/],
+    safelistPatterns: [/pswp/],
     defaultExtractor: content => content.match(/[A-Za-z0-9-_:/]+/g) || []
   }
 };
 
-module.exports = function(defaults) {
+module.exports = function (defaults) {
   let app = new EmberApp(defaults, {
     postcssOptions: {
       compile: {

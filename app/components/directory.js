@@ -36,6 +36,11 @@ export default class DirectoryComponent extends FileComponent {
   }
 
   @action
+  upload(...args) {
+    this.sendAction('upload', ...args);
+  }
+
+  @action
   downloadDirectory() {
     const { path } = this.model;
     const endpoint = `/api/archive?path=${encodeURIComponent(path)}`;

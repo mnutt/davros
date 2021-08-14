@@ -1,5 +1,5 @@
 {{#if this.model.isDirectory}}
-  <Directory @model={{this.model}} />
+  <Directory @model={{this.model}} @upload={{this.upload}} @newDirectory={{this.newDirectory}} @onDelete={{this.onDelete}} />
 {{else}}
-  <File @model={{this.model}} />
+  <File @model={{this.model}} @onDelete={{this.onDelete}} />
 {{/if}}
