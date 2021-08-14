@@ -19,7 +19,8 @@
     "lint:hbs:fix": "ember-template-lint . --fix",
     "lint:js": "eslint . --cache",
     "lint:js:fix": "eslint . --fix",
-    "start": "node_modules/.bin/ember server",
+    "start": "node app.js",
+    "dev": "ember server",
     "test": "npm-run-all lint test:*",
     "test:ember": "ember test",
     "test-server": "node_modules/.bin/mocha server/tests/*.js"
@@ -39,7 +40,7 @@
     "fs-promise": "^2.0.3",
     "image-size": "^0.8.3",
     "imagemagick-stream": "^4.1.1",
-    "jsDAV": "https://github.com/mnutt/jsDAV.git#af31b2a",
+    "jsDAV": "https://github.com/mnutt/jsDAV.git#ecdb458",
     "mkdirp": "^1.0.3",
     "morgan": "^1.9.1",
     "multiparty": "4.2.1",
@@ -70,7 +71,6 @@
     "ember-cli-postcss": "^7.0.2",
     "ember-cli-sri": "^2.1.1",
     "ember-cli-terser": "^4.0.2",
-    "ember-cli-update": "^0.54.6",
     "ember-cli-vagrant-spk": "https://github.com/mnutt/ember-cli-vagrant-spk.git#e53e15b78a9299",
     "ember-concurrency": "^2.1.2",
     "ember-concurrency-decorators": "^2.0.3",
@@ -103,7 +103,6 @@
     "prettier": "^2.3.0",
     "qunit": "^2.15.0",
     "qunit-dom": "^1.6.0",
-    "sass": "^1.37.5",
     "supertest": "^6.1.5",
     "tailwindcss": "^2.2.7",
     "webpack-cli": "^4.7.2",
@@ -116,6 +115,7 @@
     "edition": "octane"
   },
   "volta": {
-    "node": "15.4.0"
+    "node": "15.4.0",
+    "yarn": "1.22.10"
   }
 }

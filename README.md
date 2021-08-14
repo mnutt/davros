@@ -24,7 +24,7 @@ To install yarn run `npm install -g yarn`
 Then:
 
 - `yarn install`
-- `ember serve --port=3009`
+- `yarn dev --port=3009`
 
 At this point you'll have Davros running at `http://localhost:3009`. Substitute `3009` for another port if you want. Note that running Davros this way is not particularly safe; it relies completely on Sandstorm for user management and authentication.
 
