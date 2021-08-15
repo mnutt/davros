@@ -86,7 +86,7 @@ export default class WebdavClient {
   }
 
   parseResponse(doc) {
-    let path = doc.querySelector('d\\:href, href').innerHTML;
+    let path = doc.querySelector('d\\:href, href').textContent;
     path = path.slice(this.base.length + 1).replace(/\/$/, '');
     let isDirectory = doc.querySelectorAll('d\\:collection, collection').length > 0;
     path = decodeURIComponent(path);
