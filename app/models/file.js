@@ -104,11 +104,11 @@ export default class File {
   }
 
   get width() {
-    return this.dimensions[0];
+    return this.dimensions ? this.dimensions[0] : 0;
   }
 
   get height() {
-    return this.dimensions[1];
+    return this.dimensions ? this.dimensions[1] : 0;
   }
 
   get type() {
