@@ -28,32 +28,42 @@ export default class File {
     const items = await client.load(path);
 
     const file = new File(items.shift());
-
-    if (items.length > 0) {
-      file.loadChildren(items);
-    }
-
-    if (file.type === 'markdown' || file.type === 'code') {
-      try {
-        const previewResponse = await fetch(file.rawPath);
-        file.previewContent = await previewResponse.text();
-      } catch (e) {
-        file.previewFailed = true;
-      }
-    } else if (file.type === 'document') {
-      try {
-        const previewResponse = await fetch(file.documentPreviewUrl);
-        file.previewContent = await previewResponse.text();
-
-        if (!file.previewContent.length) {
-          file.previewFailed = true;
-        }
-      } catch (e) {
-        file.previewFailed = true;
-      }
-    }
+    await file.setPropertiesFromItems(items);
 
     return file;
+  }
+
+  async reload() {
+    const items = await client.load(this.path);
+    Object.assign(this, items.shift());
+
+    await this.setPropertiesFromItems(items);
+  }
+
+  async setPropertiesFromItems(items) {
+    if (items.length > 0) {
+      this.loadChildren(items);
+    }
+
+    if (this.type === 'markdown' || this.type === 'code') {
+      try {
+        const previewResponse = await fetch(this.rawPath);
+        this.previewContent = await previewResponse.text();
+      } catch (e) {
+        this.previewFailed = true;
+      }
+    } else if (this.type === 'document') {
+      try {
+        const previewResponse = await fetch(this.documentPreviewUrl);
+        this.previewContent = await previewResponse.text();
+
+        if (!this.previewContent.length) {
+          this.previewFailed = true;
+        }
+      } catch (e) {
+        this.previewFailed = true;
+      }
+    }
   }
 
   get name() {
