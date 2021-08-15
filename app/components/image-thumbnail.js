@@ -20,7 +20,7 @@ export default class ImageThumbnailComponent extends Component {
       width: Math.floor(this.args.width * dpi),
       height: Math.floor(this.args.height * dpi),
       op: this.args.op || 'fit',
-      ts: this.cachebuster
+      ts: this.cacheBuster
     });
 
     return base + params.toString();
