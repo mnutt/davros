@@ -5,7 +5,7 @@ import fetch from 'fetch';
 import { tracked } from '@glimmer/tracking';
 import ensureCollectionExists from 'davros/lib/ensure-collection-exists';
 
-export const base = '/remote.php/webdav';
+export const base = '/dav';
 const client = new DavClient(base);
 
 export default class File {

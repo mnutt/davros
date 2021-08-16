@@ -23,7 +23,7 @@ module.exports = function(davServer) {
       if (destination[0] !== '/') {
         destination = '/' + destination;
       }
-      part.url = '/remote.php/webdav' + destination;
+      part.url = '/dav' + destination;
       part.method = 'PUT';
       davServer(part, res, next);
     });

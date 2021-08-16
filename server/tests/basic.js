@@ -10,6 +10,39 @@ describe('GET directory', function() {
   describe('empty directory', function() {
     it('returns an empty directory listing', function(done) {
       request(server)
+        .propfind('/dav')
+        .set('content-type', 'application/xml')
+        .expect(function(res) {
+          let listing = support.directoryListing(res);
+          assert.equal(listing.length, 1);
+          assert.equal(listing[0].href, '/dav/');
+        })
+        .expect(207, done);
+    });
+  });
+
+  describe('with a file', function() {
+    it('returns directory listing', function(done) {
+      request(server)
+        .put('/dav/foo.txt')
+        .send({ foo: 'foobar' })
+        .expect(200, function() {
+          request(server)
+            .propfind('/dav')
+            .set('content-type', 'application/xml')
+            .expect(function(res) {
+              let listing = support.directoryListing(res);
+              assert.equal(listing.length, 2);
+              assert.equal(listing[1].href, '/dav/foo.txt');
+            })
+            .expect(207, done);
+        });
+    });
+  });
+
+  describe('rewriting for legacy owncloud', function() {
+    it('returns an empty directory listing', function(done) {
+      request(server)
         .propfind('/remote.php/webdav')
         .set('content-type', 'application/xml')
         .expect(function(res) {
@@ -21,22 +54,17 @@ describe('GET directory', function() {
     });
   });
 
-  describe('with a file', function() {
-    it('returns directory listing', function(done) {
+  describe('rewriting for new owncloud/nextcloud', function() {
+    it('returns an empty directory listing', function(done) {
       request(server)
-        .put('/remote.php/webdav/foo.txt')
-        .send({ foo: 'foobar' })
-        .expect(200, function() {
-          request(server)
-            .propfind('/remote.php/webdav')
-            .set('content-type', 'application/xml')
-            .expect(function(res) {
-              let listing = support.directoryListing(res);
-              assert.equal(listing.length, 2);
-              assert.equal(listing[1].href, '/remote.php/webdav/foo.txt');
-            })
-            .expect(207, done);
-        });
+        .propfind('/remote.php/dav/files/foo')
+        .set('content-type', 'application/xml')
+        .expect(function(res) {
+          let listing = support.directoryListing(res);
+          assert.equal(listing.length, 1);
+          assert.equal(listing[0].href, '/remote.php/dav/files/foo/');
+        })
+        .expect(207, done);
     });
   });
 });
@@ -46,7 +74,7 @@ describe('PUT file', function() {
 
   it('accepts x-oc-mtime header for owncloud', function(done) {
     request(server)
-      .put('/remote.php/webdav/foo.txt')
+      .put('/dav/foo.txt')
       .send({ foo: 'foobar' })
       .set('x-oc-mtime', '1469294928893')
       .end(function(_, res) {
@@ -57,11 +85,11 @@ describe('PUT file', function() {
 
   it('changes the directory etag', function(done) {
     request(server)
-      .put('/remote.php/webdav/foo.txt')
+      .put('/dav/foo.txt')
       .send({ foo: 'foobar' })
       .end(function() {
         request(server)
-          .propfind('/remote.php/webdav')
+          .propfind('/dav')
           .end(function(_, res) {
             let listing = support.directoryListing(res);
             let etag = listing[0].etag;
@@ -69,11 +97,11 @@ describe('PUT file', function() {
 
             setTimeout(function() {
               request(server)
-                .put('/remote.php/webdav/bar.txt')
+                .put('/dav/bar.txt')
                 .send({ foo: 'foobar' })
                 .expect(200, function() {
                   request(server)
-                    .propfind('/remote.php/webdav')
+                    .propfind('/dav')
                     .set('content-type', 'application/xml')
                     .expect(function(res) {
                       let listing = support.directoryListing(res);

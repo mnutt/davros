@@ -33,7 +33,9 @@ module.exports = function(app, options) {
 
   app.use(sandstormPermissions);
 
-  // WebDAV: /remote.php/webdav/*
+  // WebDAV: /dav/*
+  // WebDAV legacy ownCloud: /remote.php/webdav/*
+  // WebDAV owncloud/NextCloud: /remote.php/dav/files/[user]/*
   var davServer = dav.server(root);
   app.use(davServer);
 

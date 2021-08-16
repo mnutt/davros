@@ -15,12 +15,12 @@
   <div class="server-url my-4 ml-8 max-w-xl">
     {{#if this.useAuthInServerUrl}}
       <OfferIframe class="form-input w-full"
-                   @content="$API_PROTO//$GRAIN_TITLE_SLUG:$API_TOKEN@$API_HOST/remote.php/webdav/"
+                   @content="$API_PROTO//$GRAIN_TITLE_SLUG:$API_TOKEN@$API_HOST/"
                    @clipboardButton="right"
                    @unauthenticated={{this.unauthenticated}} />
     {{else}}
       <OfferIframe class="form-input w-full"
-                   @content="$API_PROTO//$API_HOST/remote.php/webdav/"
+                   @content="$API_PROTO//$API_HOST/"
                    @clipboardButton="right"
                    @unauthenticated={{this.unauthenticated}}  />
     {{/if}}
