@@ -58,11 +58,15 @@ exports.CAPABILITIES = JSON.stringify({
 });
 
 exports.status = function(req, res, next) {
-  res.writeHead(200, {});
+  res.writeHead(200, {
+    'Content-Type': 'application/json'
+  });
   res.end(exports.STATUS);
 };
 
 exports.ocs = function(req, res, next) {
-  res.writeHead(200, {});
+  res.writeHead(200, {
+    'Content-Type': 'application/json'
+  });
   res.end(exports.CAPABILITIES);
 };

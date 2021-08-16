@@ -7732,9 +7732,9 @@ js-yaml@^3.13.1, js-yaml@^3.14.0, js-yaml@^3.2.5, js-yaml@^3.2.7:
     argparse "^1.0.7"
     esprima "^4.0.0"
 
-"jsDAV@https://github.com/mnutt/jsDAV.git#ecdb458":
+"jsDAV@https://github.com/mnutt/jsDAV.git#a2b55b1":
   version "0.3.4"
-  resolved "https://github.com/mnutt/jsDAV.git#ecdb458f1a3dd13e86032c7acc2af02b54850000"
+  resolved "https://github.com/mnutt/jsDAV.git#a2b55b12f5b517d794e8f56814e2bf9eb3d69782"
   dependencies:
     asyncjs "https://github.com/mnutt/async.js.git#ad52b32"
     busboy "0.3.1"

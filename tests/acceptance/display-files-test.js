@@ -39,6 +39,6 @@ module('Acceptance | display files', function(hooks) {
     assert.equal(stripTitle(find('.title').textContent), 'Viewing home / space.jpg');
 
     // image is shown
-    assert.dom('.preview img').hasAttribute('src', '/remote.php/webdav/space.jpg');
+    assert.dom('.preview img').hasAttribute('src', '/dav/space.jpg');
   });
 });
