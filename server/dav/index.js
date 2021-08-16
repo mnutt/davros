@@ -1,5 +1,6 @@
 var fs = require('fs');
 var os = require('os');
+const path = require('path');
 
 const jsDAV = require('jsDAV/lib/jsdav');
 const Tree = require('./backend/tree');
@@ -13,6 +14,13 @@ const statvfs = require('./statvfs-shim');
 fs.statvfs = statvfs;
 
 exports.base = '/remote.php/webdav';
+
+// For clients that can't handle a starting path (/remote.php/webdav), we want to
+// serve them a dummy directory structure so that they can navigate to the actual files
+const dummyServer = jsDAV.mount({
+  tree: Tree.new(path.resolve(__dirname + '/../dummy')),
+  sandboxed: true
+});
 
 exports.server = function(root) {
   // eslint-disable-next-line no-console
@@ -46,6 +54,8 @@ exports.server = function(root) {
   return function(req, res, next) {
     if (req.url.indexOf(exports.base) === 0) {
       server.emit('request', req, res);
+    } else if ((req.url === '/' || req.url === '/remote.php/') && req.method === 'PROPFIND') {
+      dummyServer.emit('request', req, res);
     } else {
       next();
     }
