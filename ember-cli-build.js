@@ -13,7 +13,7 @@ const purgeCSS = {
       './app/components/**/*.hbs',
       './app/templates/**/*.hbs'
     ],
-    safelistPatterns: [/pswp/],
+    safelist: [/pswp/],
     defaultExtractor: content => content.match(/[A-Za-z0-9-_:/]+/g) || []
   }
 };
