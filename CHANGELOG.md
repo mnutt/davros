@@ -1,3 +1,10 @@
+# 0.29.0
+- Fix for un-parseable image files not breaking web UI
+- Default webdav endpoint is now `/dav/`: continue support for legacy ownCloud (`/remote.php/webdav/`) and add support for new ownCloud/NextCloud endpoint location. (`/remote.php/dav/files/[user]/`)
+- Support clients that can't specify an endpoint path. Pointing a webdav client at `/` will now return a `/dav/` directory.
+- Fix web UI parsing of files containing html-escapable characters; they now display properly and work in the web UI.
+- Dependency upgrades and trimming down some dependencies
+
 # 0.28.0
 
 - Performance: compile davros server to a single file using webpack. This can result in significantly decreased app start times, especially on non-ssd hard drives.
