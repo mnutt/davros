@@ -1,6 +1,7 @@
 var Fs = require('fs');
 var Async = require('asyncjs');
 var Path = require('path');
+var Crypto = require('crypto');
 
 var jsDAV_FSExt_Directory = require('jsDAV/lib/DAV/backends/fsext/directory');
 var jsDAV_iFile = require('jsDAV/lib/DAV/interfaces/iFile');
@@ -150,24 +151,41 @@ var Directory = (module.exports = jsDAV_FSExt_Directory.extend(jsDAV_iFile, Etag
     var totalChunks = parseInt(parts[3]);
     var myChunk = parseInt(parts[4]);
 
-    var startPosition = myChunk * chunkSize;
-
     var track = handler.server.chunkedUploads[uid];
     if (!track) {
       track = handler.server.chunkedUploads[uid] = {
         path: Path.join(handler.server.tmpDir, uid),
         filename: filename,
         timeout: null,
-        count: 0
+        count: 0,
+        chunkSizes: new Array(totalChunks),
+        checksum: null
       };
     }
+    track.chunkSizes[myChunk] = chunkSize;
+
+    if (myChunk === totalChunks - 1) {
+      // last chunk has a checksum
+      track.checksum = handler.httpRequest.headers['oc-checksum'];
+    }
+
     clearTimeout(track.timeout);
+
     // if it takes more than ten minutes for the next chunk to
     // arrive, remove the temp file and consider this a failed upload.
     track.timeout = setTimeout(function() {
       delete handler.server.chunkedUploads[uid];
       Fs.unlink(track.path, function() {});
     }, 600000); //10 minutes timeout
+
+    var previousChunks = track.chunkSizes.slice(0, myChunk);
+    if (previousChunks.filter(Boolean).length < myChunk) {
+      cbfswritechunk(new Error("Unexpectedly received chunks out of order!"));
+      return;
+    }
+
+    // Start writing at the end of the previous chunks
+    var startPosition = previousChunks.reduce((num, acc) => num + acc, 0);
 
     var stream = Fs.createWriteStream(track.path, {
       encoding: type,
@@ -178,17 +196,24 @@ var Directory = (module.exports = jsDAV_FSExt_Directory.extend(jsDAV_iFile, Etag
     stream.on('close', function() {
       track.count += 1;
       if (track.count === totalChunks) {
-        delete handler.server.chunkedUploads[uid];
-        var originalPath = Path.join(self.path, originalName);
-        Util.move(track.path, originalPath, true, function(err) {
-          if (err) return;
-          handler.dispatchEvent(
-            'afterBind',
-            handler.httpRequest.url,
-            Path.join(self.path, filename)
-          );
+        self.validateChecksum(track.checksum, track.path, function(err) {
+          if (err) {
+            cbfswritechunk(err);
+            return;
+          }
 
-          self.getETag(cbfswritechunk);
+          delete handler.server.chunkedUploads[uid];
+          var originalPath = Path.join(self.path, originalName);
+          Util.move(track.path, originalPath, true, function(err) {
+            if (err) return;
+            handler.dispatchEvent(
+              'afterBind',
+              handler.httpRequest.url,
+              Path.join(self.path, filename)
+            );
+
+            self.getETag(cbfswritechunk);
+          });
         });
       } else {
         cbfswritechunk(null, null);
@@ -196,6 +221,34 @@ var Directory = (module.exports = jsDAV_FSExt_Directory.extend(jsDAV_iFile, Etag
     });
 
     handler.getRequestBody(type, stream, false, function() {});
+  },
+
+  validateChecksum(checksum, path, cb) {
+    if (!checksum) {
+      cb(new Error("Missing checksum on last chunk"));
+      return;
+    }
+
+    const [type, hash] = checksum.split(":");
+
+    if (type !== "SHA1") {
+      cb(new Error("Unknown hash type"));
+      return;
+    }
+
+    var shasum = Crypto.createHash('sha1');
+    const file = Fs.createReadStream(path);
+
+    file.on('data', (chunk) => shasum.update(chunk));
+    file.on('error', cb);
+    file.on('end', function() {
+      const calculated = shasum.digest('hex');
+      if (calculated === checksum) {
+        cb(null);
+      } else {
+        cb(new Error(`Checksums do not match: ${checksum}, ${calculated}`));
+      }
+    });
   },
 
   // We redefine fsext's `delete` because it uses asyncjs rmtree, which causes
