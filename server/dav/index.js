@@ -19,7 +19,8 @@ exports.base = '/dav';
 // serve them a dummy directory structure so that they can navigate to the actual files
 const dummyServer = jsDAV.mount({
   tree: Tree.new(path.resolve(__dirname + '/../dummy')),
-  sandboxed: true
+  sandboxed: true,
+  plugins: {}
 });
 
 function rewriteAlternateDavUrls(req) {
