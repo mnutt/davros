@@ -28,6 +28,9 @@ exports.CAPABILITIES = JSON.stringify({
           pollinterval: 60,
           'webdav-root': dav.base.slice(1) // no leading slash
         },
+        dav: {
+          "chunking": "1.0"
+        },
         files_sharing: {
           api_enabled: false,
           public: {
