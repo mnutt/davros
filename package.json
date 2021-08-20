@@ -40,7 +40,7 @@
     "fs-promise": "^2.0.3",
     "image-size": "^1.0.0",
     "imagemagick-stream": "^4.1.1",
-    "jsDAV": "https://github.com/mnutt/jsDAV.git#a2b55b1",
+    "jsDAV": "https://github.com/mnutt/jsDAV.git#0dd810e",
     "mkdirp": "^1.0.4",
     "morgan": "^1.10.0",
     "multiparty": "^4.2.2",
