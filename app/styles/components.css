@@ -14,9 +14,13 @@
 }
 
 .file-list .updated .short {
-  min-width: 50px;
+  min-width: 35px;
 }
 
 .file-list .size .long {
   min-width: 60px;
+}
+
+.file-list th.updated .short {
+  padding-left: 0.4rem;
 }
