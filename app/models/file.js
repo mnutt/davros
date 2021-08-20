@@ -67,7 +67,7 @@ export default class File {
   }
 
   get name() {
-    return this.path.split(/[\\/]/).pop();
+    return decodeURIComponent(this.path.split(/[\\/]/).pop());
   }
 
   get sortedFiles() {

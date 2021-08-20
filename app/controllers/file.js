@@ -19,6 +19,7 @@ export default class FileController extends Controller {
 
     let location = document.location.pathname;
     let path = file.blob.webkitRelativePath || file.fullPath || file.name;
+    path = encodeURIComponent(path);
 
     if (location.indexOf('/files') === 0) {
       // if user is in a directory, upload the files there
@@ -67,7 +68,7 @@ export default class FileController extends Controller {
   newDirectory(dirname) {
     const { model } = this;
 
-    const fullPath = [model.rawPath, dirname].join('/');
+    const fullPath = [model.rawPath, encodeURIComponent(dirname)].join('/');
 
     return fetch(fullPath, { method: 'MKCOL' }).then(() => {
       return File.load(model.path);
