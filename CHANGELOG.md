@@ -1,3 +1,7 @@
+# 0.30.0
+- More fixes for URI-encoding paths. You can now name a file or directory `~!@#$&*()=:,;?+'` if you want to.
+- Remove link to oasis.sandstorm.io in sample file (thanks Jim Garrison)
+
 # 0.29.0
 - Fix for un-parseable image files not breaking web UI
 - Default webdav endpoint is now `/dav/`: continue support for legacy ownCloud (`/remote.php/webdav/`) and add support for new ownCloud/NextCloud endpoint location. (`/remote.php/dav/files/[user]/`)

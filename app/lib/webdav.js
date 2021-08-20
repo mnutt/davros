@@ -65,7 +65,7 @@ export default class WebdavClient {
   }
 
   mkcol(path) {
-    return fetch(this.fullPath(path), {
+    return fetch(this.fullPath(encodeURIComponent(path)), {
       method: 'MKCOL'
     }).catch(function(err) {
       // eslint-disable-next-line no-console
@@ -89,7 +89,6 @@ export default class WebdavClient {
     let path = doc.querySelector('d\\:href, href').textContent;
     path = path.slice(this.base.length + 1).replace(/\/$/, '');
     let isDirectory = doc.querySelectorAll('d\\:collection, collection').length > 0;
-    path = decodeURIComponent(path);
 
     const props = {};
     for (let name of propnames) {
