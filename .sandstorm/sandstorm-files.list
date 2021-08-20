@@ -137,8 +137,8 @@ opt/app
 opt/app/.sandstorm/launcher.sh
 opt/app/CHANGELOG.md
 opt/app/app.js
-opt/app/dist/assets/davros-2deb374cd293d32bf9588d87213efb72.css
-opt/app/dist/assets/davros-f24a6ca465af23e9a4b9b8c9f285fdf2.js
+opt/app/dist/assets/davros-a3d642c4296b8ad41e7f3b82899ad031.js
+opt/app/dist/assets/davros-f1834f07a67cc176a72437e4b3a8913b.css
 opt/app/dist/assets/images/default-skin.svg
 opt/app/dist/assets/vendor-5c5c81c369fc387191664156ed87b86e.css
 opt/app/dist/assets/vendor-c68839ebad087b87ab7152667ca7acaf.js
