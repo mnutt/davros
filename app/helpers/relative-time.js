@@ -1,15 +1,22 @@
 import { run } from '@ember/runloop';
 import Helper from '@ember/component/helper';
-import { get, observer, computed } from '@ember/object';
-import { inject as service } from '@ember/service';
 import { formatDistanceToNowStrict } from 'date-fns';
 import locales from '../lib/date-locales';
+import { registerDestructor } from '@ember/destroyable';
 
-export default Helper.extend({
-  disableInterval: false,
+export default class RelativeTimeHelper extends Helper {
+  disableInterval = false;
+
+  constructor(...args) {
+    super(...args);
+
+    registerDestructor(this, this.clearTimer.bind(this));
+  }
 
   compute(params, { interval, addSuffix, locale }) {
-    if (this.disableInterval) { return; }
+    if (this.disableInterval) {
+      return;
+    }
 
     this.clearTimer();
 
@@ -25,14 +32,9 @@ export default Helper.extend({
     }
 
     return formatDistanceToNowStrict(params[0], { addSuffix, locale: locales[locale] });
-  },
+  }
 
   clearTimer() {
     clearTimeout(this.intervalTimer);
-  },
-
-  destroy() {
-    this.clearTimer();
-    this._super(...arguments);
   }
-});
+}

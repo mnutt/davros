@@ -1,27 +1,57 @@
-import { bind } from '@ember/runloop';
-import FileDropzone from 'ember-file-upload/components/file-dropzone/component';
-import DragListener from 'ember-file-upload/system/drag-listener';
+import Component from '@glimmer/component';
+import { task } from 'ember-concurrency-decorators';
 import { action } from '@ember/object';
+import { inject as service } from '@ember/service';
+import File from 'davros/models/file';
 
-const dragListener = new DragListener();
+export default class DavrosUploader extends Component {
+  @service router;
 
-export default class DavrosUploader extends FileDropzone {
-  @action
-  addBodyEventListeners() {
-    if (this.fullscreen) {
-      dragListener.addEventListeners('body', {
-        dragenter: bind(this, 'didEnterDropzone'),
-        dragleave: bind(this, 'didLeaveDropzone'),
-        dragover: bind(this, 'didDragOver'),
-        drop: bind(this, 'didDrop'),
-      });
+  get uploadLocation() {
+    let location = new URL(this.router.currentURL, 'http://localhost').pathname;
+
+    if (location.indexOf('/files') === 0) {
+      // if user is in a directory, upload the files there
+      location = location.replace(/^\/files\//, '');
+      // dirname of current path, so if path is /foo/README, use /foo/
+      location = location.replace(/\/[^/]*$/, '');
+    } else {
+      // otherwise, upload files in the root directory
+      // (this shouldn't happen anymore)
+      location = '';
     }
+
+    return location;
   }
 
-  @action
-  removeBodyEventListeners() {
-    if (this.fullscreen) {
-      dragListener.removeEventListeners('body');
+  @task({
+    maxConcurrency: 5,
+    enqueue: true,
+  })
+  *uploadFile(file) {
+    if (file.blob.type === '') {
+      yield;
+    } // it's a directory
+
+    let path = file.blob.webkitRelativePath || file.fullPath || file.name;
+    path = encodeURIComponent(path);
+
+    if (path[0] !== '/') {
+      path = '/' + path;
     }
+
+    var fullPath = ['/', this.uploadLocation, path].join('');
+
+    yield File.ensureCollectionExists(fullPath).then(() => {
+      return file.upload('/api/upload', {
+        data: {
+          destination: fullPath,
+        },
+      });
+    });
+  }
+
+  @action upload(file) {
+    this.uploadFile.perform(file);
   }
 }

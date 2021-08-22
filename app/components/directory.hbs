@@ -1,24 +1,3 @@
-<DavrosUploader @fullscreen={{true}} @name="content" as |dropzone queue|>
-  {{#if dropzone.active}}
-    <div id="dropzone-overlay" class="absolute inset-0 flex justify-center items-center bg-opacity-50 bg-black text-white">
-      <div class="message p-8 bg-black bg-opacity-75 rounded-sm border-2 border-green-500 shadow">
-        <Icon @icon="add_circle" class="align-top" />
-        Drop files or directories to add them to
-        <PathBreadcrumb @path={{this.model.path}} />
-      </div>
-    </div>
-  {{/if}}
-
-  {{#if queue.size}}
-    <div class="upload-progress absolute w-full inset-x-0 top-0">
-      <ProgressBar @value={{queue.progress}} />
-    </div>
-  {{/if}}
-
-  <FileUpload @name="content" @multiple={{true}} @onFileAdd={{@upload}} @class="upload-placeholder">
-  </FileUpload>
-</DavrosUploader>
-
 <PhotoSwipe @shareEl={{false}} @items={{this.directoryGalleryItems}} as |photoswipe|>
   <TitleBar>
     <h1 class="title text-white text-lg flex-1">

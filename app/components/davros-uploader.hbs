@@ -1,6 +1,24 @@
-{{yield (hash supported=this.supported active=this.active valid=this.valid) this.queue}}
+<DavrosDropzone @name="content" as |dropzone queue|>
+  {{#if dropzone.active}}
+    <div id="dropzone-overlay" class="fixed inset-0 flex justify-center items-center bg-opacity-50 bg-black text-white">
+      <div class="message p-8 bg-black bg-opacity-75 rounded-sm border-2 border-green-500 shadow">
+        <Icon @icon="add_circle" class="align-top" />
+        Drop files or directories to add them to
+        {{#if (eq this.uploadLocation "")}}
+          <PathBreadcrumb @path={{this.uploadLocation}} />
+        {{else}}
+          <PathBreadcrumb @path={{concat this.uploadLocation "/."}} />
+        {{/if}}
+      </div>
+    </div>
+  {{/if}}
 
-<div
-  {{did-insert this.addBodyEventListeners}}
-  {{will-destroy this.removeBodyEventListeners}}
-/>
+  {{#if queue.size}}
+    <div class="upload-progress absolute w-full inset-x-0 top-0">
+      <ProgressBar @value={{queue.progress}} />
+    </div>
+  {{/if}}
+
+  <FileUpload @name="content" @multiple={{true}} @onFileAdd={{this.upload}} @class="upload-placeholder">
+  </FileUpload>
+</DavrosDropzone>
