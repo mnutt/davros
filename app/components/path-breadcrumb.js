@@ -23,7 +23,7 @@ export default class PathBreadcrumbComponent extends Component {
 
       const part = {
         name: decodeURIComponent(pieces[i]),
-        path: path
+        path: path,
       };
 
       p.push(part);
