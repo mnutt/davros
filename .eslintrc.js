@@ -25,6 +25,7 @@ module.exports = {
         '.template-lintrc.js',
         'ember-cli-build.js',
         'testem.js',
+        'webpack.config.js',
         './app.js',
         'blueprints/*/index.js',
         'config/**/*.js',
