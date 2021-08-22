@@ -1,9 +1,6 @@
 import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
-import fetch from 'fetch';
 import File from 'davros/models/file';
-import { task } from 'ember-concurrency-decorators';
-import { action } from '@ember/object';
 
 const socketUrl =
   (document.location.protocol === 'https:' ? 'wss://' : 'ws://') +
