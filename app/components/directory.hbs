@@ -63,7 +63,7 @@
           <menu.Content @animationEnabled={{false}} class="rounded-md bg-white shadow">
             <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu" {{on "click" menu.actions.close}}>
               {{#if this.canEdit}}
-                <MenuItem {{on "click" (fn this.chooseUpload)}} @id="menu-upload-file">
+                <MenuItem {{on "click" this.chooseUpload}} @id="menu-upload-file">
                   <p class="label flex-1">Upload</p>
                   <Icon @icon="file_upload" />
                 </MenuItem>
@@ -187,7 +187,7 @@
   </table>
 {{else}}
   <div class="empty-notice p-6">
-    This directory is empty. You can <a href="#" {{on "click" (fn this.chooseUpload)}}>upload some files</a> or just drag them in.
+    This directory is empty. You can <a href="#" {{on "click" this.chooseUpload}}>upload some files</a> or just drag them in.
   </div>
 {{/if}}
 

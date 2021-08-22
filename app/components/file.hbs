@@ -32,7 +32,7 @@
                 <Icon @icon="delete" />
               </MenuItem>
             {{else}}
-              <MenuItem {{on "click" (fn this.chooseUpload)}} @id="menu-upload-file">
+              <MenuItem {{on "click" this.chooseUpload}} @id="menu-upload-file">
                 <p class="label flex-1">Read-only mode</p>
               </MenuItem>
             {{/if}}

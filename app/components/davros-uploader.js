@@ -1,10 +1,12 @@
 import { bind } from '@ember/runloop';
-import fileDropzone from 'ember-file-upload/components/file-dropzone/component';
+import FileDropzone from 'ember-file-upload/components/file-dropzone/component';
 import DragListener from 'ember-file-upload/system/drag-listener';
+import { action } from '@ember/object';
 
 const dragListener = new DragListener();
 
-export default fileDropzone.extend({
+export default class DavrosUploader extends FileDropzone {
+  @action
   addBodyEventListeners() {
     if (this.fullscreen) {
       dragListener.addEventListeners('body', {
@@ -14,11 +16,12 @@ export default fileDropzone.extend({
         drop: bind(this, 'didDrop'),
       });
     }
-  },
+  }
 
+  @action
   removeBodyEventListeners() {
     if (this.fullscreen) {
       dragListener.removeEventListeners('body');
     }
-  },
-});
+  }
+}

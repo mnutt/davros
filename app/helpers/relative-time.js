@@ -9,7 +9,7 @@ export default Helper.extend({
   disableInterval: false,
 
   compute(params, { interval, addSuffix, locale }) {
-    if (get(this, 'disableInterval')) { return; }
+    if (this.disableInterval) { return; }
 
     this.clearTimer();
 
