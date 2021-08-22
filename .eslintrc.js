@@ -8,6 +8,7 @@ module.exports = {
     sourceType: 'module',
     ecmaFeatures: {
       legacyDecorators: true,
+      experimentalDecorators: true,
     },
   },
   plugins: ['ember'],

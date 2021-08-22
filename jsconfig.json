@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "experimentalDecorators": true,
+    "baseUrl": ".",
+    "paths": {
+      "origin-story-core-ui/*": ["./app/*"]
+    }
+  },
+  "exclude": [
+    "coverage",
+    "dist",
+    "node_modules",
+    "recordings",
+    "temp",
+    "tmp",
+    "translations",
+    "vendor"
+  ],
+  "typeAcquisition": {
+    "enable": true,
+    "include": ["ember", "ember-data", "qunit", "ember-qunit"]
+  }
+}
