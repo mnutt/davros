@@ -1,1 +1,6 @@
 {{yield (hash supported=this.supported active=this.active valid=this.valid) this.queue}}
+
+<div
+  {{did-insert (fn this.addBodyEventListeners)}}
+  {{will-destroy (fn this.removeBodyEventListeners)}}
+/>

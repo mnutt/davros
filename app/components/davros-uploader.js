@@ -5,24 +5,20 @@ import DragListener from 'ember-file-upload/system/drag-listener';
 const dragListener = new DragListener();
 
 export default fileDropzone.extend({
-  didInsertElement() {
-    this._super();
-
+  addBodyEventListeners() {
     if (this.fullscreen) {
       dragListener.addEventListeners('body', {
         dragenter: bind(this, 'didEnterDropzone'),
         dragleave: bind(this, 'didLeaveDropzone'),
         dragover: bind(this, 'didDragOver'),
-        drop: bind(this, 'didDrop')
+        drop: bind(this, 'didDrop'),
       });
     }
   },
 
-  willDestroyElement() {
-    this._super();
-
+  removeBodyEventListeners() {
     if (this.fullscreen) {
       dragListener.removeEventListeners('body');
     }
-  }
+  },
 });
