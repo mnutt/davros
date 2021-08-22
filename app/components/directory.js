@@ -14,10 +14,10 @@ export default class DirectoryComponent extends FileComponent {
 
   get directoryGalleryItems() {
     return this.model.sortedFiles
-      .filter(file => {
+      .filter((file) => {
         return file.type === 'image';
       })
-      .map(file => {
+      .map((file) => {
         return { src: file.rawPath, title: file.name, w: file.width, h: file.height };
       });
   }
