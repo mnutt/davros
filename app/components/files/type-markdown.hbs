@@ -1,6 +1,8 @@
 {{#if this.canSandbox}}
-  {{#if (eq this.previewState "error")}}
-    There was an error rendering this preview.
+  {{#if this.errored}}
+    <div class="w-full h-full flex items-center justify-center text-center border-t">
+      There was an error rendering this preview.
+    </div>
   {{else}}
     <iframe class="w-full h-full border-t" title="Document Preview" srcdoc={{this.srcDoc}} sandbox></iframe>
   {{/if}}
