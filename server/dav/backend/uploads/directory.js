@@ -1,16 +1,11 @@
 var Fs = require('fs');
-var Fsp = Fs.promises;
 var Fse = require('fs-extra');
 var Async = require('asyncjs');
 var Path = require('path');
-var Crypto = require('crypto');
 
 var DavDirectory = require('../directory');
 var File = require('../file');
-var Util = require('jsDAV/lib/shared/util');
 var Exc = require('jsDAV/lib/shared/exceptions');
-var Etag = require('../etag');
-var ChildProcess = require('child_process');
 
 var Directory = (module.exports = DavDirectory.extend({
   /**

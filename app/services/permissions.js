@@ -14,7 +14,7 @@ export default class PermissionsService extends Service {
     super(...arguments);
 
     if (!isIframed()) {
-      this.set('list', ['read', 'edit']);
+      this.list = ['read', 'edit'];
       return;
     }
 
@@ -26,7 +26,7 @@ export default class PermissionsService extends Service {
       const response = await fetch('/api/permissions');
       const result = await response.json();
       this.list = result.permissions;
-    } catch (e) {
+    } catch (err) {
       this.error = err;
       this.list = [];
     }

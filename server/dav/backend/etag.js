@@ -1,6 +1,5 @@
 var crypto = require('crypto');
 var Fs = require('fs');
-var Path = require('path');
 var Base = require('jsDAV/lib/shared/base');
 
 var jsDAV_iCollection = require('jsDAV/lib/DAV/interfaces/iCollection');

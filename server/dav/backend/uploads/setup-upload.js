@@ -1,10 +1,8 @@
 var Fs = require('fs');
 var Fsp = Fs.promises;
-var Path = require('path');
 var Crypto = require('crypto');
 
 var jsDAV_ServerPlugin = require('jsDAV/lib/DAV/plugin');
-var Util = require('jsDAV/lib/shared/util');
 
 var jsDAV_SetupUpload_Plugin = (module.exports = jsDAV_ServerPlugin.extend({
   name: 'setup-upload',

@@ -1,6 +1,4 @@
-import { alias } from '@ember/object/computed';
 import Service from '@ember/service';
-import { computed, set, get } from '@ember/object';
 import fetch from 'fetch';
 import { tracked } from '@glimmer/tracking';
 
@@ -29,11 +27,21 @@ export default class PublishingService extends Service {
     this.error = error;
   }
 
-  @alias('data.domain') domain;
-  @alias('data.autoUrl') autoUrl;
-  @alias('data.publicId') publicId;
+  get domain() {
+    return this.data && this.data.domain;
+  }
 
-  @alias('data.host') host;
+  get autoUrl() {
+    return this.data && this.data.autoUrl;
+  }
+
+  get publicId() {
+    return this.data && this.data.publicId;
+  }
+
+  get host() {
+    return this.data && this.data.host;
+  }
 
   get urlBase() {
     const { domain, autoUrl } = this;

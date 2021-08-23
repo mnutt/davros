@@ -1,7 +1,5 @@
-var os = require('os');
-var url = require('url');
-var unoconv = require('../unoconv');
-var FileCache = require('../file-cache');
+const unoconv = require('../unoconv');
+const FileCache = require('../file-cache');
 
 var tempDir = os.tmpdir();
 
