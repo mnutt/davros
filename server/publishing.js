@@ -19,7 +19,7 @@ function isNotSandstorm(req) {
   return !req.headers['x-sandstorm-session-id'];
 }
 
-exports.unpublish = function(req, res) {
+exports.unpublish = function (req, res) {
   if (isNotSandstorm(req)) {
     mockDomain = null;
     mockPublishingEnabled = false;
@@ -37,20 +37,20 @@ exports.unpublish = function(req, res) {
     .then(() => {
       res.json({ success: true });
     })
-    .catch(err => {
+    .catch((err) => {
       console.error(err);
       res.status(500).json({ success: false });
     });
 };
 
-exports.getInfo = function(req, res) {
+exports.getInfo = function (req, res) {
   if (isNotSandstorm(req)) {
     if (mockPublishingEnabled) {
       res.json({
         domain: mockDomain,
         publicId: 'abc12345',
         autoUrl: 'http://localhost',
-        host: 'localhost'
+        host: 'localhost',
       });
     } else {
       res.json({});
@@ -62,7 +62,7 @@ exports.getInfo = function(req, res) {
   let domain;
   fsp
     .readFile(domainFilePath, 'utf-8')
-    .then(domainData => {
+    .then((domainData) => {
       domain = domainData;
     })
     .catch(() => {
@@ -71,17 +71,17 @@ exports.getInfo = function(req, res) {
     .then(() => {
       return fsp.stat(destination).catch(() => {});
     })
-    .then(stat => {
+    .then((stat) => {
       if (stat) {
         var sessionId = req.headers['x-sandstorm-session-id'];
         return exec('./sandstorm-integration/bin/getPublicId ' + sessionId);
       }
     })
-    .then(result => {
+    .then((result) => {
       if (result && result.stdout) {
         var stdout = result.stdout;
 
-        var [publicId, _, autoUrl] = stdout.split('\n');
+        var [publicId, , /* (hostname) */ autoUrl] = stdout.split('\n');
         var host = new URL(autoUrl).hostname;
         var data = { domain, publicId, autoUrl, host };
 
@@ -90,13 +90,13 @@ exports.getInfo = function(req, res) {
         res.json({});
       }
     })
-    .catch(err => {
+    .catch((err) => {
       console.error(err);
       res.status(500).json({ success: false });
     });
 };
 
-exports.publish = function(req, res, next) {
+exports.publish = function (req, res, next) {
   if (isNotSandstorm(req)) {
     mockDomain = req.query.domain;
     mockPublishingEnabled = true;
@@ -120,7 +120,7 @@ exports.publish = function(req, res, next) {
     .then(() => {
       return exports.getInfo(req, res, next);
     })
-    .catch(err => {
+    .catch((err) => {
       console.error(err);
       res.status(500).json({ success: false });
     });

@@ -5,7 +5,7 @@ exports.STATUS = JSON.stringify({
   maintenance: false,
   version: '9.1.0.14',
   versionstring: '9.1.0 RC4',
-  edition: ''
+  edition: '',
 });
 
 exports.CAPABILITIES = JSON.stringify({
@@ -13,7 +13,7 @@ exports.CAPABILITIES = JSON.stringify({
     meta: {
       status: 'ok',
       statuscode: 100,
-      message: null
+      message: null,
     },
     data: {
       version: {
@@ -21,55 +21,55 @@ exports.CAPABILITIES = JSON.stringify({
         minor: 1,
         micro: 0,
         string: '9.1.0 RC4',
-        edition: ''
+        edition: '',
       },
       capabilities: {
         core: {
           pollinterval: 60,
-          'webdav-root': dav.base.slice(1) // no leading slash
+          'webdav-root': dav.base.slice(1), // no leading slash
         },
         dav: {
-          "chunking": "1.0"
+          chunking: '1.0',
         },
         files_sharing: {
           api_enabled: false,
           public: {
-            enabled: false
+            enabled: false,
           },
           user: {
-            send_mail: false
+            send_mail: false,
           },
           resharing: false,
           group_sharing: false,
           federation: {
             outgoing: false,
-            incoming: false
-          }
+            incoming: false,
+          },
         },
         files: {
           bigfilechunking: true,
           blacklisted_files: ['.htaccess', '.jsdav'],
           undelete: false,
-          versioning: false
+          versioning: false,
         },
         notifications: {
-          'ocs-endpoints': ['list', 'get', 'delete']
-        }
-      }
-    }
-  }
+          'ocs-endpoints': ['list', 'get', 'delete'],
+        },
+      },
+    },
+  },
 });
 
-exports.status = function(req, res, next) {
+exports.status = function (req, res) {
   res.writeHead(200, {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
   });
   res.end(exports.STATUS);
 };
 
-exports.ocs = function(req, res, next) {
+exports.ocs = function (req, res) {
   res.writeHead(200, {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
   });
   res.end(exports.CAPABILITIES);
 };

@@ -2,7 +2,7 @@
 
 const spawn = require('child_process').spawn;
 const Duplexify = require('duplexify');
-const isError = require('util').isError;
+const isError = require('util').types.isNativeError;
 
 class Unoconv extends Duplexify {
   constructor(binloc) {
@@ -26,7 +26,7 @@ class Unoconv extends Duplexify {
   }
 
   set(setting) {
-    setting.split(' ').forEach(word => {
+    setting.split(' ').forEach((word) => {
       this.settings.push(word);
     });
 
@@ -47,12 +47,12 @@ class Unoconv extends Duplexify {
     this.setWritable(stdin);
 
     const stderr = proc.stderr;
-    stderr.on('data', function(chunk) {
+    stderr.on('data', function (chunk) {
       errors.push(chunk);
     });
     stderr.on('error', onerror);
 
-    proc.on('exit', function(code) {
+    proc.on('exit', function (code) {
       if (code > 0) {
         errors.push('Unoconv exited with code ' + code);
         onerror(errors.join('\n'));
@@ -71,4 +71,4 @@ class Unoconv extends Duplexify {
   }
 }
 
-module.exports = binloc => new Unoconv(binloc);
+module.exports = (binloc) => new Unoconv(binloc);

@@ -14,37 +14,41 @@ var PropHandlers = require('./prop-handlers');
 
 var Directory = (module.exports = jsDAV_FSExt_Directory.extend(jsDAV_iFile, Etag, PropHandlers, {
   propHandlers: {
-    "{http://owncloud.org/ns}id": function(prop, next) {
-      return Fs.stat(this.path, function(err, stat) {
+    '{http://owncloud.org/ns}id': function (prop, next) {
+      return Fs.stat(this.path, function (err, stat) {
         if (err || !stat) {
-          next()
+          next();
         } else {
-          next(null, "" + stat.ino);
+          next(null, '' + stat.ino);
         }
       });
     },
 
     // https://github.com/owncloud/client/blob/970331c531490f7aadbd262c87b09363a3d5cf2a/docs/modules/ROOT/pages/architecture.adoc
-    "{http://owncloud.org/ns}permissions": function(prop, next) {
-      next(null, "CKDNV");
-    }
+    '{http://owncloud.org/ns}permissions': function (prop, next) {
+      next(null, 'CKDNV');
+    },
   },
-  getProperties: function(requestedProperties, cbgetprops) {
+  getProperties: function (requestedProperties, cbgetprops) {
     var self = this;
-    this.getHandlerProperties(requestedProperties, function(err, values) {
-      if(err) {
+    this.getHandlerProperties(requestedProperties, function (err, values) {
+      if (err) {
         cbgetprops(err);
       } else {
-        jsDAV_FSExt_Directory.getProperties.call(self, requestedProperties, function (err, properties) {
-          cbgetprops(err, Object.assign({}, values, properties));
-        });
+        jsDAV_FSExt_Directory.getProperties.call(
+          self,
+          requestedProperties,
+          function (err, properties) {
+            cbgetprops(err, Object.assign({}, values, properties));
+          }
+        );
       }
     });
   },
 
   chunkMatch: /(.*?)-chunking-(\d+)-(\d+)-(\d+)(-done)?$/,
 
-  isChunked: function(name) {
+  isChunked: function (name) {
     return name.match(this.chunkMatch);
   },
 
@@ -55,10 +59,10 @@ var Directory = (module.exports = jsDAV_FSExt_Directory.extend(jsDAV_iFile, Etag
    * @throws Sabre_DAV_Exception_FileNotFound
    * @return Sabre_DAV_INode
    */
-  getChild: function(name, cbfsgetchild) {
+  getChild: function (name, cbfsgetchild) {
     var path = Path.join(this.path, name);
 
-    Fs.stat(path, function(err, stat) {
+    Fs.stat(path, function (err, stat) {
       if (err || typeof stat == 'undefined') {
         return cbfsgetchild(
           new Exc.FileNotFound('File with name ' + path + ' could not be located')
@@ -73,18 +77,18 @@ var Directory = (module.exports = jsDAV_FSExt_Directory.extend(jsDAV_iFile, Etag
    *
    * @return jsDAV_iNode[]
    */
-  getChildren: function(cbfsgetchildren) {
+  getChildren: function (cbfsgetchildren) {
     var nodes = [];
     Async.readdir(this.path)
       .stat()
-      .filter(function(file) {
+      .filter(function (file) {
         return file.name !== File.PROPS_DIR && file.name !== '.gitkeep';
       })
-      .each(function(file, cbnextdirch) {
+      .each(function (file, cbnextdirch) {
         nodes.push(file.stat.isDirectory() ? Directory.new(file.path) : File.new(file.path));
         cbnextdirch();
       })
-      .end(function() {
+      .end(function () {
         cbfsgetchildren(null, nodes);
       });
   },
@@ -100,9 +104,9 @@ var Directory = (module.exports = jsDAV_FSExt_Directory.extend(jsDAV_iFile, Etag
    * @param {Function} cbfscreatefile
    * @return void
    */
-  createFile: function(name, data, enc, cbfscreatefile) {
+  createFile: function (name, data, enc, cbfscreatefile) {
     var self = this;
-    jsDAV_FSExt_Directory.createFile.call(this, name, data, enc, function(err) {
+    jsDAV_FSExt_Directory.createFile.call(this, name, data, enc, function (err) {
       if (err) return cbfscreatefile(err);
 
       var file = File.new([self.path, name].join('/'));
@@ -120,26 +124,24 @@ var Directory = (module.exports = jsDAV_FSExt_Directory.extend(jsDAV_iFile, Etag
    * @param {Function} cbfscreatefile
    * @return void
    */
-  createFileStream: function(handler, name, enc, cbfscreatefile) {
+  createFileStream: function (handler, name, enc, cbfscreatefile) {
     var self = this;
     if (this.isChunked(name)) {
       handler.httpRequest.headers['oc-file-name'] = name;
       this.writeFileChunk(handler, enc, cbfscreatefile);
     } else {
-      var path = Path.join(this.path, name);
-      jsDAV_FSExt_Directory.createFileStream.call(this, handler, name, enc, function() {
+      jsDAV_FSExt_Directory.createFileStream.call(this, handler, name, enc, function () {
         var file = File.new([self.path, name].join('/'));
         file.getETag(cbfscreatefile);
       });
     }
   },
 
-  writeFileChunk: function(handler, type, cbfswritechunk) {
+  writeFileChunk: function (handler, type, cbfswritechunk) {
     var self = this;
 
     var filename = handler.httpRequest.headers['oc-file-name'];
     var chunkSize = parseInt(handler.httpRequest.headers['oc-chunk-size']);
-    var size = parseInt(handler.httpRequest.headers['oc-total-length']);
 
     var parts = this.isChunked(filename);
     if (!parts) {
@@ -159,7 +161,7 @@ var Directory = (module.exports = jsDAV_FSExt_Directory.extend(jsDAV_iFile, Etag
         timeout: null,
         count: 0,
         chunkSizes: new Array(totalChunks),
-        checksum: null
+        checksum: null,
       };
     }
     track.chunkSizes[myChunk] = chunkSize;
@@ -173,14 +175,14 @@ var Directory = (module.exports = jsDAV_FSExt_Directory.extend(jsDAV_iFile, Etag
 
     // if it takes more than ten minutes for the next chunk to
     // arrive, remove the temp file and consider this a failed upload.
-    track.timeout = setTimeout(function() {
+    track.timeout = setTimeout(function () {
       delete handler.server.chunkedUploads[uid];
-      Fs.unlink(track.path, function() {});
+      Fs.unlink(track.path, function () {});
     }, 600000); //10 minutes timeout
 
     var previousChunks = track.chunkSizes.slice(0, myChunk);
     if (previousChunks.filter(Boolean).length < myChunk) {
-      cbfswritechunk(new Error("Unexpectedly received chunks out of order!"));
+      cbfswritechunk(new Error('Unexpectedly received chunks out of order!'));
       return;
     }
 
@@ -190,13 +192,13 @@ var Directory = (module.exports = jsDAV_FSExt_Directory.extend(jsDAV_iFile, Etag
     var stream = Fs.createWriteStream(track.path, {
       encoding: type,
       flags: track.count === 0 ? 'w+' : 'r+',
-      start: startPosition
+      start: startPosition,
     });
 
-    stream.on('close', function() {
+    stream.on('close', function () {
       track.count += 1;
       if (track.count === totalChunks) {
-        self.validateChecksum(track.checksum, track.path, function(err) {
+        self.validateChecksum(track.checksum, track.path, function (err) {
           if (err) {
             cbfswritechunk(err);
             return;
@@ -204,7 +206,7 @@ var Directory = (module.exports = jsDAV_FSExt_Directory.extend(jsDAV_iFile, Etag
 
           delete handler.server.chunkedUploads[uid];
           var originalPath = Path.join(self.path, originalName);
-          Util.move(track.path, originalPath, true, function(err) {
+          Util.move(track.path, originalPath, true, function (err) {
             if (err) return;
             handler.dispatchEvent(
               'afterBind',
@@ -220,19 +222,19 @@ var Directory = (module.exports = jsDAV_FSExt_Directory.extend(jsDAV_iFile, Etag
       }
     });
 
-    handler.getRequestBody(type, stream, false, function() {});
+    handler.getRequestBody(type, stream, false, function () {});
   },
 
   validateChecksum(checksum, path, cb) {
     if (!checksum) {
-      cb(new Error("Missing checksum on last chunk"));
+      cb(new Error('Missing checksum on last chunk'));
       return;
     }
 
-    const [type, hash] = checksum.split(":");
+    const [type, hash] = checksum.split(':');
 
-    if (type !== "SHA1") {
-      cb(new Error("Unknown hash type"));
+    if (type !== 'SHA1') {
+      cb(new Error('Unknown hash type'));
       return;
     }
 
@@ -241,9 +243,9 @@ var Directory = (module.exports = jsDAV_FSExt_Directory.extend(jsDAV_iFile, Etag
 
     file.on('data', (chunk) => shasum.update(chunk));
     file.on('error', cb);
-    file.on('end', function() {
+    file.on('end', function () {
       const calculated = shasum.digest('hex');
-      if (calculated === checksum) {
+      if (calculated === hash) {
         cb(null);
       } else {
         cb(new Error(`Checksums do not match: ${checksum}, ${calculated}`));
@@ -253,13 +255,13 @@ var Directory = (module.exports = jsDAV_FSExt_Directory.extend(jsDAV_iFile, Etag
 
   // We redefine fsext's `delete` because it uses asyncjs rmtree, which causes
   // stack overflows on very large directories.
-  delete: function(cbfsdel) {
-    ChildProcess.spawn('rm', ['-rf', this.path]).on('exit', function(err) {
+  delete: function (cbfsdel) {
+    ChildProcess.spawn('rm', ['-rf', this.path]).on('exit', function (err) {
       if (err) {
         cbfsdel(err);
       } else {
         cbfsdel(null);
       }
     });
-  }
+  },
 }));

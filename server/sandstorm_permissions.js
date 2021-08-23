@@ -1,13 +1,13 @@
-var readMethods = {
+const readMethods = {
   GET: true,
   HEAD: true,
   OPTIONS: true,
   PROPFIND: true,
-  REPORT: true
+  REPORT: true,
 };
 
-var validate = {
-  edit: function validateEdit(req) {
+const validate = {
+  edit: function validateEdit() {
     return true;
   },
 
@@ -17,10 +17,10 @@ var validate = {
 
   sync: function validateSync(req) {
     return readMethods[req.method];
-  }
+  },
 };
 
-module.exports = function(req, res, next) {
+module.exports = function (req, res, next) {
   var permissions = req.headers['x-sandstorm-permissions'];
 
   if (permissions) {
@@ -29,6 +29,7 @@ module.exports = function(req, res, next) {
     if (req.url === '/api/permissions') {
       res.writeHead(200, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify({ permissions: permissions }));
+
       return;
     }
 
@@ -39,6 +40,7 @@ module.exports = function(req, res, next) {
         return next();
       }
     }
+
     res.writeHead(403, {});
     res.end('Access denied.');
   } else {

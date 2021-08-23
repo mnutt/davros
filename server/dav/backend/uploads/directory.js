@@ -15,10 +15,10 @@ var Directory = (module.exports = DavDirectory.extend({
    * @throws Sabre_DAV_Exception_FileNotFound
    * @return Sabre_DAV_INode
    */
-  getChild: function(name, cbfsgetchild) {
+  getChild: function (name, cbfsgetchild) {
     var path = Path.join(this.path, name);
 
-    Fs.stat(path, function(err, stat) {
+    Fs.stat(path, function (err, stat) {
       if (err || typeof stat == 'undefined') {
         return cbfsgetchild(
           new Exc.FileNotFound('File with name ' + path + ' could not be located')
@@ -33,19 +33,19 @@ var Directory = (module.exports = DavDirectory.extend({
    *
    * @return jsDAV_iNode[]
    */
-  getChildren: function(cbfsgetchildren) {
+  getChildren: function (cbfsgetchildren) {
     var nodes = [];
 
     Async.readdir(this.path)
       .stat()
-      .filter(function(file) {
+      .filter(function (file) {
         return file.name !== File.PROPS_DIR && file.name !== '.gitkeep';
       })
-      .each(function(file, cbnextdirch) {
+      .each(function (file, cbnextdirch) {
         nodes.push(file.stat.isDirectory() ? Directory.new(file.path) : File.new(file.path));
         cbnextdirch();
       })
-      .end(function() {
+      .end(function () {
         cbfsgetchildren(null, nodes);
       });
   },
@@ -60,9 +60,9 @@ var Directory = (module.exports = DavDirectory.extend({
    * @param {Function} cbfscreatefile
    * @return void
    */
-  createFileStream: async function(handler, name, enc, cbfscreatefile) {
+  createFileStream: async function (handler, name, enc, cbfscreatefile) {
     var chunkPath = Path.join(this.path, name);
-    var filePath = Path.join(this.path, ".file");
+    var filePath = Path.join(this.path, '.file');
 
     const headers = handler.httpRequest.headers;
     const offset = parseInt(headers['oc-chunk-offset']);
@@ -70,12 +70,14 @@ var Directory = (module.exports = DavDirectory.extend({
     const stream = Fs.createWriteStream(filePath, {
       encoding: enc,
       flags: 'a+',
-      start: offset
+      start: offset,
     });
 
     stream.on('close', () => {
       // touch the chunk path so that the client knows it exists
-      Fse.ensureFile(chunkPath).then(() => cbfscreatefile(null, null)).catch(err => cbfscreatefile(err));
+      Fse.ensureFile(chunkPath)
+        .then(() => cbfscreatefile(null, null))
+        .catch((err) => cbfscreatefile(err));
     });
 
     handler.getRequestBody(enc, stream, false, () => {});

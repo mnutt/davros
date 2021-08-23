@@ -1,19 +1,19 @@
 var jsDAV_ServerPlugin = require('jsDAV/lib/DAV/plugin');
 
-var jsDAV_SafeGets_Plugin = (module.exports = jsDAV_ServerPlugin.extend({
+module.exports = jsDAV_ServerPlugin.extend({
   name: 'safe-gets',
 
   safeTypes: {
-    'application/pdf': true
+    'application/pdf': true,
   },
 
-  initialize: function(handler) {
+  initialize: function (handler) {
     this.handler = handler;
 
     handler.addEventListener('beforeMethod', this.getHandler.bind(this));
   },
 
-  getHandler: function(e, method, uri) {
+  getHandler: function (e, method) {
     if (method === 'GET') {
       this.setContentDisposition(this.handler.httpRequest, this.handler.httpResponse);
     }
@@ -22,12 +22,14 @@ var jsDAV_SafeGets_Plugin = (module.exports = jsDAV_ServerPlugin.extend({
   },
 
   // HTML files should not be displayed inside davros' UI; download them instead
-  setContentDisposition: function(req, res) {
+  setContentDisposition: function (req, res) {
     var self = this;
     var original = res.writeHead;
 
     // signature is writeHead(statusCode[, statusMessage][, headers])
-    res.writeHead = function() {
+    res.writeHead = function () {
+      let headers;
+
       if (arguments.length === 3) {
         headers = arguments[2];
       } else {
@@ -48,5 +50,5 @@ var jsDAV_SafeGets_Plugin = (module.exports = jsDAV_ServerPlugin.extend({
 
       original.apply(res, arguments);
     };
-  }
-}));
+  },
+});

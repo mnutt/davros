@@ -4,26 +4,26 @@ var Crypto = require('crypto');
 
 var jsDAV_ServerPlugin = require('jsDAV/lib/DAV/plugin');
 
-var jsDAV_SetupUpload_Plugin = (module.exports = jsDAV_ServerPlugin.extend({
+module.exports = jsDAV_ServerPlugin.extend({
   name: 'setup-upload',
 
-  initialize: function(handler) {
+  initialize: function (handler) {
     this.handler = handler;
 
     handler.addEventListener('beforeMethod', this.beforeMethodHandler.bind(this));
     handler.addEventListener('afterBind', this.afterBindHandler.bind(this));
   },
 
-  beforeMethodHandler: async function(e, method, uri) {
+  beforeMethodHandler: async function (e, method, uri) {
     if (method === 'MOVE' && uri.startsWith('uploads/') && uri.endsWith('.file')) {
       const checksum = this.handler.httpRequest.headers['oc-checksum'];
 
       if (!checksum) {
-        e.error(new Error("No checksum header provided for upload completion"));
+        e.error(new Error('No checksum header provided for upload completion'));
         return;
       }
 
-      const [checksumType, hash] = checksum.split(":");
+      const [checksumType, hash] = checksum.split(':');
 
       const computed = await this.getChecksum(checksumType, uri);
       if (computed !== hash) {
@@ -35,8 +35,8 @@ var jsDAV_SetupUpload_Plugin = (module.exports = jsDAV_ServerPlugin.extend({
     e.next();
   },
 
-  getChecksum: async function(type, path) {
-    if (type !== "SHA1") {
+  getChecksum: async function (type, path) {
+    if (type !== 'SHA1') {
       throw new Error(`Unknown hash type: ${type}`);
     }
 
@@ -51,14 +51,14 @@ var jsDAV_SetupUpload_Plugin = (module.exports = jsDAV_ServerPlugin.extend({
 
         file.on('data', (chunk) => shasum.update(chunk));
         file.on('error', reject);
-        file.on('end', function() {
+        file.on('end', function () {
           resolve(shasum.digest('hex'));
         });
       });
     });
   },
 
-  afterBindHandler: async function(e, destination) {
+  afterBindHandler: async function (e, destination) {
     if (!destination.startsWith('dav')) {
       e.next();
       return;
@@ -87,4 +87,4 @@ var jsDAV_SetupUpload_Plugin = (module.exports = jsDAV_ServerPlugin.extend({
       });
     });
   },
-}));
+});

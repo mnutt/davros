@@ -21,7 +21,7 @@ var fileUpload = require('./api/file-upload');
 var downloadDirectory = require('./api/download-directory');
 var previewDocument = require('./api/preview-document');
 
-module.exports = function(app, options) {
+module.exports = function (app, options) {
   var root = path.resolve(process.env.STORAGE_PATH || __dirname + '/../data');
 
   apiWs.serve(options.httpServer);

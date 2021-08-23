@@ -9,14 +9,14 @@ const Directory = require('./directory');
 const Util = require('jsDAV/lib/shared/util');
 const Exc = require('jsDAV/lib/shared/exceptions');
 
-const Tree = (module.exports = jsDAV_FSExt_Tree.extend({
+module.exports = jsDAV_FSExt_Tree.extend({
   /**
    * Returns a new node for the given path
    *
    * @param {String} path
    * @return void
    */
-  getNodeForPath: function(path, cbfstree) {
+  getNodeForPath: function (path, cbfstree) {
     const realPath = this.getRealPath(path);
     const nicePath = this.stripSandbox(realPath);
 
@@ -36,7 +36,7 @@ const Tree = (module.exports = jsDAV_FSExt_Tree.extend({
     if (!this.insideSandbox(realPath))
       return cbfstree(new Exc.Forbidden('You are not allowed to access ' + nicePath));
 
-    Fs.stat(realPath, function(err, stat) {
+    Fs.stat(realPath, function (err, stat) {
       if (!Util.empty(err))
         return cbfstree(new Exc.FileNotFound('File at location ' + nicePath + ' not found'));
 
@@ -50,39 +50,36 @@ const Tree = (module.exports = jsDAV_FSExt_Tree.extend({
    * This is tricky because the source is in the uploadsTree while the destination is
    * in the regular tree. We have to fake out
    */
-  move: async function(source, destination, cbfsmove) {
-    source      = this.getRealPath(source);
+  move: async function (source, destination, cbfsmove) {
+    source = this.getRealPath(source);
     destination = this.fileTree.getRealPath(destination.replace(/^dav\//, ''));
 
     if (!this.fileTree.insideSandbox(destination)) {
-      return cbfsmove(new Exc.Forbidden("You are not allowed to move to " +
-                                        this.fileTree.stripSandbox(destination)));
+      return cbfsmove(
+        new Exc.Forbidden(
+          'You are not allowed to move to ' + this.fileTree.stripSandbox(destination)
+        )
+      );
     }
 
-    Fs.stat(source, function(err, stat) {
+    Fs.stat(source, function (err, stat) {
       if (!Util.empty(err))
-        return cbfsmove(new Exc.FileNotFound("File at location " + source + " not found"));
+        return cbfsmove(new Exc.FileNotFound('File at location ' + source + ' not found'));
 
       var isDir = stat.isDirectory();
-      var node = isDir
-          ? jsDAV_FSExt_Directory.new(source)
-          : jsDAV_FSExt_File.new(source);
-      node.getResourceData(function(err, data) {
-        if (err)
-          return cbfsmove(err, source, destination);
+      var node = isDir ? jsDAV_FSExt_Directory.new(source) : jsDAV_FSExt_File.new(source);
+      node.getResourceData(function (err, data) {
+        if (err) return cbfsmove(err, source, destination);
 
-        Fs.rename(source, destination, function(err) {
-          if (err)
-            return cbfsmove(err, source, destination);
+        Fs.rename(source, destination, function (err) {
+          if (err) return cbfsmove(err, source, destination);
 
-          node = isDir
-            ? jsDAV_FSExt_Directory.new(destination)
-            : jsDAV_FSExt_File.new(destination);
-          node.putResourceData(data, function(err) {
+          node = isDir ? jsDAV_FSExt_Directory.new(destination) : jsDAV_FSExt_File.new(destination);
+          node.putResourceData(data, function (err) {
             cbfsmove(err, source, destination);
           });
         });
       });
     });
-  }
-}));
+  },
+});

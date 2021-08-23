@@ -2,7 +2,7 @@ const WebSocket = require('ws');
 
 let wss;
 
-exports.notify = function(file) {
+exports.notify = function (file) {
   if (!wss) {
     return;
   }
@@ -14,7 +14,7 @@ exports.notify = function(file) {
   }
 };
 
-exports.serve = function(server) {
+exports.serve = function (server) {
   wss = new WebSocket.Server({ noServer: true });
 
   server.on('upgrade', function upgrade(request, socket, head) {
@@ -25,5 +25,5 @@ exports.serve = function(server) {
     }
   });
 
-  wss.on('error', err => console.error(err));
+  wss.on('error', (err) => console.error(err));
 };

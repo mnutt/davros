@@ -7,16 +7,14 @@ var cachedFree = new Cache();
 var cachedUsed = new Cache();
 var cachedResolver = new Cache();
 
-module.exports = function(p, cb) {
-  var start = new Date();
-
-  resolve(p, function(err, resolvedPath) {
+module.exports = function (p, cb) {
+  resolve(p, function (err, resolvedPath) {
     if (err) {
       return cb(err, null);
     }
 
-    df(resolvedPath, function(err, free) {
-      du(resolvedPath, function(err, used) {
+    df(resolvedPath, function (err, free) {
+      du(resolvedPath, function (err, used) {
         return cb(null, {
           bsize: 1, // we specifically set the block size to 1k with `-k` above
           frsize: 1, // doesn't really matter for our purposes
@@ -24,7 +22,7 @@ module.exports = function(p, cb) {
           bavail: free * 1024, // how much available for unprivileged users, assume we get it
           blocks: used * 1024, // total fs size
           files: 0, // we don't support # of inodes at this time
-          ffree: 0 // nor this
+          ffree: 0, // nor this
         });
       });
     });
@@ -37,7 +35,7 @@ function resolve(p, cb) {
     return cb(null, cachedValue);
   }
 
-  fs.realpath(path.resolve(p), function(err, resolvedPath) {
+  fs.realpath(path.resolve(p), function (err, resolvedPath) {
     if (err) {
       cb(err, resolvedPath);
     } else {
@@ -53,7 +51,7 @@ function df(p, cb) {
     return cb(null, cachedValue);
   }
 
-  exec("df -k '" + p + "' | tail -n 1 | awk '{ print $2\":\"$4 }'", function(err, stdout, stderr) {
+  exec("df -k '" + p + "' | tail -n 1 | awk '{ print $2\":\"$4 }'", function (err, stdout) {
     if (err) {
       return cb(err, null);
     }
@@ -76,7 +74,7 @@ function du(p, cb) {
     return cb(null, cachedValue);
   }
 
-  exec("du -k -d 0 '" + p + "'", function(err, stdout, stderr) {
+  exec("du -k -d 0 '" + p + "'", function (err, stdout) {
     if (err) {
       return cb(err, null);
     }

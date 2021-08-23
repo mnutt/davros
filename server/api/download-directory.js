@@ -2,21 +2,21 @@ var fs = require('fs');
 var path = require('path');
 
 function errorHandler(res) {
-  return function(err) {
+  return function (err) {
     res.writeHead(500, {});
     res.end(err.message);
   };
 }
 
-module.exports = function(root) {
+module.exports = function (root) {
   // ignore relative or empty path components
   var ignoredComponents = ['', '.', '..'];
 
-  return function(req, res, next) {
+  return function (req, res) {
     var relPath = req.query.path;
     var fullPath = root;
     var name = 'home';
-    relPath.split('/').forEach(function(part) {
+    relPath.split('/').forEach(function (part) {
       if (ignoredComponents.indexOf(part) !== -1) {
         return;
       }
@@ -27,19 +27,19 @@ module.exports = function(root) {
 
     function respondArchive() {
       var archive = require('archiver').create('zip', {
-        statConcurrency: 1
+        statConcurrency: 1,
       });
       archive.on('error', errorHandler(res));
       archive.directory(fullPath, name);
       res.writeHead(200, {
         'Content-type': 'application/zip',
-        'Content-disposition': 'attachment; filename="' + name + '.zip"'
+        'Content-disposition': 'attachment; filename="' + name + '.zip"',
       });
       archive.pipe(res);
       archive.finalize();
     }
 
-    fs.stat(fullPath, function(err, stats) {
+    fs.stat(fullPath, function (err, stats) {
       if (err) {
         if (err.code === 'ENOENT') {
           res.writeHead(404);
