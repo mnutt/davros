@@ -7,7 +7,7 @@
 </div>
 
 <form {{on "submit" this.create}}>
-  <input type="text" label="Name" class="form-input my-4" placeholder="Name" value={{this.directoryName}} {{on "keyup" this.onChange}} {{did-insert this.focus}} />
+  <input name="directory-name" type="text" aria-label="name" label="Name" class="form-input my-4" placeholder="Name" value={{this.directoryName}} {{on "keyup" this.onChange}} {{did-insert this.focus}} />
   {{#if this.validationError}}
     <p class="text-red-500 font-sm" >{{this.validationError}}</p>
   {{/if}}

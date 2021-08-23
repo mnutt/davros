@@ -51,7 +51,7 @@ sandstorm-www.{{this.publishing.domain}}. IN TXT {{this.publishing.publicId}}
 
     <form class="setup max-w-sm">
       <label for="custom-domain">Optional Custom Domain</label>
-      <input name="custom-domain" type="text" class="form-input"
+      <input name="custom-domain" type="text" class="form-input" aria-label="Optional custom domain"
              value={{this.domain}} {{on "keyup" this.onChange}} />
       {{#if this.validationError}}
         <p class="text-red-500 font-sm">{{this.validationError}}</p>
