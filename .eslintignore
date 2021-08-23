@@ -15,6 +15,7 @@
 !.*
 .*/
 .eslintcache
+/output/
 
 # ember-try
 /.node_modules.ember-try/
