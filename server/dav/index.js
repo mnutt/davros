@@ -22,18 +22,20 @@ exports.uploadBase = '/uploads';
 const dummyServer = jsDAV.mount({
   tree: Tree.new(path.resolve(__dirname + '/../dummy')),
   sandboxed: true,
-  plugins: {}
+  plugins: {},
 });
 
 function getRealDavUrl(url, prefix, base) {
   const slicedUrl = url.slice(prefix.length);
-  const nextSlash = slicedUrl.indexOf('/');
-  if (nextSlash) {
-    const user = slicedUrl.slice(0, nextSlash);
-    return { base: `${prefix}${user}/`, url: base + slicedUrl.slice(nextSlash) }
-  } else {
-    return { url: base + slicedUrl }
+
+  let nextSlash = slicedUrl.indexOf('/');
+  if (nextSlash === -1) {
+    // For top-level user directory without a trailing slash
+    nextSlash = slicedUrl.length;
   }
+
+  const user = slicedUrl.slice(0, nextSlash);
+  return { base: `${prefix}${user}/`, url: base + slicedUrl.slice(nextSlash) };
 }
 
 function rewriteAlternateDavUrls(req) {
@@ -57,13 +59,20 @@ function rewriteAlternateDavUrls(req) {
     req.url = url;
   }
 
-  if (req.headers['destination'] && req.headers['destination'].startsWith('/remote.php/dav/files/')) {
-    const { url } = getRealDavUrl(req.headers['destination'], '/remote.php/dav/files/', exports.base);
+  if (
+    req.headers['destination'] &&
+    req.headers['destination'].startsWith('/remote.php/dav/files/')
+  ) {
+    const { url } = getRealDavUrl(
+      req.headers['destination'],
+      '/remote.php/dav/files/',
+      exports.base
+    );
     req.headers['destination'] = url;
   }
 }
 
-exports.server = function(root) {
+exports.server = function (root) {
   // eslint-disable-next-line no-console
   console.log('Mounting webdav from data dir ' + root);
 
@@ -88,7 +97,7 @@ exports.server = function(root) {
       mtime: require('./mtime'),
       'safe-gets': require('./safe-gets'),
       'rewrite-url': require('./rewrite-url'),
-    }
+    },
   });
 
   tree.setSandbox(tree.basePath);
@@ -108,13 +117,13 @@ exports.server = function(root) {
       mtime: require('./mtime'),
       'safe-gets': require('./safe-gets'),
       'setup-upload': require('./backend/uploads/setup-upload'),
-    }
+    },
   });
   uploadTree.setSandbox(uploadTree.basePath);
 
   server.baseUri = exports.base + '/';
 
-  return function(req, res, next) {
+  return function (req, res, next) {
     rewriteAlternateDavUrls(req);
 
     if (req.url.indexOf(exports.base) === 0) {

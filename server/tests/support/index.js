@@ -7,7 +7,7 @@ const express = require('express');
 const xmldoc = require('xmldoc');
 const api = require('../../../server/index');
 
-exports.makeApp = function() {
+exports.makeApp = function () {
   process.env.STORAGE_PATH = os.tmpdir() + '/davros-test-data-' + Math.random();
   fs.mkdirSync(process.env.STORAGE_PATH);
 
@@ -17,24 +17,26 @@ exports.makeApp = function() {
   return app;
 };
 
-exports.xmlResponse = function(res) {
+exports.xmlResponse = function (res) {
   return new xmldoc.XmlDocument(res.text);
 };
 
-exports.directoryListing = function(doc) {
+exports.directoryListing = function (doc) {
   if (doc.text) {
     doc = exports.xmlResponse(doc);
   }
 
-  return doc.children.map(function(el) {
-    var prop = el.descendantWithPath('d:propstat.d:prop');
-    return {
-      href: el.valueWithPath('d:href'),
-      lastmodified: prop.valueWithPath('d:getlastmodified'),
-      contentLength: prop.valueWithPath('d:getcontentlength'),
-      contentType: prop.valueWithPath('d:getcontenttype'),
-      etag: prop.valueWithPath('d:getetag'),
-      isCollection: !!prop.descendantWithPath('d:resourcetype.d:collection')
-    };
-  });
+  return doc.children
+    .filter((c) => c.name && c.name === 'd:response')
+    .map(function (el) {
+      var prop = el.descendantWithPath('d:propstat.d:prop');
+      return {
+        href: el.valueWithPath('d:href'),
+        lastmodified: prop.valueWithPath('d:getlastmodified'),
+        contentLength: prop.valueWithPath('d:getcontentlength'),
+        contentType: prop.valueWithPath('d:getcontenttype'),
+        etag: prop.valueWithPath('d:getetag'),
+        isCollection: !!prop.descendantWithPath('d:resourcetype.d:collection'),
+      };
+    });
 };

@@ -44,7 +44,7 @@ jobs:
         run: yarn lint
 
   test-app:
-    name: Tests
+    name: App Tests
     runs-on: ubuntu-latest
     timeout-minutes: 7
 
@@ -78,17 +78,65 @@ jobs:
       - name: Test
         run: yarn test
 
-      - name: Test server
-        run: yarn test-server
+  test-server:
+    name: Server Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
 
-      - name: Test WebDAV
+    steps:
+      - name: Check out a copy of the repo
+        uses: actions/checkout@v2
+
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v2-beta
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Get Yarn cache path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - name: Cache Yarn cache and node_modules
+        id: cache-dependencies
+        uses: actions/cache@v2
+        with:
+          path: |
+            ${{ steps.yarn-cache-dir-path.outputs.dir }}
+            node_modules
+          key: ${{ runner.os }}-${{ env.NODE_VERSION }}-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: ${{ runner.os }}-${{ env.NODE_VERSION }}-
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+        if: steps.cache-dependencies.outputs.cache-hit != 'true'
+
+      - name: Cache litmus
+        id: cache-litmus
+        uses: actions/cache@v2
+        with:
+          path: ~/litmus
+          key: ${{ runner.os }}-litmus
+
+      - name: Build litmus
+        if: steps.cache-litmus.outputs.cache-hit != 'true'
         run: |
-          PORT=6849 node app.js &> /dev/null &
-
-          mkdir -p tmp && cd tmp
+          mkdir -p ~/litmus
+          cd ~/litmus
           wget http://www.webdav.org/neon/litmus/litmus-0.13.tar.gz
           tar -zxf litmus-0.13.tar.gz
           cd litmus-0.13
           sed -i -e "s/T(propfind_invalid2),//g" src/props.c
           ./configure && make
-          make URL=http://127.0.0.1:6489/dav check
+
+      - name: Test WebDAV (allow)
+        run: |
+          mkdir -p dist tmp/dav-test
+          touch dist/index.html
+          STORAGE_PATH=tmp/dav-test PORT=6489 node app.js > /dev/null &
+
+          cd ~/litmus/litmus-0.13
+          make URL=http://127.0.0.1:6489/dav check || true
+
+      - name: Test server
+        if: always()
+        run: yarn test-server
