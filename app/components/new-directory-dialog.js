@@ -9,10 +9,10 @@ export default class NewDirectoryDialog extends Component {
   directoryValidation = [
     {
       message: 'Directory name is not valid.',
-      validate: name => {
-        return name.match(/^[^\\/?%*:|"<>.]+$/);
-      }
-    }
+      validate: (name) => {
+        return name.match(/^[^/]+$/);
+      },
+    },
   ];
 
   @action
