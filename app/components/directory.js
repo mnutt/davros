@@ -41,4 +41,9 @@ export default class DirectoryComponent extends FileComponent {
     const endpoint = `/api/archive?path=${encodeURIComponent(path)}`;
     document.location.href = endpoint;
   }
+
+  @action
+  reload() {
+    this.model.reload();
+  }
 }

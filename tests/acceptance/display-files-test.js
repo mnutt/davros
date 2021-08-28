@@ -1,44 +1,51 @@
-import { find, click, visit } from '@ember/test-helpers';
+import { find, click, currentURL } from '@ember/test-helpers';
 import { module, test } from 'qunit';
 import { setupApplicationTest } from 'ember-qunit';
-import fileStub from 'davros/tests/helpers/file-stub';
+import { selectFiles } from 'ember-file-upload/test-support';
+import { makeImage } from '../helpers/upload';
+import { makeAndEnterNewDirectory, reload } from '../helpers/directory';
+import { mp4File } from '../fixtures/files';
 
-var stub;
-
-function stripTitle(text) {
-  return text.replace(/\s+/g, ' ').trim();
-}
-
-module('Acceptance | display files', function(hooks) {
+module('Acceptance | display files', function (hooks) {
   setupApplicationTest(hooks);
 
-  hooks.beforeEach(function() {
-    stub = fileStub();
+  test('viewing an image', async function (assert) {
+    const directory = await makeAndEnterNewDirectory();
+    assert.equal(currentURL(), `/files/${directory}/`);
 
-    stub.get('/api/permissions', function() {
-      return [404, {}, ''];
-    });
+    await selectFiles('input[type="file"]', await makeImage('my-image.png'));
+    await reload();
 
-    stub.get('/api/publish/info', function() {
-      return [200, {}, '{}'];
-    });
-  });
+    assert.dom('.filename').hasText('my-image.png');
 
-  hooks.afterEach(function() {
-    stub.shutdown();
-  });
-
-  test('viewing an image', async function(assert) {
-    await visit('/files/');
-
-    await click('table.file-list tr:nth-child(2) .filename');
+    await click('[href*="my-image.png"]');
 
     find('.parent-only').remove(); // not in mobile view
-
-    // title looks good
-    assert.equal(stripTitle(find('.title').textContent), 'Viewing home / space.jpg');
+    assert.dom('.title').hasText(`Viewing home / ${directory} / my-image.png`);
 
     // image is shown
-    assert.dom('.preview img').hasAttribute('src', '/dav/space.jpg');
+    assert.dom('.preview img').hasAttribute('src', `/dav/${directory}/my-image.png`);
+    assert.dom('.updated').hasText('Updated a moment ago');
+
+    const size = find('.size').innerText;
+    assert.ok(parseInt(size) > 1);
+  });
+
+  test('viewing a video', async function (assert) {
+    const directory = await makeAndEnterNewDirectory();
+    assert.equal(currentURL(), `/files/${directory}/`);
+
+    await selectFiles('input[type="file"]', mp4File);
+    await reload();
+
+    assert.dom('.filename .truncate').hasText('video.mp4');
+
+    await click('[href*="video.mp4"]');
+
+    // video is shown
+    assert.dom('.preview video').hasAttribute('src', `/dav/${directory}/video.mp4`);
+    assert.dom('.updated').hasText('Updated a moment ago');
+
+    assert.dom('.size').hasText('265B');
   });
 });

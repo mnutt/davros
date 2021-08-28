@@ -1,56 +1,32 @@
 import { click, currentURL, find, visit } from '@ember/test-helpers';
 import { module, test } from 'qunit';
 import { setupApplicationTest } from 'ember-qunit';
-import fileStub from 'davros/tests/helpers/file-stub';
+import { makeDirectory, makeAndEnterNewDirectory } from 'davros/tests/helpers/directory';
 
-var stub;
-
-function stripTitle(text) {
-  return text.replace(/\s+/g, ' ').trim();
-}
-
-module('Acceptance | list files', function(hooks) {
+module('Acceptance | list files', function (hooks) {
   setupApplicationTest(hooks);
 
-  hooks.beforeEach(function() {
-    stub = fileStub();
-
-    stub.get('/api/permissions', function() {
-      return [404, {}, ''];
-    });
-  });
-
-  hooks.afterEach(function() {
-    stub.shutdown();
-  });
-
-  test('redirecting root to /files', async function(assert) {
+  test('redirecting root to /files', async function (assert) {
     await visit('/');
 
     assert.equal(currentURL(), '/files');
   });
 
-  test('listing files', async function(assert) {
-    await visit('/files');
+  test('listing files', async function (assert) {
+    const baseDir = await makeAndEnterNewDirectory();
 
-    assert.dom('.file-list tr:nth-child(1) .filename .truncate').hasText('myDir');
-    assert.dom('.file-list tr:nth-child(2) .filename .truncate').hasText('space.jpg');
-  });
+    const dir1 = await makeDirectory();
+    const dir2 = `z~$#@!^&*()å¶$`;
+    await makeDirectory(dir2);
 
-  test('traversing directories', async function(assert) {
-    await visit('/files');
-    await click('.file-list tr:nth-child(1) .filename');
+    assert.dom('.file-list tr:nth-child(1) .filename .truncate').hasText(dir1);
+    assert.dom('.file-list tr:nth-child(2) .filename .truncate').hasText(dir2);
 
-    find('.parent-only').remove(); // not in mobile view
+    await click('.file-list tr:nth-child(2) .filename');
 
-    // title looks good
-    assert.equal(stripTitle(find('.title').textContent), 'Files in home / myDir /');
-    // first file in subdir exists
-    assert.dom('.file-list tr:nth-child(1) .filename .truncate').hasText('ios-davros.png');
-
-    await click('.breadcrumb a');
+    assert.equal(currentURL(), `/files/${baseDir}/z~$%23@!%5E&*()%C3%A5%C2%B6$/`);
 
     find('.parent-only').remove();
-    assert.equal(stripTitle(find('.title').textContent), 'Files in home /');
+    assert.dom('.title').hasText(`Files in home / ${baseDir} / ${dir2} /`);
   });
 });
