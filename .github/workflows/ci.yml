@@ -1,0 +1,94 @@
+name: CI
+
+on: [push, pull_request]
+
+env:
+  NODE_VERSION: '15'
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+
+      - uses: actions/setup-node@v2-beta
+        with:
+          node-version: '${{ env.NODE_VERSION }}'
+
+      - name: Get Yarn cache path
+        id: global-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - name: Cache Yarn cache and node_modules
+        id: cache-dependencies
+        uses: actions/cache@v2
+        with:
+          path: |
+            ${{ steps.global-cache-dir-path.outputs.dir }}
+            node_modules
+          key: ${{ runner.os }}-${{ matrix.node-version }}-${{
+            hashFiles('**/yarn.lock'
+            ) }}
+          restore-keys: |
+            ${{ runner.os }}-${{ matrix.node-version }}-
+
+      - name: Install Dependencies
+        run: yarn install --frozen-lockfile
+        if: |
+          steps.cache-dependencies.outputs.cache-hit != 'true'
+
+      - name: Lint
+        run: yarn lint
+
+  test-app:
+    name: Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+
+    steps:
+      - name: Check out a copy of the repo
+        uses: actions/checkout@v2
+
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v2-beta
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Get Yarn cache path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - name: Cache Yarn cache and node_modules
+        id: cache-dependencies
+        uses: actions/cache@v2
+        with:
+          path: |
+            ${{ steps.yarn-cache-dir-path.outputs.dir }}
+            node_modules
+          key: ${{ runner.os }}-${{ env.NODE_VERSION }}-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: ${{ runner.os }}-${{ env.NODE_VERSION }}-
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+        if: steps.cache-dependencies.outputs.cache-hit != 'true'
+
+      - name: Test
+        run: yarn test
+
+      - name: Test server
+        run: yarn test-server
+
+      - name: Test WebDAV
+        run: |
+          PORT=6849 node app.js &> /dev/null &
+
+          mkdir -p tmp && cd tmp
+          wget http://www.webdav.org/neon/litmus/litmus-0.13.tar.gz
+          tar -zxf litmus-0.13.tar.gz
+          cd litmus-0.13
+          sed -i -e "s/T(propfind_invalid2),//g" src/props.c
+          ./configure && make
+          make URL=http://127.0.0.1:6489/dav check

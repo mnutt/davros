@@ -18,7 +18,7 @@ export async function makeDirectory(name = generateDirectoryName()) {
 
   await fillIn('input[label="Name"]', name);
   await click('.form-actions button[type=submit]');
-  await click('.reload'); // fake websocket call
+  await reload(); // fake websocket call
 
   return name;
 }
