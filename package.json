@@ -119,5 +119,10 @@
   "volta": {
     "node": "15.4.0",
     "yarn": "1.22.10"
+  },
+  "ember-addon": {
+    "paths": [
+      "lib/testem-server-middleware"
+    ]
   }
 }
