@@ -111,18 +111,16 @@
     "xmldoc": "^1.1.2"
   },
   "engines": {
-    "node": ">= 14"
+    "node": ">= 16"
   },
   "ember": {
     "edition": "octane"
   },
   "volta": {
-    "node": "15.4.0",
+    "node": "16.8.0",
     "yarn": "1.22.10"
   },
   "ember-addon": {
-    "paths": [
-      "lib/testem-server-middleware"
-    ]
+    "paths": ["lib/testem-server-middleware"]
   }
 }
