@@ -45,8 +45,4 @@ module.exports = jsDAV_FSExt_File.extend(Etag, PropHandlers, {
       }
     });
   },
-
-  updateProperties: function(mutations, cb) {
-    cb();
-  }
 });
