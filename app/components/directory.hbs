@@ -1,6 +1,6 @@
 <PhotoSwipe @shareEl={{false}} @items={{this.directoryGalleryItems}} as |photoswipe|>
   <TitleBar>
-    <h1 class="title text-white text-lg flex-1">
+    <h1 class="title text-white text-lg flex-1 truncate">
       Files in
       <PathBreadcrumb @path={{this.model.path}} />
 
@@ -20,20 +20,13 @@
       {{/if}}
 
       <HeaderItem @title="Download (zip)" @icon="file_download" @onClick={{this.downloadDirectory}} />
-
-      {{#if this.canEdit}}
-        <HeaderItem
-          @title="Delete {{if this.isRoot "Everything" "Directory"}}"
-          @icon="delete"
-          @onClick={{toggle this "deleteDialogActive"}} />
-      {{/if}}
     </div>
     <div class="reload" {{on "click" this.reload}}></div>
 
     {{!-- only displayed on mobile --}}
     <div class="compact-actions block sm:hidden">
       <div class="more relative">
-        <BasicDropdown @verticalPosition="below" @horizontalPosition="right" @width={{4}}  as |menu|>
+        <BasicDropdown @verticalPosition="below" @horizontalPosition="right" @width={{6}}  as |menu|>
           <menu.Trigger>
             <button type="button" class="more-button px-2 mt-1">
               <Icon @icon="menu" ariaLabel="Menu"/>
@@ -43,33 +36,31 @@
           <menu.Content @animationEnabled={{false}} class="rounded-md bg-white shadow">
             <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu" {{on "click" menu.actions.close}}>
               {{#if this.canEdit}}
+                <MenuItem {{on "click" this.toggleSelectCheckboxes}}>
+                  <p class="label flex-1 pr-4">Select Files</p>
+                  <Icon @icon="check_circle" />
+                </MenuItem>
+
                 <MenuItem {{on "click" this.chooseUpload}} @id="menu-upload-file">
-                  <p class="label flex-1">Upload</p>
+                  <p class="label flex-1 pr-4">Upload</p>
                   <Icon @icon="file_upload" />
                 </MenuItem>
 
                 <MenuItem {{on "click" (toggle this "newDialogActive")}}>
-                  <p class="label flex-1">New Directory</p>
+                  <p class="label flex-1 pr-4">New Directory</p>
                   <Icon @icon="add_circle_outline" />
                 </MenuItem>
               {{/if}}
 
               <MenuItem {{on  "click" photoswipe.actions.open}}>
-                <p class="label flex-1">View Slideshow</p>
+                <p class="label flex-1 pr-4">View Slideshow</p>
                 <Icon @icon="photo" />
               </MenuItem>
 
               <MenuItem {{on "click" this.downloadDirectory}} @id="menu-download-directory">
-                <p class="label flex-1">Download (zip)</p>
+                <p class="label flex-1 pr-4">Download (zip)</p>
                 <Icon @icon="file_download" />
               </MenuItem>
-
-              {{#if this.canEdit}}
-                <MenuItem @class="danger" {{on "click" (toggle this "deleteDialogActive")}}>
-                  <p class="label flex-1">Delete Directory</p>
-                  <Icon @icon="delete" />
-                </MenuItem>
-              {{/if}}
             </div>
           </menu.Content>
         </BasicDropdown>
@@ -79,53 +70,89 @@
 </PhotoSwipe>
 
 {{#if this.model.sortedFiles}}
-  <table class="file-list w-full {{if this.showExtraFields "" "noExtraFields"}}">
+  <table class="file-list relative w-full {{if this.showExtraFields "" "noExtraFields"}}">
     <thead>
       <tr class="text-left text-sm sm:text-md">
-        <th class="name py-2 pl-6">Name</th>
+        <th class="{{if this.isSelecting "table-cell" "hidden"}} sm:table-cell sticky top-0 bg-white">
+          <label class="px-4 py-3 flex">
+            <input
+              type="checkbox"
+              class="checkbox"
+              indeterminate={{this.someFilesSelected}}
+              checked={{this.allFilesSelected}}
+              {{on "change" this.toggleSelectAll}}
+            />
+          </label>
+        </th>
+        <th class="name py-2 {{if this.isSelecting "pl-0" "pl-6"}} sm:pl-0 sticky top-0 bg-white">
+          {{#if this.selectedFiles.size}}
+            {{this.selectedFiles.size}}
+            selected file{{if (gt this.selectedFiles.size 1) "s"}}:
+
+            {{#if this.canEdit}}
+              <SelectedAction
+                @title="Delete {{this.selectedFiles.size}} items"
+                @icon="delete"
+                @onClick={{toggle this "deleteDialogActive"}} />
+            {{/if}}
+          {{else}}
+            Name
+          {{/if}}
+        </th>
         {{#if this.showExtraFields}}
-        <th class="updated py-2">
-          <a href="#" {{on "click" (toggle this "showExtraFields")}}>
-            <span class="short block sm:hidden pl-2">
-              Upd
-            </span>
-            <span class="long hidden sm:block pl-2">
-              Updated
-            </span>
-          </a>
-        </th>
-        <th class="size py-2 pr-4 text-right">
-          <a href="#" {{on "click" (toggle this "showExtraFields")}}>
-            <span class="short block sm:hidden">
-              Size
-            </span>
-            <span class="long hidden sm:block">
-              Size
-            </span>
-          </a>
-        </th>
+          <th class="updated py-2 sticky top-0 bg-white">
+            <a href="#" {{on "click" (toggle this "showExtraFields")}}>
+              <span class="short block sm:hidden pl-2">
+                Upd
+              </span>
+              <span class="long hidden sm:block pl-2">
+                Updated
+              </span>
+            </a>
+          </th>
+          <th class="size py-2 pr-4 text-right sticky top-0 bg-white">
+            <a href="#" {{on "click" (toggle this "showExtraFields")}}>
+              <span class="short block sm:hidden">
+                Size
+              </span>
+              <span class="long hidden sm:block">
+                Size
+              </span>
+            </a>
+          </th>
         {{else}}
-        <th class="fields pr-4 text-right">
-          <a href="#" {{on "click" (toggle this "showExtraFields")}}>
-            <Icon @icon="chevron_left" />
-          </a>
-        </th>
+          <th class="fields text-right w-8 sticky top-0 bg-white">
+            <a class="align-middle" href="#" {{on "click" (toggle this "showExtraFields")}}>
+              <Icon class="p-2 -my-1" @icon="chevron_left" />
+            </a>
+          </th>
         {{/if}}
       </tr>
     </thead>
 
     <tbody>
       {{#each this.model.sortedFiles as |file|}}
-        <tr class="text-sm md:text-base">
-          <td class="p-2 md:py-3" colspan={{if this.showExtraFields '1' '3'}}>
+        <tr class="text-sm bg-gray-100 sm:text-base {{if (has-item file this.selectedFiles) "selected"}}">
+          <td class="{{if this.isSelecting "table-cell" "hidden"}} sm:table-cell">
+            <label class="p-4 flex">
+              <input
+                type="checkbox"
+                class="checkbox"
+                checked={{has-item file this.selectedFiles}}
+                {{on "change" (fn this.toggleSelect file)}}
+                {{on "click" (fn this.toggleShiftSelect file)}}
+              />
+            </label>
+          </td>
+          <td class="p-2 {{if this.isSelecting "pl-0"}} sm:py-3 sm:pl-0" colspan={{if this.showExtraFields '1' '3'}}>
             <LinkTo @route="file" @model={{file.linkedPath}} class="filename p-2 table table-fixed w-full">
               {{#if file.isDirectory}}
-                <Icon @icon="folder" class="mr-3 ml-4 float-left text-gray-700" />
+                <Icon @icon="folder" class="mr-3 {{if this.isSelecting "ml-0" "ml-4"}} sm:ml-0 float-left text-gray-700" />
               {{else}}
                 {{#if (eq file.type "image")}}
-                  <ImageThumbnail class="mr-3 ml-4 h-full float-left" @original={{file.rawPath}} @timestamp={{file.mtime}} @width={{24}} @height={{24}} @op="fit" />
+                  <ImageThumbnail class="mr-3 {{if this.isSelecting "ml-0" "ml-4"}} sm:ml-0 h-full float-left" @original={{file.rawPath}} @timestamp={{file.mtime}} @width={{24}} @height={{24}} @op="fit" />
                 {{else}}
-                  <Icon @icon={{file.typeIcon}} class="mr-3 ml-4 float-left" />
+                  <Icon @icon={{file.typeIcon}} class="mr-3 {{if this.isSelecting "ml-0" "ml-4"}} sm:ml-0 float-left" />
                 {{/if}}
               {{/if}}
 
@@ -182,13 +209,15 @@
               @active={{this.deleteDialogActive}}
                      @onClose={{fn (mut this.deleteDialogActive) false}}
               as |modalContent|>
-  <DeleteDialog @onDelete={{@onDelete}} @onClose={{modalContent.onClose}}>
+  <DeleteDialog @onDelete={{this.deleteSelected}} @onClose={{modalContent.onClose}}>
     Are you sure you want to delete
-    {{#if this.isRoot}}
-      <b>absolutely everything</b>
-      {{~else~}}
-      this directory
-      {{~/if~}}?
-      It will also be deleted from any synced clients.
+    {{#if (gt this.selectedFiles.size 1)}}
+      {{this.selectedFiles.size}} files?
+    {{else}}
+      this file?
+    {{/if}}
+
+    {{if (gt this.selectedFiles.size 1) "They" "It"}}
+    will also be deleted from any synced clients.
   </DeleteDialog>
 </ModalContent>

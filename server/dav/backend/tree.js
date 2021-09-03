@@ -21,8 +21,9 @@ module.exports = jsDAV_FSExt_Tree.extend({
       return cbfstree(new Exc.Forbidden('You are not allowed to access ' + nicePath));
 
     Fs.stat(realPath, function (err, stat) {
-      if (!Util.empty(err))
+      if (!Util.empty(err)) {
         return cbfstree(new Exc.FileNotFound('File at location ' + nicePath + ' not found'));
+      }
 
       cbfstree(null, stat.isDirectory() ? Directory.new(realPath) : File.new(realPath));
     });

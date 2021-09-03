@@ -6,7 +6,15 @@
 @import 'photoswipe/dist/photoswipe.css';
 
 .file-list tbody tr:nth-child(odd) {
-  @apply bg-gray-100;
+  @apply bg-opacity-20;
+}
+
+.file-list tbody tr.selected {
+  @apply bg-blue-200;
+}
+
+.file-list tbody tr.selected:nth-child(odd) {
+  @apply bg-blue-200 bg-opacity-80;
 }
 
 .file-list .updated .long {
@@ -23,4 +31,8 @@
 
 .file-list th.updated .short {
   padding-left: 0.4rem;
+}
+
+.file-list th {
+  box-shadow: 0 1px 0 rgb(178, 178, 178);
 }

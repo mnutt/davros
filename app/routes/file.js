@@ -48,4 +48,11 @@ export default class FileRoute extends Route {
     const path = params.path || '';
     return File.load(path);
   }
+
+  redirect(model) {
+    const params = this.paramsFor('file');
+    if (model.isDirectory && params.path && !params.path.endsWith('/')) {
+      this.replaceWith('file', model.path + '/');
+    }
+  }
 }

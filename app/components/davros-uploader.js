@@ -10,11 +10,15 @@ export default class DavrosUploader extends Component {
   get uploadLocation() {
     let location = new URL(this.router.currentURL, 'http://localhost').pathname;
 
-    if (location.indexOf('/files') === 0) {
-      // if user is in a directory, upload the files there
-      location = location.replace(/^\/files\//, '');
-      // dirname of current path, so if path is /foo/README, use /foo/
-      location = location.replace(/\/[^/]*$/, '');
+    if (location.startsWith('/files')) {
+      location = location.replace(/^\/files/, '');
+
+      if (!location.endsWith('/')) {
+        // dirname of current path, so if path is /foo/README, use /foo/
+        location = location.replace(/\/[^/]*$/, '');
+      }
+
+      location = location.replace(/^\//, '');
     } else {
       // otherwise, upload files in the root directory
       // (this shouldn't happen anymore)

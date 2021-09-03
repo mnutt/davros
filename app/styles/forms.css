@@ -6,12 +6,6 @@
   @apply outline-none ring;
 }
 
-.toggle-checkbox:checked ~ .toggle-switch {
-  @apply: right-0 border-green-400;
-  right: 0;
-  border-color: #68d391;
-}
-.toggle-checkbox:checked ~ .toggle-label {
-  @apply: bg-green-400;
-  background-color: #68d391;
+.checkbox {
+  @apply rounded border-gray-500 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-offset-0 focus:ring-blue-200 focus:ring-opacity-50;
 }
