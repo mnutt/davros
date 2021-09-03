@@ -18,7 +18,7 @@ export default class DavrosUploader extends Component {
         location = location.replace(/\/[^/]*$/, '');
       }
 
-      location = location.replace(/^\//, '');
+      location = location.replace(/^\//, '').replace(/\/$/, '');
     } else {
       // otherwise, upload files in the root directory
       // (this shouldn't happen anymore)
