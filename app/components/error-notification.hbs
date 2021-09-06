@@ -1,0 +1,9 @@
+{{#if this.errors.error}}
+  <div class="fixed bottom-4 right-0 flex items-center text-white bg-red-500 border-r-4 rounded-l-md border-red-700 py-2 px-3 shadow-lg z-60 ml-1 slide-in-from-right">
+    <button class="p-2 leading-none" type="button" {{on "click" this.hide}}>
+      <Icon @icon="close"/>
+    </button>
+
+    <div class="text-white pb-1 px-1">{{this.errors.error}}</div>
+  </div>
+{{/if}}

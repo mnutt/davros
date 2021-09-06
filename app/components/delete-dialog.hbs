@@ -6,16 +6,37 @@
   </button>
 </div>
 
-<div class="py-4">
-  {{yield}}
-</div>
-
-<form {{on "submit" this.onDelete}}>
-  <div class="form-actions flex">
-    <span class="flex-1"></span>
-    <button type="button" class="pr-4" {{on "click" @onClose}}>Cancel</button>
-    <button type="submit" class="button-danger" disabled={{false}}>
-      Delete
-    </button>
+{{#if this.progressPercent}}
+  <div class="h-full flex flex-col justify-center">
+    <ProgressBar value={{this.progressPercent}} />
+    {{this.progressCount}} / {{this.selectedFiles.size}} files deleted
   </div>
-</form>
+{{else}}
+  <div class="py-4">
+    <div class="max-h-60 border border-gray-500 p-4 text-sm overflow-auto mb-2">
+      {{#each this.selectedFileList as |file|}}
+        <div>{{file.name}}</div>
+      {{/each}}
+    </div>
+
+    Are you sure you want to delete
+    {{#if (gt this.selectedFiles.size 1)}}
+      {{this.selectedFiles.size}} files?
+    {{else}}
+      this file?
+    {{/if}}
+
+    {{if (gt this.selectedFiles.size 1) "They" "It"}}
+    will also be deleted from any synced clients.
+  </div>
+
+  <form {{on "submit" this.onDelete}}>
+    <div class="form-actions flex">
+      <span class="flex-1"></span>
+      <button type="button" class="pr-4" {{on "click" @onClose}}>Cancel</button>
+      <button type="submit" class="button-danger" disabled={{false}}>
+        Delete
+      </button>
+    </div>
+  </form>
+{{/if}}

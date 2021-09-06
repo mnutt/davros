@@ -17,8 +17,8 @@ const propFindQuery = new Blob(
       '    <D:getcontenttype/>',
       '    <D:getcontentlength/>',
       '  </D:prop>',
-      '</D:propfind>'
-    ].join('\n')
+      '</D:propfind>',
+    ].join('\n'),
   ],
   { type: 'application/xml' }
 );
@@ -37,11 +37,11 @@ export default class WebdavClient {
       method: 'PROPFIND',
       headers: {
         'Content-Type': 'application/xml',
-        Depth: '1'
+        Depth: '1',
       },
-      body: propFindQuery
+      body: propFindQuery,
     })
-      .then(function(response) {
+      .then(function (response) {
         if (response.status >= 200 && response.status < 400) {
           return response.text();
         } else {
@@ -52,7 +52,7 @@ export default class WebdavClient {
           }
         }
       })
-      .then(function(raw) {
+      .then(function (raw) {
         const domParser = new DOMParser();
         return domParser.parseFromString(raw, 'application/xml');
       });
@@ -60,14 +60,26 @@ export default class WebdavClient {
 
   remove(path) {
     return fetch(this.fullPath(path), {
-      method: 'DELETE'
+      method: 'DELETE',
+    });
+  }
+
+  move(path, destination) {
+    const { protocol, host } = document.location;
+    const fullDestination = [protocol, '//', host, this.fullPath(destination)].join('');
+
+    return fetch(this.fullPath(path), {
+      method: 'MOVE',
+      headers: {
+        Destination: fullDestination,
+      },
     });
   }
 
   mkcol(path) {
     return fetch(this.fullPath(encodeURIComponent(path)), {
-      method: 'MKCOL'
-    }).catch(function(err) {
+      method: 'MKCOL',
+    }).catch(function (err) {
       // eslint-disable-next-line no-console
       console.error(err);
     });
@@ -76,7 +88,7 @@ export default class WebdavClient {
   async load(path) {
     const xml = await this.propfind(path);
     const responses = [...xml.querySelectorAll('d\\:response, response')];
-    let parsedResponses = responses.map(r => this.parseResponse(r));
+    let parsedResponses = responses.map((r) => this.parseResponse(r));
 
     parsedResponses.sort((a, b) => {
       return a.path.length - b.path.length;
@@ -112,9 +124,9 @@ export default class WebdavClient {
       path,
       isDirectory,
       dimensions,
-      mtime: new Date(props.getlastmodified),
+      mtime: new Date(props.getlastmodified || new Date()),
       size,
-      files
+      files,
     };
   }
 }

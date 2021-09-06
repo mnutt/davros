@@ -17,6 +17,11 @@
   @apply bg-blue-200 bg-opacity-80;
 }
 
+.file-list tbody tr.droppable,
+.file-list tbody tr.droppable:nth-child(odd) {
+  @apply bg-green-300 bg-opacity-100;
+}
+
 .file-list .updated .long {
   min-width: 110px;
 }
@@ -35,4 +40,21 @@
 
 .file-list th {
   box-shadow: 0 1px 0 rgb(178, 178, 178);
+}
+
+.tooltip {
+  @apply z-30;
+}
+
+.slide-in-from-right {
+  animation: 0.2s ease-out 0s 1 slideInFromRight;
+}
+
+@keyframes slideInFromRight {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
 }

@@ -6,12 +6,13 @@ import { tracked } from 'tracked-built-ins';
 const galleryOptions = { hideShare: true };
 
 export default class DirectoryComponent extends FileComponent {
-  @tracked showExtraFields = true;
   @tracked newDialogActive = false;
-  galleryEnabled = false;
-  selectedFiles = tracked(Set);
-  @tracked lastSelectedFile;
+  @tracked moveDialogActive = false;
+  @tracked deleteDialogActive = false;
+  @tracked renameDialogActive = false;
   @tracked isSelecting;
+  @tracked galleryEnabled = false;
+  selectedFiles = tracked(Set);
 
   @service permissions;
   @service publishing;
@@ -34,12 +35,15 @@ export default class DirectoryComponent extends FileComponent {
     return this.model.path === '';
   }
 
-  get allFilesSelected() {
-    return this.selectedFiles.size >= this.model.files.length;
-  }
-
-  get someFilesSelected() {
-    return this.selectedFiles.size > 0 && this.selectedFiles.size < this.model.files.length;
+  @action
+  openDialog(dialog) {
+    if (dialog === 'delete') {
+      this.deleteDialogActive = true;
+    } else if (dialog === 'move') {
+      this.moveDialogActive = true;
+    } else if (dialog === 'rename') {
+      this.renameDialogActive = true;
+    }
   }
 
   @action
@@ -60,63 +64,12 @@ export default class DirectoryComponent extends FileComponent {
   }
 
   @action
-  toggleSelect(file, event) {
-    const { checked } = event.target;
-    checked ? this.selectedFiles.add(file) : this.selectedFiles.delete(file);
-  }
-
-  @action
-  toggleShiftSelect(file, event) {
-    const last = this.lastSelectedFile;
-    this.lastSelectedFile = file;
-    if (!last) {
-      return;
-    }
-
-    if (!event.shiftKey) {
-      return;
-    }
-
-    const { checked } = event.target;
-    const { sortedFiles } = this.model;
-    const lastIndex = sortedFiles.indexOf(last);
-    const thisIndex = sortedFiles.indexOf(file);
-
-    if (lastIndex >= 0 && thisIndex >= 0) {
-      const range = sortedFiles.slice(
-        Math.min(lastIndex, thisIndex),
-        Math.max(lastIndex, thisIndex)
-      );
-
-      for (let file of range) {
-        checked ? this.selectedFiles.add(file) : this.selectedFiles.delete(file);
-      }
-      checked ? this.selectedFiles.add(last) : this.selectedFiles.delete(last);
-    }
-  }
-
-  @action
-  toggleSelectAll(event) {
-    const { checked } = event.target;
-    const { files } = this.model;
-
-    if (checked) {
-      for (let file of files) {
-        this.selectedFiles.add(file);
-      }
-    } else {
-      this.selectedFiles.clear();
-    }
-  }
-
-  @action
-  async deleteSelected() {
-    for (let file of [...this.selectedFiles]) {
-      await file.remove();
-    }
-
-    await this.model.reload();
+  async finishModal() {
     this.selectedFiles.clear();
+    await this.model.reload();
+    this.moveDialogActive = false;
+    this.deleteDialogActive = false;
+    this.renameDialogActive = false;
   }
 
   @action

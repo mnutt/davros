@@ -1,10 +1,10 @@
-import Service from '@ember/service';
+import Service, { inject as service } from '@ember/service';
 import fetch from 'fetch';
 import { tracked } from '@glimmer/tracking';
 
 export default class PublishingService extends Service {
+  @service errors;
   @tracked data = null;
-  @tracked error = null;
 
   constructor() {
     super(...arguments);
@@ -16,15 +16,14 @@ export default class PublishingService extends Service {
     try {
       const response = await fetch('/api/publish/info');
       const result = await response.json();
-      this.update(result, null);
+      this.update(result);
     } catch (error) {
-      this.update(null, error);
+      this.errors.setError(error.message);
     }
   }
 
-  update(data, error) {
+  update(data) {
     this.data = data;
-    this.error = error;
   }
 
   get domain() {

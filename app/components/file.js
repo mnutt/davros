@@ -1,8 +1,9 @@
 import { inject as service } from '@ember/service';
 import Component from '@glimmer/component';
+import { tracked } from 'tracked-built-ins';
 
 export default class FileComponent extends Component {
-  deleteDialogActive = false;
+  @tracked deleteDialogActive = false;
 
   @service permissions;
   @service publishing;

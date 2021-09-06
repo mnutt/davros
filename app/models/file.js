@@ -71,7 +71,7 @@ export default class File {
   }
 
   get sortedFiles() {
-    return this.files.sortBy('isFile', 'name');
+    return this.files; //.sortBy('isFile', 'name');
   }
 
   get lotsOfFiles() {
@@ -130,7 +130,7 @@ export default class File {
   get documentPreviewUrl() {
     const params = new URLSearchParams({
       url: this.rawPath,
-      ts: this.mtime.getTime()
+      ts: this.mtime.getTime(),
     }).toString();
 
     return `/api/preview?${params}`;
@@ -140,11 +140,19 @@ export default class File {
     return client.remove(this.path);
   }
 
+  move(destinationDir) {
+    return client.move(this.path, [destinationDir, this.name].join('/'));
+  }
+
+  rename(newName) {
+    return client.move(this.path, [this.parent, newName].join('/'));
+  }
+
   loadFromResponse(response) {
     Object.assign(this, response);
   }
 
   loadChildren(parsedResponses) {
-    this.files = parsedResponses.map(response => new File(response));
+    this.files = parsedResponses.map((response) => new File(response));
   }
 }

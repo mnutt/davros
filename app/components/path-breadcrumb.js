@@ -1,6 +1,8 @@
 import Component from '@glimmer/component';
 
 export default class PathBreadcrumbComponent extends Component {
+  k() {}
+
   get parts() {
     const pieces = (this.args.path || '').split('/');
     let p = [];

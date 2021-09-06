@@ -97,12 +97,6 @@ exports.getInfo = function (req, res) {
 };
 
 exports.publish = function (req, res, next) {
-  if (isNotSandstorm(req)) {
-    mockDomain = req.query.domain;
-    mockPublishingEnabled = true;
-    return exports.getInfo(req, res, next);
-  }
-
   var fsp = require('fs-promise');
 
   fsp

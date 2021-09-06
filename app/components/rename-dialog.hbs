@@ -1,0 +1,22 @@
+<div class="modal-title flex">
+  <h2 class="text-lg font-bold">Rename file</h2>
+  <span class="flex-1"></span>
+  <button type="button" {{on "click" @onClose}}>
+    <Icon @icon="close"/>
+  </button>
+</div>
+
+<form {{on "submit" this.rename}} {{did-insert this.setInitialName}}>
+  <input name="file-name" type="text" aria-label="name" label="Name" class="form-input my-4" placeholder="Name" value={{this.newName}} {{on "change" this.onChange}} {{on "keyup" this.onChange}} {{did-insert this.focus}} />
+  {{#if this.validationError}}
+    <p class="text-red-500 font-sm" >{{this.validationError}}</p>
+  {{/if}}
+
+  <div class="form-actions flex">
+    <span class="flex-1"></span>
+    <button type="button" class="pr-4" {{on "click" @onClose}}>Cancel</button>
+    <button type="submit" class="button-primary" disabled={{false}}>
+      Rename
+    </button>
+  </div>
+</form>

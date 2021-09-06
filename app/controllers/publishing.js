@@ -6,12 +6,14 @@ import { tracked } from '@glimmer/tracking';
 const apexValidation = [
   {
     message: 'Apex domains (without www) will not work as well',
-    validate: input => !input.match(/^\w+\.\w?\w?\w?\w?$/)
-  }
+    validate: (input) => !input.match(/^\w+\.\w?\w?\w?\w?$/),
+  },
 ];
 
 export default class PublishingController extends Controller {
   @service publishing;
+  @service errors;
+
   @tracked domain = '';
   @tracked validationError = null;
 
@@ -44,10 +46,14 @@ export default class PublishingController extends Controller {
 
     try {
       const response = await fetch(publishUrl, { method: 'POST' });
+      if (response.status > 399) {
+        throw new Error(`Unable to publish (server status code ${response.status})`);
+      }
+
       const result = await response.json();
       this.publishing.update(result);
     } catch (error) {
-      this.publishing.update(null, error);
+      this.errors.setError(error.message);
     }
   }
 
@@ -56,7 +62,7 @@ export default class PublishingController extends Controller {
       await fetch('/api/unpublish', { method: 'POST' });
       this.publishing.update({});
     } catch (error) {
-      this.publishing.update(null, error);
+      this.errors.setError(error.message);
     }
   }
 

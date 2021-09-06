@@ -137,12 +137,12 @@ opt/app
 opt/app/.sandstorm/launcher.sh
 opt/app/CHANGELOG.md
 opt/app/app.js
-opt/app/dist/assets/davros-a3d642c4296b8ad41e7f3b82899ad031.js
-opt/app/dist/assets/davros-f1834f07a67cc176a72437e4b3a8913b.css
+opt/app/dist/assets/davros-38ba06399709e947582205826bac1b21.js
+opt/app/dist/assets/davros-43bbfa8e1b09c1f48d7d505699fda508.css
 opt/app/dist/assets/images/default-skin.svg
+opt/app/dist/assets/vendor-06d38077cbd81f195357ba2fd7adc9e2.js
 opt/app/dist/assets/vendor-5c5c81c369fc387191664156ed87b86e.css
-opt/app/dist/assets/vendor-c68839ebad087b87ab7152667ca7acaf.js
-opt/app/dist/fonts/materialicons/v48/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.woff2
+opt/app/dist/fonts/materialicons/v99/MaterialIcons-Regular.subset.woff2
 opt/app/dist/images/sidebar-logo@2x-9e8f4d5626408b7bef3a1cace7af2f9f.png
 opt/app/dist/index.html
 opt/app/ember-cli-build.js

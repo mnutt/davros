@@ -6,7 +6,6 @@ cd /opt/app
 sudo mkdir -p /var/davros
 sudo chown $USER /var/davros
 mkdir -p /var/davros/data
-mkdir -p $TMPDIR/uploads
 
 if [ ! -d "/opt/app/node_modules" ]; then
     yarn install
