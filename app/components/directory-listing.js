@@ -1,6 +1,7 @@
 import Component from '@glimmer/component';
 import { tracked } from 'tracked-built-ins';
 import { action } from '@ember/object';
+import { inject as service } from '@ember/service';
 
 export default class DirectoryListingComponent extends Component {
   @tracked showExtraFields = true;
@@ -8,6 +9,8 @@ export default class DirectoryListingComponent extends Component {
   @tracked dragOverPath;
   @tracked progressPercent = null;
   @tracked progressCount = null;
+
+  @service errors;
 
   // Default action on link click is to just follow the link
   k() {}
