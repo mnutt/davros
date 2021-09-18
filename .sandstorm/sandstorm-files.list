@@ -137,11 +137,11 @@ opt/app
 opt/app/.sandstorm/launcher.sh
 opt/app/CHANGELOG.md
 opt/app/app.js
-opt/app/dist/assets/davros-38ba06399709e947582205826bac1b21.js
-opt/app/dist/assets/davros-43bbfa8e1b09c1f48d7d505699fda508.css
+opt/app/dist/assets/davros-28d33a9cec43d6ba37f9d73162b1ebe6.js
+opt/app/dist/assets/davros-e3579d1ca661ce3e1221fa7e8148fe94.css
 opt/app/dist/assets/images/default-skin.svg
-opt/app/dist/assets/vendor-06d38077cbd81f195357ba2fd7adc9e2.js
 opt/app/dist/assets/vendor-5c5c81c369fc387191664156ed87b86e.css
+opt/app/dist/assets/vendor-79b51461aa8cefc8cfbdb305b88862d1.js
 opt/app/dist/fonts/materialicons/v99/MaterialIcons-Regular.subset.woff2
 opt/app/dist/images/sidebar-logo@2x-9e8f4d5626408b7bef3a1cace7af2f9f.png
 opt/app/dist/index.html

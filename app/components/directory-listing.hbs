@@ -72,77 +72,82 @@
     </tr>
   </thead>
 
-  <tbody>
+  <tbody
+    {{on "dragstart" this.dragStart}}
+    {{on "dragend" this.dragEnd}}
+    {{on "dragenter" this.dragEnter}}
+    {{on "dragleave" this.dragLeave}}
+  >
     {{#each @model.sortedFiles as |file|}}
-      <tr class="text-sm bg-gray-100 sm:text-base {{if (has-item file this.selectedFiles) "selected"}} {{if (not (matches-filter file @filter)) "opacity-50 select-none"}} {{if (eq this.dragOverPath file.path) "droppable"}}"
-        {{on "dragstart" (fn this.dragStart file)}}
-        {{on "dragend" this.dragEnd}}
-        {{on "dragenter" (fn this.dragEnter file)}}
-        {{on "dragleave" (fn this.dragLeave file)}}
-        draggable={{true}}
-      >
-        {{#if @canSelect}}
-          <td class="{{if @isSelecting "table-cell" "hidden"}} sm:table-cell">
-            <label class="p-4 flex">
-              <input
-                type="checkbox"
-                class="checkbox"
-                checked={{has-item file this.selectedFiles}}
-                {{on "change" (fn this.toggleSelect file)}}
-                {{on "click" (fn this.toggleShiftSelect file)}}
-              />
-            </label>
-          </td>
-        {{/if}}
-        <td class="p-2 {{if @isSelecting "pl-0"}} sm:py-3 sm:pl-0" colspan={{if this.showExtraFields '1' '3'}}>
-          <LinkTo @route="file" @model={{file.linkedPath}} class="filename p-2 table table-fixed w-full" {{on "click" (fn (or @onClick this.k) file)}}>
-            {{#if file.isDirectory}}
-              <Icon @icon="folder" class="mr-3 {{if @isSelecting "ml-0" "ml-4"}} sm:ml-0 float-left text-gray-700" />
-            {{else}}
-              {{#if (eq file.type "image")}}
-                <ImageThumbnail class="mr-3 {{if @isSelecting "ml-0" "ml-4"}} sm:ml-0 h-full float-left" @original={{file.rawPath}} @timestamp={{file.mtime}} @width={{24}} @height={{24}} @op="fit" />
+      {{#let
+           (has-item file this.selectedFiles)
+           (eq this.dragOverPath file.path)
+           (not (matches-filter file @filter))
+           as |selected dropping filteredOut|
+      }}
+        <tr class="text-sm bg-gray-100 sm:text-base {{if selected "selected"}} {{if filteredOut "opacity-50 select-none"}} {{if dropping "droppable"}}"
+          draggable={{selected}}
+          data-droppable="{{file.isDirectory}}"
+          data-file-path={{file.path}}
+        >
+          {{#if @canSelect}}
+            <td class="{{if @isSelecting "table-cell" "hidden"}} sm:table-cell">
+              <label class="p-4 flex">
+                <input
+                  type="checkbox"
+                  class="checkbox"
+                  checked={{selected}}
+                  {{on "change" (fn this.toggleSelect file)}}
+                  {{on "click" (fn this.toggleShiftSelect file)}}
+                />
+              </label>
+            </td>
+          {{/if}}
+          <td class="p-2 {{if @isSelecting "pl-0"}} sm:py-3 sm:pl-0" colspan={{if this.showExtraFields '1' '3'}}>
+            <a href={{href-to "file" file.linkedPath}} draggable={{false}} class="filename p-2 table table-fixed w-full" {{on "click" (fn this.onClick file)}}>
+              {{#if file.isDirectory}}
+                <div class="material-icons mr-3 {{if @isSelecting "ml-0" "ml-4"}} sm:ml-0 float-left text-gray-700">folder</div>
               {{else}}
-                <Icon @icon={{file.typeIcon}} class="mr-3 {{if @isSelecting "ml-0" "ml-4"}} sm:ml-0 float-left" />
-              {{/if}}
-            {{/if}}
-
-            <div class="truncate">{{file.name}}</div>
-          </LinkTo>
-        </td>
-
-        {{#if this.showExtraFields}}
-          <td class="updated p-2" title={{file.mtime}}>
-            <span class="short truncate block sm:hidden">
-              {{#if file.mtime}}
-                {{#if @model.lotsOfFiles}}
-                  {{relative-time file.mtime locale="en-short"}}
+                {{#if (eq file.type "image")}}
+                  <ImageThumbnail class="mr-3 {{if @isSelecting "ml-0" "ml-4"}} sm:ml-0 h-full float-left" @original={{file.rawPath}} @timestamp={{file.mtime}} @width={{24}} @height={{24}} @op="fit" />
                 {{else}}
-                  {{relative-time file.mtime locale="en-short" interval=5000}}
+                  <div class="material-icons mr-3 {{if @isSelecting "ml-0" "ml-4"}} sm:ml-0 float-left">{{file.typeIcon}}</div>
                 {{/if}}
               {{/if}}
-            </span>
 
-            <span class="long truncate hidden sm:block">
+              <div class="truncate">{{file.name}}</div>
+            </a>
+          </td>
+
+          {{#if this.showExtraFields}}
+            <td class="updated p-2" title={{file.mtime}}>
               {{#if file.mtime}}
-                {{#if @model.lotsOfFiles}}
-                  {{relative-time file.mtime locale="en" addSuffix=true}}
-                {{else}}
-                  {{relative-time file.mtime locale="en" interval=5000 addSuffix=true}}
-                {{/if}}
-              {{/if}}
-            </span>
-          </td>
+                <span class="short truncate block sm:hidden">
+                  {{#if @model.lotsOfFiles}}
+                    {{relative-time file.mtime locale="en-short"}}
+                  {{else}}
+                    {{relative-time file.mtime locale="en-short" interval=5000}}
+                  {{/if}}
+                </span>
 
-          <td class="size p-2 pr-4 text-right" title="{{commify file.size}} bytes">
-            <span class="short block sm:hidden">
-              {{filesize file.size}}
-            </span>
-            <span class="long hidden sm:block">
-              {{filesize file.size}}
-            </span>
-          </td>
-        {{/if}}
-      </tr>
+                <span class="long truncate hidden sm:block">
+                  {{#if @model.lotsOfFiles}}
+                    {{relative-time file.mtime locale="en" addSuffix=true}}
+                  {{else}}
+                    {{relative-time file.mtime locale="en" interval=5000 addSuffix=true}}
+                  {{/if}}
+                </span>
+              {{/if}}
+            </td>
+
+            <td class="size p-2 pr-4 text-right" title="{{commify file.size}} bytes">
+              <span>
+                {{filesize file.size}}
+              </span>
+            </td>
+          {{/if}}
+        </tr>
+      {{/let}}
     {{/each}}
   </tbody>
 </table>

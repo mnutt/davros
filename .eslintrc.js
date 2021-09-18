@@ -31,6 +31,7 @@ module.exports = {
         'blueprints/*/index.js',
         'config/**/*.js',
         'lib/*/index.js',
+        'lib/scripts/*.js',
         'app/tailwind/config.js',
         // server/** has its own .eslintrc
       ],

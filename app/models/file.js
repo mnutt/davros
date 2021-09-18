@@ -71,7 +71,7 @@ export default class File {
   }
 
   get sortedFiles() {
-    return this.files; //.sortBy('isFile', 'name');
+    return this.files.sortBy('isFile', 'name');
   }
 
   get lotsOfFiles() {

@@ -1,10 +1,10 @@
 <span class="breadcrumb">
   <span class="full hidden sm:inline">
-    <LinkTo class="underline" @route="files" {{on "click" (fn (or @onClick this.k) "")}}>home</LinkTo>
+    <a href={{href-to "files"}} class="underline" {{on "click" (fn (or @onClick this.k) "")}}>home</a>
 
     {{#each this.parts as |part|}}
       <span class="separator">/</span>
-      <LinkTo class="underline" @route="file" @model={{part.path}} {{on "click" (fn (or @onClick this.k) part.path)}}>{{part.name}}</LinkTo>
+      <a href={{href-to "file" part.path}} class="underline" {{on "click" (fn (or @onClick this.k) part.path)}}>{{part.name}}</a>
     {{/each}}
 
     /
@@ -12,12 +12,12 @@
 
   <span class="parent-only inline sm:hidden">
     {{#if this.isHome}}
-      <LinkTo class="underline" @route="files" {{on "click" (fn (or @onClick this.k) "")}}>home</LinkTo>
+      <a href={{href-to "files"}} class="underline" {{on "click" (fn (or @onClick this.k) "")}}>home</a>
     {{else}}
       {{#if (eq this.parentPath "")}}
-        <LinkTo class="underline" @route="files" {{on "click" (fn (or @onClick this.k) "")}}>...</LinkTo>
+        <a href={{href-to "files"}} class="underline" {{on "click" (fn (or @onClick this.k) "")}}>...</a>
       {{else}}
-        <LinkTo class="underline" @route="file" @model={{this.parentPath}} {{on "click" (fn (or @onClick this.k) this.parentPath)}}>...</LinkTo>
+        <a href={{href-to "file" this.parentPath}} class="underline" {{on "click" (fn (or @onClick this.k) this.parentPath)}}>...</a>
       {{/if}}
     {{/if}}
 

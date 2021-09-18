@@ -30,8 +30,10 @@
   min-width: 35px;
 }
 
-.file-list .size .long {
-  min-width: 60px;
+@media (min-width: 640px) {
+  .file-list .size span {
+    min-width: 60px;
+  }
 }
 
 .file-list th.updated .short {

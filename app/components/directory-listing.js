@@ -24,6 +24,10 @@ export default class DirectoryListingComponent extends Component {
     return this.selectedFiles.size > 0 && this.selectedFiles.size < this.args.model.files.length;
   }
 
+  get onClick() {
+    return this.args.onClick || this.k;
+  }
+
   get selectedFilesDescription() {
     if (this.selectedFiles.size === 0) {
       return '';
@@ -117,18 +121,17 @@ export default class DirectoryListingComponent extends Component {
   }
 
   @action
-  dragStart(file, event) {
-    if (!this.selectedFiles.has(file)) {
+  dragStart(event) {
+    const draggable = event.target && event.target.getAttribute('draggable');
+
+    if (!draggable) {
       event.preventDefault();
       return;
     }
 
-    console.log('DRAG', file.path, event);
-
     const files = [...this.selectedFiles].map((f) => f.path);
 
     const ghost = document.querySelector('.drag-ghost');
-    ghost.classList.remove('hidden');
     ghost.querySelector('span').innerText = this.selectedFilesDescription;
 
     event.dataTransfer.setDragImage(ghost, 0, 0);
@@ -157,21 +160,21 @@ export default class DirectoryListingComponent extends Component {
   }
 
   @action
-  dragEnter(file) {
-    if (!file.isDirectory) {
-      return;
+  dragEnter(event) {
+    const target = event.target && event.target.closest('[data-droppable=true]');
+    if (target) {
+      this.dragOverPath = target.getAttribute('data-file-path');
     }
-
-    this.dragOverPath = file.path;
   }
 
   @action
-  dragLeave(file, event) {
-    if (!file.isDirectory || event.target.contains(event.relatedTarget)) {
+  dragLeave(event) {
+    const target = event.target && event.target.closest('[data-droppable=true]');
+    if (event.target && event.target !== target) {
       return;
     }
 
-    if (this.dragOverPath === file.path) {
+    if (this.dragOverPath === event.target.getAttribute('data-file-path')) {
       this.dragOverPath = null;
     }
   }

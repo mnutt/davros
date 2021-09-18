@@ -15,7 +15,6 @@ export default class PickerComponent extends Component {
   }
 
   async load(path) {
-    console.log('LOADING', path);
     this.path = path;
     this.isLoading = true;
 
