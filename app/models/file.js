@@ -141,6 +141,14 @@ export default class File {
   }
 
   move(destinationDir) {
+    if (this.path === destinationDir) {
+      throw new Error('Cannot copy a directory to itself');
+    }
+
+    if (this.parent === destinationDir) {
+      throw new Error('Cannot move files to their own directory');
+    }
+
     return client.move(this.path, [destinationDir, this.name].join('/'));
   }
 
