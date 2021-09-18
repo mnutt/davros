@@ -124,6 +124,9 @@
     "yarn": "1.22.10"
   },
   "ember-addon": {
-    "paths": ["lib/testem-server-middleware"]
-  }
+    "paths": [
+      "lib/testem-server-middleware"
+    ]
+  },
+  "packageManager": "yarn@3.1.0-rc.5"
 }
