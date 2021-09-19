@@ -59,28 +59,27 @@ function rewriteAlternateDavUrls(req) {
     req.url = url;
   }
 
-  if (req.headers['destination'] && req.headers['x-sandstorm-base-path']) {
-    if (req.headers['destination'].startsWith(req.headers['x-sandstorm-base-path'])) {
-      req.headers['destination'] = req.headers['destination'].slice(
-        req.headers['x-sandstorm-base-path'].length
-      );
-
-      if (!req.headers['destination'].startsWith('/')) {
-        req.headers['destination'] = '/' + req.headers['destination'];
+  if (req.headers['destination']) {
+    if (req.headers['x-sandstorm-base-path']) {
+      if (req.headers['destination'].startsWith(req.headers['x-sandstorm-base-path'])) {
+        req.headers['destination'] = req.headers['destination'].slice(
+          req.headers['x-sandstorm-base-path'].length
+        );
       }
     }
-  }
 
-  if (
-    req.headers['destination'] &&
-    req.headers['destination'].startsWith('/remote.php/dav/files/')
-  ) {
-    const { url } = getRealDavUrl(
-      req.headers['destination'],
-      '/remote.php/dav/files/',
-      exports.base
-    );
-    req.headers['destination'] = url;
+    if (!req.headers['destination'].startsWith('/')) {
+      req.headers['destination'] = '/' + req.headers['destination'];
+    }
+
+    if (req.headers['destination'].startsWith('/remote.php/dav/files/')) {
+      const { url } = getRealDavUrl(
+        req.headers['destination'],
+        '/remote.php/dav/files/',
+        exports.base
+      );
+      req.headers['destination'] = url;
+    }
   }
 }
 
