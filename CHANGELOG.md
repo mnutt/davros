@@ -1,8 +1,25 @@
+# 0.31.0
+
+- Support ownCloud/NextCloud large file upload checksums. Much safer using these clients with Davros now.
+- Multi-file selection:
+  - Delete multiple files at once
+  - Drag-and-drop move support on desktop
+  - Select files and choose destination folder on mobile
+- Fixed a bug where moving a file to itself would delete it
+- Frontend performance enhancements for directories with lots of files
+- Lots of fixes for update notifications to reload directory listing when files change
+- Some internals:
+  - Upgrade node to v16
+  - Upgrade yarn to v3
+  - Github Actions for CI, acceptance tests using real backend
+
 # 0.30.0
+
 - More fixes for URI-encoding paths. You can now name a file or directory `~!@#$&*()=:,;?+'` if you want to.
 - Remove link to oasis.sandstorm.io in sample file (thanks Jim Garrison)
 
 # 0.29.0
+
 - Fix for un-parseable image files not breaking web UI
 - Default webdav endpoint is now `/dav/`: continue support for legacy ownCloud (`/remote.php/webdav/`) and add support for new ownCloud/NextCloud endpoint location. (`/remote.php/dav/files/[user]/`)
 - Support clients that can't specify an endpoint path. Pointing a webdav client at `/` will now return a `/dav/` directory.
