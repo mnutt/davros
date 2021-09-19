@@ -18,7 +18,11 @@ export default class MoveFilesDialogComponent extends Component {
       return '';
     }
 
-    const firstName = this.selectedFiles.values().next().value.name;
+    const { model } = this.args;
+
+    const firstPath = this.selectedFiles.values().next().value;
+    const firstFile = model.files.find((f) => f.path === firstPath);
+    const firstName = firstFile.name;
 
     if (this.selectedFiles.size === 1) {
       return firstName;
@@ -30,13 +34,15 @@ export default class MoveFilesDialogComponent extends Component {
 
   @action
   async moveSelectedFiles(destination) {
-    const files = this.selectedFiles.values();
+    const paths = this.selectedFiles.values();
+    const { sortedFiles } = this.args.model;
 
     this.progressPercent = 0.01;
     this.progressCount = 0;
     const failures = [];
 
-    for (let file of files) {
+    for (let path of paths) {
+      const file = sortedFiles.find((f) => f.path === path);
       const response = await file.move(destination);
       if (!response.ok) {
         failures.push(file.name);

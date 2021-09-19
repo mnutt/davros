@@ -36,24 +36,28 @@ export default class DirectoryListingComponent extends Component {
       return '';
     }
 
-    const firstName = this.selectedFiles.values().next().value.name;
+    const { model } = this.args;
+    const firstPath = this.selectedFiles.values().next().value;
+    const firstFile = model.files.find((f) => f.path === firstPath);
 
     if (this.selectedFiles.size === 1) {
-      return firstName;
+      return firstFile.name;
     } else {
       const others = this.selectedFiles.size > 2 ? 'other files' : 'other file';
-      return [firstName, '&', this.selectedFiles.size - 1, others].join(' ');
+      return [firstFile.name, '&', this.selectedFiles.size - 1, others].join(' ');
     }
   }
 
   async moveSelectedFiles(destination) {
-    const files = this.selectedFiles.values();
+    const paths = this.selectedFiles.values();
+    const { sortedFiles } = this.args.model;
 
     this.progressPercent = 0.01;
     this.progressCount = 0;
     const failures = [];
 
-    for (let file of files) {
+    for (let path of paths) {
+      const file = sortedFiles.find((f) => f.path === path);
       const response = await file.move(destination);
       if (!response.ok) {
         failures.push(file.name);
@@ -76,7 +80,7 @@ export default class DirectoryListingComponent extends Component {
   @action
   toggleSelect(file, event) {
     const { checked } = event.target;
-    checked ? this.selectedFiles.add(file) : this.selectedFiles.delete(file);
+    checked ? this.selectedFiles.add(file.path) : this.selectedFiles.delete(file.path);
   }
 
   @action
@@ -103,9 +107,9 @@ export default class DirectoryListingComponent extends Component {
       );
 
       for (let file of range) {
-        checked ? this.selectedFiles.add(file) : this.selectedFiles.delete(file);
+        checked ? this.selectedFiles.add(file.path) : this.selectedFiles.delete(file.path);
       }
-      checked ? this.selectedFiles.add(last) : this.selectedFiles.delete(last);
+      checked ? this.selectedFiles.add(last.path) : this.selectedFiles.delete(last.path);
     }
   }
 
@@ -116,7 +120,7 @@ export default class DirectoryListingComponent extends Component {
 
     if (checked) {
       for (let file of files) {
-        this.selectedFiles.add(file);
+        this.selectedFiles.add(file.path);
       }
     } else {
       this.selectedFiles.clear();
@@ -132,7 +136,7 @@ export default class DirectoryListingComponent extends Component {
       return;
     }
 
-    const files = [...this.selectedFiles].map((f) => f.path);
+    const files = [...this.selectedFiles];
 
     const ghost = document.querySelector('.drag-ghost');
     ghost.querySelector('span').innerText = this.selectedFilesDescription;

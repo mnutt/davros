@@ -89,6 +89,7 @@
   @onClose={{fn (mut this.moveDialogActive) false}}
   as |modalContent|>
   <MoveFilesDialog
+    @model={{@model}}
     @selectedFiles={{this.selectedFiles}}
     @onClose={{modalContent.onClose}}
     @onFinish={{this.finishModal}}
@@ -107,12 +108,22 @@
   @active={{this.deleteDialogActive}}
   @onClose={{fn (mut this.deleteDialogActive) false}}
   as |modalContent|>
-  <DeleteDialog @onFinish={{this.finishModal}} @onClose={{modalContent.onClose}} @selectedFiles={{this.selectedFiles}} />
+  <DeleteDialog
+    @model={{@model}}
+    @onFinish={{this.finishModal}}
+    @onClose={{modalContent.onClose}}
+    @selectedFiles={{this.selectedFiles}}
+  />
 </ModalContent>
 
 <ModalContent class="rounded-sm shadow-sm border w-11/12"
   @active={{this.renameDialogActive}}
   @onClose={{fn (mut this.renameDialogActive) false}}
   as |modalContent|>
-  <RenameDialog @onFinish={{this.finishModal}} @onClose={{modalContent.onClose}} @selectedFiles={{this.selectedFiles}} />
+  <RenameDialog
+    @model={{@model}}
+    @onFinish={{this.finishModal}}
+    @onClose={{modalContent.onClose}}
+    @selectedFiles={{this.selectedFiles}}
+  />
 </ModalContent>

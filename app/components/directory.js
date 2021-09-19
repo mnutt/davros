@@ -2,6 +2,7 @@ import { inject as service } from '@ember/service';
 import FileComponent from './file';
 import { action } from '@ember/object';
 import { tracked } from 'tracked-built-ins';
+import { registerDestructor } from '@ember/destroyable';
 
 const galleryOptions = { hideShare: true };
 
@@ -16,6 +17,32 @@ export default class DirectoryComponent extends FileComponent {
 
   @service permissions;
   @service publishing;
+
+  constructor(owner, args) {
+    super(owner, args);
+
+    this.setupModelReloadListener();
+  }
+
+  setupModelReloadListener() {
+    const { model } = this.args;
+
+    model.on('reload', this, this.unselectDeletedFiles);
+
+    registerDestructor(this, () => {
+      model.off('reload', this, this.unselectDeletedFiles);
+    });
+  }
+
+  unselectDeletedFiles() {
+    const paths = [...this.selectedFiles];
+
+    for (let path of paths) {
+      if (!this.args.model.files.find((f) => f.path === path)) {
+        this.selectedFiles.delete(path);
+      }
+    }
+  }
 
   get directoryGalleryItems() {
     return this.model.sortedFiles

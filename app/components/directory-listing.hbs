@@ -80,7 +80,7 @@
   >
     {{#each @model.sortedFiles as |file|}}
       {{#let
-           (has-item file this.selectedFiles)
+           (has-item file.path this.selectedFiles)
            (eq this.dragOverPath file.path)
            (not (matches-filter file @filter))
            as |selected dropping filteredOut|

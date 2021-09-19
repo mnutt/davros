@@ -4,6 +4,7 @@ import DavClient from 'davros/lib/webdav';
 import fetch from 'fetch';
 import { tracked } from '@glimmer/tracking';
 import ensureCollectionExists from 'davros/lib/ensure-collection-exists';
+import { addListener, removeListener, sendEvent } from '@ember/object/events';
 
 export const base = '/dav';
 const client = new DavClient(base);
@@ -18,6 +19,14 @@ export default class File {
 
   constructor(attrs = {}) {
     Object.assign(this, attrs);
+  }
+
+  on(name, target, method) {
+    addListener(this, name, target, method);
+  }
+
+  off(name, target, method) {
+    removeListener(this, name, target, method);
   }
 
   static ensureCollectionExists(path) {
@@ -38,6 +47,7 @@ export default class File {
     Object.assign(this, items.shift());
 
     await this.setPropertiesFromItems(items);
+    sendEvent(this, 'reload');
   }
 
   async setPropertiesFromItems(items) {

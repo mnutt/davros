@@ -14,8 +14,8 @@
 {{else}}
   <div class="py-4">
     <div class="max-h-60 border border-gray-500 p-4 text-sm overflow-auto mb-2">
-      {{#each this.selectedFileList as |file|}}
-        <div>{{file.name}}</div>
+      {{#each this.selectedFileList as |name|}}
+        <div>{{name}}</div>
       {{/each}}
     </div>
 

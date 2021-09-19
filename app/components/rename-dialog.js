@@ -20,7 +20,10 @@ export default class DeleteDialog extends Component {
 
   @action
   setInitialName() {
-    this.newName = this.args.selectedFiles.values().next().value.name;
+    const { sortedFiles } = this.args.model;
+    const selectedPath = this.args.selectedFiles.values().next().value;
+    const selectedFile = sortedFiles.find((f) => f.path === selectedPath);
+    this.newName = selectedFile.name;
   }
 
   @action
@@ -46,7 +49,9 @@ export default class DeleteDialog extends Component {
     event.preventDefault();
     event.stopImmediatePropagation();
 
-    const selectedFile = this.args.selectedFiles.values().next().value;
+    const { sortedFiles } = this.args.model;
+    const selectedPath = this.args.selectedFiles.values().next().value;
+    const selectedFile = sortedFiles.find((f) => f.path === selectedPath);
 
     const newName = this.newName;
     try {

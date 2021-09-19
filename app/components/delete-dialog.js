@@ -11,16 +11,20 @@ export default class DeleteDialog extends Component {
   }
 
   get selectedFileList() {
-    return [...this.args.selectedFiles];
+    const { files } = this.args.model;
+    return [...this.args.selectedFiles].map((path) => files.find((f) => f.path === path).name);
   }
 
   @action
   async onDelete() {
-    const selectedFiles = [...this.selectedFiles];
+    const paths = [...this.selectedFiles];
+    const { files } = this.args.model;
     this.progressPercent = 0.01;
-    for (let file of selectedFiles) {
+
+    for (let path of paths) {
+      const file = files.find((f) => f.path === path);
       await file.remove();
-      this.progressPercent = (++this.progressCount / selectedFiles.length) * 100;
+      this.progressPercent = (++this.progressCount / paths.length) * 100;
     }
 
     this.progressPercent = null;

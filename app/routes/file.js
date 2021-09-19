@@ -39,9 +39,8 @@ export default class FileRoute extends Route {
     }
   }
 
-  async reload() {
-    const newModelAttrs = await File.load(this.context && this.context.path);
-    this.context.files = newModelAttrs.files;
+  reload() {
+    return this.context.reload();
   }
 
   model(params) {
