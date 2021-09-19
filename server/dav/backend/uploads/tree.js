@@ -1,6 +1,7 @@
 'use strict';
 
 const Fs = require('fs');
+const Path = require('path');
 const jsDAV_FSExt_Tree = require('jsDAV/lib/DAV/backends/fsext/tree');
 const jsDAV_FSExt_Directory = require('jsDAV/lib/DAV/backends/fsext/directory');
 const jsDAV_FSExt_File = require('jsDAV/lib/DAV/backends/fsext/file');
@@ -8,6 +9,7 @@ const File = require('../file');
 const Directory = require('./directory');
 const Util = require('jsDAV/lib/shared/util');
 const Exc = require('jsDAV/lib/shared/exceptions');
+const apiWs = require('../../../api-ws');
 
 module.exports = jsDAV_FSExt_Tree.extend({
   /**
@@ -54,6 +56,8 @@ module.exports = jsDAV_FSExt_Tree.extend({
     source = this.getRealPath(source);
     destination = this.fileTree.getRealPath(destination.replace(/^dav\//, ''));
 
+    const destinationDir = Path.dirname(this.fileTree.stripSandbox(destination)).replace(/^\//, '');
+
     if (!this.fileTree.insideSandbox(destination)) {
       return cbfsmove(
         new Exc.Forbidden(
@@ -77,6 +81,7 @@ module.exports = jsDAV_FSExt_Tree.extend({
           node = isDir ? jsDAV_FSExt_Directory.new(destination) : jsDAV_FSExt_File.new(destination);
           node.putResourceData(data, function (err) {
             cbfsmove(err, source, destination);
+            apiWs.notify(destinationDir);
           });
         });
       });

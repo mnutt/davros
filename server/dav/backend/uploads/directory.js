@@ -60,7 +60,7 @@ var Directory = (module.exports = DavDirectory.extend({
    * @param {Function} cbfscreatefile
    * @return void
    */
-  createFileStream: async function (handler, name, enc, cbfscreatefile) {
+  createFileStream: function (handler, name, enc, cbfscreatefile) {
     var chunkPath = Path.join(this.path, name);
     var filePath = Path.join(this.path, '.file');
 

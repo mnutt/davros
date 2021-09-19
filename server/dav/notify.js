@@ -26,7 +26,7 @@ module.exports = jsDAV_ServerPlugin.extend({
       if (directory == '.') {
         directory = '/';
       }
-      apiWs.notify(encodeURI(directory).replace(/#/g, '%23').replace(/\?/g, '%3F'));
+      apiWs.notify(directory);
     }
 
     return e.next();
