@@ -14,7 +14,7 @@
   {{/if}}
 
   {{#if queue.size}}
-    <div class="upload-progress absolute w-full inset-x-0 top-0">
+    <div class="upload-progress fixed w-full inset-x-0 top-0 z-10">
       <ProgressBar @value={{queue.progress}} />
     </div>
   {{/if}}
