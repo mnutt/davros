@@ -5884,7 +5884,7 @@ __metadata:
     glob: ^7.1.7
     image-size: ^1.0.0
     imagemagick-stream: ^4.1.1
-    jsDAV: "https://github.com/mnutt/jsDAV.git#ab8bee3"
+    jsDAV: "https://github.com/mnutt/jsDAV.git#f2dc9bdfc4f8802faeaddedb061fd546c540eb2b"
     loader.js: ^4.7.0
     mkdirp: ^1.0.4
     mocha: ^3.4.2
@@ -10477,9 +10477,9 @@ fsevents@~2.3.2:
   languageName: node
   linkType: hard
 
-"jsDAV@https://github.com/mnutt/jsDAV.git#ab8bee3":
+"jsDAV@https://github.com/mnutt/jsDAV.git#f2dc9bdfc4f8802faeaddedb061fd546c540eb2b":
   version: 0.3.4
-  resolution: "jsDAV@https://github.com/mnutt/jsDAV.git#commit=ab8bee334a04760929feb8a2b1162e6d47b7b1f8"
+  resolution: "jsDAV@https://github.com/mnutt/jsDAV.git#commit=f2dc9bdfc4f8802faeaddedb061fd546c540eb2b"
   dependencies:
     asyncjs: "https://github.com/mnutt/async.js.git#ad52b32"
     busboy: 0.3.1
@@ -10508,7 +10508,7 @@ fsevents@~2.3.2:
       optional: true
     redis:
       optional: true
-  checksum: fc2d9f9ffb9690077a47172cd0a9f1ddcbdc5a008399b82c97359dae370cf273f7b979739f2da04b2d1755b4b7b39d47f83bfc33115e1f81ef0e4018886db094
+  checksum: 12a6753f110329534be8e15376e0c0d91994e5caa43a70752640f38ed35fbeb4cea9251e135fc75dd6fca6c81b6ef6246accf385d35627c64346789318eacda6
   languageName: node
   linkType: hard
 
