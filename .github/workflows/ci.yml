@@ -3,7 +3,7 @@ name: CI
 on: [push, pull_request]
 
 env:
-  NODE_VERSION: '15'
+  NODE_VERSION: '16'
 
 jobs:
   lint:
@@ -76,7 +76,7 @@ jobs:
         if: steps.cache-dependencies.outputs.cache-hit != 'true'
 
       - name: Test
-        run: yarn test
+        run: yarn test:ember
 
   test-server:
     name: Server Tests
