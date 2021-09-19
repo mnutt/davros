@@ -148,8 +148,6 @@ export default class DirectoryListingComponent extends Component {
 
   @action
   dragEnd(event) {
-    document.querySelector('.drag-ghost').classList.add('hidden');
-
     const { dataTransfer } = event;
 
     // canceled
@@ -168,20 +166,22 @@ export default class DirectoryListingComponent extends Component {
 
   @action
   dragEnter(event) {
-    const target = event.target && event.target.closest('[data-droppable=true]');
-    if (target) {
-      this.dragOverPath = target.getAttribute('data-file-path');
-    }
-  }
-
-  @action
-  dragLeave(event) {
-    const target = event.target && event.target.closest('[data-droppable=true]');
-    if (event.target && event.target !== target) {
+    if (
+      !(
+        event.dataTransfer &&
+        event.dataTransfer.items.length &&
+        event.dataTransfer.items[0].kind === 'string'
+      )
+    ) {
+      // Right now we only support dragging files within davros into directories. Perhaps
+      // in the future we will support dragging desktop files directly into directories.
       return;
     }
 
-    if (this.dragOverPath === event.target.getAttribute('data-file-path')) {
+    const target = event.target && event.target.closest('[data-droppable=true]');
+    if (target) {
+      this.dragOverPath = target.getAttribute('data-file-path');
+    } else {
       this.dragOverPath = null;
     }
   }
