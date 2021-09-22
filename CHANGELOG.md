@@ -1,3 +1,8 @@
+# 0.31.1
+
+- Fix file view's delete action
+- Fix toggle switches to properly indicate that they are toggling
+
 # 0.31.0
 
 - Support ownCloud/NextCloud large file upload checksums. Much safer using these clients with Davros now.
