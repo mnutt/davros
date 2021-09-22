@@ -9,25 +9,11 @@
 {{#if this.progressPercent}}
   <div class="h-full flex flex-col justify-center">
     <ProgressBar value={{this.progressPercent}} />
-    {{this.progressCount}} / {{this.selectedFiles.size}} files deleted
+    {{this.progressCount}} / {{@selectedFiles.size}} files deleted
   </div>
 {{else}}
   <div class="py-4">
-    <div class="max-h-60 border border-gray-500 p-4 text-sm overflow-auto mb-2">
-      {{#each this.selectedFileList as |name|}}
-        <div>{{name}}</div>
-      {{/each}}
-    </div>
-
-    Are you sure you want to delete
-    {{#if (gt this.selectedFiles.size 1)}}
-      {{this.selectedFiles.size}} files?
-    {{else}}
-      this file?
-    {{/if}}
-
-    {{if (gt this.selectedFiles.size 1) "They" "It"}}
-    will also be deleted from any synced clients.
+    {{yield}}
   </div>
 
   <form {{on "submit" this.onDelete}}>

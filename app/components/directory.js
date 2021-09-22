@@ -44,6 +44,11 @@ export default class DirectoryComponent extends FileComponent {
     }
   }
 
+  get selectedFileList() {
+    const { files } = this.args.model;
+    return [...this.selectedFiles].map((path) => files.find((f) => f.path === path).name);
+  }
+
   get directoryGalleryItems() {
     return this.model.sortedFiles
       .filter((file) => {

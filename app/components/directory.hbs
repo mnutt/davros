@@ -110,10 +110,26 @@
   as |modalContent|>
   <DeleteDialog
     @model={{@model}}
+    @selectedFiles={{this.selectedFiles}}
     @onFinish={{this.finishModal}}
     @onClose={{modalContent.onClose}}
-    @selectedFiles={{this.selectedFiles}}
-  />
+  >
+    <div class="max-h-60 border border-gray-500 p-4 text-sm overflow-auto mb-2">
+      {{#each this.selectedFileList as |name|}}
+        <div>{{name}}</div>
+      {{/each}}
+    </div>
+
+    Are you sure you want to delete
+    {{#if (gt this.selectedFiles.size 1)}}
+      {{this.selectedFiles.size}} files?
+    {{else}}
+      this file?
+    {{/if}}
+
+    {{if (gt this.selectedFiles.size 1) "They" "It"}}
+    will also be deleted from any synced clients.
+  </DeleteDialog>
 </ModalContent>
 
 <ModalContent class="rounded-sm shadow-sm border w-11/12"

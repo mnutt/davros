@@ -83,11 +83,11 @@
   </div>
 </div>
 
-<ModalContent class="rounded-sm shadow-sm border"
+<ModalContent class="rounded-sm shadow-sm border w-11/12"
               @active={{this.deleteDialogActive}}
-              @onClose={{toggle this "deleteDialogActive"}}
+              @onClose={{fn (mut this.deleteDialogActive) false}}
               as |modalContent|>
-  <DeleteDialog @onClose={{modalContent.onClose}} @onDelete={{@onDelete}}>
-    Are you sure you want to delete the file {{this.model.name}}? It will also be deleted from any synced clients.
+  <DeleteDialog @onClose={{modalContent.onClose}} @onDelete={{this.onDelete}}>
+    Are you sure you want to delete the file {{@model.name}}? It will also be deleted from any synced clients.
   </DeleteDialog>
 </ModalContent>

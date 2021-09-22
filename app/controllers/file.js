@@ -10,7 +10,7 @@ export default class FileController extends Controller {
 
   @task({
     maxConcurrency: 5,
-    enqueue: true
+    enqueue: true,
   })
   *uploadFile(file) {
     if (file.blob.type === '') {
@@ -42,25 +42,12 @@ export default class FileController extends Controller {
       return file
         .upload('/api/upload', {
           data: {
-            destination: fullPath
-          }
+            destination: fullPath,
+          },
         })
         .then(() => {
           return this.model.reload();
         });
-    });
-  }
-
-  @action
-  onDelete() {
-    const { model } = this;
-
-    return model.remove().then(() => {
-      if (model.parent) {
-        this.router.transitionTo('file', model.parent);
-      } else {
-        this.router.transitionTo('files');
-      }
     });
   }
 

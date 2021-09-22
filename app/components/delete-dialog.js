@@ -6,18 +6,14 @@ export default class DeleteDialog extends Component {
   @tracked progressPercent = null;
   @tracked progressCount = null;
 
-  get selectedFiles() {
-    return this.args.selectedFiles;
-  }
-
-  get selectedFileList() {
-    const { files } = this.args.model;
-    return [...this.args.selectedFiles].map((path) => files.find((f) => f.path === path).name);
-  }
-
   @action
   async onDelete() {
-    const paths = [...this.selectedFiles];
+    if (this.args.onDelete) {
+      this.progressPercent = 0.01;
+      return this.args.onDelete();
+    }
+
+    const paths = [...this.args.selectedFiles];
     const { files } = this.args.model;
     this.progressPercent = 0.01;
 
