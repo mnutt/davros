@@ -7,39 +7,18 @@ env:
 
 jobs:
   lint:
-    name: Lint
+    name: "Lint"
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v2
-        with:
-          fetch-depth: 1
-
-      - uses: actions/setup-node@v2-beta
+      - name: Install Node
+        uses: actions/setup-node@v2-beta
         with:
           node-version: '${{ env.NODE_VERSION }}'
-
-      - name: Get Yarn cache path
-        id: global-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-
-      - name: Cache Yarn cache and node_modules
-        id: cache-dependencies
-        uses: actions/cache@v2
-        with:
-          path: |
-            ${{ steps.global-cache-dir-path.outputs.dir }}
-            node_modules
-          key: ${{ runner.os }}-${{ matrix.node-version }}-${{
-            hashFiles('**/yarn.lock'
-            ) }}
-          restore-keys: |
-            ${{ runner.os }}-${{ matrix.node-version }}-
-
+          cache: yarn
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
-        if: |
-          steps.cache-dependencies.outputs.cache-hit != 'true'
-
       - name: Lint
         run: yarn lint
 
@@ -91,24 +70,10 @@ jobs:
         uses: actions/setup-node@v2-beta
         with:
           node-version: ${{ env.NODE_VERSION }}
-
-      - name: Get Yarn cache path
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-
-      - name: Cache Yarn cache and node_modules
-        id: cache-dependencies
-        uses: actions/cache@v2
-        with:
-          path: |
-            ${{ steps.yarn-cache-dir-path.outputs.dir }}
-            node_modules
-          key: ${{ runner.os }}-${{ env.NODE_VERSION }}-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: ${{ runner.os }}-${{ env.NODE_VERSION }}-
+          cache: yarn
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
-        if: steps.cache-dependencies.outputs.cache-hit != 'true'
 
       - name: Cache litmus
         id: cache-litmus
