@@ -1,5 +1,5 @@
 import { bind } from '@ember/runloop';
-import FileDropzone from 'ember-file-upload/components/file-dropzone/component';
+import FileDropzone from 'ember-file-upload/components/file-dropzone';
 import DragListener from 'ember-file-upload/system/drag-listener';
 import { action } from '@ember/object';
 
@@ -8,7 +8,7 @@ const dragListener = new DragListener();
 export default class DavrosUploader extends FileDropzone {
   @action
   addBodyEventListeners() {
-    dragListener.addEventListeners('body', {
+    dragListener.addEventListeners(document.body, {
       dragenter: bind(this, 'didEnterDropzone'),
       dragleave: bind(this, 'didLeaveDropzone'),
       dragover: bind(this, 'didDragOver'),
@@ -18,6 +18,6 @@ export default class DavrosUploader extends FileDropzone {
 
   @action
   removeBodyEventListeners() {
-    dragListener.removeEventListeners('body');
+    dragListener.removeEventListeners(document.body);
   }
 }
