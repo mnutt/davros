@@ -6,6 +6,7 @@ import { inject as service } from '@ember/service';
 export default class DeleteDialog extends Component {
   @tracked newName = 'new-file';
   @tracked validationError = null;
+  @tracked warning = null;
 
   @service errors;
 
@@ -41,6 +42,12 @@ export default class DeleteDialog extends Component {
     } else {
       this.validationError = null;
       this.newName = value;
+    }
+    if (targetExists(value)) {
+      this.warning = "File name already exists. Warning! This will overwrite!";
+      return;
+    } else {
+      this.warning = null;
     }
   }
 

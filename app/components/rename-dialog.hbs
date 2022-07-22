@@ -11,11 +11,14 @@
   {{#if this.validationError}}
     <p class="text-red-500 font-sm" >{{this.validationError}}</p>
   {{/if}}
+  {{#if this.warning}}
+    <p class="text-blue-500 font-sm" >{{this.warning}}</p>
+  {{/if}}
 
   <div class="form-actions flex">
     <span class="flex-1"></span>
     <button type="button" class="pr-4" {{on "click" @onClose}}>Cancel</button>
-    <button type="submit" class="button-primary" disabled={{false}}>
+    <button type="submit" class="button-primary" disabled={{this.validationError}}>
       Rename
     </button>
   </div>
