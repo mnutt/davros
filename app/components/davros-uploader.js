@@ -46,7 +46,7 @@ export default class DavrosUploader extends Component {
 
     var fullPath = ['/', this.uploadLocation, path].join('');
 
-    yield File.ensureCollectionExists(fullPath).then(() => {
+    yield File.ensureCollectionExists(decodeURI(fullPath)).then(() => {
       return file.upload('/api/upload', {
         data: {
           destination: fullPath,
