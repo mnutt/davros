@@ -20,8 +20,9 @@ end
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Base on the Sandstorm snapshots of the official Debian 9 (stretch) box with vboxsf support.
-  config.vm.box = "debian/contrib-stretch64"
+  config.vm.box = "debian/bullseye64"
   config.vm.post_up_message = "Your virtual server is running at http://local.sandstorm.io:6090."
+
 
 
   if Vagrant.has_plugin?("vagrant-vbguest") then

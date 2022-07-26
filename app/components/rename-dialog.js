@@ -4,8 +4,10 @@ import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
 
 export default class DeleteDialog extends Component {
+  oldName = ""
   @tracked newName = 'new-file';
   @tracked validationError = null;
+  @tracked warning = null;
 
   @service errors;
 
@@ -24,6 +26,7 @@ export default class DeleteDialog extends Component {
     const selectedPath = this.args.selectedFiles.values().next().value;
     const selectedFile = sortedFiles.find((f) => f.path === selectedPath);
     this.newName = selectedFile.name;
+    this.oldName = selectedFile.name
   }
 
   @action
@@ -35,13 +38,22 @@ export default class DeleteDialog extends Component {
   onChange(event) {
     const { value } = event.target;
 
-    if (!this.nameValidation[0].validate(value)) {
+    if (value != this.oldName && !this.nameValidation[0].validate(value)) {
       this.validationError = this.nameValidation[0].message;
-      return;
     } else {
       this.validationError = null;
       this.newName = value;
     }
+    if (value && value != this.oldName && this.targetExists(value)) {
+      this.warning = `Warning: File already exists. This will overwrite ${this.newName}!`;
+    } else {
+      this.warning = null;
+    }
+  }
+
+  targetExists(name) {
+    const { sortedFiles } = this.args.model;
+    return sortedFiles.find((f) => f.name === this.newName);
   }
 
   @action

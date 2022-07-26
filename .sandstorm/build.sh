@@ -13,3 +13,6 @@ fi
 if [ ! -d "/opt/app/dist" ]; then
     ./node_modules/.bin/ember build
 fi
+if [ ! -d "/opt/app/output" ]; then
+    yarn build-server
+fi
