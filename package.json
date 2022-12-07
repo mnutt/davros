@@ -36,7 +36,7 @@
     "concat-files": "^0.1.1",
     "dirStat": "0.0.2",
     "duplexify": "^3.7.1",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "fs-extra": "^10.0.0",
     "fs-promise": "^2.0.3",
     "image-size": "^1.0.0",
