@@ -42,12 +42,11 @@
     "image-size": "^1.0.0",
     "imagemagick-stream": "^4.1.1",
     "jsDAV": "https://github.com/mnutt/jsDAV.git#5dc07f7f47134bf51469306aa0af283e5e438590",
-    "mkdirp": "^1.0.4",
     "morgan": "^1.10.0",
-    "multiparty": "^4.2.2",
-    "sharp": "^0.28.3",
-    "walker": "^1.0.7",
-    "ws": "^8.1.0"
+    "multiparty": "^4.2.3",
+    "sharp": "^0.34.5",
+    "walker": "^1.0.8",
+    "ws": "^8.18.1"
   },
   "devDependencies": {
     "@ember/optional-features": "^2.0.0",
@@ -120,13 +119,12 @@
     "edition": "octane"
   },
   "volta": {
-    "node": "16.8.0",
-    "yarn": "1.22.10"
+    "node": "24.13.0"
   },
   "ember-addon": {
     "paths": [
       "lib/testem-server-middleware"
     ]
   },
-  "packageManager": "yarn@3.1.0-rc.5"
+  "packageManager": "yarn@4.12.0"
 }
