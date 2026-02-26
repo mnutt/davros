@@ -1,13 +1,27 @@
 const unoconv = require('../unoconv');
 const FileCache = require('../file-cache');
+const { URL } = require('url');
 
 module.exports = function (davServer) {
   return async function (req, res, next) {
     let converter = unoconv('unoconv');
+    let queryParams;
 
-    let queryParams = new URL(req.url, true).searchParams;
+    try {
+      queryParams = new URL(req.url, 'http://dummy').searchParams;
+    } catch (err) {
+      res.status(400).send('Invalid preview request URL');
+      return;
+    }
+
     let fileUrl = queryParams.get('url');
     let timestamp = queryParams.get('ts');
+
+    if (!fileUrl) {
+      res.status(400).send('Missing file URL');
+      return;
+    }
+
     let cache = new FileCache(fileUrl, timestamp);
 
     const cached = await cache.get();

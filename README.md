@@ -51,16 +51,14 @@ for you.
 
 Releasing an app is a little bit convoluted. This assumes you are on a non-linux machine, running sandstorm via vagrant-spk. On linux, you might be able to get away with skipping step 1.
 
-1. `vagrant-spk vm ssh` then `cd /opt/app && rm -rf node_modules/sharp && yarn` -- this is because the `sharp` module has native components that need to be built on linux
-2. Edit `.sandstorm/sandstorm-pkgdef.capnp` and update `appVersion` and `appMarketingVersion`. Bump major version for major breaking changes, minor version for significant new features, and patch version for tiny features and bugfixes.
-3. Edit `CHANGELOG.md` and add a section with your new version.
-4. Run `yarn build` to build the UI.
-5. Run `yarn build-server` to build the backend.
-6. Run `vagrant-spk dev` and navigate around the app testing various functionality. This is generally good to do, but when you exit, this will also update `.sandstorm/sandstorm-files.list` with any new files.
-7. Run `vagrant-spk pack build/[VERSION].spk` (replacing `[VERSION]` with the version you chose in step 2)
-8. On a sandstorm instance, upload the packed app file and install it. Test it to ensure everything works properly and that all files were included.
-9. Commit any uncommitted changes and tag them `v[VERSION]`.
-10. Run `vagrant-spk publish build/[VERSION].spk`
+1. Edit `.sandstorm/sandstorm-pkgdef.capnp` and update `appVersion` and `appMarketingVersion`. Bump major version for major breaking changes, minor version for significant new features, and patch version for tiny features and bugfixes.
+2. Edit `CHANGELOG.md` and add a section with your new version.
+3. Run `yarn build` to build the UI.
+4. Run `vagrant-spk dev` and navigate around the app testing various functionality. This is generally good to do, but when you exit, this will also update `.sandstorm/sandstorm-files.list` with any new files.
+5. Run `vagrant-spk pack build/[VERSION].spk` (replacing `[VERSION]` with the version you chose in step 2)
+6. On a sandstorm instance, upload the packed app file and install it. Test it to ensure everything works properly and that all files were included.
+7. Commit any uncommitted changes and tag them `v[VERSION]`.
+8. Run `vagrant-spk publish build/[VERSION].spk`
 
 ### Acknowledgements
 

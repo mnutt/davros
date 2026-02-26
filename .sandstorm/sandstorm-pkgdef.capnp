@@ -98,7 +98,7 @@ const pkgdef :Spk.PackageDefinition = (
         sourcePath = "/opt/app/.sandstorm/fake/etc-passwd" ),
       # end fake out libreoffice
       ( sourcePath = "/",    # Then search the system root directory.
-        hidePaths = [ "home", "proc", "sys",
+        hidePaths = [ "home", "proc", "sys", "run",
                       "etc/passwd", "etc/hosts", "etc/host.conf",
                       "etc/nsswitch.conf", "etc/resolv.conf" ]
         # You probably don't want the app pulling files from these places,

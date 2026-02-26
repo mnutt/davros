@@ -104,4 +104,4 @@ jobs:
 
       - name: Test server
         if: always()
-        run: yarn test-server
+        run: yarn test:server
