@@ -11,7 +11,7 @@
     "test": "tests"
   },
   "scripts": {
-    "build": "ember build --environment=production",
+    "build": "node -r ./scripts/node24-compat.cjs ./node_modules/.bin/ember build --environment=production",
     "build:server": "node scripts/build-server.mjs",
     "lint": "npm-run-all --aggregate-output --continue-on-error --parallel \"lint:!(fix)\"",
     "lint:fix": "npm-run-all --aggregate-output --continue-on-error --parallel lint:*:fix",
@@ -20,9 +20,9 @@
     "lint:js": "eslint . --cache",
     "lint:js:fix": "eslint . --fix",
     "start": "node app.js",
-    "dev": "ember server",
+    "dev": "node -r ./scripts/node24-compat.cjs ./node_modules/.bin/ember server",
     "test": "npm-run-all lint test:*",
-    "test:ember": "ember test",
+    "test:ember": "node -r ./scripts/node24-compat.cjs ./node_modules/.bin/ember test",
     "test:server": "node_modules/.bin/mocha server/tests/*.js"
   },
   "dependencies": {
