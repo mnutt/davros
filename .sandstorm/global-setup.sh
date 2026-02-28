@@ -13,12 +13,12 @@ echo localhost > /etc/hostname
 hostname localhost
 
 # Grub updates don't silent install well
-apt-mark hold grub-pc
+apt-mark hold grub-pc || true
 apt-get update
 apt-get upgrade -y
 
-# Install curl that is needed below.
-apt-get install -y curl
+# Install curl needed below, and gnupg for package signing
+apt-get install -y curl gnupg netcat-openbsd
 
 # The following line copies stderr through stderr to cat without accidentally leaving it in the
 # output file. Be careful when changing. See: https://github.com/sandstorm-io/vagrant-spk/pull/159
@@ -37,7 +37,7 @@ if [ ! -e /opt/sandstorm/latest/sandstorm ] ; then
     bash /host-dot-sandstorm/caches/install.sh -d -e -p 6090 "/host-dot-sandstorm/caches/$SANDSTORM_PACKAGE" >/dev/null
     echo "...done."
 fi
-modprobe ip_tables
+modprobe ip_tables || true
 # Make the vagrant user part of the sandstorm group so that commands like
 # `spk dev` work.
 usermod -a -G 'sandstorm' 'vagrant'
@@ -45,10 +45,14 @@ usermod -a -G 'sandstorm' 'vagrant'
 sudo sed --in-place='' \
         --expression='s/^BIND_IP=.*/BIND_IP=0.0.0.0/' \
         /opt/sandstorm/sandstorm.conf
+
+# Force vagrant-spk to use the strict CSP, see sandstorm#3424 for details.
+echo 'ALLOW_LEGACY_RELAXED_CSP=false' >> /opt/sandstorm/sandstorm.conf
+
 sudo service sandstorm restart
 # Enable apt-cacher-ng proxy to make things faster if one appears to be running on the gateway IP
-GATEWAY_IP=$(ip route  | grep ^default  | cut -d ' ' -f 3)
-if nc -z "$GATEWAY_IP" 3142 ; then
+GATEWAY_IP=$(ip route  | grep ^default  | cut -d ' ' -f 3) || true
+if [ -n "$GATEWAY_IP" ] && nc -z "$GATEWAY_IP" 3142 2>/dev/null; then
     echo "Acquire::http::Proxy \"http://$GATEWAY_IP:3142\";" > /etc/apt/apt.conf.d/80httpproxy
 fi
 # Configure apt to retry fetching things that fail to download.
