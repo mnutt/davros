@@ -1,4 +1,5 @@
 const exec = require('child-process-promise').exec;
+const fs = require('node:fs/promises');
 const path = require('path');
 const { URL } = require('url');
 
@@ -27,12 +28,11 @@ exports.unpublish = function (req, res) {
     return;
   }
 
-  var fsp = require('fs-promise');
-  fsp
+  fs
     .unlink(domainFilePath)
     .catch(() => {})
     .then(() => {
-      return fsp.unlink(destination);
+      return fs.unlink(destination);
     })
     .then(() => {
       res.json({ success: true });
@@ -58,9 +58,8 @@ exports.getInfo = function (req, res) {
     return;
   }
 
-  var fsp = require('fs-promise');
   let domain;
-  fsp
+  fs
     .readFile(domainFilePath, 'utf-8')
     .then((domainData) => {
       domain = domainData;
@@ -69,7 +68,7 @@ exports.getInfo = function (req, res) {
       /* ignore error */
     })
     .then(() => {
-      return fsp.stat(destination).catch(() => {});
+      return fs.stat(destination).catch(() => {});
     })
     .then((stat) => {
       if (stat) {
@@ -97,18 +96,16 @@ exports.getInfo = function (req, res) {
 };
 
 exports.publish = function (req, res, next) {
-  var fsp = require('fs-promise');
-
-  fsp
+  fs
     .unlink(destination)
     .catch(() => {})
     .then(() => {
-      return fsp.symlink(source, destination);
+      return fs.symlink(source, destination);
     })
     .then(() => {
       const { domain } = req.query;
       if (domain) {
-        return fsp.writeFile(domainFilePath, domain);
+        return fs.writeFile(domainFilePath, domain);
       }
     })
     .then(() => {

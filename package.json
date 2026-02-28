@@ -11,7 +11,7 @@
     "test": "tests"
   },
   "scripts": {
-    "build": "node -r ./scripts/node24-compat.cjs ./node_modules/.bin/ember build --environment=production",
+    "build": "BROWSERSLIST_IGNORE_OLD_DATA=1 node -r ./scripts/node24-compat.cjs ./node_modules/.bin/ember build --environment=production",
     "build:server": "node scripts/build-server.mjs",
     "lint": "npm-run-all --aggregate-output --continue-on-error --parallel \"lint:!(fix)\"",
     "lint:fix": "npm-run-all --aggregate-output --continue-on-error --parallel lint:*:fix",
@@ -38,7 +38,6 @@
     "duplexify": "^3.7.1",
     "express": "^4.17.1",
     "fs-extra": "^10.0.0",
-    "fs-promise": "^2.0.3",
     "image-size": "^1.0.0",
     "imagemagick-stream": "^4.1.1",
     "jsDAV": "https://github.com/mnutt/jsDAV.git#5dc07f7f47134bf51469306aa0af283e5e438590",

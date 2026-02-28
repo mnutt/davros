@@ -3394,13 +3394,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"any-promise@npm:^1.0.0, any-promise@npm:^1.3.0":
-  version: 1.3.0
-  resolution: "any-promise@npm:1.3.0"
-  checksum: 10/6737469ba353b5becf29e4dc3680736b9caa06d300bda6548812a8fee63ae7d336d756f88572fa6b5219aed36698d808fa55f62af3e7e6845c7a1dc77d240edb
-  languageName: node
-  linkType: hard
-
 "anymatch@npm:^2.0.0":
   version: 2.0.0
   resolution: "anymatch@npm:2.0.0"
@@ -6498,7 +6491,6 @@ __metadata:
     eslint-plugin-qunit: "npm:^7.2.0"
     express: "npm:^4.17.1"
     fs-extra: "npm:^10.0.0"
-    fs-promise: "npm:^2.0.3"
     glob: "npm:^7.2.0"
     image-size: "npm:^1.0.0"
     imagemagick-stream: "npm:^4.1.1"
@@ -9447,16 +9439,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fs-extra@npm:^2.0.0":
-  version: 2.1.2
-  resolution: "fs-extra@npm:2.1.2"
-  dependencies:
-    graceful-fs: "npm:^4.1.2"
-    jsonfile: "npm:^2.1.0"
-  checksum: 10/2cd92acba96fc2a180b7fc9d7966765d3eb4dfe8b52c112da62d421b40d07554e814ead8364f7be002449bfecb2180ec9ee37f85c4eee28e5281c7969c5cd059
-  languageName: node
-  linkType: hard
-
 "fs-extra@npm:^4.0.2, fs-extra@npm:^4.0.3":
   version: 4.0.3
   resolution: "fs-extra@npm:4.0.3"
@@ -9543,18 +9525,6 @@ __metadata:
   dependencies:
     minipass: "npm:^3.0.0"
   checksum: 10/03191781e94bc9a54bd376d3146f90fe8e082627c502185dbf7b9b3032f66b0b142c1115f3b2cc5936575fc1b44845ce903dd4c21bec2a8d69f3bd56f9cee9ec
-  languageName: node
-  linkType: hard
-
-"fs-promise@npm:^2.0.3":
-  version: 2.0.3
-  resolution: "fs-promise@npm:2.0.3"
-  dependencies:
-    any-promise: "npm:^1.3.0"
-    fs-extra: "npm:^2.0.0"
-    mz: "npm:^2.6.0"
-    thenify-all: "npm:^1.6.0"
-  checksum: 10/7d70d3f9e5bbff0891f6afe00e51ef57a93f04b7a82d50e73643abca288b88fcc75c1388b67c6f1f0e8b38b25d3792fdcb6bd3ce910b5b97e16682bea0d3d7dd
   languageName: node
   linkType: hard
 
@@ -12873,17 +12843,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mz@npm:^2.6.0":
-  version: 2.7.0
-  resolution: "mz@npm:2.7.0"
-  dependencies:
-    any-promise: "npm:^1.0.0"
-    object-assign: "npm:^4.0.1"
-    thenify-all: "npm:^1.0.0"
-  checksum: 10/8427de0ece99a07e9faed3c0c6778820d7543e3776f9a84d22cf0ec0a8eb65f6e9aee9c9d353ff9a105ff62d33a9463c6ca638974cc652ee8140cd1e35951c87
-  languageName: node
-  linkType: hard
-
 "nan@npm:^2.12.1":
   version: 2.15.0
   resolution: "nan@npm:2.15.0"
@@ -13243,7 +13202,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"object-assign@npm:4.1.1, object-assign@npm:^4, object-assign@npm:^4.0.1, object-assign@npm:^4.1.0, object-assign@npm:^4.1.1":
+"object-assign@npm:4.1.1, object-assign@npm:^4, object-assign@npm:^4.1.0, object-assign@npm:^4.1.1":
   version: 4.1.1
   resolution: "object-assign@npm:4.1.1"
   checksum: 10/fcc6e4ea8c7fe48abfbb552578b1c53e0d194086e2e6bbbf59e0a536381a292f39943c6e9628af05b5528aa5e3318bb30d6b2e53cadaf5b8fe9e12c4b69af23f
@@ -16738,24 +16697,6 @@ __metadata:
   version: 2.6.0
   resolution: "textextensions@npm:2.6.0"
   checksum: 10/7d6d718716789b9c157b594ae48cad76e5f87722f7a1fa57be7256543d13d268f02976487afc3dcd2cf011c5abc3b67c86f448e218cd03f7ca3c8a61bd80b2bf
-  languageName: node
-  linkType: hard
-
-"thenify-all@npm:^1.0.0, thenify-all@npm:^1.6.0":
-  version: 1.6.0
-  resolution: "thenify-all@npm:1.6.0"
-  dependencies:
-    thenify: "npm:>= 3.1.0 < 4"
-  checksum: 10/dba7cc8a23a154cdcb6acb7f51d61511c37a6b077ec5ab5da6e8b874272015937788402fd271fdfc5f187f8cb0948e38d0a42dcc89d554d731652ab458f5343e
-  languageName: node
-  linkType: hard
-
-"thenify@npm:>= 3.1.0 < 4":
-  version: 3.3.1
-  resolution: "thenify@npm:3.3.1"
-  dependencies:
-    any-promise: "npm:^1.0.0"
-  checksum: 10/486e1283a867440a904e36741ff1a177faa827cf94d69506f7e3ae4187b9afdf9ec368b3d8da225c192bfe2eb943f3f0080594156bf39f21b57cd1411e2e7f6d
   languageName: node
   linkType: hard
 
