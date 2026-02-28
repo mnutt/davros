@@ -83,20 +83,6 @@ const pkgdef :Spk.PackageDefinition = (
     # here are only to tell it where to find files that the app wants.
     searchPath = [
       ( sourcePath = "." ),  # Search this directory first.
-      # fake out libreoffice
-      ( packagePath = "proc/version",
-        sourcePath = "/opt/app/.sandstorm/fake/proc-version" ),
-      ( packagePath = "proc/mounts",
-        sourcePath = "/opt/app/.sandstorm/fake/proc-mounts" ),
-      ( packagePath = "proc/filesystems",
-        sourcePath = "/opt/app/.sandstorm/fake/proc-filesystems" ),
-      ( packagePath = "proc/meminfo",
-        sourcePath = "/opt/app/.sandstorm/fake/proc-meminfo" ),
-      ( packagePath = "proc/self/exe",
-        sourcePath = "/opt/app/.sandstorm/fake/proc-self-exe" ),
-      ( packagePath = "etc/passwd",
-        sourcePath = "/opt/app/.sandstorm/fake/etc-passwd" ),
-      # end fake out libreoffice
       ( sourcePath = "/",    # Then search the system root directory.
         hidePaths = [ "home", "proc", "sys", "run",
                       "etc/passwd", "etc/hosts", "etc/host.conf",
@@ -117,9 +103,6 @@ const pkgdef :Spk.PackageDefinition = (
     "opt/app/dist", # css/js files change due to fingerprinting
     "opt/app/server",
     "opt/app/sample-files",
-    # libreoffice stats() some files without reading them
-    "usr/lib/libreoffice/presets/config/autotbl.fmt",
-    "usr/lib/libreoffice/program",
     "usr/lib/python3.11", # pull in the whole Python 3 runtime
     "usr/lib/python3", # pull in any Debian pure-Python packages
     ],
@@ -158,6 +141,5 @@ const myCommand :Spk.Manifest.Command = (
     (key = "TEMP_STORAGE_PATH", value = "/var/davros/tmp"),
     (key = "CONFIG_PATH", value = "/var/davros/config"),
     (key = "TMPDIR", value = "/var/davros/tmp"),
-    (key = "UserInstallation", value = "file:///var/libreoffice/config"),
   ]
 );
