@@ -9,7 +9,7 @@
 {{#if this.progressPercent}}
   <div class="h-full flex flex-col justify-center">
     <ProgressBar value={{this.progressPercent}} />
-    {{this.progressCount}} / {{@selectedFiles.size}} files deleted
+    {{this.progressCount}} / {{this.totalCount}} files deleted
   </div>
 {{else}}
   <div class="py-4">

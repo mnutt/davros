@@ -24,6 +24,7 @@ export default class File {
   @tracked previewBlobUrl = null;
   @tracked previewNeedsCapability = false;
   @tracked previewPowerboxQueryDescriptor = null;
+  _reloadRequestId = 0;
 
   constructor(attrs = {}) {
     Object.assign(this, attrs);
@@ -51,10 +52,21 @@ export default class File {
   }
 
   async reload() {
+    const requestId = ++this._reloadRequestId;
     const items = await client.load(this.path);
+
+    if (requestId !== this._reloadRequestId) {
+      return;
+    }
+
     Object.assign(this, items.shift());
 
     await this.setPropertiesFromItems(items);
+
+    if (requestId !== this._reloadRequestId) {
+      return;
+    }
+
     sendEvent(this, 'reload');
   }
 
