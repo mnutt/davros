@@ -263,13 +263,15 @@ function createPowerboxSession(options) {
         throw new Error(`Missing ${capabilityLabel}`);
       }
 
+      const { endpoint, ...bridgeOptions } = requestOptions;
       const headers = {
         authorization: `Bearer ${capability}`,
-        ...(requestOptions.headers || {}),
+        ...(bridgeOptions.headers || {}),
       };
+      const normalizedEndpoint = endpoint ? `/${String(endpoint).replace(/^\/+/, '')}` : '';
 
-      return requestBridge(bridgeUrl, {
-        ...requestOptions,
+      return requestBridge(`${bridgeUrl}${normalizedEndpoint}`, {
+        ...bridgeOptions,
         headers,
       });
     },

@@ -17,6 +17,7 @@ async function convertOfficeToPdf(input, filename, cap) {
   const source = Buffer.isBuffer(input) ? Readable.from([input]) : input;
 
   const conversionResponse = await officePreviewSession.postWithCapability(cap, {
+    endpoint: 'preview',
     method: 'POST',
     headers: {
       'content-type': 'application/octet-stream',
@@ -48,10 +49,23 @@ function claimRoute() {
   };
 }
 
+function unlinkRoute() {
+  return async function (_req, res) {
+    try {
+      await officePreviewSession.clearCapability();
+      res.status(204).end();
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Failed to unlink office preview capability' });
+    }
+  };
+}
+
 module.exports = {
   clearCapability: officePreviewSession.clearCapability,
   claimRoute,
   convertOfficeToPdf,
   getCapability: officePreviewSession.getCapability,
   getPowerboxQueryDescriptor: officePreviewSession.getPowerboxQueryDescriptor,
+  unlinkRoute,
 };

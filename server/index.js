@@ -45,6 +45,7 @@ module.exports = function (app, options) {
   app.use('/api/upload', fileUpload(davServer));
   app.use('/api/thumbnail', thumbnail(davServer));
   app.post('/api/powerbox/office-preview/claim', express.text({ type: '*/*' }), powerboxOfficePreview.claimRoute());
+  app.post('/api/powerbox/office-preview/unlink', powerboxOfficePreview.unlinkRoute());
   app.use('/api/preview', previewDocument(davServer));
   app.get('/api/archive', downloadDirectory(root));
 

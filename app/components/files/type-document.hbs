@@ -16,8 +16,20 @@
       </div>
     </div>
   {{else if this.errored}}
-    <div class="w-full h-full flex items-center justify-center text-center border-t">
-      There was an error rendering this preview.
+    <div class="w-full h-full flex items-center justify-center text-center border-t p-4">
+      <div>
+        <p class="mb-3">There was an error rendering this preview.</p>
+        {{#if this.capabilityErrorMessage}}
+          <p class="mb-3 text-red-700">{{this.capabilityErrorMessage}}</p>
+        {{/if}}
+        <button
+          type="button"
+          class="btn btn-secondary border px-3 py-1"
+          {{on "click" this.unlinkCapability}}
+          disabled={{not this.canUnlinkCapability}}>
+          {{if this.unlinkingCapability "Unlinking..." "Unlink external previewer"}}
+        </button>
+      </div>
     </div>
   {{else}}
     <iframe

@@ -87,7 +87,7 @@ export default class File {
             payload = null;
           }
 
-          if (payload && payload.powerboxRequired) {
+          if (payload?.powerboxRequired) {
             this.previewNeedsCapability = true;
             this.previewPowerboxQueryDescriptor = payload.queryDescriptor || null;
             return;

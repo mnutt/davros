@@ -79,6 +79,11 @@ function filenameFor(fileUrl) {
 }
 
 function isStaleCapabilityError(err) {
+  const code = String((err && err.code) || '').toUpperCase();
+  if (code === 'ECONNRESET' || code === 'ECONNREFUSED' || code === 'ETIMEDOUT' || code === 'EPIPE') {
+    return true;
+  }
+
   const message = String((err && err.message) || err || '').toLowerCase();
   return (
     message.includes('no such token') ||

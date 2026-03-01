@@ -13,11 +13,8 @@ function initializePowerboxListener() {
   }
 
   window.addEventListener('message', (event) => {
-    if (event.source !== window.parent) {
-      return;
-    }
-
-    const response = event.data || {};
+    const data = event.data || {};
+    const response = data.powerboxResponse || data.powerboxResult || data.result || data;
     const req = outstandingRequests[response.rpcId];
 
     if (!req) {
@@ -73,6 +70,7 @@ async function requestPowerboxCapability(queryDescriptor) {
 
 export default class TypeDocumentComponent extends Component {
   @tracked requestingCapability = false;
+  @tracked unlinkingCapability = false;
   @tracked capabilityError = null;
 
   get canSandbox() {
@@ -97,6 +95,10 @@ export default class TypeDocumentComponent extends Component {
 
   get capabilityErrorMessage() {
     return this.capabilityError;
+  }
+
+  get canUnlinkCapability() {
+    return !this.unlinkingCapability && !this.requestingCapability;
   }
 
   @action
@@ -132,6 +134,38 @@ export default class TypeDocumentComponent extends Component {
       this.args.model.previewFailed = false;
     } finally {
       this.requestingCapability = false;
+    }
+  }
+
+  @action
+  async unlinkCapability() {
+    if (!this.canUnlinkCapability) {
+      return;
+    }
+
+    this.capabilityError = null;
+    this.unlinkingCapability = true;
+
+    try {
+      const response = await fetch('/api/powerbox/office-preview/unlink', {
+        method: 'POST',
+      });
+
+      if (!response.ok) {
+        const body = await response.text();
+        throw new Error(body || `Unlink failed with status ${response.status}`);
+      }
+
+      this.args.model.previewFailed = false;
+      this.args.model.previewNeedsCapability = false;
+      this.args.model.previewPowerboxQueryDescriptor = null;
+      await this.args.model.reload();
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.error(err);
+      this.capabilityError = err?.message || 'Failed to unlink document preview capability';
+    } finally {
+      this.unlinkingCapability = false;
     }
   }
 }
