@@ -27,11 +27,11 @@ module.exports = function (environment) {
       'connect-src': "'self' ws://localhost:*",
       'img-src': "'self' data:",
       'media-src': "'self'",
-      'style-src': "'self' 'unsafe-inline'"
+      'style-src': "'self' 'unsafe-inline'",
     },
 
     'ember-paper': {
-      insertFontLinks: false
+      insertFontLinks: false,
     },
 
     APP: {
