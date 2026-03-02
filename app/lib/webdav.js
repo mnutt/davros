@@ -65,7 +65,7 @@ export default class WebdavClient {
     });
   }
 
-  move(path, destination) {
+  move(path, destination, { overwrite = true } = {}) {
     const { protocol, host } = document.location;
     const fullDestination = [protocol, '//', host, this.fullPath(destination)].join('');
 
@@ -73,6 +73,7 @@ export default class WebdavClient {
       method: 'MOVE',
       headers: {
         Destination: fullDestination,
+        Overwrite: overwrite ? 'T' : 'F',
       },
     });
   }

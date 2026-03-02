@@ -1,0 +1,26 @@
+<div class="modal-title flex">
+  <h2 class="text-lg font-bold">{{this.title}}</h2>
+  <span class="flex-1"></span>
+  <button type="button" {{on "click" @onCancel}}>
+    <Icon @icon="close" />
+  </button>
+</div>
+
+<div class="py-4">
+  {{#if @message}}
+    <p>{{@message}}</p>
+  {{/if}}
+  {{yield}}
+</div>
+
+<form {{on "submit" this.confirm}}>
+  <div class="form-actions flex">
+    <span class="flex-1"></span>
+    <button type="button" class="pr-4" {{on "click" @onCancel}}>
+      {{this.cancelLabel}}
+    </button>
+    <button type="submit" class={{this.confirmButtonClass}}>
+      {{this.confirmLabel}}
+    </button>
+  </div>
+</form>

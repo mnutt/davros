@@ -3,9 +3,13 @@ import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { service } from '@ember/service';
 
-export default class DeleteDialog extends Component {
+export default class RenameDialog extends Component {
   @tracked newName = 'new-file';
   @tracked validationError = null;
+  @tracked isRenaming = false;
+  @tracked confirmDialogActive = false;
+  @tracked confirmDialogMessage = '';
+  _confirmResolver = null;
 
   @service errors;
 
@@ -54,12 +58,58 @@ export default class DeleteDialog extends Component {
     const selectedFile = sortedFiles.find((f) => f.path === selectedPath);
 
     const newName = this.newName;
+    this.isRenaming = true;
     try {
-      await selectedFile.rename(newName);
+      let response = await selectedFile.rename(newName, { overwrite: false });
+      if (response.status === 412) {
+        this.isRenaming = false;
+        const confirmed = await this.requestOverwriteConfirmation(newName);
+        if (!confirmed) {
+          return;
+        }
+        this.isRenaming = true;
+        response = await selectedFile.rename(newName, { overwrite: true });
+      }
+
+      if (!response.ok) {
+        this.errors.setError(`Could not rename ${selectedFile.name}`);
+        return;
+      }
+
+      await this.args.onFinish();
     } catch (err) {
       this.errors.setError(err.message);
+      return;
+    } finally {
+      this.confirmDialogActive = false;
+      this.isRenaming = false;
     }
+  }
 
-    this.args.onFinish();
+  requestOverwriteConfirmation(fileName) {
+    this.confirmDialogMessage = `"${fileName}" already exists. Do you want to overwrite it?`;
+    this.confirmDialogActive = true;
+    return new Promise((resolve) => {
+      this._confirmResolver = resolve;
+    });
+  }
+
+  @action
+  confirmOverwrite() {
+    this.resolveConfirmation(true);
+  }
+
+  @action
+  cancelOverwrite() {
+    this.resolveConfirmation(false);
+  }
+
+  resolveConfirmation(value) {
+    this.confirmDialogActive = false;
+    const resolver = this._confirmResolver;
+    this._confirmResolver = null;
+    if (resolver) {
+      resolver(value);
+    }
   }
 }

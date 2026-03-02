@@ -150,3 +150,18 @@
     {{/each}}
   </tbody>
 </table>
+
+<ModalContent
+  class="rounded-sm shadow-sm border w-11/12"
+  @active={{this.confirmDialogActive}}
+  @onClose={{this.cancelOverwrite}}
+>
+  <ConfirmDialog
+    @title="Overwrite file?"
+    @message={{this.confirmDialogMessage}}
+    @confirmLabel="Overwrite"
+    @confirmButtonClass="button-danger"
+    @onConfirm={{this.confirmOverwrite}}
+    @onCancel={{this.cancelOverwrite}}
+  />
+</ModalContent>

@@ -8,6 +8,9 @@ export default class MoveFilesDialogComponent extends Component {
 
   @tracked progressPercent = null;
   @tracked progressCount = null;
+  @tracked confirmDialogActive = false;
+  @tracked confirmDialogMessage = '';
+  _confirmResolver = null;
 
   get selectedFiles() {
     return this.args.selectedFiles;
@@ -43,7 +46,15 @@ export default class MoveFilesDialogComponent extends Component {
 
     for (let path of paths) {
       const file = sortedFiles.find((f) => f.path === path);
-      const response = await file.move(destination);
+      let response = await file.move(destination, { overwrite: false });
+
+      if (response.status === 412) {
+        const confirmed = await this.requestOverwriteConfirmation(file.name);
+        if (confirmed) {
+          response = await file.move(destination, { overwrite: true });
+        }
+      }
+
       if (!response.ok) {
         failures.push(file.name);
       }
@@ -60,6 +71,33 @@ export default class MoveFilesDialogComponent extends Component {
         message += ` and ${failures.length} other${failures.length > 1 ? 's' : ''}`;
       }
       this.errors.setError(message);
+    }
+  }
+
+  requestOverwriteConfirmation(fileName) {
+    this.confirmDialogMessage = `"${fileName}" already exists in the destination. Overwrite it?`;
+    this.confirmDialogActive = true;
+    return new Promise((resolve) => {
+      this._confirmResolver = resolve;
+    });
+  }
+
+  @action
+  confirmOverwrite() {
+    this.resolveConfirmation(true);
+  }
+
+  @action
+  cancelOverwrite() {
+    this.resolveConfirmation(false);
+  }
+
+  resolveConfirmation(value) {
+    this.confirmDialogActive = false;
+    const resolver = this._confirmResolver;
+    this._confirmResolver = null;
+    if (resolver) {
+      resolver(value);
     }
   }
 }

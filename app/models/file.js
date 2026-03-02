@@ -207,7 +207,7 @@ export default class File {
     return client.remove(this.path);
   }
 
-  move(destinationDir) {
+  move(destinationDir, { overwrite = true } = {}) {
     if (this.path === destinationDir) {
       throw new Error('Cannot copy a directory to itself');
     }
@@ -216,11 +216,11 @@ export default class File {
       throw new Error('Cannot move files to their own directory');
     }
 
-    return client.move(this.path, [destinationDir, this.name].join('/'));
+    return client.move(this.path, [destinationDir, this.name].join('/'), { overwrite });
   }
 
-  rename(newName) {
-    return client.move(this.path, [this.parent, newName].join('/'));
+  rename(newName, { overwrite = true } = {}) {
+    return client.move(this.path, [this.parent, newName].join('/'), { overwrite });
   }
 
   loadFromResponse(response) {

@@ -102,10 +102,9 @@ export default class FileRoute extends Route {
     const normalizedContext = this.normalizePath(contextPath);
     const normalizedMessage = this.normalizePath(message.file);
 
-    if (message.file) {
-      if (typeof contextPath === 'string' && normalizedContext === normalizedMessage) {
-        this.reload();
-      }
+    const hasFileField = Object.prototype.hasOwnProperty.call(message, 'file');
+    if (hasFileField && typeof contextPath === 'string' && normalizedContext === normalizedMessage) {
+      this.reload();
     }
   }
 
