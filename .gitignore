@@ -22,7 +22,9 @@ npm-debug.log*
 yarn-error.log
 testem.log
 /.cache-require-paths.json
-/.yarn
+/.yarn/*
+!/.yarn/releases/
+!/.yarn/releases/*
 
 # webdav data
 /data/*
