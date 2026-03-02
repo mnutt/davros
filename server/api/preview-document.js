@@ -93,6 +93,17 @@ function isStaleCapabilityError(err) {
   );
 }
 
+function isMissingCapabilityError(err) {
+  const message = String((err && err.message) || err || '').toLowerCase();
+  return (
+    message.includes('missing office preview capability') ||
+    message.includes('missing preview capability') ||
+    message.includes('missing capability token') ||
+    message.includes('missing bearer token') ||
+    message.includes('missing authorization header')
+  );
+}
+
 module.exports = function (davServer) {
   return async function (req, res) {
     let queryParams;
@@ -151,6 +162,14 @@ module.exports = function (davServer) {
         console.log('Office preview cache miss for ' + fileUrl);
       });
     } catch (err) {
+      if (isMissingCapabilityError(err)) {
+        res.status(400).json({
+          powerboxRequired: true,
+          queryDescriptor: officePreview.getPowerboxQueryDescriptor(),
+        });
+        return;
+      }
+
       if (isStaleCapabilityError(err)) {
         await officePreview.clearCapability();
         res.status(428).json({

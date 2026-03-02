@@ -90,7 +90,7 @@ export default class File {
         this.previewFailed = false;
 
         const contentType = String(previewResponse.headers.get('content-type') || '').toLowerCase();
-        if (previewResponse.status === 428 || contentType.includes('application/json')) {
+        if (previewResponse.status === 428 || !previewResponse.ok || contentType.includes('application/json')) {
           let payload = null;
           try {
             payload = await previewResponse.clone().json();
