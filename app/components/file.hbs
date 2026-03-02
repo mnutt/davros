@@ -17,28 +17,26 @@
   {{!-- Only displayed on mobile --}}
   <div class="compact-actions block sm:hidden">
     <div class="more relative">
-      <BasicDropdown @verticalPosition="below" @horizontalPosition="right" @width={{4}}  as |menu|>
-        <menu.Trigger>
-          <button type="button" class="more-button px-2 mt-1">
-            <Icon @icon="menu" ariaLabel="Menu"/>
-          </button>
-        </menu.Trigger>
+      <button type="button" class="more-button px-2 mt-1" {{on "click" this.toggleMobileMenu}}>
+        <Icon @icon="menu" ariaLabel="Menu"/>
+      </button>
 
-        <menu.Content @animationEnabled={{false}} class="rounded-md bg-white shadow">
-          <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu" {{on "click" menu.actions.close}}>
+      {{#if this.mobileMenuOpen}}
+        <div class="absolute right-0 mt-2 rounded-md bg-white shadow z-20">
+          <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
             {{#if this.canEdit}}
-              <MenuItem {{on "click" (toggle this "deleteDialogActive")}} @id="menu-upload-file">
+              <MenuItem @onClick={{this.openDeleteDialogFromMenu}} @id="menu-upload-file">
                 <p class="label flex-1 mr-2">Delete</p>
                 <Icon @icon="delete" />
               </MenuItem>
             {{else}}
-              <MenuItem {{on "click" this.chooseUpload}} @id="menu-upload-file">
+              <MenuItem @onClick={{this.closeMobileMenu}} @id="menu-upload-file">
                 <p class="label flex-1">Read-only mode</p>
               </MenuItem>
             {{/if}}
           </div>
-        </menu.Content>
-      </BasicDropdown>
+        </div>
+      {{/if}}
     </div>
   </div>
 </TitleBar>
@@ -79,7 +77,23 @@
   </div>
 
   <div class="preview flex-1 relative overflow-auto">
-    {{component this.model.typeComponent model=this.model}}
+    {{#if (eq this.model.type "audio")}}
+      <Files::TypeAudio @model={{this.model}} />
+    {{else if (eq this.model.type "code")}}
+      <Files::TypeCode @model={{this.model}} />
+    {{else if (eq this.model.type "document")}}
+      <Files::TypeDocument @model={{this.model}} />
+    {{else if (eq this.model.type "image")}}
+      <Files::TypeImage @model={{this.model}} />
+    {{else if (eq this.model.type "markdown")}}
+      <Files::TypeMarkdown @model={{this.model}} />
+    {{else if (eq this.model.type "pdf")}}
+      <Files::TypePdf @model={{this.model}} />
+    {{else if (eq this.model.type "video")}}
+      <Files::TypeVideo @model={{this.model}} />
+    {{else}}
+      <Files::TypeDefaultType @model={{this.model}} />
+    {{/if}}
   </div>
 </div>
 

@@ -1,7 +1,7 @@
 import Component from '@glimmer/component';
-import { tracked } from 'tracked-built-ins';
+import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 
 export default class DirectoryListingComponent extends Component {
   @tracked showExtraFields = true;

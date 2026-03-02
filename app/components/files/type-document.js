@@ -1,7 +1,6 @@
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
-import fetch from 'fetch';
 
 const outstandingRequests = {};
 let powerboxInitDone = false;
@@ -127,7 +126,6 @@ export default class TypeDocumentComponent extends Component {
 
       await this.args.model.reload();
     } catch (err) {
-      // eslint-disable-next-line no-console
       console.error(err);
       this.capabilityError = err?.message || 'Failed to connect document preview capability';
       this.args.model.previewNeedsCapability = true;
@@ -161,7 +159,6 @@ export default class TypeDocumentComponent extends Component {
       this.args.model.previewPowerboxQueryDescriptor = null;
       await this.args.model.reload();
     } catch (err) {
-      // eslint-disable-next-line no-console
       console.error(err);
       this.capabilityError = err?.message || 'Failed to unlink document preview capability';
     } finally {

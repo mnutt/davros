@@ -1,4 +1,3 @@
-import fetch from 'fetch';
 
 const propnames = ['getlastmodified', 'quota-used-bytes', 'getcontentlength', 'getdimensions'];
 
@@ -80,7 +79,6 @@ export default class WebdavClient {
     return fetch(this.fullPath(encodeURIComponent(path)), {
       method: 'MKCOL',
     }).catch(function (err) {
-      // eslint-disable-next-line no-console
       console.error(err);
     });
   }

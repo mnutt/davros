@@ -103,7 +103,7 @@
             </td>
           {{/if}}
           <td class="p-2 {{if @isSelecting "pl-0"}} sm:py-3 sm:pl-0" colspan={{if this.showExtraFields '1' '3'}}>
-            <a href={{href-to "file" file.linkedPath}} draggable={{false}} class="filename p-2 table table-fixed w-full" {{on "click" (fn this.onClick file)}}>
+            <LinkTo @route="file" @model={{file.linkedPath}} draggable={{false}} class="filename p-2 table table-fixed w-full" {{on "click" (fn this.onClick file)}}>
               {{#if file.isDirectory}}
                 <div class="material-icons mr-3 {{if @isSelecting "ml-0" "ml-4"}} sm:ml-0 float-left text-gray-700">folder</div>
               {{else}}
@@ -115,7 +115,7 @@
               {{/if}}
 
               <div class="truncate">{{file.name}}</div>
-            </a>
+            </LinkTo>
           </td>
 
           {{#if this.showExtraFields}}

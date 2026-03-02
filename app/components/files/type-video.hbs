@@ -1,3 +1,5 @@
 <div class="flex w-full h-full items-center justify-center flex-1">
-  <video src={{@model.rawPath}} controls="controls"></video>
+  <video src={{@model.rawPath}} controls="controls">
+    <track kind="captions" srclang="en" label="English captions" src="data:text/vtt,WEBVTT" default />
+  </video>
 </div>

@@ -1,10 +1,9 @@
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import FileComponent from './file';
 import { action } from '@ember/object';
-import { tracked } from 'tracked-built-ins';
+import { tracked } from '@glimmer/tracking';
+import { trackedSet } from '@ember/reactive/collections';
 import { registerDestructor } from '@ember/destroyable';
-
-const galleryOptions = { hideShare: true };
 
 export default class DirectoryComponent extends FileComponent {
   @tracked newDialogActive = false;
@@ -12,8 +11,9 @@ export default class DirectoryComponent extends FileComponent {
   @tracked deleteDialogActive = false;
   @tracked renameDialogActive = false;
   @tracked isSelecting;
-  @tracked galleryEnabled = false;
-  selectedFiles = tracked(Set);
+  @tracked slideshowActive = false;
+  @tracked slideshowIndex = 0;
+  selectedFiles = trackedSet();
 
   @service permissions;
   @service publishing;
@@ -55,12 +55,34 @@ export default class DirectoryComponent extends FileComponent {
         return file.type === 'image';
       })
       .map((file) => {
-        return { src: file.rawPath, title: file.name, w: file.width, h: file.height };
+        return { src: file.rawPath, title: file.name };
       });
   }
 
-  galleryOptions() {
-    return galleryOptions;
+  get currentSlide() {
+    return this.directoryGalleryItems[this.slideshowIndex];
+  }
+
+  get previousSlideItem() {
+    const items = this.directoryGalleryItems;
+    if (!items.length) {
+      return null;
+    }
+
+    return items[(this.slideshowIndex - 1 + items.length) % items.length];
+  }
+
+  get nextSlideItem() {
+    const items = this.directoryGalleryItems;
+    if (!items.length) {
+      return null;
+    }
+
+    return items[(this.slideshowIndex + 1) % items.length];
+  }
+
+  get currentSlideNumber() {
+    return this.slideshowIndex + 1;
   }
 
   get isRoot() {
@@ -84,6 +106,83 @@ export default class DirectoryComponent extends FileComponent {
   }
 
   @action
+  openSlideshow(index = 0) {
+    if (!this.directoryGalleryItems.length) {
+      return;
+    }
+
+    const normalizedIndex = Number.isInteger(index) ? index : 0;
+    this.slideshowIndex = Math.min(Math.max(normalizedIndex, 0), this.directoryGalleryItems.length - 1);
+    this.slideshowActive = true;
+  }
+
+  @action
+  closeSlideshow() {
+    this.slideshowActive = false;
+  }
+
+  @action
+  setSlideshowIndex(index) {
+    const maxIndex = this.directoryGalleryItems.length - 1;
+    this.slideshowIndex = Math.min(Math.max(index, 0), maxIndex);
+  }
+
+  @action
+  focusSlideshow(element) {
+    element.focus();
+  }
+
+  @action
+  nextSlide() {
+    const itemCount = this.directoryGalleryItems.length;
+    if (!itemCount) {
+      return;
+    }
+
+    this.slideshowIndex = (this.slideshowIndex + 1) % itemCount;
+  }
+
+  @action
+  previousSlide() {
+    const itemCount = this.directoryGalleryItems.length;
+    if (!itemCount) {
+      return;
+    }
+
+    this.slideshowIndex = (this.slideshowIndex - 1 + itemCount) % itemCount;
+  }
+
+  @action
+  toggleSelectFromMenu() {
+    this.closeMobileMenu();
+    this.toggleSelectCheckboxes();
+  }
+
+  @action
+  chooseUploadFromMenu() {
+    this.closeMobileMenu();
+    this.chooseUpload();
+  }
+
+  @action
+  openNewDialogFromMenu() {
+    this.closeMobileMenu();
+    this.newDialogActive = true;
+  }
+
+  @action
+  openSlideshowFromMenu() {
+    this.closeMobileMenu();
+    this.openSlideshow();
+  }
+
+  @action
+  downloadDirectoryFromMenu() {
+    this.closeMobileMenu();
+    this.downloadDirectory();
+  }
+
+  @action
   downloadDirectory() {
     const { path } = this.model;
     const endpoint = `/api/archive?path=${encodeURIComponent(path)}`;
@@ -93,6 +192,13 @@ export default class DirectoryComponent extends FileComponent {
   @action
   reload() {
     this.model.reload();
+  }
+
+  @action
+  onFileClick(file, event) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.router.transitionTo('file', file.linkedPath);
   }
 
   @action
@@ -110,5 +216,25 @@ export default class DirectoryComponent extends FileComponent {
     if (this.isSelecting) {
       this.showExtraFields = false;
     }
+  }
+
+  @action
+  closeNewDialog() {
+    this.newDialogActive = false;
+  }
+
+  @action
+  closeMoveDialog() {
+    this.moveDialogActive = false;
+  }
+
+  @action
+  closeDeleteDialog() {
+    this.deleteDialogActive = false;
+  }
+
+  @action
+  closeRenameDialog() {
+    this.renameDialogActive = false;
   }
 }

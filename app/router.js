@@ -1,5 +1,5 @@
-import EmberRouter from '@ember/routing/router';
-import config from 'davros/config/environment';
+import EmberRouter from '@embroider/router';
+import config from './config/environment';
 
 export default class Router extends EmberRouter {
   location = config.locationType;

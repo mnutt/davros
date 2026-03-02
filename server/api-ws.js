@@ -8,8 +8,11 @@ exports.notify = function (file) {
   }
 
   const response = JSON.stringify({ file: file });
-
   for (const client of wss.clients) {
+    if (client.readyState !== WebSocket.OPEN) {
+      continue;
+    }
+
     client.send(response);
   }
 };

@@ -1,0 +1,72 @@
+{{#if @active}}
+  <div
+    class="fixed inset-0 z-50 bg-black text-white"
+    role="dialog"
+    aria-modal="true"
+    tabindex="0"
+    {{on-insert this.onInsert}}
+    {{on "keydown" this.onKeydown}}
+    {{on "mouseenter" this.onPointerMove}}
+    {{on "mousemove" this.onPointerMove}}
+    {{on "touchstart" this.onPointerMove}}
+  >
+    <button
+      type="button"
+      class="absolute top-4 right-4 z-40 w-10 h-10 inline-flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 {{if this.controlsVisible "opacity-100" "opacity-0"}} transition-opacity"
+      aria-label="Close slideshow"
+      {{on "click" this.onClose}}
+    >
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <path d="M7 7L17 17" />
+        <path d="M17 7L7 17" />
+      </svg>
+    </button>
+
+    <button
+      type="button"
+      class="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 z-40 w-12 h-12 inline-flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 {{if this.controlsVisible "opacity-100" "opacity-0"}} transition-opacity"
+      aria-label="Previous image"
+      {{on "click" this.goPrevious}}
+    >
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M15 18L9 12L15 6" />
+      </svg>
+    </button>
+
+    <button
+      type="button"
+      class="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 z-40 w-12 h-12 inline-flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 {{if this.controlsVisible "opacity-100" "opacity-0"}} transition-opacity"
+      aria-label="Next image"
+      {{on "click" this.goNext}}
+    >
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 18L15 12L9 6" />
+      </svg>
+    </button>
+
+    <div
+      class="absolute inset-0 z-10 flex overflow-x-auto overflow-y-hidden scroll-smooth snap-x snap-mandatory slideshow-scroll"
+      {{on-insert this.onScrollerInsert}}
+      {{on "scroll" this.onScroll}}
+    >
+      {{#each this.slides as |slide|}}
+        <div class="w-full h-full shrink-0 snap-start flex items-center justify-center">
+          <img
+            src={{slide.src}}
+            alt={{slide.title}}
+            class="w-full h-full object-contain"
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+      {{/each}}
+    </div>
+
+    {{#if this.currentSlide}}
+      <div class="absolute bottom-3 left-0 right-0 z-30 text-sm text-gray-200 text-center break-all {{if this.controlsVisible "opacity-100" "opacity-0"}} transition-opacity">
+        {{this.currentSlide.title}}
+        ({{this.currentSlideNumber}} / {{this.slideCount}})
+      </div>
+    {{/if}}
+  </div>
+{{/if}}

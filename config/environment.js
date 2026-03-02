@@ -1,4 +1,3 @@
-/* eslint-env node */
 'use strict';
 
 module.exports = function (environment) {
@@ -6,7 +5,7 @@ module.exports = function (environment) {
     modulePrefix: 'davros',
     environment,
     rootURL: '/',
-    locationType: 'auto',
+    locationType: 'history',
     EmberENV: {
       FEATURES: {
         // Here you can enable experimental features on an ember canary build
@@ -18,31 +17,16 @@ module.exports = function (environment) {
       },
     },
 
-    contentSecurityPolicy: {
-      'default-src': "'none'",
-      'script-src': "'self'",
-      'font-src': "'self'",
-      'frame-src': "'self'",
-      'object-src': "'self'",
-      'connect-src': "'self' ws://localhost:*",
-      'img-src': "'self' data:",
-      'media-src': "'self'",
-      'style-src': "'self' 'unsafe-inline'",
-    },
-
-    'ember-paper': {
-      insertFontLinks: false,
-    },
-
     APP: {
       // Here you can pass flags/options to your application instance
       // when it is created
     },
+
+    // Disable legacy global export initializer that relies on Ember.String APIs.
+    exportApplicationGlobal: false,
   };
 
   if (environment === 'development') {
-    // webpack just can't help adding eval()s...
-    ENV.contentSecurityPolicy['script-src'] += " 'unsafe-eval'";
     // ENV.APP.LOG_RESOLVER = true;
     // ENV.APP.LOG_ACTIVE_GENERATION = true;
     // ENV.APP.LOG_TRANSITIONS = true;

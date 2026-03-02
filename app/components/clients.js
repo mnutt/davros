@@ -1,5 +1,5 @@
 import Component from '@glimmer/component';
-import owncloudStatus from 'davros/lib/owncloud';
+import owncloudStatus from '../lib/owncloud';
 import { tracked } from '@glimmer/tracking';
 
 export default class ClientsComponent extends Component {

@@ -1,7 +1,10 @@
+import { service } from '@ember/service';
 import Route from '@ember/routing/route';
 
 export default class HomeRoute extends Route {
+  @service router;
+
   beforeModel() {
-    this.replaceWith('files');
+    this.router.replaceWith('files');
   }
 }

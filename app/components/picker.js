@@ -1,7 +1,7 @@
 import Component from '@glimmer/component';
-import { tracked } from 'tracked-built-ins';
+import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
-import File from 'davros/models/file';
+import File from '../models/file';
 
 export default class PickerComponent extends Component {
   @tracked isLoading = true;

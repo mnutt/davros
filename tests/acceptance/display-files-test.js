@@ -1,8 +1,7 @@
 import { find, click, currentURL } from '@ember/test-helpers';
 import { module, test } from 'qunit';
 import { setupApplicationTest } from 'ember-qunit';
-import { selectFiles } from 'ember-file-upload/test-support';
-import { makeImage } from '../helpers/upload';
+import { makeImage, selectFiles } from '../helpers/upload';
 import { makeAndEnterNewDirectory, reload } from '../helpers/directory';
 import { mp4File } from '../fixtures/files';
 

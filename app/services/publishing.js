@@ -1,5 +1,4 @@
-import Service, { inject as service } from '@ember/service';
-import fetch from 'fetch';
+import Service, { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 
 export default class PublishingService extends Service {

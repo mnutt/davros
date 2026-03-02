@@ -1,9 +1,8 @@
-import filetypes from 'davros/lib/filetypes';
-import filetypeIcons from 'davros/lib/filetype-icons';
-import DavClient from 'davros/lib/webdav';
-import fetch from 'fetch';
+import filetypes from '../lib/filetypes';
+import filetypeIcons from '../lib/filetype-icons';
+import DavClient from '../lib/webdav';
 import { tracked } from '@glimmer/tracking';
-import ensureCollectionExists from 'davros/lib/ensure-collection-exists';
+import ensureCollectionExists from '../lib/ensure-collection-exists';
 import { addListener, removeListener, sendEvent } from '@ember/object/events';
 
 export const base = '/dav';
@@ -113,7 +112,6 @@ export default class File {
         const pdfBlob = await pdfBlobFromResponse(previewResponse);
         this.setPreviewBlobUrl(URL.createObjectURL(pdfBlob));
       } catch (e) {
-        // eslint-disable-next-line no-console
         console.error('Document preview failed', e);
         this.setPreviewBlobUrl(null);
         this.previewFailed = true;
@@ -134,7 +132,13 @@ export default class File {
   }
 
   get sortedFiles() {
-    return this.files.sortBy('isFile', 'name');
+    return [...this.files].sort((a, b) => {
+      if (a.isFile !== b.isFile) {
+        return a.isFile ? 1 : -1;
+      }
+
+      return a.name.localeCompare(b.name);
+    });
   }
 
   get lotsOfFiles() {

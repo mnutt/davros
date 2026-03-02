@@ -1,3 +1,5 @@
 <div class="w-full h-full flex items-center justify-center">
-  <audio src={{@model.rawPath}} controls="controls"></audio>
+  <audio src={{@model.rawPath}} controls="controls">
+    <track kind="captions" srclang="en" label="English captions" src="data:text/vtt,WEBVTT" default />
+  </audio>
 </div>

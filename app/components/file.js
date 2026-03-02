@@ -1,10 +1,11 @@
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import Component from '@glimmer/component';
-import { tracked } from 'tracked-built-ins';
+import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 
 export default class FileComponent extends Component {
   @tracked deleteDialogActive = false;
+  @tracked mobileMenuOpen = false;
 
   @service permissions;
   @service publishing;
@@ -37,5 +38,21 @@ export default class FileComponent extends Component {
     } else {
       this.router.transitionTo('files');
     }
+  }
+
+  @action
+  toggleMobileMenu() {
+    this.mobileMenuOpen = !this.mobileMenuOpen;
+  }
+
+  @action
+  closeMobileMenu() {
+    this.mobileMenuOpen = false;
+  }
+
+  @action
+  openDeleteDialogFromMenu() {
+    this.mobileMenuOpen = false;
+    this.deleteDialogActive = true;
   }
 }

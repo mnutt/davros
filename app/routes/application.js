@@ -1,6 +1,6 @@
 import Route from '@ember/routing/route';
 import { action } from '@ember/object';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 
 export default class ApplicationRoute extends Route {
   @service router;
@@ -30,9 +30,9 @@ export default class ApplicationRoute extends Route {
   @action
   transitionTo(route) {
     if (route === 'files') {
-      this.transitionTo('file', '');
+      this.router.transitionTo('file', '');
     } else {
-      this.transitionTo(route);
+      this.router.transitionTo(route);
     }
   }
 }

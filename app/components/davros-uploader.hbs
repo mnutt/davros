@@ -1,5 +1,8 @@
-<DavrosDropzone @name="content" as |dropzone queue|>
-  {{#if dropzone.active}}
+<div
+  {{on-insert this.setupWindowDragEvents}}
+  {{on-destroy this.teardownWindowDragEvents}}
+>
+  {{#if this.isDropActive}}
     <div id="dropzone-overlay" class="fixed inset-0 flex justify-center items-center bg-opacity-50 bg-black text-white z-20">
       <div class="message p-8 bg-black bg-opacity-75 rounded-sm border-2 border-green-500 shadow">
         <Icon @icon="add_circle" class="align-top" />
@@ -13,12 +16,18 @@
     </div>
   {{/if}}
 
-  {{#if queue.size}}
+  {{#if this.hasUploadsInProgress}}
     <div class="upload-progress fixed w-full inset-x-0 top-0 z-10">
-      <ProgressBar @value={{queue.progress}} />
+      <ProgressBar @value={{this.uploadProgress}} />
     </div>
   {{/if}}
 
-  <FileUpload @name="content" @multiple={{true}} @onFileAdd={{this.upload}} @class="upload-placeholder">
-  </FileUpload>
-</DavrosDropzone>
+  <input
+    type="file"
+    name="content"
+    multiple
+    aria-label="Upload files"
+    class="upload-placeholder hidden"
+    {{on "change" this.selectFiles}}
+  />
+</div>

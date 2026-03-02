@@ -24,11 +24,13 @@ To install yarn run `npm install -g yarn`
 Then:
 
 - `yarn install`
-- `yarn dev --port=3009`
+- `yarn dev`
 
-At this point you'll have Davros running at `http://localhost:3009`. Substitute `3009` for another port if you want. Note that running Davros this way is not particularly safe; it relies completely on Sandstorm for user management and authentication.
+At this point you'll have Davros running at `http://localhost:4200` (Vite UI) with the backend API/WebDAV server on `http://localhost:8000` proxied through Vite.
+If you need a different backend port, set `DAVROS_BACKEND_URL` for the UI and `PORT` for the backend.
+Note that running Davros this way is not at all safe for anything but local development; it relies completely on Sandstorm for user management and authentication.
 
-In development, you can connect your desktop client to http://localhost:3009/ with any username and password.
+In development, you can connect your desktop client to the backend URL (default `http://localhost:8000/`) with any username and password.
 
 ## Sandstorm Development
 

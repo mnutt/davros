@@ -1,7 +1,7 @@
 import { visit } from '@ember/test-helpers';
 import { module, test } from 'qunit';
 import { setupApplicationTest } from 'ember-qunit';
-import { makeAndEnterNewDirectory } from 'davros/tests/helpers/directory';
+import { makeAndEnterNewDirectory } from '../helpers/directory';
 
 module('Acceptance | sandstorm path sync', function (hooks) {
   setupApplicationTest(hooks);

@@ -6,8 +6,8 @@
   </button>
 </div>
 
-<form {{on "submit" this.rename}} {{did-insert this.setInitialName}}>
-  <input name="file-name" type="text" aria-label="name" label="Name" class="form-input my-4" placeholder="Name" value={{this.newName}} {{on "change" this.onChange}} {{on "keyup" this.onChange}} {{did-insert this.focus}} />
+<form {{on "submit" this.rename}} {{on-insert this.setInitialName}}>
+  <input name="file-name" type="text" aria-label="name" label="Name" class="form-input my-4" placeholder="Name" value={{this.newName}} {{on "change" this.onChange}} {{on "keyup" this.onChange}} {{on-insert this.focus}} />
   {{#if this.validationError}}
     <p class="text-red-500 font-sm" >{{this.validationError}}</p>
   {{/if}}
