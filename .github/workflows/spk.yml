@@ -1,0 +1,55 @@
+name: Build SPK
+
+on:
+  push:
+    branches:
+      - master
+      - main
+  pull_request:
+  workflow_dispatch:
+
+env:
+  NODE_VERSION: "24.13.0"
+
+jobs:
+  build-spk:
+    name: Build davros.spk
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+
+    steps:
+      - name: Check out a copy of the repo
+        uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: yarn
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Install Sandstorm tooling (spk)
+        run: |
+          set -euo pipefail
+          curl -fsSL https://install.sandstorm.io > /tmp/install-sandstorm.sh
+          sudo bash /tmp/install-sandstorm.sh -d -e -p 6090
+
+      - name: Build SPK
+        run: |
+          set -euo pipefail
+          mkdir -p build
+          /opt/sandstorm/latest/bin/spk pack build/davros-${GITHUB_SHA}.spk
+          cp build/davros-${GITHUB_SHA}.spk davros.spk
+
+      - name: Upload SPK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: davros-spk-${{ github.sha }}
+          path: |
+            build/davros-${{ github.sha }}.spk
+            davros.spk
