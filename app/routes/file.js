@@ -103,10 +103,7 @@ export default class FileRoute extends Route {
     const normalizedMessage = this.normalizePath(message.file);
 
     if (message.file) {
-      if (
-        typeof contextPath === 'string' &&
-        normalizedContext === normalizedMessage
-      ) {
+      if (typeof contextPath === 'string' && normalizedContext === normalizedMessage) {
         this.reload();
       }
     }

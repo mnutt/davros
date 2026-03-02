@@ -4,6 +4,7 @@ import { action } from '@ember/object';
 import { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import File from '../models/file';
+import { encodePath } from '../lib/path-encoding';
 
 export default class DavrosUploader extends Component {
   @service router;
@@ -86,13 +87,13 @@ export default class DavrosUploader extends Component {
     }
 
     let path = upload.fullPath || nativeFile.webkitRelativePath || nativeFile.name;
-    path = encodeURIComponent(path);
+    path = encodePath(path);
 
     if (path[0] !== '/') {
       path = '/' + path;
     }
 
-    const locationPrefix = this.uploadLocation ? `/${this.uploadLocation}` : '';
+    const locationPrefix = this.uploadLocation ? `/${encodePath(this.uploadLocation)}` : '';
     const fullPath = `${locationPrefix}${path}`;
 
     await File.ensureCollectionExists(fullPath);

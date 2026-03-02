@@ -1,4 +1,6 @@
 
+import { encodePath } from './path-encoding';
+
 const propnames = ['getlastmodified', 'quota-used-bytes', 'getcontentlength', 'getdimensions'];
 
 const propFindQuery = new Blob(
@@ -76,7 +78,7 @@ export default class WebdavClient {
   }
 
   mkcol(path) {
-    return fetch(this.fullPath(encodeURIComponent(path)), {
+    return fetch(this.fullPath(encodePath(path)), {
       method: 'MKCOL',
     }).catch(function (err) {
       console.error(err);

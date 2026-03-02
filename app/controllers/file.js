@@ -3,6 +3,7 @@ import { service } from '@ember/service';
 import { task } from 'ember-concurrency';
 import { action } from '@ember/object';
 import File from '../models/file';
+import { encodePath } from '../lib/path-encoding';
 
 export default class FileController extends Controller {
   @service router;
@@ -15,13 +16,14 @@ export default class FileController extends Controller {
     let location = document.location.pathname;
     const nativeFile = file.file || {};
     let path = nativeFile.webkitRelativePath || file.fullPath || file.name;
-    path = encodeURIComponent(path);
+    path = encodePath(path);
 
     if (location.indexOf('/files') === 0) {
       // if user is in a directory, upload the files there
       location = location.replace(/^\/files\//, '');
       // dirname of current path, so if path is /foo/README, use /foo/
       location = location.replace(/\/[^/]*$/, '');
+      location = encodePath(location);
     } else {
       // otherwise, upload files in the root directory
       // (this shouldn't happen anymore)
