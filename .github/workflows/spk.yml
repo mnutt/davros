@@ -39,11 +39,36 @@ jobs:
           curl -fsSL https://install.sandstorm.io > /tmp/install-sandstorm.sh
           sudo bash /tmp/install-sandstorm.sh -d -e -p 6090
 
+      - name: Restore Sandstorm signing keyring
+        env:
+          SANDSTORM_KEYRING_B64: ${{ secrets.SANDSTORM_KEYRING_B64 }}
+        run: |
+          set -euo pipefail
+          if [ -z "${SANDSTORM_KEYRING_B64:-}" ]; then
+            echo "::error::Missing required secret SANDSTORM_KEYRING_B64"
+            exit 1
+          fi
+          printf '%s' "$SANDSTORM_KEYRING_B64" | base64 --decode > "$HOME/.sandstorm-keyring"
+          chmod 600 "$HOME/.sandstorm-keyring"
+
+      - name: Prepare /opt/app for spk source paths
+        run: |
+          set -euo pipefail
+          sudo mkdir -p /opt
+          sudo rm -rf /opt/app
+          sudo mkdir -p /opt/app
+          find $GITHUB_WORKSPACE/dist/
+          sudo rsync -av --delete --exclude='.git' "$GITHUB_WORKSPACE"/ /opt/app/
+          sudo chown -R "$USER:$USER" /opt/app
+
       - name: Build SPK
         run: |
           set -euo pipefail
           mkdir -p build
-          /opt/sandstorm/latest/bin/spk pack build/davros-${GITHUB_SHA}.spk
+          (
+            cd .sandstorm
+            /opt/sandstorm/latest/bin/spk pack ../build/davros-${GITHUB_SHA}.spk
+          )
           cp build/davros-${GITHUB_SHA}.spk davros.spk
 
       - name: Upload SPK artifact
