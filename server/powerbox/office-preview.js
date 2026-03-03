@@ -3,8 +3,13 @@
 const { Readable } = require('stream');
 const { createPowerboxSession } = require('../powerbox');
 
+// Packed Cap'n Proto PowerboxDescriptor used by office preview capability matching.
+// To regenerate:
+//   capnp encode --packed /tmp/office-preview-powerbox.capnp PowerboxDescriptor <<'EOF' | base64 | tr -d '\n'
+//   (tags = [(id = 14445827391922490823, value = (protocol = "org.sandstorm.powerbox.office-to-pdf/v1"))], quality = acceptable)
+//   EOF
 const POWERBOX_QUERY_DESCRIPTOR =
-  'EBJQAQEAABEBF1EEAQH/x80lxnnjecgAQAMxCUICAAH/aHR0cHM6Ly8IZ2l0aHViLmNvbS9tbnV0dC9maWxlLXByZXZpZXdlci9zYW5kc3Rvcm0vYXBpcy9vZmZpY2UtdG8tcGRmL3YxAA==';
+  'EA1QAQEAABEBF1EEAQH/x80lxnnjecgAQAIxBUIBAAD/b3JnLnNhbmQEc3Rvcm0ucG93ZXJib3gub2ZmaWNlLXRvLXBkZi92MQA=';
 
 const officePreviewSession = createPowerboxSession({
   stateFile: 'powerbox-office-preview-cap.json',
