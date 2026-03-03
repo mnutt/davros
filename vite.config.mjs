@@ -14,6 +14,14 @@ export default defineConfig({
   build: {
     sourcemap: true,
     chunkSizeWarningLimit: 1600,
+    rollupOptions: {
+      onwarn(warning, warn) {
+        if (warning?.message?.includes('a plugin (rollup-hbs-plugin) was used to transform files')) {
+          return;
+        }
+        warn(warning);
+      },
+    },
   },
   server: {
     proxy: {
