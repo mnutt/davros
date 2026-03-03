@@ -7,7 +7,12 @@ on:
       - main
     tags:
       - "v*"
-  pull_request:
+  pull_request_target:
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - labeled
   workflow_dispatch:
 
 permissions:
@@ -17,7 +22,10 @@ permissions:
 jobs:
   build-test-spk:
     name: Build Test SPK
-    if: github.event_name == 'pull_request' || github.ref_type == 'branch' || github.event_name == 'workflow_dispatch'
+    if: |
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'push' && startsWith(github.ref, 'refs/heads/')) ||
+      (github.event_name == 'pull_request_target' && contains(github.event.pull_request.labels.*.name, 'ok-to-test'))
     uses: ./.github/workflows/spk-build-reusable.yml
     with:
       environment_name: test-spk
