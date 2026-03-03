@@ -235,11 +235,13 @@ jobs:
             const loaderUrl = `https://mnutt.github.io/sandstorm-test-app-loader/?spk_url=${encodeURIComponent(spkUrl)}&package_id=${encodeURIComponent(packageId)}`;
             const body = [
               marker,
-              "Sandstorm test build is ready.",
+              "## Sandstorm Test Build",
               "",
-              `- Loader URL: ${loaderUrl}`,
-              `- SPK URL: ${spkUrl}`,
-              `- Package ID: ${packageId || "(not detected)"}`,
+              "Preview app install links for this PR:",
+              "",
+              `- [Open Test App Loader](${loaderUrl})`,
+              `- [Download SPK](${spkUrl})`,
+              `- Package ID: \`${packageId || "(not detected)"}\``,
             ].join("\\n");
 
             const comments = await github.paginate(github.rest.issues.listComments, {
