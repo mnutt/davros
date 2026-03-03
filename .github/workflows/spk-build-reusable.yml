@@ -100,9 +100,9 @@ jobs:
           set -euo pipefail
           mkdir -p build
           if [ "${{ inputs.pack_mode }}" = "test" ]; then
-            pack_log="$(mktemp)"
-            lima-spk pack --dev --set-version "${GITHUB_SHA}" "${{ inputs.spk_output_path }}" 2>&1 | tee "$pack_log"
-            package_id="$(grep -Eo '[a-z0-9]{52,64}' "$pack_log" | tail -n1 || true)"
+            pack_json="$(lima-spk pack --dev --set-version "${GITHUB_SHA}" "${{ inputs.spk_output_path }}")"
+            printf '%s\n' "$pack_json"
+            package_id="$(printf '%s\n' "$pack_json" | jq -r '.packageId // empty')"
             if [ -n "$package_id" ]; then
               echo "package_id=$package_id" >> "$GITHUB_OUTPUT"
             fi
