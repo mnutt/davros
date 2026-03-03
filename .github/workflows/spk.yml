@@ -8,42 +8,27 @@ on:
   pull_request:
   workflow_dispatch:
 
-env:
-  NODE_VERSION: "24.13.0"
-
 jobs:
   build-spk:
-    name: Build davros.spk
+    name: Build spk
     runs-on: ubuntu-24.04
-    container:
-      image: node:24-bookworm
-      options: --security-opt seccomp=unconfined
-    defaults:
-      run:
-        shell: bash
-    timeout-minutes: 30
+    timeout-minutes: 60
 
     steps:
       - name: Check out a copy of the repo
         uses: actions/checkout@v4
 
-      - name: Enable Corepack
-        run: corepack enable
+      - name: Set up Lima
+        uses: lima-vm/lima-actions/setup@v1
+        id: lima-actions-setup
 
-      - name: Build app artifacts in workspace
-        run: |
-          set -euo pipefail
-          yarn install --immutable
-          yarn build:server
+      - name: Cache ~/.cache/lima
+        uses: actions/cache@v4
+        with:
+         path: ~/.cache/lima
+          key: lima-${{ steps.lima-actions-setup.outputs.version }}
+
           yarn build
-
-      - name: Install Sandstorm tooling (spk)
-        run: |
-          set -euo pipefail
-          apt-get update
-          apt-get install -y curl ca-certificates rsync sudo clang pkg-config capnproto libcapnp-dev make
-          curl -fsSL https://install.sandstorm.io > /tmp/install-sandstorm.sh
-          bash /tmp/install-sandstorm.sh -d -e -p 6090 || true
 
       - name: Restore Sandstorm signing keyring
         env:
@@ -57,15 +42,6 @@ jobs:
           printf '%s' "$SANDSTORM_KEYRING_B64" | base64 --decode > "$HOME/.sandstorm-keyring"
           chmod 600 "$HOME/.sandstorm-keyring"
 
-      - name: Prepare /opt/app for spk source paths
-        run: |
-          set -euo pipefail
-          mkdir -p /opt
-          rm -rf /opt/app
-          mkdir -p /opt/app
-          rsync -a --delete --exclude='.git' --exclude='node_modules' "$GITHUB_WORKSPACE"/ /opt/app/
-          chown -R "$(id -un):$(id -gn)" /opt/app
-
       - name: Normalize sandstorm-files.list
         run: |
           set -euo pipefail
@@ -73,25 +49,18 @@ jobs:
           awk '!/opt\/app\/dist\/assets\//' .sandstorm/sandstorm-files.list > "$tmpfile"
           mv "$tmpfile" .sandstorm/sandstorm-files.list
 
-      - name: Build artifacts for SPK
+      - name: Download lima-spk
+        run: git clone https://github.com/sandstorm-io/vagrant-spk /tmp/vagrant-spk
+
+      - name: Initialize lima vm
         run: |
-          set -euo pipefail
-          export USER="${USER:-$(id -un)}"
-          chmod +x /opt/app/.sandstorm/compile_helper.sh
-          /opt/app/.sandstorm/compile_helper.sh
-          test -d /opt/app/dist
-          test -x /opt/app/sandstorm-integration/bin/getPublicId
-          test -f /opt/app/output/app.js
+          /tmp/vagrant-spk/lima-spk vm up
 
       - name: Build SPK
         run: |
           set -euo pipefail
           mkdir -p build
-          (
-            cd .sandstorm
-            /opt/sandstorm/latest/bin/spk pack ../build/davros-${GITHUB_SHA}.spk
-          )
-          cp build/davros-${GITHUB_SHA}.spk davros.spk
+          /tmp/vagrant-spk/lima-spk pack build/davros-${GITHUB_SHA}.spk
 
       - name: Upload SPK artifact
         uses: actions/upload-artifact@v4
@@ -99,4 +68,3 @@ jobs:
           name: davros-spk-${{ github.sha }}
           path: |
             build/davros-${{ github.sha }}.spk
-            davros.spk
