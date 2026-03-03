@@ -33,6 +33,12 @@ jobs:
       - name: Install dependencies
         run: yarn install --immutable
 
+      - name: Build app artifacts
+        run: |
+          set -euo pipefail
+          yarn build
+          yarn build:server
+
       - name: Install Sandstorm tooling (spk)
         run: |
           set -euo pipefail
@@ -57,9 +63,15 @@ jobs:
           sudo mkdir -p /opt
           sudo rm -rf /opt/app
           sudo mkdir -p /opt/app
-          find $GITHUB_WORKSPACE/dist/
           sudo rsync -av --delete --exclude='.git' "$GITHUB_WORKSPACE"/ /opt/app/
           sudo chown -R "$USER:$USER" /opt/app
+
+      - name: Normalize sandstorm-files.list
+        run: |
+          set -euo pipefail
+          tmpfile="$(mktemp)"
+          awk '!/opt\/app\/dist\/assets\//' .sandstorm/sandstorm-files.list > "$tmpfile"
+          mv "$tmpfile" .sandstorm/sandstorm-files.list
 
       - name: Build SPK
         run: |
