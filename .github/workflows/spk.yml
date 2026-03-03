@@ -5,86 +5,32 @@ on:
     branches:
       - master
       - main
+    tags:
+      - "v*"
   pull_request:
   workflow_dispatch:
 
 jobs:
-  build-spk:
-    name: Build spk
-    runs-on: ubuntu-24.04
-    timeout-minutes: 60
+  build-test-spk:
+    name: Build Test SPK
+    if: github.event_name == 'pull_request' || github.ref_type == 'branch' || github.event_name == 'workflow_dispatch'
+    uses: ./.github/workflows/spk-build-reusable.yml
+    with:
+      environment_name: test-spk
+      pack_mode: test
+      spk_output_path: build/davros-test-${{ github.sha }}.spk
+      artifact_name: davros-test-spk-${{ github.sha }}
+    secrets:
+      sandstorm_keyring_b64: ${{ secrets.SANDSTORM_TEST_KEYRING_B64 }}
 
-    steps:
-      - name: Check out a copy of the repo
-        uses: actions/checkout@v4
-
-      - name: Set up Node.js 24
-        uses: actions/setup-node@v4
-        with:
-          node-version: "24"
-          cache: yarn
-
-      - name: Enable Corepack
-        run: corepack enable
-
-      - name: Install dependencies
-        run: yarn install --immutable
-
-      - name: Set up Lima
-        uses: lima-vm/lima-actions/setup@v1
-        id: lima-actions-setup
-
-      - name: Cache ~/.cache/lima
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/lima
-          key: lima-${{ steps.lima-actions-setup.outputs.version }}
-
-      - name: Restore Sandstorm signing keyring
-        env:
-          SANDSTORM_KEYRING_B64: ${{ secrets.SANDSTORM_KEYRING_B64 }}
-        run: |
-          set -euo pipefail
-          if [ -z "${SANDSTORM_KEYRING_B64:-}" ]; then
-            echo "::error::Missing required secret SANDSTORM_KEYRING_B64"
-            exit 1
-          fi
-          mkdir -p "$HOME/.sandstorm"
-          printf '%s' "$SANDSTORM_KEYRING_B64" | base64 --decode > "$HOME/.sandstorm/sandstorm-keyring"
-          chmod 600 "$HOME/.sandstorm/sandstorm-keyring"
-
-      - name: Normalize sandstorm-files.list
-        run: |
-          set -euo pipefail
-          tmpfile="$(mktemp)"
-          awk '!/opt\/app\/dist\/assets\//' .sandstorm/sandstorm-files.list > "$tmpfile"
-          mv "$tmpfile" .sandstorm/sandstorm-files.list
-
-      - name: Download lima-spk
-        run: git clone https://github.com/sandstorm-io/vagrant-spk /tmp/vagrant-spk
-
-      - name: Add /tmp/vagrant-spk to PATH
-        run: echo "/tmp/vagrant-spk" >> "$GITHUB_PATH"
-
-      - name: Initialize lima vm
-        run: |
-          /tmp/vagrant-spk/lima-spk vm up
-
-      - name: Build app
-        run: yarn build
-
-      - name: Build dependencies
-        run: printf "sg sandstorm -c '/opt/app/.sandstorm/build.sh'\nexit\n" | lima-spk vm ssh
-
-      - name: Build SPK
-        run: |
-          set -euo pipefail
-          mkdir -p build
-          /tmp/vagrant-spk/lima-spk pack build/davros-${GITHUB_SHA}.spk
-
-      - name: Upload SPK artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: davros-spk-${{ github.sha }}
-          path: |
-            build/davros-${{ github.sha }}.spk
+  build-release-spk:
+    name: Build Release SPK
+    if: startsWith(github.ref, 'refs/tags/') || github.event_name == 'workflow_dispatch'
+    uses: ./.github/workflows/spk-build-reusable.yml
+    with:
+      environment_name: release-spk
+      pack_mode: release
+      spk_output_path: build/davros-${{ github.sha }}.spk
+      artifact_name: davros-release-spk-${{ github.sha }}
+    secrets:
+      sandstorm_keyring_b64: ${{ secrets.SANDSTORM_KEYRING_B64 }}
