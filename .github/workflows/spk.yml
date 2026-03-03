@@ -18,6 +18,18 @@ jobs:
       - name: Check out a copy of the repo
         uses: actions/checkout@v4
 
+      - name: Set up Node.js 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: yarn
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
       - name: Set up Lima
         uses: lima-vm/lima-actions/setup@v1
         id: lima-actions-setup
@@ -25,10 +37,11 @@ jobs:
       - name: Cache ~/.cache/lima
         uses: actions/cache@v4
         with:
-         path: ~/.cache/lima
+          path: ~/.cache/lima
           key: lima-${{ steps.lima-actions-setup.outputs.version }}
 
-          yarn build
+      - name: Build app
+        run: yarn build
 
       - name: Restore Sandstorm signing keyring
         env:
