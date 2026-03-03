@@ -1518,7 +1518,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@embroider/macros@npm:1.20.0, @embroider/macros@npm:^1.16.12, @embroider/macros@npm:^1.16.5, @embroider/macros@npm:^1.16.9, @embroider/macros@npm:^1.19.6":
+"@embroider/macros@npm:1.20.0, @embroider/macros@npm:^1.16.12, @embroider/macros@npm:^1.16.5, @embroider/macros@npm:^1.16.9, @embroider/macros@npm:^1.20.0":
   version: 1.20.0
   resolution: "@embroider/macros@npm:1.20.0"
   dependencies:
@@ -5369,7 +5369,7 @@ __metadata:
     "@embroider/config-meta-loader": "npm:^1.0.0"
     "@embroider/core": "npm:^4.4.4"
     "@embroider/legacy-inspector-support": "npm:^0.1.3"
-    "@embroider/macros": "npm:^1.19.6"
+    "@embroider/macros": "npm:^1.20.0"
     "@embroider/router": "npm:^3.0.6"
     "@embroider/vite": "npm:^1.6.0"
     "@eslint/js": "npm:^9.39.2"
@@ -5396,7 +5396,7 @@ __metadata:
     ember-modifier: "npm:^4.3.0"
     ember-qunit: "npm:^9.0.4"
     ember-resolver: "npm:^13.2.0"
-    ember-source: "npm:6.11.0"
+    ember-source: "npm:^6.11.0"
     ember-template-lint: "npm:^7.9.3"
     esbuild: "npm:^0.27.3"
     eslint: "npm:^9.39.2"
@@ -6073,7 +6073,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ember-source@npm:6.11.0":
+"ember-source@npm:^6.11.0":
   version: 6.11.0
   resolution: "ember-source@npm:6.11.0"
   dependencies:
