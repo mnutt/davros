@@ -126,7 +126,21 @@ jobs:
                 per_page: 100,
               });
               const existing = releases.find((release) => release.tag_name === tag);
-              if (existing) return existing;
+              if (existing) {
+                if (existing.draft) {
+                  const updated = await github.rest.repos.updateRelease({
+                    owner,
+                    repo,
+                    release_id: existing.id,
+                    name: releaseName,
+                    body: releaseBody,
+                    draft: false,
+                    prerelease: true,
+                  });
+                  return updated.data;
+                }
+                return existing;
+              }
 
               const created = await github.rest.repos.createRelease({
                 owner,
@@ -134,7 +148,7 @@ jobs:
                 tag_name: tag,
                 name: releaseName,
                 body: releaseBody,
-                draft: true,
+                draft: false,
                 prerelease: true,
               });
               return created.data;
@@ -200,7 +214,8 @@ jobs:
               });
             }
 
-            core.setOutput("spk_http_url", uploaded.data.browser_download_url);
+            const spkHttpUrl = `https://github.com/${owner}/${repo}/releases/download/${tag}/${encodeURIComponent(assetName)}`;
+            core.setOutput("spk_http_url", spkHttpUrl);
             core.setOutput("package_id", process.env.PACKAGE_ID || "");
 
       - name: Comment test app loader URL on PR
