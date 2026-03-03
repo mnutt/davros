@@ -40,9 +40,6 @@ jobs:
           path: ~/.cache/lima
           key: lima-${{ steps.lima-actions-setup.outputs.version }}
 
-      - name: Build app
-        run: yarn build
-
       - name: Restore Sandstorm signing keyring
         env:
           SANDSTORM_KEYRING_B64: ${{ secrets.SANDSTORM_KEYRING_B64 }}
@@ -52,8 +49,9 @@ jobs:
             echo "::error::Missing required secret SANDSTORM_KEYRING_B64"
             exit 1
           fi
-          printf '%s' "$SANDSTORM_KEYRING_B64" | base64 --decode > "$HOME/.sandstorm-keyring"
-          chmod 600 "$HOME/.sandstorm-keyring"
+          mkdir -p "$HOME/.sandstorm"
+          printf '%s' "$SANDSTORM_KEYRING_B64" | base64 --decode > "$HOME/.sandstorm/sandstorm-keyring"
+          chmod 600 "$HOME/.sandstorm/sandstorm-keyring"
 
       - name: Normalize sandstorm-files.list
         run: |
@@ -65,9 +63,18 @@ jobs:
       - name: Download lima-spk
         run: git clone https://github.com/sandstorm-io/vagrant-spk /tmp/vagrant-spk
 
+      - name: Add /tmp/vagrant-spk to PATH
+        run: echo "/tmp/vagrant-spk" >> "$GITHUB_PATH"
+
       - name: Initialize lima vm
         run: |
           /tmp/vagrant-spk/lima-spk vm up
+
+      - name: Build app
+        run: yarn build
+
+      - name: Build dependencies
+        run: printf "sg sandstorm -c '/opt/app/.sandstorm/build.sh'\nexit\n" | lima-spk vm ssh
 
       - name: Build SPK
         run: |
