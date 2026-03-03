@@ -13,11 +13,6 @@ export default {
     [
       'babel-plugin-ember-template-compilation',
       {
-        enableLegacyModules: [
-          'ember-cli-htmlbars',
-          'ember-cli-htmlbars-inline-precompile',
-          'htmlbars-inline-precompile',
-        ],
         transforms: [...templateCompatSupport()],
       },
     ],
