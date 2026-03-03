@@ -15,35 +15,35 @@ jobs:
   build-spk:
     name: Build davros.spk
     runs-on: ubuntu-24.04
+    container:
+      image: node:24-bookworm
+      options: --security-opt seccomp=unconfined
+    defaults:
+      run:
+        shell: bash
     timeout-minutes: 30
 
     steps:
       - name: Check out a copy of the repo
         uses: actions/checkout@v4
 
-      - name: Use Node.js ${{ env.NODE_VERSION }}
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: yarn
-
       - name: Enable Corepack
         run: corepack enable
 
-      - name: Install dependencies
-        run: yarn install --immutable
-
-      - name: Build app artifacts
+      - name: Build app artifacts in workspace
         run: |
           set -euo pipefail
-          yarn build
+          yarn install --immutable
           yarn build:server
+          yarn build
 
       - name: Install Sandstorm tooling (spk)
         run: |
           set -euo pipefail
+          apt-get update
+          apt-get install -y curl ca-certificates rsync sudo clang pkg-config capnproto libcapnp-dev make
           curl -fsSL https://install.sandstorm.io > /tmp/install-sandstorm.sh
-          sudo bash /tmp/install-sandstorm.sh -d -e -p 6090
+          bash /tmp/install-sandstorm.sh -d -e -p 6090 || true
 
       - name: Restore Sandstorm signing keyring
         env:
@@ -60,11 +60,11 @@ jobs:
       - name: Prepare /opt/app for spk source paths
         run: |
           set -euo pipefail
-          sudo mkdir -p /opt
-          sudo rm -rf /opt/app
-          sudo mkdir -p /opt/app
-          sudo rsync -av --delete --exclude='.git' "$GITHUB_WORKSPACE"/ /opt/app/
-          sudo chown -R "$USER:$USER" /opt/app
+          mkdir -p /opt
+          rm -rf /opt/app
+          mkdir -p /opt/app
+          rsync -a --delete --exclude='.git' --exclude='node_modules' "$GITHUB_WORKSPACE"/ /opt/app/
+          chown -R "$(id -un):$(id -gn)" /opt/app
 
       - name: Normalize sandstorm-files.list
         run: |
@@ -72,6 +72,16 @@ jobs:
           tmpfile="$(mktemp)"
           awk '!/opt\/app\/dist\/assets\//' .sandstorm/sandstorm-files.list > "$tmpfile"
           mv "$tmpfile" .sandstorm/sandstorm-files.list
+
+      - name: Build artifacts for SPK
+        run: |
+          set -euo pipefail
+          export USER="${USER:-$(id -un)}"
+          chmod +x /opt/app/.sandstorm/compile_helper.sh
+          /opt/app/.sandstorm/compile_helper.sh
+          test -d /opt/app/dist
+          test -x /opt/app/sandstorm-integration/bin/getPublicId
+          test -f /opt/app/output/app.js
 
       - name: Build SPK
         run: |
