@@ -68,6 +68,7 @@
     "@tailwindcss/forms": "^0.5.10",
     "autoprefixer": "^10.4.21",
     "babel-plugin-ember-template-compilation": "^3.1.0",
+    "broccoli-plugin": "^4.0.7",
     "date-fns": "^2.27.0",
     "decorator-transforms": "^2.3.1",
     "ember-cli": "^6.11.0",

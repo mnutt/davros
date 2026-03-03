@@ -5381,6 +5381,7 @@ __metadata:
     asyncjs: "https://github.com/mnutt/async.js.git#ad52b322176a88ef55c76052a9b3a8aa8bd6e083"
     autoprefixer: "npm:^10.4.21"
     babel-plugin-ember-template-compilation: "npm:^3.1.0"
+    broccoli-plugin: "npm:^4.0.7"
     cache-require-paths: "npm:0.3.0"
     child-process-promise: "npm:^2.2.1"
     compression: "npm:^1.8.1"
