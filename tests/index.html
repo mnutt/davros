@@ -10,9 +10,9 @@
     {{content-for "head"}}
     {{content-for "test-head"}}
 
-    <link rel="stylesheet" href="/@embroider/virtual/vendor.css">
-    <link rel="stylesheet" href="/@embroider/virtual/app.css">
-    <link rel="stylesheet" href="/@embroider/virtual/test-support.css">
+    <link rel="stylesheet" href="/@embroider/virtual/vendor.css" vite-ignore>
+    <link rel="stylesheet" href="/@embroider/virtual/app.css" vite-ignore>
+    <link rel="stylesheet" href="/@embroider/virtual/test-support.css" vite-ignore>
 
     {{content-for "head-footer"}}
     {{content-for "test-head-footer"}}
@@ -28,11 +28,12 @@
       </div>
     </div>
 
-    <script src="/testem.js" integrity="" data-embroider-ignore></script>
-    <script src="/@embroider/virtual/vendor.js"></script>
-    <script src="/@embroider/virtual/test-support.js"></script>
-    <script type="module">import "ember-testing";</script>
+    <script src="/testem.js" integrity="" data-embroider-ignore vite-ignore></script>
+    <script src="/@embroider/virtual/vendor.js" vite-ignore></script>
+    <script src="/@embroider/virtual/test-support.js" vite-ignore></script>
     <script type="module">
+      import 'ember-testing';
+
       import { start } from './test-helper';
 
       import.meta.glob('./**/*-test.{gts,gjs,js,mjs,ts,mts}', { eager: true });

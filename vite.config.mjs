@@ -14,29 +14,6 @@ export default defineConfig({
   build: {
     sourcemap: true,
     chunkSizeWarningLimit: 1600,
-    rollupOptions: {
-      output: {
-        manualChunks(id) {
-          if (!id.includes('node_modules')) {
-            return;
-          }
-
-          // Split third-party modules into per-package chunks for better caching and
-          // to avoid a single oversized vendor bundle.
-          const path = id.split('node_modules/')[1];
-          if (!path) {
-            return 'vendor';
-          }
-
-          const [scopeOrName, maybeName] = path.split('/');
-          if (scopeOrName.startsWith('@') && maybeName) {
-            return `vendor-${scopeOrName.slice(1)}-${maybeName}`;
-          }
-
-          return `vendor-${scopeOrName}`;
-        },
-      },
-    },
   },
   server: {
     proxy: {

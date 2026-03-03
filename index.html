@@ -10,15 +10,15 @@
 
     {{content-for "head"}}
 
-    <link rel="stylesheet" href="/@embroider/virtual/vendor.css">
-    <link rel="stylesheet" href="/@embroider/virtual/app.css">
+    <link rel="stylesheet" href="/@embroider/virtual/vendor.css" vite-ignore>
+    <link rel="stylesheet" href="/@embroider/virtual/app.css" vite-ignore>
 
     {{content-for "head-footer"}}
   </head>
   <body>
     {{content-for "body"}}
 
-    <script src="/@embroider/virtual/vendor.js"></script>
+    <script src="/@embroider/virtual/vendor.js" vite-ignore></script>
     <script type="module">
       import Application from './app/app';
       import environment from './app/config/environment';
