@@ -22,7 +22,9 @@ npm-debug.log*
 yarn-error.log
 testem.log
 /.cache-require-paths.json
-/.yarn
+/.yarn/*
+!/.yarn/releases/
+!/.yarn/releases/*
 
 # webdav data
 /data/*
@@ -32,4 +34,7 @@ testem.log
 # ember-try
 /.node_modules.ember-try/
 /bower.json.ember-try
+/npm-shrinkwrap.json.ember-try
 /package.json.ember-try
+/package-lock.json.ember-try
+/yarn.lock.ember-try

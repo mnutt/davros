@@ -4,10 +4,9 @@ import { action } from '@ember/object';
 
 export default class MenuItem extends Component {
   @action
-  handleClick() {
-    this.dropdown.actions.close();
-    if (typeof this.onClick === 'function') {
-      this.onClick(...arguments);
+  handleClick(...args) {
+    if (typeof this.args.onClick === 'function') {
+      this.args.onClick(...args);
     }
   }
 }

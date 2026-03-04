@@ -24,11 +24,13 @@ To install yarn run `npm install -g yarn`
 Then:
 
 - `yarn install`
-- `yarn dev --port=3009`
+- `yarn dev`
 
-At this point you'll have Davros running at `http://localhost:3009`. Substitute `3009` for another port if you want. Note that running Davros this way is not particularly safe; it relies completely on Sandstorm for user management and authentication.
+At this point you'll have Davros running at `http://localhost:4200` (Vite UI) with the backend API/WebDAV server on `http://localhost:8000` proxied through Vite.
+If you need a different backend port, set `DAVROS_BACKEND_URL` for the UI and `PORT` for the backend.
+Note that running Davros this way is not at all safe for anything but local development; it relies completely on Sandstorm for user management and authentication.
 
-In development, you can connect your desktop client to http://localhost:3009/ with any username and password.
+In development, you can connect your desktop client to the backend URL (default `http://localhost:8000/`) with any username and password.
 
 ## Sandstorm Development
 
@@ -51,16 +53,14 @@ for you.
 
 Releasing an app is a little bit convoluted. This assumes you are on a non-linux machine, running sandstorm via vagrant-spk. On linux, you might be able to get away with skipping step 1.
 
-1. `vagrant-spk vm ssh` then `cd /opt/app && rm -rf node_modules/sharp && yarn` -- this is because the `sharp` module has native components that need to be built on linux
-2. Edit `.sandstorm/sandstorm-pkgdef.capnp` and update `appVersion` and `appMarketingVersion`. Bump major version for major breaking changes, minor version for significant new features, and patch version for tiny features and bugfixes.
-3. Edit `CHANGELOG.md` and add a section with your new version.
-4. Run `yarn build` to build the UI.
-5. Run `yarn build-server` to build the backend.
-6. Run `vagrant-spk dev` and navigate around the app testing various functionality. This is generally good to do, but when you exit, this will also update `.sandstorm/sandstorm-files.list` with any new files.
-7. Run `vagrant-spk pack build/[VERSION].spk` (replacing `[VERSION]` with the version you chose in step 2)
-8. On a sandstorm instance, upload the packed app file and install it. Test it to ensure everything works properly and that all files were included.
-9. Commit any uncommitted changes and tag them `v[VERSION]`.
-10. Run `vagrant-spk publish build/[VERSION].spk`
+1. Edit `.sandstorm/sandstorm-pkgdef.capnp` and update `appVersion` and `appMarketingVersion`. Bump major version for major breaking changes, minor version for significant new features, and patch version for tiny features and bugfixes.
+2. Edit `CHANGELOG.md` and add a section with your new version.
+3. Run `yarn build` to build the UI.
+4. Run `vagrant-spk dev` and navigate around the app testing various functionality. This is generally good to do, but when you exit, this will also update `.sandstorm/sandstorm-files.list` with any new files.
+5. Run `vagrant-spk pack build/[VERSION].spk` (replacing `[VERSION]` with the version you chose in step 2)
+6. On a sandstorm instance, upload the packed app file and install it. Test it to ensure everything works properly and that all files were included.
+7. Commit any uncommitted changes and tag them `v[VERSION]`.
+8. Run `vagrant-spk publish build/[VERSION].spk`
 
 ### Acknowledgements
 

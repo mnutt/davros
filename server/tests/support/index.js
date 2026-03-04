@@ -1,4 +1,4 @@
-/* eslint-env node, mocha */
+/* eslint-env node */
 
 const os = require('os');
 const http = require('http');
@@ -14,7 +14,24 @@ exports.makeApp = function () {
   let app = express();
   let server = http.createServer(app);
   api(app, { httpServer: server });
-  return app;
+  server.listen(0);
+  return server;
+};
+
+exports.closeServer = function (server) {
+  if (!server || !server.listening) {
+    return Promise.resolve();
+  }
+
+  return new Promise((resolve, reject) => {
+    server.close((err) => {
+      if (err) {
+        reject(err);
+        return;
+      }
+      resolve();
+    });
+  });
 };
 
 exports.xmlResponse = function (res) {

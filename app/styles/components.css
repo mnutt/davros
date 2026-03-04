@@ -3,7 +3,6 @@
 @import './forms';
 @import './changelog';
 @import './sidebar';
-@import 'photoswipe/dist/photoswipe.css';
 
 .file-list tbody tr:nth-child(odd) {
   @apply bg-opacity-20;
@@ -59,4 +58,14 @@
   100% {
     transform: translateX(0);
   }
+}
+
+.slideshow-scroll {
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.slideshow-scroll::-webkit-scrollbar {
+  display: none;
 }

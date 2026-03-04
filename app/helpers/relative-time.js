@@ -1,4 +1,3 @@
-import { run } from '@ember/runloop';
 import Helper from '@ember/component/helper';
 import { formatDistanceToNowStrict } from 'date-fns';
 import locales from '../lib/date-locales';
@@ -27,7 +26,7 @@ export default class RelativeTimeHelper extends Helper {
        * for queue to clear.
        */
       this.intervalTimer = setTimeout(() => {
-        run(() => this.recompute());
+        this.recompute();
       }, parseInt(interval, 10));
     }
 

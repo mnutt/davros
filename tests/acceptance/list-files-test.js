@@ -1,7 +1,7 @@
 import { click, currentURL, find, visit } from '@ember/test-helpers';
 import { module, test } from 'qunit';
 import { setupApplicationTest } from 'ember-qunit';
-import { makeDirectory, makeAndEnterNewDirectory } from 'davros/tests/helpers/directory';
+import { makeDirectory, makeAndEnterNewDirectory } from '../helpers/directory';
 
 module('Acceptance | list files', function (hooks) {
   setupApplicationTest(hooks);

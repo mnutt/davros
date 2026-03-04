@@ -11,6 +11,23 @@ var Exc = require('jsDAV/lib/shared/exceptions');
 var Etag = require('./etag');
 var ChildProcess = require('child_process');
 var PropHandlers = require('./prop-handlers');
+var apiWs = require('../../api-ws');
+
+function notifyDirectoryFromRequestUrl(url) {
+  if (!url || typeof url !== 'string') {
+    return;
+  }
+
+  var decodedUrl = decodeURIComponent(url);
+  var pathWithoutDav = decodedUrl.replace(/^\/dav/, '');
+  var directory = Path.dirname(pathWithoutDav);
+
+  if (directory === '.') {
+    directory = '/';
+  }
+
+  apiWs.notify(directory);
+}
 
 var Directory = (module.exports = jsDAV_FSExt_Directory.extend(jsDAV_iFile, Etag, PropHandlers, {
   propHandlers: {
@@ -110,7 +127,16 @@ var Directory = (module.exports = jsDAV_FSExt_Directory.extend(jsDAV_iFile, Etag
       if (err) return cbfscreatefile(err);
 
       var file = File.new([self.path, name].join('/'));
-      file.getETag(cbfscreatefile);
+      file.getETag(function (etagErr, etag) {
+        if (!etagErr) {
+          var requestUrl = self.handler && self.handler.httpRequest && self.handler.httpRequest.url;
+          if (requestUrl) {
+            notifyDirectoryFromRequestUrl(requestUrl);
+          }
+        }
+
+        cbfscreatefile(etagErr, etag);
+      });
     });
   },
 
@@ -130,9 +156,19 @@ var Directory = (module.exports = jsDAV_FSExt_Directory.extend(jsDAV_iFile, Etag
       handler.httpRequest.headers['oc-file-name'] = name;
       this.writeFileChunk(handler, enc, cbfscreatefile);
     } else {
-      jsDAV_FSExt_Directory.createFileStream.call(this, handler, name, enc, function () {
+      jsDAV_FSExt_Directory.createFileStream.call(this, handler, name, enc, function (err) {
+        if (err) {
+          return cbfscreatefile(err);
+        }
+
         var file = File.new([self.path, name].join('/'));
-        file.getETag(cbfscreatefile);
+        file.getETag(function (etagErr, etag) {
+          if (!etagErr) {
+            notifyDirectoryFromRequestUrl(handler.httpRequest.url);
+          }
+
+          cbfscreatefile(etagErr, etag);
+        });
       });
     }
   },
@@ -214,7 +250,13 @@ var Directory = (module.exports = jsDAV_FSExt_Directory.extend(jsDAV_iFile, Etag
               Path.join(self.path, filename)
             );
 
-            self.getETag(cbfswritechunk);
+            self.getETag(function (etagErr, etag) {
+              if (!etagErr) {
+                notifyDirectoryFromRequestUrl(handler.httpRequest.url);
+              }
+
+              cbfswritechunk(etagErr, etag);
+            });
           });
         });
       } else {

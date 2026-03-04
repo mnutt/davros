@@ -1,3 +1,3 @@
-import FileRoute from 'davros/routes/file';
+import FileRoute from './file';
 
 export default class FilesRoute extends FileRoute {}

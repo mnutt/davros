@@ -38,7 +38,6 @@ export default class OfferIframe extends Component {
   messageListener(event) {
     if (event.data && event.data.rpcId === guidFor(this)) {
       if (event.data.error) {
-        // eslint-disable-next-line no-console
         console.error('Offer template error: ' + event.data.error);
       } else {
         this.src = event.data.uri;

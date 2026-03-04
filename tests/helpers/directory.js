@@ -8,7 +8,7 @@ export async function makeAndEnterNewDirectory(directoryName) {
   await visit('/files/');
 
   directoryName = await makeDirectory(directoryName);
-  await click(`[href*="${directoryName}"]`);
+  await visit(`/files/${encodeURIComponent(directoryName)}/`);
 
   return directoryName;
 }
@@ -25,7 +25,9 @@ export async function makeDirectory(name = generateDirectoryName()) {
 
 export async function reload() {
   // This simulates the model reload that would normally be handled by websockets
+  await settled();
+  await new Promise((res) => setTimeout(res, 250));
   await click('.reload');
-  await new Promise((res) => setTimeout(res, 300));
+  await new Promise((res) => setTimeout(res, 400));
   await settled();
 }

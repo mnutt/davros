@@ -1,5 +1,4 @@
 import Service from '@ember/service';
-import fetch from 'fetch';
 import { tracked } from '@glimmer/tracking';
 
 function isIframed() {

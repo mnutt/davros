@@ -1,7 +1,13 @@
 import Component from '@glimmer/component';
+import { action } from '@ember/object';
 
 export default class PathBreadcrumbComponent extends Component {
-  k() {}
+  @action
+  noop() {}
+
+  get onClick() {
+    return typeof this.args.onClick === 'function' ? this.args.onClick : this.noop;
+  }
 
   get parts() {
     const pieces = (this.args.path || '').split('/');

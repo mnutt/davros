@@ -10,9 +10,7 @@
     {{content-for "head"}}
     {{content-for "test-head"}}
 
-    <link rel="stylesheet" href="{{rootURL}}assets/vendor.css">
-    <link rel="stylesheet" href="{{rootURL}}assets/davros.css">
-    <link rel="stylesheet" href="{{rootURL}}assets/test-support.css">
+    <link rel="stylesheet" href="/@embroider/virtual/test-support.css" vite-ignore>
 
     {{content-for "head-footer"}}
     {{content-for "test-head-footer"}}
@@ -28,13 +26,19 @@
       </div>
     </div>
 
-    <script src="/testem.js" integrity="" data-embroider-ignore></script>
-    <script src="{{rootURL}}assets/vendor.js"></script>
-    <script src="{{rootURL}}assets/test-support.js"></script>
-    <script src="{{rootURL}}assets/davros.js"></script>
-    <script src="{{rootURL}}assets/tests.js"></script>
+    <script src="/testem.js" integrity="" data-embroider-ignore vite-ignore></script>
+    <script src="/@embroider/virtual/vendor.js" vite-ignore></script>
+    <script src="/@embroider/virtual/test-support.js" vite-ignore></script>
+    <script type="module">
+      import 'ember-testing';
 
+      import { start } from './test-helper';
+
+      import.meta.glob('./**/*-test.{gts,gjs,js,mjs,ts,mts}', { eager: true });
+
+      start();
+    </script>
     {{content-for "body-footer"}}
-    {{content-for "test-body-footer"}}
+    
   </body>
 </html>

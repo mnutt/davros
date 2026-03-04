@@ -2,6 +2,6 @@
         class="offer-iframe border h-8 p-1 bg-white"
         src={{this.src}}
         ...attributes
-        {{did-insert this.setupListener}}
-        {{will-destroy this.destroyListener}}>
+        {{on-insert this.setupListener}}
+        {{on-destroy this.destroyListener}}>
 </iframe>

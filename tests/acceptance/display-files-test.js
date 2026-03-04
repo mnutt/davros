@@ -1,8 +1,7 @@
-import { find, click, currentURL } from '@ember/test-helpers';
+import { find, click, currentURL, visit } from '@ember/test-helpers';
 import { module, test } from 'qunit';
 import { setupApplicationTest } from 'ember-qunit';
-import { selectFiles } from 'ember-file-upload/test-support';
-import { makeImage } from '../helpers/upload';
+import { makeImage, selectFiles } from '../helpers/upload';
 import { makeAndEnterNewDirectory, reload } from '../helpers/directory';
 import { mp4File } from '../fixtures/files';
 
@@ -47,5 +46,18 @@ module('Acceptance | display files', function (hooks) {
     assert.dom('.updated').hasText('Updated a moment ago');
 
     assert.dom('.size').hasText('265B');
+  });
+
+  test('uploading in a directory with spaces keeps the file in that directory', async function (assert) {
+    await makeAndEnterNewDirectory('test dir');
+    assert.equal(currentURL(), '/files/test%20dir/');
+
+    await selectFiles('input[type="file"]', await makeImage('my-image.png'));
+    await reload();
+
+    assert.dom('.filename').hasText('my-image.png');
+
+    await visit('/files/');
+    assert.dom('.file-list').doesNotIncludeText('test%20dir');
   });
 });

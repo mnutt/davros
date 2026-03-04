@@ -1,13 +1,17 @@
-import filetypes from 'davros/lib/filetypes';
-import filetypeIcons from 'davros/lib/filetype-icons';
-import DavClient from 'davros/lib/webdav';
-import fetch from 'fetch';
+import filetypes from '../lib/filetypes';
+import filetypeIcons from '../lib/filetype-icons';
+import DavClient from '../lib/webdav';
 import { tracked } from '@glimmer/tracking';
-import ensureCollectionExists from 'davros/lib/ensure-collection-exists';
+import ensureCollectionExists from '../lib/ensure-collection-exists';
 import { addListener, removeListener, sendEvent } from '@ember/object/events';
 
 export const base = '/dav';
 const client = new DavClient(base);
+
+async function pdfBlobFromResponse(response) {
+  const body = await response.arrayBuffer();
+  return new Blob([body], { type: 'application/pdf' });
+}
 
 export default class File {
   @tracked path; // file's path within the dav server, excluding the dav base
@@ -16,6 +20,10 @@ export default class File {
   @tracked files = []; // if a directory, a list of children
   @tracked isDirectory = false;
   @tracked dimensions = [0, 0];
+  @tracked previewBlobUrl = null;
+  @tracked previewNeedsCapability = false;
+  @tracked previewPowerboxQueryDescriptor = null;
+  _reloadRequestId = 0;
 
   constructor(attrs = {}) {
     Object.assign(this, attrs);
@@ -43,10 +51,21 @@ export default class File {
   }
 
   async reload() {
+    const requestId = ++this._reloadRequestId;
     const items = await client.load(this.path);
+
+    if (requestId !== this._reloadRequestId) {
+      return;
+    }
+
     Object.assign(this, items.shift());
 
     await this.setPropertiesFromItems(items);
+
+    if (requestId !== this._reloadRequestId) {
+      return;
+    }
+
     sendEvent(this, 'reload');
   }
 
@@ -65,15 +84,47 @@ export default class File {
     } else if (this.type === 'document') {
       try {
         const previewResponse = await fetch(this.documentPreviewUrl);
-        this.previewContent = await previewResponse.text();
+        this.setPreviewBlobUrl(null);
+        this.previewNeedsCapability = false;
+        this.previewPowerboxQueryDescriptor = null;
+        this.previewFailed = false;
 
-        if (!this.previewContent.length) {
-          this.previewFailed = true;
+        const contentType = String(previewResponse.headers.get('content-type') || '').toLowerCase();
+        if (previewResponse.status === 428 || !previewResponse.ok || contentType.includes('application/json')) {
+          let payload = null;
+          try {
+            payload = await previewResponse.clone().json();
+          } catch (e) {
+            payload = null;
+          }
+
+          if (payload?.powerboxRequired) {
+            this.previewNeedsCapability = true;
+            this.previewPowerboxQueryDescriptor = payload.queryDescriptor || null;
+            return;
+          }
         }
+
+        if (!previewResponse.ok) {
+          throw new Error(`Preview request failed: ${previewResponse.status}`);
+        }
+
+        const pdfBlob = await pdfBlobFromResponse(previewResponse);
+        this.setPreviewBlobUrl(URL.createObjectURL(pdfBlob));
       } catch (e) {
+        console.error('Document preview failed', e);
+        this.setPreviewBlobUrl(null);
         this.previewFailed = true;
       }
     }
+  }
+
+  setPreviewBlobUrl(nextUrl) {
+    if (this.previewBlobUrl) {
+      URL.revokeObjectURL(this.previewBlobUrl);
+    }
+
+    this.previewBlobUrl = nextUrl;
   }
 
   get name() {
@@ -81,7 +132,13 @@ export default class File {
   }
 
   get sortedFiles() {
-    return this.files.sortBy('isFile', 'name');
+    return [...this.files].sort((a, b) => {
+      if (a.isFile !== b.isFile) {
+        return a.isFile ? 1 : -1;
+      }
+
+      return a.name.localeCompare(b.name);
+    });
   }
 
   get lotsOfFiles() {
@@ -150,7 +207,7 @@ export default class File {
     return client.remove(this.path);
   }
 
-  move(destinationDir) {
+  move(destinationDir, { overwrite = true } = {}) {
     if (this.path === destinationDir) {
       throw new Error('Cannot copy a directory to itself');
     }
@@ -159,11 +216,11 @@ export default class File {
       throw new Error('Cannot move files to their own directory');
     }
 
-    return client.move(this.path, [destinationDir, this.name].join('/'));
+    return client.move(this.path, [destinationDir, this.name].join('/'), { overwrite });
   }
 
-  rename(newName) {
-    return client.move(this.path, [this.parent, newName].join('/'));
+  rename(newName, { overwrite = true } = {}) {
+    return client.move(this.path, [this.parent, newName].join('/'), { overwrite });
   }
 
   loadFromResponse(response) {

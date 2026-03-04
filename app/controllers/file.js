@@ -1,31 +1,29 @@
 import Controller from '@ember/controller';
-import { inject as service } from '@ember/service';
-import { task } from 'ember-concurrency-decorators';
+import { service } from '@ember/service';
+import { task } from 'ember-concurrency';
 import { action } from '@ember/object';
-import fetch from 'fetch';
-import File from 'davros/models/file';
+import File from '../models/file';
+import { encodePath } from '../lib/path-encoding';
 
 export default class FileController extends Controller {
   @service router;
 
-  @task({
-    maxConcurrency: 5,
-    enqueue: true,
-  })
-  *uploadFile(file) {
-    if (file.blob.type === '') {
-      yield;
-    } // it's a directory
+  uploadFile = task({ maxConcurrency: 5, enqueue: true }, async (file) => {
+    if (!file.name && file.size === 0) {
+      return;
+    } // directory placeholder from drag/drop
 
     let location = document.location.pathname;
-    let path = file.blob.webkitRelativePath || file.fullPath || file.name;
-    path = encodeURIComponent(path);
+    const nativeFile = file.file || {};
+    let path = nativeFile.webkitRelativePath || file.fullPath || file.name;
+    path = encodePath(path);
 
     if (location.indexOf('/files') === 0) {
       // if user is in a directory, upload the files there
       location = location.replace(/^\/files\//, '');
       // dirname of current path, so if path is /foo/README, use /foo/
       location = location.replace(/\/[^/]*$/, '');
+      location = encodePath(location);
     } else {
       // otherwise, upload files in the root directory
       // (this shouldn't happen anymore)
@@ -38,18 +36,14 @@ export default class FileController extends Controller {
 
     var fullPath = [location, path].join('');
 
-    yield File.ensureCollectionExists(fullPath).then(() => {
-      return file
-        .upload('/api/upload', {
-          data: {
-            destination: fullPath,
-          },
-        })
-        .then(() => {
-          return this.model.reload();
-        });
+    await File.ensureCollectionExists(fullPath);
+    await file.upload('/api/upload', {
+      data: {
+        destination: fullPath,
+      },
     });
-  }
+    await this.model.reload();
+  });
 
   @action
   newDirectory(dirname) {

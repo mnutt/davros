@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 const startTime = (global.start = new Date());
 
 const express = require('express');
@@ -7,7 +6,6 @@ const api = require('./server');
 const path = require('path');
 const http = require('http');
 const compression = require('compression');
-const process = require('process');
 
 let root = __dirname;
 if (/output$/.test(root)) {
@@ -16,31 +14,38 @@ if (/output$/.test(root)) {
 }
 
 const indexFile = path.resolve(root + '/dist/index.html');
+const skipDistCheck = process.env.SKIP_DIST_CHECK === '1';
 
 const app = express();
 const server = http.createServer(app);
 
 app.use(compression());
-app.use(express.static('dist'));
+if (!skipDistCheck) {
+  app.use(express.static('dist'));
+}
 
 api(app, { httpServer: server });
 
-app.use('/', function(req, res) {
-  // send ember's index.html for any unknown route
-  res.sendFile(indexFile);
-});
+if (!skipDistCheck) {
+  app.use('/', function(req, res) {
+    // send ember's index.html for any unknown route
+    res.sendFile(indexFile);
+  });
+}
 
 const port = process.env.PORT || 8000;
 const socket = process.env.SOCKET;
 
 function listening(desc) {
   return function() {
-    // We don't want to start if the UI is broken
-    fs.access(indexFile, fs.constants.F_OK, function(err) {
-      if (err) {
-        throw new Error('Missing dist/index.html; run `ember build` to generate it.');
-      }
-    });
+    if (!skipDistCheck) {
+      // We don't want to start if the UI is broken
+      fs.access(indexFile, fs.constants.F_OK, function(err) {
+        if (err) {
+          throw new Error('Missing dist/index.html; run `ember build` to generate it.');
+        }
+      });
+    }
 
     const time = new Date() - startTime;
     console.log(`Davros started in ${time}ms, listening on ${desc}`);

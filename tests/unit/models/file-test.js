@@ -1,5 +1,5 @@
 import { module, test } from 'qunit';
-import File from 'davros/models/file';
+import File from '../../../app/models/file';
 
 module('Unit | Model | file', function () {
   test('parent is one directory higher', function (assert) {

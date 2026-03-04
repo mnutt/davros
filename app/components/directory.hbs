@@ -1,5 +1,4 @@
-<PhotoSwipe @shareEl={{false}} @items={{this.directoryGalleryItems}} as |photoswipe|>
-  <TitleBar>
+<TitleBar>
     <h1 class="title text-white text-lg flex-1 truncate">
       Files in
       <PathBreadcrumb @path={{this.model.path}} />
@@ -16,58 +15,55 @@
       {{/if}}
 
       {{#if this.directoryGalleryItems.length}}
-        <HeaderItem @title="Slideshow" @icon="photo" @onClick={{photoswipe.actions.open}} />
+        <HeaderItem @title="Slideshow" @icon="photo" @onClick={{fn this.openSlideshow 0}} />
       {{/if}}
 
       <HeaderItem @title="Download (zip)" @icon="file_download" @onClick={{this.downloadDirectory}} />
     </div>
-    <div class="reload" {{on "click" this.reload}}></div>
+    <button type="button" class="reload" aria-label="Reload directory" {{on "click" this.reload}}></button>
 
     {{!-- only displayed on mobile --}}
     <div class="compact-actions block sm:hidden">
       <div class="more relative">
-        <BasicDropdown @verticalPosition="below" @horizontalPosition="right" @width={{6}}  as |menu|>
-          <menu.Trigger>
-            <button type="button" class="more-button px-2 mt-1">
-              <Icon @icon="menu" ariaLabel="Menu"/>
-            </button>
-          </menu.Trigger>
+        <button type="button" class="more-button px-2 mt-1" {{on "click" this.toggleMobileMenu}}>
+          <Icon @icon="menu" ariaLabel="Menu"/>
+        </button>
 
-          <menu.Content @animationEnabled={{false}} class="rounded-md bg-white shadow">
-            <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu" {{on "click" menu.actions.close}}>
+        {{#if this.mobileMenuOpen}}
+          <div class="absolute right-0 mt-2 rounded-md bg-white shadow z-20">
+            <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
               {{#if this.canEdit}}
-                <MenuItem {{on "click" this.toggleSelectCheckboxes}}>
+                <MenuItem @onClick={{this.toggleSelectFromMenu}}>
                   <p class="label flex-1 pr-4">Select Files</p>
                   <Icon @icon="check_circle" />
                 </MenuItem>
 
-                <MenuItem {{on "click" this.chooseUpload}} @id="menu-upload-file">
+                <MenuItem @onClick={{this.chooseUploadFromMenu}} @id="menu-upload-file">
                   <p class="label flex-1 pr-4">Upload</p>
                   <Icon @icon="file_upload" />
                 </MenuItem>
 
-                <MenuItem {{on "click" (toggle this "newDialogActive")}}>
+                <MenuItem @onClick={{this.openNewDialogFromMenu}}>
                   <p class="label flex-1 pr-4">New Directory</p>
                   <Icon @icon="add_circle_outline" />
                 </MenuItem>
               {{/if}}
 
-              <MenuItem {{on  "click" photoswipe.actions.open}}>
+              <MenuItem @onClick={{this.openSlideshowFromMenu}}>
                 <p class="label flex-1 pr-4">View Slideshow</p>
                 <Icon @icon="photo" />
               </MenuItem>
 
-              <MenuItem {{on "click" this.downloadDirectory}} @id="menu-download-directory">
+              <MenuItem @onClick={{this.downloadDirectoryFromMenu}} @id="menu-download-directory">
                 <p class="label flex-1 pr-4">Download (zip)</p>
                 <Icon @icon="file_download" />
               </MenuItem>
             </div>
-          </menu.Content>
-        </BasicDropdown>
+          </div>
+        {{/if}}
       </div>
     </div>
   </TitleBar>
-</PhotoSwipe>
 
 {{#if this.model.sortedFiles}}
   <DirectoryListing
@@ -77,6 +73,7 @@
     @canEdit={{this.canEdit}}
     @selectedFiles={{this.selectedFiles}}
     @openDialog={{this.openDialog}}
+    @onClick={{this.onFileClick}}
   />
 {{else}}
   <div class="empty-notice p-6">
@@ -86,7 +83,7 @@
 
 <ModalContent class="rounded-sm shadow-sm border inset-6 fixed md:max-w-full"
   @active={{this.moveDialogActive}}
-  @onClose={{fn (mut this.moveDialogActive) false}}
+  @onClose={{this.closeMoveDialog}}
   as |modalContent|>
   <MoveFilesDialog
     @model={{@model}}
@@ -99,14 +96,14 @@
 
 <ModalContent class="rounded-sm shadow-sm border w-11/12"
               @active={{this.newDialogActive}}
-              @onClose={{fn (mut this.newDialogActive) false}}
+              @onClose={{this.closeNewDialog}}
               as |modalContent|>
   <NewDirectoryDialog @onCreate={{@newDirectory}} @onClose={{modalContent.onClose}} />
 </ModalContent>
 
 <ModalContent class="rounded-sm shadow-sm border w-11/12"
   @active={{this.deleteDialogActive}}
-  @onClose={{fn (mut this.deleteDialogActive) false}}
+  @onClose={{this.closeDeleteDialog}}
   as |modalContent|>
   <DeleteDialog
     @model={{@model}}
@@ -134,7 +131,7 @@
 
 <ModalContent class="rounded-sm shadow-sm border w-11/12"
   @active={{this.renameDialogActive}}
-  @onClose={{fn (mut this.renameDialogActive) false}}
+  @onClose={{this.closeRenameDialog}}
   as |modalContent|>
   <RenameDialog
     @model={{@model}}
@@ -143,3 +140,12 @@
     @selectedFiles={{this.selectedFiles}}
   />
 </ModalContent>
+
+<DirectorySlideshow
+  @active={{this.slideshowActive}}
+  @slides={{this.directoryGalleryItems}}
+  @currentIndex={{this.slideshowIndex}}
+  @onChangeIndex={{this.setSlideshowIndex}}
+  @onInsert={{this.focusSlideshow}}
+  @onClose={{this.closeSlideshow}}
+/>
