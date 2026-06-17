@@ -13,7 +13,6 @@ etc/locale.alias
 etc/localtime
 etc/mtab
 etc/ssl/openssl.cnf
-etc/xml/catalog
 lib
 lib64
 opt

@@ -22,7 +22,7 @@ SANDSTORM_INSTALL_SCRIPT_URL="https://install.sandstorm.io/"
 SANDSTORM_PACKAGE_URL="${SANDSTORM_DOWNLOAD_URL:-}"
 
 # Grub updates don't silent install well
-apt-mark hold grub-pc || true
+apt-mark hold grub-pc
 apt-get update
 apt-get upgrade -y
 
