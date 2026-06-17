@@ -13,7 +13,6 @@ etc/locale.alias
 etc/localtime
 etc/mtab
 etc/ssl/openssl.cnf
-etc/xml/catalog
 lib
 lib64
 opt
@@ -23,11 +22,6 @@ opt/app/.yarn/releases/yarn-4.12.0.cjs
 opt/app/.yarnrc.yml
 opt/app/CHANGELOG.md
 opt/app/app.js
-opt/app/dist/@embroider/virtual/app.css
-opt/app/dist/@embroider/virtual/vendor.css
-opt/app/dist/@embroider/virtual/vendor.js
-opt/app/dist/assets/main-C5axQIjd.js
-opt/app/dist/assets/main-Du48Q8ZP.css
 opt/app/dist/fonts/materialicons/v99/MaterialIcons-Regular.subset.woff2
 opt/app/dist/fonts/materialicons/v99/MaterialIcons-Regular.ttf
 opt/app/dist/images/sidebar-logo@2x.png

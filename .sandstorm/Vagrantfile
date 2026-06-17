@@ -19,9 +19,9 @@ unless Vagrant::DEFAULT_SERVER_URL.frozen?
 end
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  # Based on Debian 12
-  config.vm.box = "debian/contrib-bookworm64"
-  config.vm.post_up_message = "Your virtual server is running at http://local.sandstorm.io:6090."
+  # Base on a 64-bit Debian box with vboxsf support (ex. contrib-buster64, bullseye64)
+  config.vm.box = "debian/bookworm64"
+  config.vm.post_up_message = "Your virtual server is running at: http://local.sandstorm.io:6090"
 
 
   if Vagrant.has_plugin?("vagrant-vbguest") then
@@ -31,6 +31,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     # needs to know how to compile kernel modules, etc., and so
     # we give it this hint about operating system type.
     config.vm.guest = "debian"
+    config.vbguest.auto_update = false
   end
 
   # We forward port 6090, the vagrant-spk web port, so that developers can
@@ -90,7 +91,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     # /opt/app and /host-dot-sandstorm are used by vagrant-spk
     override.vm.synced_folder "..", "/opt/app"
-    override.vm.synced_folder ENV["HOME"] + "/.sandstorm", "/host-dot-sandstorm"
+    override.vm.synced_folder ENV["HOME"] + "/.sandstorm", "/host-dot-sandstorm", mount_options: ["x-systemd.automount"]
     # /vagrant is not used by vagrant-spk; we need this line so it gets disabled; if we removed the
     # line, vagrant would automatically insert a synced folder in /vagrant, which is not what we want.
     override.vm.synced_folder "..", "/vagrant", disabled: true
@@ -99,12 +100,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     libvirt.cpus = cpus
     libvirt.memory = assign_ram_mb
     libvirt.default_prefix = VM_NAME
+    libvirt.memorybacking :source, type: "memfd"
+    libvirt.memorybacking :access, mode: "shared"
 
     # /opt/app and /host-dot-sandstorm are used by vagrant-spk
-    override.vm.synced_folder "..", "/opt/app", type: "9p", accessmode: "passthrough"
-    override.vm.synced_folder ENV["HOME"] + "/.sandstorm", "/host-dot-sandstorm", type: "9p", accessmode: "passthrough"
+    override.vm.synced_folder "..", "/opt/app", type: "virtiofs"
+    override.vm.synced_folder ENV["HOME"] + "/.sandstorm", "/host-dot-sandstorm", type: "virtiofs"
     # /vagrant is not used by vagrant-spk; we need this line so it gets disabled; if we removed the
     # line, vagrant would automatically insert a synced folder in /vagrant, which is not what we want.
-    override.vm.synced_folder "..", "/vagrant", type: "9p", accessmode: "passthrough", disabled: true
+    override.vm.synced_folder "..", "/vagrant", type: "virtiofs", disabled: true
   end
 end
