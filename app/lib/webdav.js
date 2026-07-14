@@ -59,31 +59,54 @@ export default class WebdavClient {
       });
   }
 
-  remove(path) {
-    return fetch(this.fullPath(path), {
+  async remove(path) {
+    const response = await fetch(this.fullPath(path), {
       method: 'DELETE',
     });
+
+    if (!response.ok) {
+      const status = [response.status, response.statusText].filter(Boolean).join(' ');
+      throw new Error(`Delete failed (${status})`);
+    }
+
+    return response;
   }
 
-  move(path, destination, { overwrite = true } = {}) {
+  async move(path, destination, { overwrite = true } = {}) {
     const { protocol, host } = document.location;
     const fullDestination = [protocol, '//', host, this.fullPath(destination)].join('');
 
-    return fetch(this.fullPath(path), {
+    const response = await fetch(this.fullPath(path), {
       method: 'MOVE',
       headers: {
         Destination: fullDestination,
         Overwrite: overwrite ? 'T' : 'F',
       },
     });
+
+    // A non-2xx response resolves the fetch promise normally, so callers would
+    // otherwise treat a failed move/rename (e.g. 403, 409, 412) as success.
+    if (!response.ok) {
+      const status = [response.status, response.statusText].filter(Boolean).join(' ');
+      throw new Error(`Move failed (${status})`);
+    }
+
+    return response;
   }
 
-  mkcol(path) {
-    return fetch(this.fullPath(encodePath(path)), {
+  async mkcol(path) {
+    const response = await fetch(this.fullPath(encodePath(path)), {
       method: 'MKCOL',
-    }).catch(function (err) {
-      console.error(err);
     });
+
+    // 405 Method Not Allowed is returned when the collection already exists,
+    // which is the requested end state, so treat it as success (idempotent).
+    if (!response.ok && response.status !== 405) {
+      const status = [response.status, response.statusText].filter(Boolean).join(' ');
+      throw new Error(`Create directory failed (${status})`);
+    }
+
+    return response;
   }
 
   async load(path) {
