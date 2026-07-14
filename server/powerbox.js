@@ -56,6 +56,7 @@ function readStreamAsUtf8(stream, maxBytes = 64 * 1024) {
       const remaining = maxBytes - total;
       if (remaining <= 0) {
         done = true;
+        stream.destroy();
         resolve(Buffer.concat(chunks).toString('utf8'));
         return;
       }
@@ -66,6 +67,7 @@ function readStreamAsUtf8(stream, maxBytes = 64 * 1024) {
 
       if (total >= maxBytes) {
         done = true;
+        stream.destroy();
         resolve(Buffer.concat(chunks).toString('utf8'));
       }
     });
