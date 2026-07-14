@@ -100,11 +100,17 @@ jobs:
           set -euo pipefail
           mkdir -p build
           if [ "${{ inputs.pack_mode }}" = "test" ]; then
-            pack_json="$(lima-spk pack --dev --set-version "${GITHUB_SHA}" "${{ inputs.spk_output_path }}")"
-            printf '%s\n' "$pack_json"
-            package_id="$(printf '%s\n' "$pack_json" | jq -r '.packageId // empty')"
+            pack_output="$(lima-spk pack --dev --set-version "${GITHUB_SHA}" "${{ inputs.spk_output_path }}")"
+            printf '%s\n' "$pack_output"
+            package_id="$(
+              printf '%s\n' "$pack_output" \
+                | sed -nE 's/.*"packageId"[[:space:]]*:[[:space:]]*"([^"]+)".*/\1/p' \
+                | head -n1
+            )"
             if [ -n "$package_id" ]; then
               echo "package_id=$package_id" >> "$GITHUB_OUTPUT"
+            else
+              echo "::warning::Could not detect packageId in lima-spk pack output"
             fi
           else
             lima-spk pack "${{ inputs.spk_output_path }}"
