@@ -19,6 +19,14 @@ module.exports = function (davServer) {
         return;
       });
 
+      // The destination is sideloaded as a separate field; multiparty does not
+      // guarantee it arrives before the file part, so fail cleanly if missing.
+      if (typeof destination !== 'string' || destination === '') {
+        part.resume(); // drain the part so the request can finish
+        next(new Error('Missing upload destination'));
+        return;
+      }
+
       // part is already a readable stream, so make it look like a request and
       // just send it on to the dav server
       if (destination[0] !== '/') {
