@@ -41,4 +41,16 @@ module('Unit | Model | file', function () {
     const model = new File({ path: '/path/to/foo.bar.png' });
     assert.equal(model.extension, 'png');
   });
+
+  test('refreshing an empty directory clears its previous children', async function (assert) {
+    const model = new File({
+      isDirectory: true,
+      path: '/examples',
+      files: [new File({ path: '/examples/photo.jpg' })],
+    });
+
+    await model.setPropertiesFromItems([]);
+
+    assert.deepEqual(model.files, []);
+  });
 });
