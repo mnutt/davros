@@ -12,6 +12,12 @@
     {{this.progressCount}} / {{this.totalCount}} files deleted
   </div>
 {{else}}
+  {{#if this.errorMessage}}
+    <div class="mb-4 text-red-700" role="alert">
+      {{this.errorMessage}}
+    </div>
+  {{/if}}
+
   <div class="py-4">
     {{yield}}
   </div>
