@@ -25,6 +25,13 @@ module.exports = function(davServer) {
     const timestamp = searchParams.get('ts');
     const path = searchParams.get('url');
 
+    // The url must resolve to a resource served by the dav backend; otherwise the
+    // dav middleware would fall through to `next()` and the request would hang.
+    if (typeof path !== 'string' || !(path === '/dav' || path.startsWith('/dav/'))) {
+      res.status(400).send('Invalid thumbnail url');
+      return;
+    }
+
     const cacheKey = [width, height, path].join('-');
     const cache = new FileCache(cacheKey, timestamp);
 

@@ -14,6 +14,12 @@ module.exports = function (root) {
 
   return function (req, res) {
     var relPath = req.query.path;
+    if (typeof relPath !== 'string' || relPath === '') {
+      res.writeHead(400);
+      res.end('Missing or invalid path');
+      return;
+    }
+
     var fullPath = root;
     var name = 'home';
     relPath.split('/').forEach(function (part) {
@@ -24,6 +30,24 @@ module.exports = function (root) {
       name = part;
     });
     name = name.replace(/["\\/]/g, '');
+
+    // Resolve symlinks and confirm the target stays within the storage root,
+    // so a symlink inside the data dir can't be used to archive files outside it.
+    var resolvedRoot = fs.realpathSync(root);
+    var resolvedPath;
+    try {
+      resolvedPath = fs.realpathSync(fullPath);
+    } catch (err) {
+      res.writeHead(err.code === 'ENOENT' ? 404 : 500);
+      res.end(err.code === 'ENOENT' ? 'File not found' : String(err));
+      return;
+    }
+    if (resolvedPath !== resolvedRoot && !resolvedPath.startsWith(resolvedRoot + path.sep)) {
+      res.writeHead(403);
+      res.end('Access denied');
+      return;
+    }
+    fullPath = resolvedPath;
 
     function respondArchive() {
       var archive = require('archiver').create('zip', {
