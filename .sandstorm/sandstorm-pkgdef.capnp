@@ -99,12 +99,10 @@ const pkgdef :Spk.PackageDefinition = (
   # You should review it later, before shipping your app.
 
   alwaysInclude = [
-    "opt/app/.sandstorm",
+    "opt/app/.sandstorm/launcher.sh",
     "opt/app/dist", # css/js files change due to fingerprinting
-    "opt/app/server",
+    "opt/app/server/dummy", # static tree used by the bundled WebDAV server
     "opt/app/sample-files",
-    "usr/lib/python3.11", # pull in the whole Python 3 runtime
-    "usr/lib/python3", # pull in any Debian pure-Python packages
     ],
   # Fill this list with more names of files or directories that should be
   # included in your package, even if not listed in sandstorm-files.list.
