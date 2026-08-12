@@ -5,9 +5,9 @@
 arch: x86_64
 vmType: qemu
 
-# Use Debian Bookworm for compatibility with Sandstorm
+# Match the Debian Trixie environment configured in box.toml
 images:
-  - location: "https://cloud.debian.org/images/cloud/bookworm/latest/debian-12-generic-amd64.qcow2"
+  - location: "https://cloud.debian.org/images/cloud/trixie/latest/debian-13-generic-amd64.qcow2"
     arch: x86_64
 
 # Resource allocation
