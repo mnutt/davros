@@ -1,168 +1,252 @@
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
+import { registerDestructor } from '@ember/destroyable';
 import { tracked } from '@glimmer/tracking';
 
-const outstandingRequests = {};
-let powerboxInitDone = false;
-let nextRpcId = 1;
-
-function initializePowerboxListener() {
-  if (powerboxInitDone) {
-    return;
-  }
-
-  window.addEventListener('message', (event) => {
-    const data = event.data || {};
-    const response = data.powerboxResponse || data.powerboxResult || data.result || data;
-    const req = outstandingRequests[response.rpcId];
-
-    if (!req) {
-      return;
-    }
-
-    window.clearTimeout(req.timeout);
-    delete outstandingRequests[response.rpcId];
-
-    if (response.error || response.canceled) {
-      const error = new Error(response.error || 'Powerbox request was canceled');
-      error.payload = response;
-      req.reject(error);
-      return;
-    }
-
-    req.resolve(response);
-  });
-
-  powerboxInitDone = true;
-}
-
-function powerboxRequest(msg) {
-  initializePowerboxListener();
-
-  const rpcId = nextRpcId++;
-  const request = { ...msg, rpcId };
-
-  return new Promise((resolve, reject) => {
-    const timeout = window.setTimeout(() => {
-      delete outstandingRequests[rpcId];
-      reject(new Error('Timed out waiting for Powerbox response'));
-    }, 60000);
-
-    outstandingRequests[rpcId] = { resolve, reject, timeout };
-    window.parent.postMessage({ powerboxRequest: request }, '*');
-  });
-}
-
-async function requestPowerboxCapability(queryDescriptor) {
-  const response = await powerboxRequest({
-    query: [queryDescriptor],
-    saveLabel: { defaultText: 'Office document preview converter' },
-  });
-
-  const token = response.token || response.requestToken;
-  if (!token) {
-    throw new Error('Powerbox response did not include a token');
-  }
-
-  return token;
-}
-
 export default class TypeDocumentComponent extends Component {
-  @tracked requestingCapability = false;
-  @tracked unlinkingCapability = false;
-  @tracked capabilityError = null;
+  @tracked previewRequested = false;
+  @tracked previewMode = null;
+  @tracked previewLoading = false;
+  @tracked wasmSession = null;
+  @tracked wasmError = null;
+  wasmFrame = null;
+  wasmReady = false;
+  wasmLoadStarted = false;
+  wasmAbortController = null;
+  previewGeneration = 0;
+  previewModel = null;
+  previewRevision = null;
+  revisionUpdateId = 0;
+
+  constructor() {
+    super(...arguments);
+    registerDestructor(this, () => {
+      this.revisionUpdateId += 1;
+      this.previewGeneration += 1;
+      this.teardownWasmPreview();
+    });
+  }
 
   get canSandbox() {
     return 'sandbox' in document.createElement('iframe');
   }
 
   get errored() {
-    return this.args.model.previewFailed;
+    return Boolean(this.wasmError);
   }
 
-  get needsCapability() {
-    return this.args.model.previewNeedsCapability;
+  get documentPreviewKind() {
+    return this.args.model.documentPreviewKind;
   }
 
-  get previewBlobUrl() {
-    return this.args.model.previewBlobUrl;
+  get canPreviewDocument() {
+    return Boolean(this.documentPreviewKind) && !this.previewLoading;
   }
 
-  get canRequestCapability() {
-    return Boolean(this.args.model.previewPowerboxQueryDescriptor) && !this.requestingCapability;
+  get previewButtonLabel() {
+    return this.previewLoading ? 'Loading...' : 'Preview Document';
   }
 
-  get capabilityErrorMessage() {
-    return this.capabilityError;
+  get wasmPreviewActive() {
+    return this.previewRequested && this.previewMode === 'wasm';
   }
 
-  get canUnlinkCapability() {
-    return !this.unlinkingCapability && !this.requestingCapability;
+  get wasmPreviewUrl() {
+    if (!this.wasmSession) {
+      return null;
+    }
+
+    return `/document-previewer/index.html#session=${encodeURIComponent(this.wasmSession)}`;
   }
 
-  @action
-  async requestCapability() {
-    if (!this.canRequestCapability) {
+  get errorMessage() {
+    return this.wasmError;
+  }
+
+  makeWasmSession() {
+    if (window.crypto?.randomUUID) {
+      return window.crypto.randomUUID();
+    }
+
+    return `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+  }
+
+  ensureWasmListener() {
+    window.addEventListener('message', this.handleWasmMessage);
+  }
+
+  teardownWasmPreview() {
+    window.removeEventListener('message', this.handleWasmMessage);
+    this.wasmAbortController?.abort();
+    this.wasmAbortController = null;
+    this.wasmFrame = null;
+    this.wasmReady = false;
+    this.wasmLoadStarted = false;
+  }
+
+  resetPreviewRequest() {
+    this.previewGeneration += 1;
+    this.teardownWasmPreview();
+    this.wasmSession = null;
+    this.wasmError = null;
+    this.previewLoading = false;
+    this.previewRequested = false;
+    this.previewMode = null;
+  }
+
+  revisionFor(model, path, mtime) {
+    const timestamp = typeof mtime?.getTime === 'function' ? mtime.getTime() : String(mtime || '');
+    return `${path || model?.path || ''}:${timestamp}`;
+  }
+
+  startPreview(model) {
+    const previewMode = model.documentPreviewKind;
+    if (!previewMode) {
       return;
     }
 
-    this.capabilityError = null;
-    this.requestingCapability = true;
+    this.previewGeneration += 1;
+    this.wasmError = null;
+    this.previewLoading = true;
+    this.previewRequested = true;
+    this.previewMode = previewMode;
+    this.previewModel = model;
 
+    this.teardownWasmPreview();
+    this.wasmSession = this.makeWasmSession();
+    this.ensureWasmListener();
+  }
+
+  async sendWasmLoadMessage() {
+    if (!this.wasmReady || !this.wasmFrame?.contentWindow || !this.wasmSession) {
+      return;
+    }
+
+    if (this.wasmLoadStarted) {
+      return;
+    }
+
+    this.wasmLoadStarted = true;
+    const session = this.wasmSession;
+    const abortController = new AbortController();
+    this.wasmAbortController = abortController;
+
+    let bytes;
     try {
-      const token = await requestPowerboxCapability(this.args.model.previewPowerboxQueryDescriptor);
-      const response = await fetch('/api/powerbox/office-preview/claim', {
-        method: 'POST',
-        headers: {
-          'content-type': 'text/plain',
+      const response = await fetch(this.args.model.rawPath, {
+        credentials: 'same-origin',
+        cache: 'no-store',
+        signal: abortController.signal,
+      });
+
+      if (!response.ok) {
+        throw new Error(`Could not load document (${response.status})`);
+      }
+
+      bytes = await response.arrayBuffer();
+    } catch (err) {
+      if (abortController.signal.aborted) {
+        return;
+      }
+
+      this.previewLoading = false;
+      this.wasmError = err?.message || 'Could not load document.';
+      return;
+    }
+
+    if (session !== this.wasmSession || !this.wasmFrame?.contentWindow) {
+      return;
+    }
+
+    this.wasmFrame.contentWindow.postMessage(
+      {
+        type: 'document-preview:load',
+        session,
+        id: `${this.args.model.path}:${this.args.model.mtime.getTime()}`,
+        fileName: this.args.model.name,
+        source: {
+          kind: 'bytes',
+          bytes,
         },
-        body: token,
-      });
+      },
+      '*',
+      [bytes]
+    );
+  }
 
-      if (!response.ok) {
-        const body = await response.text();
-        throw new Error(body || `Claim failed with status ${response.status}`);
+  handleWasmMessage = (event) => {
+    if (event.source !== this.wasmFrame?.contentWindow) {
+      return;
+    }
+
+    const message = event.data || {};
+    if (!this.wasmSession || message.session !== this.wasmSession) {
+      return;
+    }
+
+    if (message.type === 'document-preview:ready') {
+      this.wasmReady = true;
+      void this.sendWasmLoadMessage();
+      return;
+    }
+
+    if (message.type === 'document-preview:status') {
+      this.previewLoading = message.state === 'loading';
+      return;
+    }
+
+    if (message.type === 'document-preview:error') {
+      this.previewLoading = false;
+      this.wasmError = message.message || 'There was an error rendering this preview.';
+    }
+  };
+
+  @action
+  previewDocument() {
+    if (!this.canPreviewDocument) {
+      return;
+    }
+
+    this.startPreview(this.args.model);
+  }
+
+  @action
+  synchronizeModelRevision(_element, model, path, mtime) {
+    const updateId = ++this.revisionUpdateId;
+    queueMicrotask(() => {
+      if (updateId === this.revisionUpdateId) {
+        this.applyModelRevision(model, path, mtime);
       }
+    });
+  }
 
-      await this.args.model.reload();
-    } catch (err) {
-      console.error(err);
-      this.capabilityError = err?.message || 'Failed to connect document preview capability';
-      this.args.model.previewNeedsCapability = true;
-      this.args.model.previewFailed = false;
-    } finally {
-      this.requestingCapability = false;
+  applyModelRevision(model, path, mtime) {
+    const revision = this.revisionFor(model, path, mtime);
+
+    if (this.previewRevision === null) {
+      this.previewModel = model;
+      this.previewRevision = revision;
+      return;
+    }
+
+    if (this.previewModel === model && this.previewRevision === revision) {
+      return;
+    }
+
+    const previousModel = this.previewModel;
+    const refreshActivePreview = previousModel === model && this.previewRequested;
+    this.resetPreviewRequest();
+    this.previewModel = model;
+    this.previewRevision = revision;
+
+    if (refreshActivePreview) {
+      this.startPreview(model);
     }
   }
 
   @action
-  async unlinkCapability() {
-    if (!this.canUnlinkCapability) {
-      return;
-    }
-
-    this.capabilityError = null;
-    this.unlinkingCapability = true;
-
-    try {
-      const response = await fetch('/api/powerbox/office-preview/unlink', {
-        method: 'POST',
-      });
-
-      if (!response.ok) {
-        const body = await response.text();
-        throw new Error(body || `Unlink failed with status ${response.status}`);
-      }
-
-      this.args.model.previewFailed = false;
-      this.args.model.previewNeedsCapability = false;
-      this.args.model.previewPowerboxQueryDescriptor = null;
-      await this.args.model.reload();
-    } catch (err) {
-      console.error(err);
-      this.capabilityError = err?.message || 'Failed to unlink document preview capability';
-    } finally {
-      this.unlinkingCapability = false;
-    }
+  registerWasmIframe(element) {
+    this.wasmFrame = element;
   }
+
 }

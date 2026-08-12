@@ -4,14 +4,10 @@ import DavClient from '../lib/webdav';
 import { tracked } from '@glimmer/tracking';
 import ensureCollectionExists from '../lib/ensure-collection-exists';
 import { addListener, removeListener, sendEvent } from '@ember/object/events';
+import { documentPreviewKind } from '../lib/document-preview-types';
 
 export const base = '/dav';
 const client = new DavClient(base);
-
-async function pdfBlobFromResponse(response) {
-  const body = await response.arrayBuffer();
-  return new Blob([body], { type: 'application/pdf' });
-}
 
 export default class File {
   @tracked path; // file's path within the dav server, excluding the dav base
@@ -20,9 +16,8 @@ export default class File {
   @tracked files = []; // if a directory, a list of children
   @tracked isDirectory = false;
   @tracked dimensions = [0, 0];
-  @tracked previewBlobUrl = null;
-  @tracked previewNeedsCapability = false;
-  @tracked previewPowerboxQueryDescriptor = null;
+  @tracked previewContent = null;
+  @tracked previewFailed = false;
   _reloadRequestId = 0;
 
   constructor(attrs = {}) {
@@ -81,50 +76,7 @@ export default class File {
       } catch (e) {
         this.previewFailed = true;
       }
-    } else if (this.type === 'document') {
-      try {
-        const previewResponse = await fetch(this.documentPreviewUrl);
-        this.setPreviewBlobUrl(null);
-        this.previewNeedsCapability = false;
-        this.previewPowerboxQueryDescriptor = null;
-        this.previewFailed = false;
-
-        const contentType = String(previewResponse.headers.get('content-type') || '').toLowerCase();
-        if (previewResponse.status === 428 || !previewResponse.ok || contentType.includes('application/json')) {
-          let payload = null;
-          try {
-            payload = await previewResponse.clone().json();
-          } catch (e) {
-            payload = null;
-          }
-
-          if (payload?.powerboxRequired) {
-            this.previewNeedsCapability = true;
-            this.previewPowerboxQueryDescriptor = payload.queryDescriptor || null;
-            return;
-          }
-        }
-
-        if (!previewResponse.ok) {
-          throw new Error(`Preview request failed: ${previewResponse.status}`);
-        }
-
-        const pdfBlob = await pdfBlobFromResponse(previewResponse);
-        this.setPreviewBlobUrl(URL.createObjectURL(pdfBlob));
-      } catch (e) {
-        console.error('Document preview failed', e);
-        this.setPreviewBlobUrl(null);
-        this.previewFailed = true;
-      }
     }
-  }
-
-  setPreviewBlobUrl(nextUrl) {
-    if (this.previewBlobUrl) {
-      URL.revokeObjectURL(this.previewBlobUrl);
-    }
-
-    this.previewBlobUrl = nextUrl;
   }
 
   get name() {
@@ -190,17 +142,12 @@ export default class File {
     return `files/type-${this.type}`;
   }
 
-  get rawPath() {
-    return client.fullPath(this.path);
+  get documentPreviewKind() {
+    return documentPreviewKind(this.extension);
   }
 
-  get documentPreviewUrl() {
-    const params = new URLSearchParams({
-      url: this.rawPath,
-      ts: this.mtime.getTime(),
-    }).toString();
-
-    return `/api/preview?${params}`;
+  get rawPath() {
+    return client.fullPath(this.path);
   }
 
   remove() {

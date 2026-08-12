@@ -5,6 +5,7 @@
 /tmp
 /build
 /output
+/public/document-previewer
 
 # dependencies
 /bower_components/

@@ -22,6 +22,7 @@ export default defineConfig([
     'node_modules/**',
     'coverage/**',
     'output/**',
+    'public/document-previewer/**',
     '.node_modules.ember-try/**',
     'server/**',
     '**/.eslintrc.js',

@@ -27,5 +27,8 @@ export default {
   xlsx: 'document',
   ppt: 'document',
   pptx: 'document',
+  odt: 'document',
+  ods: 'document',
+  odp: 'document',
   defaultType: 'default-type'
 };

@@ -53,4 +53,26 @@ module('Unit | Model | file', function () {
 
     assert.deepEqual(model.files, []);
   });
+
+  test('OOXML office extensions use the wasm document previewer', function (assert) {
+    assert.equal(new File({ path: '/path/to/foo.docx' }).documentPreviewKind, 'wasm');
+    assert.equal(new File({ path: '/path/to/foo.xlsx' }).documentPreviewKind, 'wasm');
+    assert.equal(new File({ path: '/path/to/foo.pptx' }).documentPreviewKind, 'wasm');
+  });
+
+  test('legacy office extensions do not use the document previewer', function (assert) {
+    assert.equal(new File({ path: '/path/to/foo.doc' }).documentPreviewKind, null);
+    assert.equal(new File({ path: '/path/to/foo.xls' }).documentPreviewKind, null);
+    assert.equal(new File({ path: '/path/to/foo.ppt' }).documentPreviewKind, null);
+  });
+
+  test('OpenDocument extensions do not use the document previewer', function (assert) {
+    assert.equal(new File({ path: '/path/to/foo.odt' }).documentPreviewKind, null);
+    assert.equal(new File({ path: '/path/to/foo.ods' }).documentPreviewKind, null);
+    assert.equal(new File({ path: '/path/to/foo.odp' }).documentPreviewKind, null);
+  });
+
+  test('PDF files do not use the document previewer', function (assert) {
+    assert.equal(new File({ path: '/path/to/foo.pdf' }).documentPreviewKind, null);
+  });
 });
