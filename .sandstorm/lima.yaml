@@ -4,6 +4,7 @@
 # Sandstorm requires x86_64 architecture
 arch: x86_64
 vmType: qemu
+timezone: ""
 
 # Match the Debian Trixie environment configured in box.toml
 images:
