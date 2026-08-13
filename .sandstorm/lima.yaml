@@ -34,9 +34,31 @@ portForwards:
   - guestPort: 6090
     hostIP: "127.0.0.1"
     hostPort: 6090
+  # Do not auto-forward unrelated guest services discovered during provisioning.
+  - guestIP: "127.0.0.1"
+    proto: "any"
+    guestPortRange: [1, 65535]
+    ignore: true
 
 # Provision the VM with Sandstorm
 provision:
+  # Grant the Lima user access to the system journal before cloud-init creates it.
+  - mode: boot
+    script: |
+      for file in /etc/group /etc/gshadow; do
+        [ -f "$file" ] || continue
+        line="$(grep '^systemd-journal:' "$file")" || continue
+        members="${line##*:}"
+        case ",$members," in
+          *,{{.User}},*) ;;
+          *)
+            sed -i \
+              -e '/^systemd-journal:/s/$/,{{.User}}/' \
+              -e '/^systemd-journal:[^:]*:[^:]*:,/s/:,/:/' \
+              "$file"
+            ;;
+        esac
+      done
   - mode: system
     script: |
       #!/bin/bash
