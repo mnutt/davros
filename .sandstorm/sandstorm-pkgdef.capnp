@@ -27,7 +27,7 @@ const pkgdef :Spk.PackageDefinition = (
 
     actions = [
       # Define your "new document" handlers here.
-      ( title = (defaultText = "New Shared Directory"),
+      ( nounPhrase = (defaultText = "shared directory"),
         command = .myCommand
         # The command to run when starting for the first time. (".myCommand"
         # is just a constant defined at the bottom of the file.)
