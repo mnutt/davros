@@ -8,7 +8,6 @@
 // };
 
 var path = require('path');
-var express = require('express');
 var morgan = require('morgan');
 var apiWs = require('./api-ws');
 var changelog = require('./changelog');
@@ -20,8 +19,6 @@ var sandstormPermissions = require('./sandstorm_permissions');
 var thumbnail = require('./api/thumbnail');
 var fileUpload = require('./api/file-upload');
 var downloadDirectory = require('./api/download-directory');
-var previewDocument = require('./api/preview-document');
-var powerboxOfficePreview = require('./powerbox/office-preview');
 
 module.exports = function (app, options) {
   var root = path.resolve(process.env.STORAGE_PATH || __dirname + '/../data');
@@ -44,9 +41,6 @@ module.exports = function (app, options) {
 
   app.use('/api/upload', fileUpload(davServer));
   app.use('/api/thumbnail', thumbnail(davServer));
-  app.post('/api/powerbox/office-preview/claim', express.text({ type: '*/*' }), powerboxOfficePreview.claimRoute());
-  app.post('/api/powerbox/office-preview/unlink', powerboxOfficePreview.unlinkRoute());
-  app.use('/api/preview', previewDocument(davServer));
   app.get('/api/archive', downloadDirectory(root));
 
   app.get('/api/publish/info', publishing.getInfo);

@@ -3038,6 +3038,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@silurus/ooxml@npm:^0.75.2":
+  version: 0.75.5
+  resolution: "@silurus/ooxml@npm:0.75.5"
+  checksum: 10/0538c69fbffc8c291b813b0747d5c6fb2edc23126fdb482beecc06ee7f4dbe933adea19c5086317dbbba39de4d9144775b53777cab676bb5d141a33561e2abad
+  languageName: node
+  linkType: hard
+
 "@simple-dom/document@npm:^1.4.0":
   version: 1.4.0
   resolution: "@simple-dom/document@npm:1.4.0"
@@ -5375,6 +5382,7 @@ __metadata:
     "@eslint/js": "npm:^9.39.2"
     "@glimmer/component": "npm:^2.0.0"
     "@rollup/plugin-babel": "npm:^6.1.0"
+    "@silurus/ooxml": "npm:^0.75.2"
     "@tailwindcss/forms": "npm:^0.5.10"
     archiver: "npm:^5.3.0"
     async: "npm:^3.2.1"

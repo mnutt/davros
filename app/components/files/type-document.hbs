@@ -1,45 +1,44 @@
+<div
+  class="w-full h-full"
+  {{on-insert this.synchronizeModelRevision @model @model.path @model.mtime}}>
 {{#if this.canSandbox}}
-  {{#if this.needsCapability}}
+  {{#if (not this.previewRequested)}}
     <div class="w-full h-full flex items-center justify-center text-center border-t p-4">
       <div>
-        <p class="mb-3">Connect an office-to-PDF preview service to render this file.</p>
-        {{#if this.capabilityErrorMessage}}
-          <p class="mb-3 text-red-700">{{this.capabilityErrorMessage}}</p>
+        {{#if this.documentPreviewKind}}
+          <button
+            type="button"
+            class="button-primary inline-flex items-center gap-2"
+            {{on "click" this.previewDocument}}
+            disabled={{not this.canPreviewDocument}}>
+            <Icon @icon="visibility" @ariaLabel="Preview" class="text-base" />
+            <span>{{this.previewButtonLabel}}</span>
+          </button>
+        {{else}}
+          <p>No preview available for this document type.</p>
         {{/if}}
-        <button
-          type="button"
-          class="btn btn-secondary border px-3 py-1"
-          {{on "click" this.requestCapability}}
-          disabled={{not this.canRequestCapability}}>
-          {{if this.requestingCapability "Connecting..." "Enable Document Previews"}}
-        </button>
       </div>
     </div>
   {{else if this.errored}}
     <div class="w-full h-full flex items-center justify-center text-center border-t p-4">
       <div>
         <p class="mb-3">There was an error rendering this preview.</p>
-        {{#if this.capabilityErrorMessage}}
-          <p class="mb-3 text-red-700">{{this.capabilityErrorMessage}}</p>
+        {{#if this.errorMessage}}
+          <p class="mb-3 text-red-700">{{this.errorMessage}}</p>
         {{/if}}
-        <button
-          type="button"
-          class="btn btn-secondary border px-3 py-1"
-          {{on "click" this.unlinkCapability}}
-          disabled={{not this.canUnlinkCapability}}>
-          {{if this.unlinkingCapability "Unlinking..." "Unlink external previewer"}}
-        </button>
       </div>
     </div>
-  {{else}}
+  {{else if this.wasmPreviewActive}}
     <iframe
       class="w-full h-full border-t"
-      title="Document Preview"
-      src={{this.previewBlobUrl}}
-      sandbox="allow-scripts allow-modals"
+      title="WASM Document Preview"
+      src={{this.wasmPreviewUrl}}
+      sandbox="allow-scripts"
       referrerpolicy="no-referrer"
-      loading="lazy"></iframe>
+      loading="lazy"
+      {{on-insert this.registerWasmIframe}}></iframe>
   {{/if}}
 {{else}}
   <p>Your browser doesn't support sandboxing, so we can't show a preview inline.</p>
 {{/if}}
+</div>

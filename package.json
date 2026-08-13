@@ -11,7 +11,8 @@
     "test": "tests"
   },
   "scripts": {
-    "build": "vite build",
+    "build": "yarn build:document-previewer && vite build",
+    "build:document-previewer": "node scripts/build-document-previewer.mjs",
     "build:server": "node scripts/build-server.mjs",
     "lint": "npm-run-all --aggregate-output --continue-on-error --parallel \"lint:!(fix)\"",
     "lint:fix": "npm-run-all --aggregate-output --continue-on-error --parallel lint:*:fix",
@@ -19,15 +20,16 @@
     "lint:hbs:fix": "ember-template-lint . --fix",
     "lint:js": "eslint . --cache",
     "lint:js:fix": "eslint . --fix",
-    "start": "vite",
+    "start": "yarn build:document-previewer && vite",
     "dev": "npm-run-all --parallel dev:api dev:ui",
     "dev:api": "SKIP_DIST_CHECK=1 PORT=8000 node app.js",
-    "dev:ui": "vite --port=4200 --host=0.0.0.0",
+    "dev:ui": "yarn build:document-previewer && vite --port=4200 --host=0.0.0.0",
     "test": "npm-run-all lint test:ember test:server",
-    "test:ember": "vite build --mode development && ember test --path dist",
-    "test:server": "vitest run --config vitest.server.config.mjs"
+    "test:ember": "yarn build:document-previewer && vite build --mode development && ember test --path dist",
+    "test:server": "yarn build:document-previewer && vitest run --config vitest.server.config.mjs"
   },
   "dependencies": {
+    "@silurus/ooxml": "^0.75.2",
     "archiver": "^5.3.0",
     "async": "^3.2.1",
     "asyncjs": "https://github.com/mnutt/async.js.git#ad52b322176a88ef55c76052a9b3a8aa8bd6e083",

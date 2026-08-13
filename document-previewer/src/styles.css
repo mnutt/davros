@@ -1,0 +1,198 @@
+:root {
+  color: #171717;
+  background: #f6f7f9;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  overflow: hidden;
+}
+
+.viewer-shell {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  background: #f6f7f9;
+}
+
+.document-surface {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+}
+
+.document-surface-docx,
+.document-surface-pptx {
+  display: block;
+  overflow: auto;
+}
+
+.viewer-message {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  place-items: center;
+  padding: 24px;
+  color: #525866;
+  font-size: 14px;
+  text-align: center;
+}
+
+.viewer-error {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  max-width: min(420px, calc(100% - 32px));
+  padding: 10px 12px;
+  border: 1px solid #e4b8b0;
+  border-radius: 6px;
+  background: #fff7f5;
+  box-shadow: 0 8px 24px rgb(23 23 23 / 10%);
+  color: #8f2618;
+  font-size: 13px;
+}
+
+.ooxml-page-list {
+  display: grid;
+  align-content: start;
+  gap: 24px;
+  overflow: auto;
+  padding: 24px;
+}
+
+.ooxml-page {
+  display: grid;
+  justify-content: center;
+}
+
+.ooxml-page-frame {
+  position: relative;
+  max-width: 100%;
+  overflow: hidden;
+  border: 1px solid #d7dce3;
+  background: #ffffff;
+  box-shadow: 0 8px 24px rgb(23 23 23 / 10%);
+}
+
+.ooxml-canvas-host,
+.ooxml-text-layer {
+  position: absolute;
+  inset: 0;
+}
+
+.ooxml-canvas-host canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.ooxml-text-layer {
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+  transform-origin: 0 0;
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+.ooxml-text-run {
+  position: absolute;
+  display: block;
+  overflow: hidden;
+  color: transparent;
+  white-space: pre;
+  pointer-events: auto;
+  user-select: text;
+  -webkit-text-fill-color: transparent;
+  -webkit-user-select: text;
+}
+
+.ooxml-page canvas {
+  max-width: 100%;
+  height: auto;
+  background: #ffffff;
+}
+
+.document-surface-xlsx {
+  overflow: auto;
+  background: #ffffff;
+}
+
+.ooxml-sheet-section + .ooxml-sheet-section {
+  margin-top: 24px;
+  border-top: 4px solid #d7dce3;
+}
+
+.ooxml-sheet-title {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  padding: 10px 12px;
+  border-bottom: 1px solid #d7dce3;
+  background: #f6f7f9;
+  color: #303642;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.ooxml-sheet-notice {
+  padding: 10px 12px;
+  border-top: 1px solid #d7dce3;
+  background: #fff8df;
+  color: #65551e;
+  font-size: 12px;
+}
+
+.ooxml-sheet {
+  min-width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.ooxml-sheet th,
+.ooxml-sheet td {
+  min-width: 96px;
+  max-width: 260px;
+  height: 28px;
+  padding: 4px 8px;
+  overflow: hidden;
+  border: 1px solid #d7dce3;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ooxml-sheet th {
+  position: sticky;
+  top: 37px;
+  z-index: 1;
+  background: #eef1f5;
+  color: #525866;
+  font-weight: 500;
+}
+
+.ooxml-sheet tbody th {
+  left: 0;
+  z-index: 1;
+  min-width: 52px;
+  text-align: right;
+}
