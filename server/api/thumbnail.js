@@ -8,8 +8,15 @@ const fits = {
   contain: 'contain'
 };
 
+const DEFAULT_DIMENSION = 100;
+
 function clamp(value, min, max) {
   return Math.max(Math.min(value, max), min);
+}
+
+function dimension(raw) {
+  const value = parseInt(raw, 10);
+  return clamp(Number.isNaN(value) ? DEFAULT_DIMENSION : value, 1, 3000);
 }
 
 module.exports = function(davServer) {
@@ -17,13 +24,20 @@ module.exports = function(davServer) {
     const sharp = require('sharp');
 
     const { searchParams } = new URL(req.url, 'http://dummy');
-    const width = clamp(parseInt(searchParams.get('width'), 10), 1, 3000);
-    const height = clamp(parseInt(searchParams.get('height'), 10), 1, 3000);
+    const width = dimension(searchParams.get('width'));
+    const height = dimension(searchParams.get('height'));
 
     const position = 'center';
     const fit = fits[searchParams.get('fit')] || 'cover';
     const timestamp = searchParams.get('ts');
     const path = searchParams.get('url');
+
+    // The url must resolve to a resource served by the dav backend; otherwise the
+    // dav middleware would fall through to `next()` and the request would hang.
+    if (typeof path !== 'string' || !(path === '/dav' || path.startsWith('/dav/'))) {
+      res.status(400).send('Invalid thumbnail url');
+      return;
+    }
 
     const cacheKey = [width, height, path].join('-');
     const cache = new FileCache(cacheKey, timestamp);

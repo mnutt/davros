@@ -70,7 +70,7 @@ export default class File {
   }
 
   async setPropertiesFromItems(items) {
-    if (items.length > 0) {
+    if (this.isDirectory) {
       this.loadChildren(items);
     }
 

@@ -123,6 +123,13 @@ module.exports = function (davServer) {
       return;
     }
 
+    // The url must resolve to a resource served by the dav backend; otherwise the
+    // dav middleware would fall through to `next()` and the stream would hang.
+    if (!(fileUrl === '/dav' || fileUrl.startsWith('/dav/'))) {
+      res.status(400).send('Invalid file URL');
+      return;
+    }
+
     if (!SUPPORTED_EXTENSIONS.has(extensionFor(fileUrl))) {
       res.status(415).send('Unsupported office document type for preview');
       return;

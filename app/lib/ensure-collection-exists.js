@@ -18,8 +18,16 @@ export default function (path, client) {
 
   return dirs.reduce(function (cur, next) {
     return cur.then(function () {
-      // If there is an existing in-flight promise, return that instead
-      return pathsCompleted[next] || (pathsCompleted[next] = client.mkcol(next));
+      // If there is an existing in-flight promise, return that instead.
+      // Evict the cache entry on failure so a transient error doesn't poison
+      // this path for the rest of the session (mkcol can now reject).
+      return (
+        pathsCompleted[next] ||
+        (pathsCompleted[next] = client.mkcol(next).catch(function (err) {
+          delete pathsCompleted[next];
+          throw err;
+        }))
+      );
     });
   }, resolve());
 }

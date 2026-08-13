@@ -6,9 +6,12 @@ export default class DeleteDialog extends Component {
   @tracked progressPercent = null;
   @tracked progressCount = null;
   @tracked totalCount = null;
+  @tracked errorMessage = null;
 
   @action
   async onDelete() {
+    this.errorMessage = null;
+
     try {
       if (this.args.onDelete) {
         this.progressPercent = 0.01;
@@ -31,6 +34,19 @@ export default class DeleteDialog extends Component {
       }
 
       await this.args.onFinish();
+    } catch (error) {
+      this.errorMessage = error?.message || 'Delete failed';
+
+      if (!this.args.onDelete) {
+        try {
+          // Reflect any files deleted before a later request failed. This also
+          // removes those paths from the selection, so a retry targets only
+          // files that remain.
+          await this.args.model.reload();
+        } catch {
+          // Keep the original deletion error visible if the refresh also fails.
+        }
+      }
     } finally {
       this.progressPercent = null;
       this.progressCount = null;

@@ -1,4 +1,4 @@
-const exec = require('child-process-promise').exec;
+const execFile = require('child-process-promise').execFile;
 const fs = require('node:fs/promises');
 const path = require('path');
 const { URL } = require('url');
@@ -73,7 +73,7 @@ exports.getInfo = function (req, res) {
     .then((stat) => {
       if (stat) {
         var sessionId = req.headers['x-sandstorm-session-id'];
-        return exec('./sandstorm-integration/bin/getPublicId ' + sessionId);
+        return execFile('./sandstorm-integration/bin/getPublicId', [sessionId]);
       }
     })
     .then((result) => {

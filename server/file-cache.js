@@ -20,6 +20,13 @@ class FileCache extends Transform {
       .digest('hex');
     this.fileName = [this.key, time].join('_');
     this.path = this.cachePathFor(this.fileName);
+    // Concurrent requests for the same key must not write the same file at the
+    // same time, so each stream writes to its own temp file and atomically
+    // renames it into place on completion. The temp prefix deliberately does not
+    // start with `this.key`, so a concurrent stream's cleanOld() won't delete it.
+    this.tmpPath = this.cachePathFor(
+      'tmp-' + crypto.randomBytes(8).toString('hex') + '-' + this.fileName
+    );
   }
 
   _transform(chunk, encoding, done) {
@@ -27,9 +34,8 @@ class FileCache extends Transform {
       this.__transform(chunk, encoding, done);
     }
     if (!this.cachedFile) {
-      fs.mkdirp(path.dirname(this.path), () => {
-        this.cachedFile = fs.createWriteStream(this.path);
-        this.cleanOld();
+      fs.mkdirp(path.dirname(this.tmpPath), () => {
+        this.cachedFile = fs.createWriteStream(this.tmpPath);
         this.__transform(chunk, encoding, done);
       });
     }
@@ -37,9 +43,19 @@ class FileCache extends Transform {
 
   _flush(done) {
     if (this.cachedFile) {
-      this.cachedFile.end();
+      this.cachedFile.end(() => {
+        fs.rename(this.tmpPath, this.path, (err) => {
+          if (err) {
+            fs.unlink(this.tmpPath, () => {});
+          } else {
+            this.cleanOld();
+          }
+          done();
+        });
+      });
+    } else {
+      done();
     }
-    done();
   }
 
   __transform(chunk, encoding, done) {

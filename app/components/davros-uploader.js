@@ -113,14 +113,15 @@ export default class DavrosUploader extends Component {
   }
 
   async runUploads(uploads) {
-    this.totalUploads = uploads.length;
-    this.completedUploads = 0;
+    this.totalUploads += uploads.length;
 
     try {
       await Promise.all(uploads.map((upload) => this.uploadFile.perform(upload)));
     } finally {
-      this.totalUploads = 0;
-      this.completedUploads = 0;
+      if (!this.uploadFile.isRunning) {
+        this.totalUploads = 0;
+        this.completedUploads = 0;
+      }
     }
   }
 

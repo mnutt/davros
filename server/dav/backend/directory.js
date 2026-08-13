@@ -298,12 +298,17 @@ var Directory = (module.exports = jsDAV_FSExt_Directory.extend(jsDAV_iFile, Etag
   // We redefine fsext's `delete` because it uses asyncjs rmtree, which causes
   // stack overflows on very large directories.
   delete: function (cbfsdel) {
-    ChildProcess.spawn('rm', ['-rf', this.path]).on('exit', function (err) {
-      if (err) {
+    ChildProcess.spawn('rm', ['-rf', this.path])
+      .on('error', function (err) {
+        // e.g. `rm` could not be spawned at all
         cbfsdel(err);
-      } else {
-        cbfsdel(null);
-      }
-    });
+      })
+      .on('exit', function (code) {
+        if (code === 0) {
+          cbfsdel(null);
+        } else {
+          cbfsdel(new Error('rm exited with code ' + code));
+        }
+      });
   },
 }));
