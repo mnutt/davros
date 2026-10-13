@@ -19,6 +19,7 @@ var sandstormPermissions = require('./sandstorm_permissions');
 var thumbnail = require('./api/thumbnail');
 var fileUpload = require('./api/file-upload');
 var downloadDirectory = require('./api/download-directory');
+var previewDocument = require('./api/preview-document');
 
 module.exports = function (app, options) {
   var root = path.resolve(process.env.STORAGE_PATH || __dirname + '/../data');
@@ -42,6 +43,7 @@ module.exports = function (app, options) {
   app.use('/api/upload', fileUpload(davServer));
   app.use('/api/thumbnail', thumbnail(davServer));
   app.get('/api/archive', downloadDirectory(root));
+  app.get('/api/preview-document', previewDocument(root));
 
   app.get('/api/publish/info', publishing.getInfo);
   app.post('/api/publish', publishing.publish);

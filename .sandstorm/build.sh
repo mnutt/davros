@@ -40,4 +40,5 @@ if [ ! -d "/opt/app/dist" ]; then
   ./node_modules/.bin/ember build
 fi
 
+bash scripts/fetch-native-preview.sh
 yarn build:server

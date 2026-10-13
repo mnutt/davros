@@ -54,10 +54,10 @@ module('Unit | Model | file', function () {
     assert.deepEqual(model.files, []);
   });
 
-  test('OOXML office extensions use the wasm document previewer', function (assert) {
-    assert.equal(new File({ path: '/path/to/foo.docx' }).documentPreviewKind, 'wasm');
-    assert.equal(new File({ path: '/path/to/foo.xlsx' }).documentPreviewKind, 'wasm');
-    assert.equal(new File({ path: '/path/to/foo.pptx' }).documentPreviewKind, 'wasm');
+  test('OOXML office extensions use the server document previewer', function (assert) {
+    assert.equal(new File({ path: '/path/to/foo.docx' }).documentPreviewKind, 'server');
+    assert.equal(new File({ path: '/path/to/foo.xlsx' }).documentPreviewKind, 'server');
+    assert.equal(new File({ path: '/path/to/foo.pptx' }).documentPreviewKind, 'server');
   });
 
   test('legacy office extensions do not use the document previewer', function (assert) {

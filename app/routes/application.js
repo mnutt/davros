@@ -1,6 +1,7 @@
 import Route from '@ember/routing/route';
 import { action } from '@ember/object';
 import { service } from '@ember/service';
+import { encodeRoutePath } from '../lib/path-encoding';
 
 export default class ApplicationRoute extends Route {
   @service router;
@@ -21,7 +22,7 @@ export default class ApplicationRoute extends Route {
   updateSandstormPath() {
     window.parent.postMessage(
       {
-        setPath: this.router.currentURL || '/',
+        setPath: encodeRoutePath(this.router.currentURL || '/'),
       },
       '*'
     );

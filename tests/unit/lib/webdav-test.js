@@ -12,6 +12,20 @@ module('Unit | Lib | webdav', function (hooks) {
     globalThis.fetch = originalFetch;
   });
 
+  test('encodes every outgoing file path exactly once', async function (assert) {
+    const client = new WebdavClient('/dav');
+    const path = '/Pass & Seymour/#1 + notes?.docx';
+    const encoded = '/dav/Pass%20%26%20Seymour/%231%20%2B%20notes%3F.docx';
+    assert.strictEqual(client.fullPath(path), encoded);
+    assert.strictEqual(client.fullPath(encoded.slice(4)), encoded);
+    globalThis.fetch = (url, options) => {
+      assert.strictEqual(url, encoded);
+      assert.true(options.headers.Destination.endsWith('/dav/Renamed%20%26%20file.docx'));
+      return Promise.resolve(new Response(null, { status: 204 }));
+    };
+    await client.move(path, '/Renamed & file.docx');
+  });
+
   test('remove resolves after a successful response', async function (assert) {
     const response = new Response(null, { status: 204 });
     globalThis.fetch = () => Promise.resolve(response);

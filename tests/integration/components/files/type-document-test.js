@@ -10,22 +10,30 @@ const template = precompileTemplate('<Files::TypeDocument @model={{this.model}} 
 
 module('Integration | Component | files/type-document', function (hooks) {
   setupRenderingTest(hooks);
+  let originalFetch;
+  hooks.beforeEach(function () {
+    originalFetch = window.fetch;
+    window.fetch = async () => new Response('{"ready":true}', { status: 200 });
+  });
+  hooks.afterEach(function () {
+    window.fetch = originalFetch;
+  });
 
   test('refreshes an active preview when the model revision changes', async function (assert) {
     this.set('model', new File({ path: '/report.docx', mtime: new Date(1) }));
 
     await render(template);
     await click('button');
-    const initialPreviewUrl = find('iframe[title="WASM Document Preview"]').getAttribute('src');
+    const initialPreviewUrl = find('iframe[title="Document Preview"]').getAttribute('src');
 
     this.model.mtime = new Date(2);
     await settled();
 
-    assert.dom('iframe[title="WASM Document Preview"]').exists();
+    assert.dom('iframe[title="Document Preview"]').exists();
     assert.notEqual(
-      find('iframe[title="WASM Document Preview"]').getAttribute('src'),
+      find('iframe[title="Document Preview"]').getAttribute('src'),
       initialPreviewUrl,
-      'updated revision starts a new preview session'
+      'updated revision starts a new preview session',
     );
   });
 
@@ -34,7 +42,7 @@ module('Integration | Component | files/type-document', function (hooks) {
 
     await render(template);
     await click('button');
-    assert.dom('iframe[title="WASM Document Preview"]').exists();
+    assert.dom('iframe[title="Document Preview"]').exists();
 
     this.set('model', new File({ path: '/second.docx', mtime: new Date(1) }));
     await settled();

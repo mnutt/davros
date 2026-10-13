@@ -5,15 +5,10 @@ import { tracked } from '@glimmer/tracking';
 
 export default class TypeDocumentComponent extends Component {
   @tracked previewRequested = false;
-  @tracked previewMode = null;
   @tracked previewLoading = false;
-  @tracked wasmSession = null;
-  @tracked wasmError = null;
-  wasmFrame = null;
-  wasmReady = false;
-  wasmLoadStarted = false;
-  wasmAbortController = null;
-  previewGeneration = 0;
+  @tracked previewUrl = null;
+  @tracked errorMessage = null;
+  previewAbort = null;
   previewModel = null;
   previewRevision = null;
   revisionUpdateId = 0;
@@ -22,17 +17,8 @@ export default class TypeDocumentComponent extends Component {
     super(...arguments);
     registerDestructor(this, () => {
       this.revisionUpdateId += 1;
-      this.previewGeneration += 1;
-      this.teardownWasmPreview();
+      this.previewAbort?.abort();
     });
-  }
-
-  get canSandbox() {
-    return 'sandbox' in document.createElement('iframe');
-  }
-
-  get errored() {
-    return Boolean(this.wasmError);
   }
 
   get documentPreviewKind() {
@@ -43,55 +29,13 @@ export default class TypeDocumentComponent extends Component {
     return Boolean(this.documentPreviewKind) && !this.previewLoading;
   }
 
-  get previewButtonLabel() {
-    return this.previewLoading ? 'Loading...' : 'Preview Document';
-  }
-
-  get wasmPreviewActive() {
-    return this.previewRequested && this.previewMode === 'wasm';
-  }
-
-  get wasmPreviewUrl() {
-    if (!this.wasmSession) {
-      return null;
-    }
-
-    return `/document-previewer/index.html#session=${encodeURIComponent(this.wasmSession)}`;
-  }
-
-  get errorMessage() {
-    return this.wasmError;
-  }
-
-  makeWasmSession() {
-    if (window.crypto?.randomUUID) {
-      return window.crypto.randomUUID();
-    }
-
-    return `${Date.now()}-${Math.random().toString(36).slice(2)}`;
-  }
-
-  ensureWasmListener() {
-    window.addEventListener('message', this.handleWasmMessage);
-  }
-
-  teardownWasmPreview() {
-    window.removeEventListener('message', this.handleWasmMessage);
-    this.wasmAbortController?.abort();
-    this.wasmAbortController = null;
-    this.wasmFrame = null;
-    this.wasmReady = false;
-    this.wasmLoadStarted = false;
-  }
-
   resetPreviewRequest() {
-    this.previewGeneration += 1;
-    this.teardownWasmPreview();
-    this.wasmSession = null;
-    this.wasmError = null;
+    this.previewAbort?.abort();
+    this.previewAbort = null;
+    this.previewUrl = null;
+    this.errorMessage = null;
     this.previewLoading = false;
     this.previewRequested = false;
-    this.previewMode = null;
   }
 
   revisionFor(model, path, mtime) {
@@ -99,115 +43,39 @@ export default class TypeDocumentComponent extends Component {
     return `${path || model?.path || ''}:${timestamp}`;
   }
 
-  startPreview(model) {
-    const previewMode = model.documentPreviewKind;
-    if (!previewMode) {
-      return;
-    }
-
-    this.previewGeneration += 1;
-    this.wasmError = null;
-    this.previewLoading = true;
-    this.previewRequested = true;
-    this.previewMode = previewMode;
+  async startPreview(model) {
+    if (!model.documentPreviewKind) return;
+    this.resetPreviewRequest();
     this.previewModel = model;
-
-    this.teardownWasmPreview();
-    this.wasmSession = this.makeWasmSession();
-    this.ensureWasmListener();
-  }
-
-  async sendWasmLoadMessage() {
-    if (!this.wasmReady || !this.wasmFrame?.contentWindow || !this.wasmSession) {
-      return;
-    }
-
-    if (this.wasmLoadStarted) {
-      return;
-    }
-
-    this.wasmLoadStarted = true;
-    const session = this.wasmSession;
-    const abortController = new AbortController();
-    this.wasmAbortController = abortController;
-
-    let bytes;
+    this.previewRequested = true;
+    this.previewLoading = true;
+    const controller = new AbortController();
+    this.previewAbort = controller;
+    const url = `/api/preview-document?path=${encodeURIComponent(model.rawPath)}&revision=${encodeURIComponent(this.revisionFor(model, model.path, model.mtime))}`;
     try {
-      const response = await fetch(this.args.model.rawPath, {
+      // Prepare before navigating so conversion errors remain readable. The PDF
+      // viewer then requests the cached file, including byte ranges as needed.
+      const response = await fetch(`${url}&prepare=1`, {
         credentials: 'same-origin',
         cache: 'no-store',
-        signal: abortController.signal,
+        signal: controller.signal,
       });
-
       if (!response.ok) {
-        throw new Error(`Could not load document (${response.status})`);
+        const error = await response.json().catch(() => ({}));
+        throw new Error(error.error || `Could not load preview (${response.status})`);
       }
-
-      bytes = await response.arrayBuffer();
-    } catch (err) {
-      if (abortController.signal.aborted) {
-        return;
-      }
-
-      this.previewLoading = false;
-      this.wasmError = err?.message || 'Could not load document.';
-      return;
+      if (!controller.signal.aborted) this.previewUrl = url;
+    } catch (error) {
+      if (!controller.signal.aborted)
+        this.errorMessage = error.message || 'Could not load document preview.';
+    } finally {
+      if (!controller.signal.aborted) this.previewLoading = false;
     }
-
-    if (session !== this.wasmSession || !this.wasmFrame?.contentWindow) {
-      return;
-    }
-
-    this.wasmFrame.contentWindow.postMessage(
-      {
-        type: 'document-preview:load',
-        session,
-        id: `${this.args.model.path}:${this.args.model.mtime.getTime()}`,
-        fileName: this.args.model.name,
-        source: {
-          kind: 'bytes',
-          bytes,
-        },
-      },
-      '*',
-      [bytes]
-    );
   }
-
-  handleWasmMessage = (event) => {
-    if (event.source !== this.wasmFrame?.contentWindow) {
-      return;
-    }
-
-    const message = event.data || {};
-    if (!this.wasmSession || message.session !== this.wasmSession) {
-      return;
-    }
-
-    if (message.type === 'document-preview:ready') {
-      this.wasmReady = true;
-      void this.sendWasmLoadMessage();
-      return;
-    }
-
-    if (message.type === 'document-preview:status') {
-      this.previewLoading = message.state === 'loading';
-      return;
-    }
-
-    if (message.type === 'document-preview:error') {
-      this.previewLoading = false;
-      this.wasmError = message.message || 'There was an error rendering this preview.';
-    }
-  };
 
   @action
   previewDocument() {
-    if (!this.canPreviewDocument) {
-      return;
-    }
-
-    this.startPreview(this.args.model);
+    if (this.canPreviewDocument) return this.startPreview(this.args.model);
   }
 
   @action
@@ -243,10 +111,4 @@ export default class TypeDocumentComponent extends Component {
       this.startPreview(model);
     }
   }
-
-  @action
-  registerWasmIframe(element) {
-    this.wasmFrame = element;
-  }
-
 }
