@@ -30,7 +30,7 @@ export default class WebdavClient {
   }
 
   fullPath(path) {
-    return [this.base, path].join('/');
+    return `${this.base.replace(/\/$/, '')}/${encodePath(String(path || '').replace(/^\/+/, ''))}`;
   }
 
   propfind(path) {
@@ -95,7 +95,7 @@ export default class WebdavClient {
   }
 
   async mkcol(path) {
-    const response = await fetch(this.fullPath(encodePath(path)), {
+    const response = await fetch(this.fullPath(path), {
       method: 'MKCOL',
     });
 

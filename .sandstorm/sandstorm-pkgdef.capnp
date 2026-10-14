@@ -103,6 +103,7 @@ const pkgdef :Spk.PackageDefinition = (
     "opt/app/dist", # css/js files change due to fingerprinting
     "opt/app/server/dummy", # static tree used by the bundled WebDAV server
     "opt/app/sample-files",
+    "opt/app/output/native-preview",
     ],
   # Fill this list with more names of files or directories that should be
   # included in your package, even if not listed in sandstorm-files.list.

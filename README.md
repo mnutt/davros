@@ -32,6 +32,67 @@ Note that running Davros this way is not at all safe for anything but local deve
 
 In development, you can connect your desktop client to the backend URL (default `http://localhost:8000/`) with any username and password.
 
+### Office document previews
+
+Previews are converted on the server into selectable PDFs: docxide-pdf 0.17.1
+for DOCX, and a reduced office2pdf 0.8.1 for XLSX/PPTX. The browser's built-in
+PDF viewer handles display, text selection, search, and page navigation. No
+Office parser or worker runs in the web app. A browser with PDF viewing enabled
+is required. Conversion finishes before display; cached PDFs support byte-range
+requests so the browser can fetch pages as needed. Spreadsheet pages expand to
+fit all columns at their natural size, retaining vertical pagination instead of
+splitting columns across pages or applying print-to-fit scaling.
+
+`yarn fetch:native-preview` downloads the Linux amd64
+[davros-preview v0.2.0 release](https://github.com/mnutt/davros-preview/releases/tag/v0.2.0),
+verifies its pinned SHA-256, and installs the binary, fonts, and licenses under
+`output/native-preview`. Downloads are cached in `tmp/` and verified on reuse.
+The Sandstorm build and CI use the same script; Rust is no longer needed to build
+Davros. Converter source, patches, and release tooling live in
+[davros-preview](https://github.com/mnutt/davros-preview).
+`yarn build:server` builds the HTTP server separately.
+
+Only Liberation Sans, Serif, and Mono are packaged, with regular, bold, italic,
+and bold italic faces. Font substitution can change line wrapping and pagination;
+CJK and other scripts outside these fonts' coverage are not supported by this
+minimal font set. Text in images remains an image. The office2pdf build omits its
+embedded font packs, DOCX dispatch, and PDF merge/split CLI; local spreadsheet
+patches fix percentage precision, fractional zero-padding, and namespace-prefixed
+SpreadsheetML parsing.
+
+Rendering runs one disposable native process at a time, coalesces requests for
+identical revisions, and cancels abandoned jobs. Limits are 32 MiB input,
+32 MiB per decompressed ZIP entry, 128 MiB total decompression, 128 MiB PDF
+output, a 4 GiB process address space, and 60 seconds per conversion. Up to four
+jobs may be active or queued. The versioned disk cache under `TEMP_STORAGE_PATH`
+(or the OS temporary directory) is bounded to 256 MiB of PDFs. File identity,
+size, modification time, and change time invalidate cached previews.
+
+The preview binary enables Linux Landlock before parsing any Office content, closes
+inherited descriptors other than standard I/O, and disables process dumping.
+Only the copied input, bundled font configuration/fonts, and a private job
+scratch directory are readable; only scratch is writable. Execution of other
+programs is denied. The server passes a minimal environment and keeps temporary
+files and font caches inside scratch. There is no extra sandbox executable or
+runtime dependency.
+
+Landlock ABI 3 or newer must be enabled (upstream Linux 6.2+); unsupported hosts
+fail closed. Additional restrictions follow the available ABI: TCP at 4,
+abstract Unix sockets and signals outside the sandbox at 6, pathname Unix
+sockets at 9, and UDP at 10. Older ABIs emit a diagnostic about reduced coverage.
+Landlock does not restrict all metadata operations, including stat and chmod.
+This supplements Sandstorm's grain isolation, rather than fully isolating every
+same-grain operation. Tested with Sandstorm's default seccomp policy; its
+experimental policy blocks Landlock and previews will fail closed there.
+See the [kernel Landlock documentation](https://docs.kernel.org/userspace-api/landlock.html).
+
+Converter and sandbox regression tests live in the davros-preview project.
+Davros's server tests exercise the downloaded release through the preview API.
+
+For server tests, install Poppler (`poppler-utils` on Debian) for PDF text
+validation, and run `yarn fetch:native-preview` before `yarn test:server`.
+Development can set `DAVROS_PREVIEW_NATIVE_DIR` to an existing build directory.
+
 ## Sandstorm Development
 
 A few parts of Davros are dependent on running within Sandstorm, such as the authentication instructions on the Clients page. To run inside Sandstorm, first get [vagrant-spk](https://github.com/sandstorm-io/vagrant-spk). Then, within the Davros directory, run

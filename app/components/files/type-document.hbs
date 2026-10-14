@@ -1,44 +1,35 @@
 <div
-  class="w-full h-full"
-  {{on-insert this.synchronizeModelRevision @model @model.path @model.mtime}}>
-{{#if this.canSandbox}}
-  {{#if (not this.previewRequested)}}
-    <div class="w-full h-full flex items-center justify-center text-center border-t p-4">
+  class='w-full h-full'
+  {{on-insert this.synchronizeModelRevision @model @model.path @model.mtime}}
+>
+  {{#if this.previewUrl}}
+    <iframe
+      class='w-full h-full border-t'
+      title='Document Preview'
+      src={{this.previewUrl}}
+      referrerpolicy='no-referrer'
+    ></iframe>
+  {{else}}
+    <div class='w-full h-full flex items-center justify-center text-center border-t p-4'>
       <div>
-        {{#if this.documentPreviewKind}}
+        {{#if this.errorMessage}}
+          <p class='mb-3 text-red-700' role='alert'>{{this.errorMessage}}</p>
+        {{/if}}
+        {{#if this.previewLoading}}
+          <p role='status'>Preparing document preview…</p>
+        {{else if this.documentPreviewKind}}
           <button
-            type="button"
-            class="button-primary inline-flex items-center gap-2"
-            {{on "click" this.previewDocument}}
-            disabled={{not this.canPreviewDocument}}>
-            <Icon @icon="visibility" @ariaLabel="Preview" class="text-base" />
-            <span>{{this.previewButtonLabel}}</span>
+            type='button'
+            class='button-primary inline-flex items-center gap-2'
+            {{on 'click' this.previewDocument}}
+          >
+            <Icon @icon='visibility' @ariaLabel='Preview' class='text-base' />
+            <span>Preview Document</span>
           </button>
         {{else}}
           <p>No preview available for this document type.</p>
         {{/if}}
       </div>
     </div>
-  {{else if this.errored}}
-    <div class="w-full h-full flex items-center justify-center text-center border-t p-4">
-      <div>
-        <p class="mb-3">There was an error rendering this preview.</p>
-        {{#if this.errorMessage}}
-          <p class="mb-3 text-red-700">{{this.errorMessage}}</p>
-        {{/if}}
-      </div>
-    </div>
-  {{else if this.wasmPreviewActive}}
-    <iframe
-      class="w-full h-full border-t"
-      title="WASM Document Preview"
-      src={{this.wasmPreviewUrl}}
-      sandbox="allow-scripts"
-      referrerpolicy="no-referrer"
-      loading="lazy"
-      {{on-insert this.registerWasmIframe}}></iframe>
   {{/if}}
-{{else}}
-  <p>Your browser doesn't support sandboxing, so we can't show a preview inline.</p>
-{{/if}}
 </div>

@@ -45,6 +45,9 @@ jobs:
       - name: Install dependencies
         run: yarn install --immutable
 
+      - name: Install preview converters
+        run: bash scripts/fetch-native-preview.sh
+
       - name: Test
         run: yarn test:ember
 
@@ -68,6 +71,12 @@ jobs:
 
       - name: Install dependencies
         run: yarn install --immutable
+
+      - name: Install preview test dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y poppler-utils
+          bash scripts/fetch-native-preview.sh
 
       - name: Cache litmus
         id: cache-litmus
