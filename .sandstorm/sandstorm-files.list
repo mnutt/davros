@@ -25,10 +25,9 @@ opt/app/app.js
 opt/app/dist/@embroider/virtual/app.css
 opt/app/dist/@embroider/virtual/vendor.css
 opt/app/dist/@embroider/virtual/vendor.js
-opt/app/dist/assets/app-D-iwOPQO.js
-opt/app/dist/assets/app-D-iwOPQO.js.map
 opt/app/dist/assets/app-YtrgoY9Z.css
-opt/app/dist/assets/main-CzOM_s-o.js
+opt/app/dist/assets/app-eVgEADAb.js
+opt/app/dist/assets/main-D8CQLG3I.js
 opt/app/dist/fonts/materialicons/v99/MaterialIcons-Regular.subset.woff2
 opt/app/dist/fonts/materialicons/v99/MaterialIcons-Regular.ttf
 opt/app/dist/images/sidebar-logo@2x.png
@@ -171,6 +170,7 @@ opt/app/output/native-preview/fonts/LiberationSerif-Bold.ttf
 opt/app/output/native-preview/fonts/LiberationSerif-BoldItalic.ttf
 opt/app/output/native-preview/fonts/LiberationSerif-Italic.ttf
 opt/app/output/native-preview/fonts/LiberationSerif-Regular.ttf
+opt/app/output/native-preview/fonts/NotoSans-Regular.ttf
 opt/app/package.json
 opt/app/sample-files
 opt/app/sample-files/Welcome to Davros.md
