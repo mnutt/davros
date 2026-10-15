@@ -1,3 +1,30 @@
+# 0.33.1
+
+- Built-in document previews for .docx, .xlsx, and .pptx, without bundling LibreOffice
+- Fix overlapping uploads replacing the progress state of uploads already in progress, and report missing upload destinations cleanly
+- Fix stale directory contents after deleting the last file, and ignore selected files that no longer exist
+- Report failed WebDAV moves, deletions, and directory creation correctly; allow retrying directory creation after an error
+- Improve error handling for file deletion in the web UI
+- Security: strengthen path checks for directory downloads, thumbnails, and document previews 
+- Security: avoid shell interpretation when retrieving the public ID
+- Fix concurrent cache writes and default thumbnail dimensions
+- Update Sandstorm's "create new" action metadata (thanks Jacob Weisz)
+- Some internals: 
+  - migrate packaging to spktool and Debian trixie, remove unused package files, and expand regression tests
+
+# 0.32.0
+
+- Ask before overwriting an existing file when renaming or moving files
+- Fix directory names containing special characters, routing inside Sandstorm, and synchronization with Sandstorm's navigation path
+- Make directory updates more reliable when files are added, moved, or deleted, including refreshing the root directory
+- Replace the image slideshow implementation with a built-in gallery
+- Fix audio playback, tooltip styling, and initial icon sizing
+- Some internals:
+  - Upgrade to Ember 6, Node.js 24, and Yarn 4, along with dependency updates
+  - Move frontend builds to Vite/Embroider and server bundling to esbuild
+  - Update upload handling and the development server workflow
+  - Automate Sandstorm package builds in GitHub Actions, with separate test and release packages
+
 # 0.31.1
 
 - Fix file view's delete action
