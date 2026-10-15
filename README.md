@@ -45,7 +45,7 @@ fit all columns at their natural size, retaining vertical pagination instead of
 splitting columns across pages or applying print-to-fit scaling.
 
 `yarn fetch:native-preview` downloads the Linux amd64
-[davros-preview v0.3.4 release](https://github.com/mnutt/davros-preview/releases/tag/v0.3.4),
+[davros-preview v0.4.0 release](https://github.com/mnutt/davros-preview/releases/tag/v0.4.0),
 verifies its pinned SHA-256, and installs the binary, fonts, and licenses under
 `output/native-preview`. Downloads are cached in `tmp/` and verified on reuse.
 The Sandstorm build and CI use the same script; Rust is no longer needed to build

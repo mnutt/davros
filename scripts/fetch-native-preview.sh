@@ -2,8 +2,8 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-version=0.3.4
-sha256=d4cc982801f9e28ef88744c1ceeed1e9780b2fee15ef7081eb7700a6e2b4dd44
+version=0.4.0
+sha256=4a1bcb3c6e77f2045397c80892e75e5eefb03b0f23bb11f4beafb3c7b57c9289
 archive="davros-preview-v${version}-linux-amd64.tar.gz"
 url="https://github.com/mnutt/davros-preview/releases/download/v${version}/${archive}"
 
