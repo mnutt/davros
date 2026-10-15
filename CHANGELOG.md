@@ -1,3 +1,7 @@
+# 0.33.2
+
+- Reduce the size of the bundled `davros-preview` binary
+
 # 0.33.1
 
 - Built-in document previews for .docx, .xlsx, and .pptx, without bundling LibreOffice
