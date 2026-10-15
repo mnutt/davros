@@ -54,23 +54,15 @@ module('Unit | Model | file', function () {
     assert.deepEqual(model.files, []);
   });
 
-  test('OOXML office extensions use the server document previewer', function (assert) {
-    assert.equal(new File({ path: '/path/to/foo.docx' }).documentPreviewKind, 'server');
-    assert.equal(new File({ path: '/path/to/foo.xlsx' }).documentPreviewKind, 'server');
-    assert.equal(new File({ path: '/path/to/foo.pptx' }).documentPreviewKind, 'server');
-  });
-
-  test('legacy office extensions do not use the document previewer', function (assert) {
-    assert.equal(new File({ path: '/path/to/foo.doc' }).documentPreviewKind, null);
-    assert.equal(new File({ path: '/path/to/foo.xls' }).documentPreviewKind, null);
-    assert.equal(new File({ path: '/path/to/foo.ppt' }).documentPreviewKind, null);
-  });
-
-  test('OpenDocument extensions do not use the document previewer', function (assert) {
-    assert.equal(new File({ path: '/path/to/foo.odt' }).documentPreviewKind, null);
-    assert.equal(new File({ path: '/path/to/foo.ods' }).documentPreviewKind, null);
-    assert.equal(new File({ path: '/path/to/foo.odp' }).documentPreviewKind, null);
-  });
+  for (const extension of ['doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'odt', 'ods', 'odp']) {
+    test(`${extension} files use the server document previewer`, function (assert) {
+      for (const suffix of [extension, extension.toUpperCase()]) {
+        const model = new File({ path: `/path/to/foo.${suffix}` });
+        assert.equal(model.documentPreviewKind, 'server', suffix);
+        assert.equal(model.type, 'document', suffix);
+      }
+    });
+  }
 
   test('PDF files do not use the document previewer', function (assert) {
     assert.equal(new File({ path: '/path/to/foo.pdf' }).documentPreviewKind, null);

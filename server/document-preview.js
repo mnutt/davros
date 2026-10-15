@@ -7,7 +7,7 @@ const { pipeline } = require('node:stream/promises');
 
 const MAX_OUTPUT = 128 * 1024 * 1024;
 const MAX_CACHE = 256 * 1024 * 1024;
-const CACHE_VERSION = 'davros-preview-0.2.0';
+const CACHE_VERSION = 'davros-preview-0.3.4';
 
 function previewError(message, status = 422) {
   return Object.assign(new Error(message), { status });

@@ -32,6 +32,30 @@ describe('server document preview', () => {
       .set('x-sandstorm-permissions', 'view');
   }
 
+  for (const kind of ['doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'odt', 'ods', 'odp']) {
+    it(`routes ${kind} files to the converter with a normalized extension`, async () => {
+      const pdf = path.join(directory, 'preview.pdf');
+      await fs.writeFile(pdf, '%PDF-1.7\n');
+      const get = vi.fn(async (source) => {
+        await source.close();
+        return fs.open(pdf, 'r');
+      });
+      const routingApp = express();
+      routingApp.get('/api/preview-document', previewDocument(root, { get }));
+      for (const extension of [kind, kind.toUpperCase()]) {
+        const name = `document.${extension}`;
+        await fs.writeFile(path.join(root, name), 'converter input');
+        const response = await request(routingApp)
+          .get('/api/preview-document')
+          .query({ path: `/dav/${name}` })
+          .expect(200);
+        expect(response.headers['content-type']).toBe('application/pdf');
+        expect(response.body.toString()).toBe('%PDF-1.7\n');
+        expect(get.mock.lastCall[2]).toBe(kind);
+      }
+    });
+  }
+
   for (const kind of ['docx', 'pptx', 'xlsx']) {
     it(`converts ${kind}, caches it, and serves PDF byte ranges`, async () => {
       const name = `Pass & Seymour # ü + 100%.${kind}`;

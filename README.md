@@ -34,8 +34,9 @@ In development, you can connect your desktop client to the backend URL (default 
 
 ### Office document previews
 
-Previews are converted on the server into selectable PDFs: docxide-pdf 0.17.1
-for DOCX, and a reduced office2pdf 0.8.1 for XLSX/PPTX. The browser's built-in
+Previews are converted on the server into selectable PDFs using davros-preview.
+Supported formats are Microsoft Word (.doc, .docx), Excel (.xls, .xlsx),
+PowerPoint (.ppt, .pptx), and OpenDocument (.odt, .ods, .odp). The browser's built-in
 PDF viewer handles display, text selection, search, and page navigation. No
 Office parser or worker runs in the web app. A browser with PDF viewing enabled
 is required. Conversion finishes before display; cached PDFs support byte-range
@@ -44,7 +45,7 @@ fit all columns at their natural size, retaining vertical pagination instead of
 splitting columns across pages or applying print-to-fit scaling.
 
 `yarn fetch:native-preview` downloads the Linux amd64
-[davros-preview v0.2.0 release](https://github.com/mnutt/davros-preview/releases/tag/v0.2.0),
+[davros-preview v0.3.4 release](https://github.com/mnutt/davros-preview/releases/tag/v0.3.4),
 verifies its pinned SHA-256, and installs the binary, fonts, and licenses under
 `output/native-preview`. Downloads are cached in `tmp/` and verified on reuse.
 The Sandstorm build and CI use the same script; Rust is no longer needed to build

@@ -28,7 +28,7 @@ module.exports = function previewDocument(root, service = createPreviewService()
       const file = await fs.promises.realpath(path.join(resolvedRoot, relative));
       if (!file.startsWith(resolvedRoot + path.sep)) throw previewError('Access denied.', 403);
       const kind = path.extname(relative).slice(1).toLowerCase();
-      if (!['docx', 'xlsx', 'pptx'].includes(kind))
+      if (!['doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'odt', 'ods', 'odp'].includes(kind))
         throw previewError('Unsupported document type.', 415);
       source = await fs.promises.open(file, fs.constants.O_RDONLY | fs.constants.O_NOFOLLOW);
       const stat = await source.stat();
