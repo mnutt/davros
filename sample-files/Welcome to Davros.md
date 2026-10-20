@@ -28,20 +28,24 @@ In development, you can connect your desktop client to http://localhost:3009/ wi
 
 ## Sandstorm Development
 
-A few parts of Davros are dependent on running within Sandstorm, such as the authentication instructions on the Clients page. To run inside Sandstorm, first get [vagrant-spk](https://github.com/sandstorm-io/vagrant-spk). Then, within the Davros directory, run
+A few parts of Davros depend on running within Sandstorm, such as the authentication instructions on the Clients page. Install [spktool](https://github.com/mnutt/spktool) and a supported VM provider. For example, with Lima installed, run these commands from the Davros directory:
 
-    vagrant-spk vm up
-    vagrant-spk dev
+```sh
+spktool vm create --provider lima
+yarn build
+spktool build --provider lima
+spktool dev --provider lima
+```
 
-While this works it requires that you re-run `vagrant-spk dev` manually anytime you make a change. To
-have this done automatically consider using [ember-cli-vagrant-spk](https://github.com/mnutt/ember-cli-vagrant-spk) instead which will monitor your filesystem for changes and restart the server
-for you.
+Use `spktool vm up --provider lima` to start an existing VM, or `spktool vm provision --provider lima` to rerun its setup. Replace `lima` with `vagrant` if you use the Vagrant provider.
+
+After changing the app, rebuild with `yarn build` and `spktool build --provider lima`, then restart `spktool dev --provider lima`.
 
 ### Building
 
-* `ember build` (development)
-* `ember build --environment production` (production, minified)
-* `vagrant-spk pack build/davros-v0.10.0`
+* `yarn build` (production UI)
+* `spktool build --provider lima` (server and package dependencies)
+* `spktool pack --provider lima build/[VERSION].spk` (replace `[VERSION]` with the release version)
 
 ### Acknowledgements
 
