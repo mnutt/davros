@@ -65,7 +65,10 @@ describe('server document preview', () => {
       const response = await preview(name).expect(200);
       expect(response.headers['content-type']).toContain('application/pdf');
       expect(response.body.subarray(0, 5).toString()).toBe('%PDF-');
-      const extracted = spawnSync('pdftotext', ['-', '-'], { input: response.body });
+      // Keep spreadsheet text in content order: layout-based extraction can
+      // interleave neighboring cells with lines of a wrapped cell.
+      const textArgs = kind === 'xlsx' ? ['-raw', '-', '-'] : ['-', '-'];
+      const extracted = spawnSync('pdftotext', textArgs, { input: response.body });
       expect(extracted.error).toBeUndefined();
       expect(extracted.status).toBe(0);
       // Rotated slide text may be split into separate PDF text runs.
