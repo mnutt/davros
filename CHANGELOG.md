@@ -1,3 +1,7 @@
+# 0.33.3
+
+- Upgrade Node.js to 24.22.1 for the latest security fixes
+
 # 0.33.2
 
 - Reduce the size of the bundled `davros-preview` binary

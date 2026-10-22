@@ -25,9 +25,6 @@ opt/app/app.js
 opt/app/dist/@embroider/virtual/app.css
 opt/app/dist/@embroider/virtual/vendor.css
 opt/app/dist/@embroider/virtual/vendor.js
-opt/app/dist/assets/app-YtrgoY9Z.css
-opt/app/dist/assets/app-eVgEADAb.js
-opt/app/dist/assets/main-D8CQLG3I.js
 opt/app/dist/fonts/materialicons/v99/MaterialIcons-Regular.subset.woff2
 opt/app/dist/fonts/materialicons/v99/MaterialIcons-Regular.ttf
 opt/app/dist/images/sidebar-logo@2x.png
