@@ -3,7 +3,7 @@ name: CI
 on: [push, pull_request]
 
 env:
-  NODE_VERSION: '24.13.0'
+  NODE_VERSION: '24.22.1'
 
 jobs:
   lint:
