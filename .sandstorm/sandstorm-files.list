@@ -151,7 +151,6 @@ opt/app/node_modules/xmldom/dom.js
 opt/app/node_modules/xmldom/package.json
 opt/app/node_modules/xmldom/sax.js
 opt/app/output/app.js
-opt/app/output/document-preview-worker.mjs
 opt/app/output/native-preview/davros-preview
 opt/app/output/native-preview/fonts
 opt/app/output/native-preview/fonts.conf
