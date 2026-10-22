@@ -1,3 +1,7 @@
+# 0.33.4
+
+- Fix Sandstorm packaging by removing the obsolete document preview worker requirement
+
 # 0.33.3
 
 - Upgrade Node.js to 24.22.1 for the latest security fixes
